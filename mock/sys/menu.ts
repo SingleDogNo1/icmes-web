@@ -10,8 +10,7 @@ const dashboardRoute = {
   redirect: '/dashboard/analysis',
   meta: {
     title: 'routes.dashboard.dashboard',
-    hideChildrenInMenu: true,
-    icon: 'bx:bx-home',
+    icon: 'ant-design:file-word-filled',
   },
   children: [
     {
@@ -31,7 +30,7 @@ const dashboardRoute = {
       name: 'Workbench',
       component: '/dashboard/workbench/index',
       meta: {
-        hideMenu: true,
+        hideMenu: false,
         hideBreadcrumb: true,
         title: 'routes.dashboard.workbench',
         currentActiveMenu: '/dashboard',
@@ -234,6 +233,8 @@ const linkRoute = {
     },
   ],
 };
+
+export const fakeRoutes = [dashboardRoute, authRoute, levelRoute, sysRoute, linkRoute];
 
 export default [
   {

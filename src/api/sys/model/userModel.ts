@@ -1,4 +1,4 @@
-/* 获取公钥接口返回参数 */
+/* 获取公钥接口返回数据 */
 export interface PublicKeyModel {
   codeList: string[];
   key: string;
@@ -14,7 +14,7 @@ export interface LoginParams {
   key?: string;
 }
 
-/** 登录接口请求参数 */
+/** 登录接口返回数据 */
 export interface LoginResultModel {
   /** 登录权限验证token */
   accessToken: string;
@@ -44,16 +44,16 @@ export interface LoginResultModel {
   userId: number;
 }
 
-/* 用户信息数据 */
+/* 用户信息返回数据 */
 export interface GetUserInfoModel {
-  // 用户id
+  /** 用户id */
   userId: number;
-  // 用户名
+  /** 用户名 */
   name: string;
   /** 员工标识Id */
   employeeId: number;
   /** 员工所属部门标识 */
   organizationId: number;
-  // 头像
+  /** 头像 */
   avatar: string;
 }

@@ -17,13 +17,10 @@ import { asyncRoutes } from '/@/router/routes';
 import { ERROR_LOG_ROUTE, PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
 
 import { filter } from '/@/utils/helper/treeHelper';
-
-import { getMenuList } from '/@/api/sys/menu';
-import { getPermCode } from '/@/api/sys/user';
-
+// TODO 替换假路由
+import { fakeRoutes } from '../../../mock/sys/menu';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
-
 interface PermissionState {
   // Permission code list
   permCodeList: string[] | number[];
@@ -93,7 +90,10 @@ export const usePermissionStore = defineStore({
       this.lastBuildMenuTime = 0;
     },
     async changePermissionCode() {
-      const codeList = await getPermCode();
+      const userStore = useUserStore();
+      const feature = toRaw(userStore.getFeature) || [];
+      const codeList = Object.keys(feature);
+
       this.setPermCodeList(codeList);
     },
     async buildRoutesAction(): Promise<AppRouteRecordRaw[]> {
@@ -171,7 +171,6 @@ export const usePermissionStore = defineStore({
           routes = flatMultiLevelRoutes(routes);
           break;
 
-        //  If you are sure that you do not need to do background dynamic permissions, please comment the entire judgment below
         case PermissionModeEnum.BACK:
           const { createMessage } = useMessage();
 
@@ -180,12 +179,11 @@ export const usePermissionStore = defineStore({
             duration: 1,
           });
 
-          // !Simulate to obtain permission codes from the background,
-          // this function may only need to be executed once, and the actual project can be put at the right time by itself
           let routeList: AppRouteRecordRaw[] = [];
           try {
             this.changePermissionCode();
-            routeList = (await getMenuList()) as AppRouteRecordRaw[];
+            console.log('fakeRoutes :>> ', fakeRoutes);
+            routeList = fakeRoutes as unknown as AppRouteRecordRaw[];
           } catch (error) {
             console.error(error);
           }

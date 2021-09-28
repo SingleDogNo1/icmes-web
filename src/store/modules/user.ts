@@ -1,27 +1,45 @@
 import type { UserInfo } from '/#/store';
 import type { ErrorMessageMode } from '/#/axios';
+import type { Menu } from '/@/api/info/model/configModel';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
-import { RoleEnum } from '/@/enums/roleEnum';
 import { PageEnum } from '/@/enums/pageEnum';
-import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '/@/enums/cacheEnum';
+import {
+  ROLES_KEY,
+  TOKEN_KEY,
+  USER_INFO_KEY,
+  AUTH_FEATURE_KEY,
+  FEATURE_KEY,
+  MENU_KEY,
+} from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
-import { GetUserInfoModel, LoginParams } from '/@/api/sys/model/userModel';
-import { doLogout, getUserInfo, loginApi, getPublicKeyApi } from '/@/api/sys/user';
+import { LoginParams } from '/@/api/sys/model/userModel';
+import { logoutApi, loginApi, getPublicKeyApi } from '/@/api/sys/user';
+import { getRemoteConfigApi } from '/@/api/info/config';
+import { getRolesListByIdApi } from '/@/api/account/roles';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { router } from '/@/router';
 import { usePermissionStore } from '/@/store/modules/permission';
 import { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
-// import { isArray } from '/@/utils/is';
 import { h } from 'vue';
 import { encryptSalt, encryptPwd } from '/@/utils/helper/sha1Helper';
 
+type Feature = { [index: string]: { [index: string]: boolean } };
+
 interface UserState {
-  userInfo: Nullable<UserInfo>;
   token?: string;
-  roleList: RoleEnum[];
+  userId?: number;
+  name?: string;
+  employeeId?: number;
+  organizationId?: string | number;
+  avatar?: string;
+  featureScopes?: { [index: string]: number[] };
+  feature?: Feature;
+  userInfo: Nullable<UserInfo>;
+  roleList: string[];
+  menu: Nullable<Menu>;
   sessionTimeout?: boolean;
   lastUpdateTime: number;
 }
@@ -29,12 +47,15 @@ interface UserState {
 export const useUserStore = defineStore({
   id: 'app-user',
   state: (): UserState => ({
-    // user info
-    userInfo: null,
     // token
     token: undefined,
+    featureScopes: undefined,
+    feature: undefined,
+    // user info
+    userInfo: null,
     // roleList
     roleList: [],
+    menu: null,
     // Whether the login expired
     sessionTimeout: false,
     // Last fetch time
@@ -42,13 +63,19 @@ export const useUserStore = defineStore({
   }),
   getters: {
     getUserInfo(): UserInfo {
-      return this.userInfo || getAuthCache<UserInfo>(USER_INFO_KEY) || {};
+      return this.userInfo || getAuthCache<UserInfo>(USER_INFO_KEY) || null;
     },
     getToken(): string {
       return this.token || getAuthCache<string>(TOKEN_KEY);
     },
-    getRoleList(): RoleEnum[] {
-      return this.roleList.length > 0 ? this.roleList : getAuthCache<RoleEnum[]>(ROLES_KEY);
+    getFeature(): Feature {
+      return this.feature || getAuthCache<Feature>(FEATURE_KEY);
+    },
+    getMenu(): Menu {
+      return this.menu || getAuthCache<Menu>(MENU_KEY);
+    },
+    getRoleList(): string[] {
+      return this.roleList.length > 0 ? this.roleList : getAuthCache<string[]>(ROLES_KEY);
     },
     getSessionTimeout(): boolean {
       return !!this.sessionTimeout;
@@ -62,7 +89,19 @@ export const useUserStore = defineStore({
       this.token = info ? info : ''; // for null or undefined value
       setAuthCache(TOKEN_KEY, info);
     },
-    setRoleList(roleList: RoleEnum[]) {
+    setAuthFeatures(features: { [index: string]: number[] }) {
+      this.featureScopes = features ?? {};
+      setAuthCache(AUTH_FEATURE_KEY, features);
+    },
+    setFeature(features: { [index: string]: { [index: string]: boolean } }) {
+      this.feature = features ?? {};
+      setAuthCache(FEATURE_KEY, features);
+    },
+    setMenu(menu: Menu | null) {
+      this.menu = menu ?? null;
+      setAuthCache(MENU_KEY, menu);
+    },
+    setRoleList(roleList: string[]) {
       this.roleList = roleList;
       setAuthCache(ROLES_KEY, roleList);
     },
@@ -78,7 +117,12 @@ export const useUserStore = defineStore({
       this.userInfo = null;
       this.token = '';
       this.roleList = [];
+      this.featureScopes = undefined;
+      this.feature = undefined;
       this.sessionTimeout = false;
+    },
+    getRemoteConfig() {
+      return getRemoteConfigApi();
     },
     /**
      * @description: login
@@ -88,8 +132,9 @@ export const useUserStore = defineStore({
         goHome?: boolean;
         mode?: ErrorMessageMode;
       },
-    ): Promise<GetUserInfoModel | null> {
+    ) {
       try {
+        const remoteConfig = await this.getRemoteConfig();
         const { key, codeList } = await getPublicKeyApi();
         const { goHome = true, mode, ...loginParams } = params;
         const encryptSaltPassword = encryptSalt(loginParams.password);
@@ -107,15 +152,42 @@ export const useUserStore = defineStore({
           mode,
         );
 
-        // save token
         this.setToken(data.accessToken);
-        return this.afterLoginAction(goHome);
+        this.setMenu(remoteConfig.menus);
+
+        this.setUserInfo({
+          userId: data.userId,
+          name: data.name,
+          employeeId: data.employeeId,
+          organizationId: data.organizationId,
+          avatar: data.avatar,
+          homePath: '/dashboard/analysis',
+        });
+        this.setAuthFeatures(data.featureScopes);
+        if (data.features) {
+          for (const x in data.features) {
+            if (x === '28100') {
+              if (
+                !data.features['28100'].SAFTY_VIEW &&
+                !data.features['28100'].SAFTY_EXPORT &&
+                !data.features['28100'].SAFTY_EDIT
+              ) {
+                delete data.features['28100'];
+              }
+            }
+          }
+          this.setFeature(data.features);
+        }
+
+        this.afterLoginAction(goHome);
       } catch (error) {
         return Promise.reject(error);
       }
     },
-    async afterLoginAction(goHome?: boolean): Promise<GetUserInfoModel | null> {
+    async afterLoginAction(goHome?: boolean) {
       if (!this.getToken) return null;
+
+      await this.getUserInfoAction();
 
       const sessionTimeout = this.sessionTimeout;
       if (sessionTimeout) {
@@ -135,8 +207,21 @@ export const useUserStore = defineStore({
     },
     async getUserInfoAction() {
       if (!this.getToken) return null;
-      const userInfo = await getUserInfo();
+      const userInfo = this.getUserInfo;
       this.setUserInfo(userInfo);
+      const { items: rolesList } = await getRolesListByIdApi(userInfo.employeeId, {
+        ascending: true,
+        orderBy: 'organizationId',
+        pageNo: 0,
+        pageSize: 0,
+      });
+
+      const roles = rolesList.reduce((res, pre) => {
+        res.push(pre.roleCode);
+        return res;
+      }, [] as string[]);
+      console.log('roles :>> ', roles);
+      this.setRoleList(roles);
     },
     /**
      * @description: logout
@@ -144,7 +229,7 @@ export const useUserStore = defineStore({
     async logout(goLogin = false) {
       if (this.getToken) {
         try {
-          await doLogout();
+          await logoutApi();
         } catch {
           console.log('注销Token失败');
         }
