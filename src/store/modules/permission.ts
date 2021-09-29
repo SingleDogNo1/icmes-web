@@ -1,26 +1,17 @@
 import type { AppRouteRecordRaw, Menu } from '/@/router/types';
-
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useUserStore } from './user';
-import { useAppStoreWithOut } from './app';
 import { toRaw } from 'vue';
 import { transformObjToRoute, flatMultiLevelRoutes } from '/@/router/helper/routeHelper';
 import { transformRouteToMenu } from '/@/router/helper/menuHelper';
-
-import projectSetting from '/@/settings/projectSetting';
-
-import { PermissionModeEnum } from '/@/enums/appEnum';
-
-import { asyncRoutes } from '/@/router/routes';
-import { ERROR_LOG_ROUTE, PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
-
+import { ERROR_LOG_ROUTE, PAGE_NOT_FOUND_ROUTE, HOMEPAGE_ROUTE } from '/@/router/routes/basic';
 import { filter } from '/@/utils/helper/treeHelper';
-// TODO 替换假路由
-import { fakeRoutes } from '../../../mock/sys/menu';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
+// TODO 替换假路由
+import { fakeRoutes } from '../../../mock/sys/menu';
 interface PermissionState {
   // Permission code list
   permCodeList: string[] | number[];
@@ -99,18 +90,8 @@ export const usePermissionStore = defineStore({
     async buildRoutesAction(): Promise<AppRouteRecordRaw[]> {
       const { t } = useI18n();
       const userStore = useUserStore();
-      const appStore = useAppStoreWithOut();
 
       let routes: AppRouteRecordRaw[] = [];
-      const roleList = toRaw(userStore.getRoleList) || [];
-      const { permissionMode = projectSetting.permissionMode } = appStore.getProjectConfig;
-
-      const routeFilter = (route: AppRouteRecordRaw) => {
-        const { meta } = route;
-        const { roles } = meta || {};
-        if (!roles) return true;
-        return roleList.some((role) => roles.includes(role));
-      };
 
       const routeRemoveIgnoreFilter = (route: AppRouteRecordRaw) => {
         const { meta } = route;
@@ -148,61 +129,51 @@ export const usePermissionStore = defineStore({
         return;
       };
 
-      switch (permissionMode) {
-        case PermissionModeEnum.ROLE:
-          routes = filter(asyncRoutes, routeFilter);
-          routes = routes.filter(routeFilter);
-          // Convert multi-level routing to level 2 routing
-          routes = flatMultiLevelRoutes(routes);
-          break;
+      const { createMessage } = useMessage();
 
-        case PermissionModeEnum.ROUTE_MAPPING:
-          routes = filter(asyncRoutes, routeFilter);
-          routes = routes.filter(routeFilter);
-          const menuList = transformRouteToMenu(routes, true);
-          routes = filter(routes, routeRemoveIgnoreFilter);
-          routes = routes.filter(routeRemoveIgnoreFilter);
-          menuList.sort((a, b) => {
-            return (a.meta?.orderNo || 0) - (b.meta?.orderNo || 0);
-          });
+      createMessage.loading({
+        content: t('sys.app.menuLoading'),
+        duration: 1,
+      });
 
-          this.setFrontMenuList(menuList);
-          // Convert multi-level routing to level 2 routing
-          routes = flatMultiLevelRoutes(routes);
-          break;
+      let routeList: AppRouteRecordRaw[] = [];
+      try {
+        this.changePermissionCode();
+        const routes = import.meta.globEager('../../router/FakeRoutes/**/*.ts');
+        const res: any[] = [];
 
-        case PermissionModeEnum.BACK:
-          const { createMessage } = useMessage();
+        Object.keys(routes).forEach((key) => {
+          const mod = routes[key].default || {};
+          console.log('mod :>> ', mod);
+          const modList = Array.isArray(mod) ? [...mod] : [mod];
+          res.push(...modList);
+        });
 
-          createMessage.loading({
-            content: t('sys.app.menuLoading'),
-            duration: 1,
-          });
+        console.log('routes :>> ', res);
+        routeList = fakeRoutes as unknown as AppRouteRecordRaw[];
 
-          let routeList: AppRouteRecordRaw[] = [];
-          try {
-            this.changePermissionCode();
-            console.log('fakeRoutes :>> ', fakeRoutes);
-            routeList = fakeRoutes as unknown as AppRouteRecordRaw[];
-          } catch (error) {
-            console.error(error);
-          }
-
-          // Dynamically introduce components
-          routeList = transformObjToRoute(routeList);
-
-          //  Background routing to menu structure
-          const backMenuList = transformRouteToMenu(routeList);
-          this.setBackMenuList(backMenuList);
-
-          // remove meta.ignoreRoute item
-          routeList = filter(routeList, routeRemoveIgnoreFilter);
-          routeList = routeList.filter(routeRemoveIgnoreFilter);
-
-          routeList = flatMultiLevelRoutes(routeList);
-          routes = [PAGE_NOT_FOUND_ROUTE, ...routeList];
-          break;
+        routeList.sort((a, b) => {
+          return (a.meta.orderNo || 0) - (b.meta.orderNo || 0);
+        });
+      } catch (error) {
+        console.error(error);
       }
+
+      // Dynamically introduce components
+      routeList = transformObjToRoute(routeList);
+      console.log('routeList :>> ', routeList);
+
+      //  Background routing to menu structure
+      const backMenuList = transformRouteToMenu(routeList);
+      console.log('backMenuList :>> ', backMenuList);
+      this.setBackMenuList(backMenuList);
+
+      // remove meta.ignoreRoute item
+      routeList = filter(routeList, routeRemoveIgnoreFilter);
+      routeList = routeList.filter(routeRemoveIgnoreFilter);
+
+      routeList = flatMultiLevelRoutes(routeList);
+      routes = [PAGE_NOT_FOUND_ROUTE, HOMEPAGE_ROUTE, ...routeList];
 
       routes.push(ERROR_LOG_ROUTE);
       patchHomeAffix(routes);

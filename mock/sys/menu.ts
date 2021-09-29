@@ -10,6 +10,8 @@ const dashboardRoute = {
   redirect: '/dashboard/analysis',
   meta: {
     title: 'routes.dashboard.dashboard',
+    orderNo: 100,
+    code: '10010',
     icon: 'ant-design:file-word-filled',
   },
   children: [
@@ -18,11 +20,11 @@ const dashboardRoute = {
       name: 'Analysis',
       component: '/dashboard/analysis/index',
       meta: {
-        hideMenu: true,
         hideBreadcrumb: true,
         title: 'routes.dashboard.analysis',
         currentActiveMenu: '/dashboard',
         icon: 'bx:bx-home',
+        affix: true,
       },
     },
     {
@@ -35,6 +37,7 @@ const dashboardRoute = {
         title: 'routes.dashboard.workbench',
         currentActiveMenu: '/dashboard',
         icon: 'bx:bx-home',
+        affix: true,
       },
     },
   ],
@@ -45,6 +48,7 @@ const backRoute = {
   name: 'PermissionBackDemo',
   meta: {
     title: 'routes.demo.permission.back',
+    orderNo: 20,
   },
 
   children: [
@@ -74,6 +78,7 @@ const authRoute = {
   redirect: '/permission/front/page',
   meta: {
     icon: 'carbon:user-role',
+    orderNo: 500,
     title: 'routes.demo.permission.permission',
   },
   children: [backRoute],
@@ -86,6 +91,7 @@ const levelRoute = {
   redirect: '/level/menu1/menu1-1',
   meta: {
     icon: 'carbon:user-role',
+    orderNo: 300,
     title: 'routes.demo.level.level',
   },
 

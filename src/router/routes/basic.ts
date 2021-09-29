@@ -76,3 +76,26 @@ export const ERROR_LOG_ROUTE: AppRouteRecordRaw = {
     },
   ],
 };
+
+export const HOMEPAGE_ROUTE: AppRouteRecordRaw = {
+  path: '/homepage',
+  name: 'HomepageLayout',
+  component: LAYOUT,
+  meta: {
+    title: 'Homepage',
+    hideBreadcrumb: true,
+    hideChildrenInMenu: true,
+  },
+  children: [
+    {
+      path: '',
+      name: 'Homepage',
+      component: () => import('/@/views/homepage/index.vue'),
+      meta: {
+        title: t('routes.basic.homepage'),
+        affix: true,
+        currentActiveMenu: '/homepage',
+      },
+    },
+  ],
+};
