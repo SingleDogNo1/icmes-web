@@ -10,8 +10,6 @@ import { ERROR_LOG_ROUTE, PAGE_NOT_FOUND_ROUTE, HOMEPAGE_ROUTE } from '/@/router
 import { filter } from '/@/utils/helper/treeHelper';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
-// TODO 替换假路由
-import { fakeRoutes } from '../../../mock/sys/menu';
 interface PermissionState {
   // Permission code list
   permCodeList: string[] | number[];
@@ -139,33 +137,28 @@ export const usePermissionStore = defineStore({
       let routeList: AppRouteRecordRaw[] = [];
       try {
         this.changePermissionCode();
-        const routes = import.meta.globEager('../../router/FakeRoutes/**/*.ts');
-        const res: any[] = [];
+        // TODO 在这里调试，完成之后把路由替换到 modules 中
+        const ori_routes = import.meta.globEager('../../router/FakeRoutes/**/*.ts');
+        const routes: any[] = [];
 
-        Object.keys(routes).forEach((key) => {
-          const mod = routes[key].default || {};
-          console.log('mod :>> ', mod);
+        Object.keys(ori_routes).forEach((key) => {
+          const mod = ori_routes[key].default || {};
           const modList = Array.isArray(mod) ? [...mod] : [mod];
-          res.push(...modList);
+          routes.push(...modList);
         });
 
-        console.log('routes :>> ', res);
-        routeList = fakeRoutes as unknown as AppRouteRecordRaw[];
+        routeList = routes as unknown as AppRouteRecordRaw[];
 
-        routeList.sort((a, b) => {
-          return (a.meta.orderNo || 0) - (b.meta.orderNo || 0);
-        });
+        routeList.sort((a, b) => (a.meta.orderNo || 0) - (b.meta.orderNo || 0));
       } catch (error) {
         console.error(error);
       }
 
       // Dynamically introduce components
       routeList = transformObjToRoute(routeList);
-      console.log('routeList :>> ', routeList);
 
       //  Background routing to menu structure
       const backMenuList = transformRouteToMenu(routeList);
-      console.log('backMenuList :>> ', backMenuList);
       this.setBackMenuList(backMenuList);
 
       // remove meta.ignoreRoute item

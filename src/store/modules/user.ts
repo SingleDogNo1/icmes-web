@@ -115,6 +115,7 @@ export const useUserStore = defineStore({
     },
     resetState() {
       this.userInfo = null;
+      this.menu = null;
       this.token = '';
       this.roleList = [];
       this.featureScopes = undefined;
@@ -220,7 +221,6 @@ export const useUserStore = defineStore({
         res.push(pre.roleCode);
         return res;
       }, [] as string[]);
-      console.log('roles :>> ', roles);
       this.setRoleList(roles);
     },
     /**

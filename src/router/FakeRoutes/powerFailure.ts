@@ -2,38 +2,20 @@ const powerFailure = {
   path: '/powerFailure',
   name: 'PowerFailureLayout',
   component: 'LAYOUT',
-  redirect: '/powerFailure/productionBoard',
+  redirect: '/powerFailure/index',
   meta: {
-    code: 17000,
+    code: 10100,
     icon: 'ion:grid-outline',
-    title: 'routes.board.board',
+    title: 'routes.powerFailure.title',
   },
   children: [
     {
-      path: 'productionBoard',
-      name: 'ProductionBoard',
-      component: () => '/board/production/index.vue',
+      path: 'index',
+      name: 'PowerFailure',
+      component: '/powerFailure/index',
       meta: {
-        code: 27500,
-        title: 'routes.board.productionBoard',
-      },
-    },
-    {
-      path: 'alarmBoard',
-      name: 'AlarmBoard',
-      component: () => '/board/alarm/index.vue',
-      meta: {
-        code: 27100,
-        title: 'routes.board.alarmBoard',
-      },
-    },
-    {
-      path: 'taskBoard',
-      name: 'TaskBoard',
-      component: () => '/board/task/index.vue',
-      meta: {
-        code: 27600,
-        title: 'routes.board.taskBoard',
+        code: 25800,
+        title: 'routes.powerFailure.powerFailure',
       },
     },
   ],

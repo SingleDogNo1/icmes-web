@@ -6,13 +6,13 @@ const board = {
   meta: {
     code: 17000,
     icon: 'ion:grid-outline',
-    title: 'routes.board.board',
+    title: 'routes.board.title',
   },
   children: [
     {
       path: 'productionBoard',
       name: 'ProductionBoard',
-      component: () => '/board/production/index.vue',
+      component: '/board/production/index',
       meta: {
         code: 27500,
         title: 'routes.board.productionBoard',
@@ -21,7 +21,7 @@ const board = {
     {
       path: 'alarmBoard',
       name: 'AlarmBoard',
-      component: () => '/board/alarm/index.vue',
+      component: '/board/alarm/index',
       meta: {
         code: 27100,
         title: 'routes.board.alarmBoard',
@@ -30,7 +30,7 @@ const board = {
     {
       path: 'taskBoard',
       name: 'TaskBoard',
-      component: () => '/board/task/index.vue',
+      component: '/board/task/index',
       meta: {
         code: 27600,
         title: 'routes.board.taskBoard',
