@@ -87,7 +87,6 @@ export const usePermissionStore = defineStore({
     },
     async buildRoutesAction(): Promise<AppRouteRecordRaw[]> {
       const { t } = useI18n();
-      const userStore = useUserStore();
 
       let routes: AppRouteRecordRaw[] = [];
 
@@ -102,7 +101,7 @@ export const usePermissionStore = defineStore({
        * */
       const patchHomeAffix = (routes: AppRouteRecordRaw[]) => {
         if (!routes || routes.length === 0) return;
-        let homePath: string = userStore.getUserInfo.homePath || PageEnum.BASE_HOME;
+        let homePath: string = PageEnum.BASE_HOME;
         function patcher(routes: AppRouteRecordRaw[], parentPath = '') {
           if (parentPath) parentPath = parentPath + '/';
           routes.forEach((route: AppRouteRecordRaw) => {
@@ -140,11 +139,9 @@ export const usePermissionStore = defineStore({
         // TODO 在这里调试，完成之后把路由替换到 modules 中
         const ori_routes = import.meta.globEager('../../router/FakeRoutes/**/*.ts');
         const routes: any[] = [];
-        console.log('ori_routes :>> ', ori_routes);
 
         Object.keys(ori_routes).forEach((key) => {
           const mod = ori_routes[key].default || {};
-          console.log('mod :>> ', mod);
           const modList = Array.isArray(mod) ? [...mod] : [mod];
           routes.push(...modList);
         });

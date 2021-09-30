@@ -162,7 +162,6 @@ export const useUserStore = defineStore({
           employeeId: data.employeeId,
           organizationId: data.organizationId,
           avatar: data.avatar,
-          homePath: '/dashboard/analysis',
         });
         this.setAuthFeatures(data.featureScopes);
         if (data.features) {
@@ -194,8 +193,9 @@ export const useUserStore = defineStore({
       if (sessionTimeout) {
         this.setSessionTimeout(false);
       } else {
+        const feature = this.getFeature;
+        const permCodes = Object.keys(feature);
         const permissionStore = usePermissionStore();
-        const permCodes = permissionStore.getPermCodeList;
         if (!permissionStore.isDynamicAddedRoute) {
           const routes = await permissionStore.buildRoutesAction();
           routes.forEach((route) => {

@@ -40,7 +40,6 @@ function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
      * 是我写的有问题还是 Vite 本身存在 bug？如何处理？
      * 暂定以下解决方案，待修复：如果判断到 component 类型为函数，直接使用
      */
-    console.log('route :>> ', typeof component);
     if (component) {
       let layoutFound;
       if (typeof component === 'function') {

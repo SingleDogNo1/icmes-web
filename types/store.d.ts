@@ -35,7 +35,6 @@ export interface UserInfo {
   avatar: string;
   employeeId: number;
   organizationId: number;
-  homePath: string;
 }
 
 export interface BeforeMiniState {
