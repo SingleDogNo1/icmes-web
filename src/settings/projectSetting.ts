@@ -64,7 +64,7 @@ const setting: ProjectConfig = {
     // theme
     theme: ThemeEnum.LIGHT,
     // Whether to enable the lock screen function
-    useLockPage: true,
+    useLockPage: false,
     // Whether to show the full screen button
     showFullScreen: true,
     // Whether to show the document button
@@ -72,7 +72,7 @@ const setting: ProjectConfig = {
     // Whether to show the notification button
     showNotice: true,
     // Whether to display the menu search
-    showSearch: true,
+    showSearch: false,
   },
 
   // Menu configuration

@@ -1,14 +1,17 @@
 {
-  "name": "vben-admin",
-  "version": "2.7.2",
+  "name": "icmes-web",
+  "version": "0.0.0",
   "author": {
-    "name": "vben",
-    "email": "anncwb@126.com",
-    "url": "https://github.com/anncwb"
+    "name": "lost-dream",
+    "email": "1418291550@qq.com",
+    "url": "https://github.com/lost-dream"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": "^12 || >=14"
   },
   "scripts": {
     "bootstrap": "yarn install",
-    "serve": "npm run dev",
     "dev": "vite",
     "build": "cross-env NODE_ENV=production vite build && esno ./build/script/postBuild.ts",
     "build:test": "cross-env vite build --mode test && esno ./build/script/postBuild.ts",
@@ -139,22 +142,5 @@
     "vite-plugin-windicss": "^1.4.5",
     "vue-eslint-parser": "^7.11.0",
     "vue-tsc": "^0.3.0"
-  },
-  "resolutions": {
-    "//": "Used to install imagemin dependencies, because imagemin may not be installed in China. If it is abroad, you can delete it",
-    "bin-wrapper": "npm:bin-wrapper-china",
-    "rollup": "^2.56.3"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/anncwb/vue-vben-admin.git"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/anncwb/vue-vben-admin/issues"
-  },
-  "homepage": "https://github.com/anncwb/vue-vben-admin",
-  "engines": {
-    "node": "^12 || >=14"
   }
 }

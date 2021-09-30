@@ -13,7 +13,7 @@ import {
   MENU_KEY,
 } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
-import { LoginParams } from '/@/api/sys/model/userModel';
+import { GetUserInfoModel, LoginParams } from '/@/api/sys/model/userModel';
 import { logoutApi, loginApi, getPublicKeyApi } from '/@/api/sys/user';
 import { getRemoteConfigApi } from '/@/api/info/config';
 import { getRolesListByIdApi } from '/@/api/account/roles';
@@ -133,7 +133,7 @@ export const useUserStore = defineStore({
         goHome?: boolean;
         mode?: ErrorMessageMode;
       },
-    ) {
+    ): Promise<GetUserInfoModel | null> {
       try {
         const remoteConfig = await this.getRemoteConfig();
         const { key, codeList } = await getPublicKeyApi();
@@ -179,15 +179,15 @@ export const useUserStore = defineStore({
           this.setFeature(data.features);
         }
 
-        this.afterLoginAction(goHome);
+        return this.afterLoginAction(goHome);
       } catch (error) {
         return Promise.reject(error);
       }
     },
-    async afterLoginAction(goHome?: boolean) {
+    async afterLoginAction(goHome?: boolean): Promise<GetUserInfoModel | null> {
       if (!this.getToken) return null;
 
-      await this.getUserInfoAction();
+      const userInfo = await this.getUserInfoAction();
 
       const sessionTimeout = this.sessionTimeout;
       if (sessionTimeout) {
@@ -210,8 +210,9 @@ export const useUserStore = defineStore({
             permCodes.includes('27500' as never) ? '/board/productionBoard' : PageEnum.BASE_HOME,
           ));
       }
+      return userInfo;
     },
-    async getUserInfoAction() {
+    async getUserInfoAction(): Promise<UserInfo | null> {
       if (!this.getToken) return null;
       const userInfo = this.getUserInfo;
       this.setUserInfo(userInfo);
@@ -227,6 +228,7 @@ export const useUserStore = defineStore({
         return res;
       }, [] as string[]);
       this.setRoleList(roles);
+      return userInfo;
     },
     /**
      * @description: logout
