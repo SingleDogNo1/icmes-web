@@ -5,6 +5,7 @@ import { getParentLayout, LAYOUT, EXCEPTION_COMPONENT } from '/@/router/constant
 import { cloneDeep, omit } from 'lodash-es';
 import { warn } from '/@/utils/log';
 import { createRouter, createWebHashHistory } from 'vue-router';
+import { usePermissionStore } from '/@/store/modules/permission';
 
 export type LayoutMapKey = 'LAYOUT';
 const IFRAME = () => import('/@/views/sys/iframe/FrameBlank.vue');
@@ -18,16 +19,35 @@ let dynamicViewsModules: Record<string, () => Promise<Recordable>>;
 
 // Dynamic introduction
 function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
+  const permissionStore = usePermissionStore();
+  const permCodes = permissionStore.getPermCodeList;
   dynamicViewsModules = dynamicViewsModules || import.meta.glob('../../views/**/*.{vue,tsx}');
   if (!routes) return;
   routes.forEach((item) => {
     if (!item.component && item.meta?.frameSrc) {
       item.component = 'IFRAME';
     }
-    const { component, name } = item;
+    const { component, name, meta } = item;
+    const hasPermission = permCodes.includes(meta.code?.toString() as never);
+    meta.hideMenu = !hasPermission;
+    meta.hideBreadcrumb = !hasPermission;
+    meta.hideTab = !hasPermission;
+
     const { children } = item;
+
+    /*
+     * FIXME 在登录 => 退出 => 再次登录时，读取到的 component 不是一个字符串而是一个解析完成的 import 函数
+     * 是我写的有问题还是 Vite 本身存在 bug？如何处理？
+     * 暂定以下解决方案，待修复：如果判断到 component 类型为函数，直接使用
+     */
+    console.log('route :>> ', typeof component);
     if (component) {
-      const layoutFound = LayoutMap.get(component.toUpperCase());
+      let layoutFound;
+      if (typeof component === 'function') {
+        layoutFound = component;
+      } else if (typeof component === 'string') {
+        layoutFound = LayoutMap.get(component.toUpperCase());
+      }
       if (layoutFound) {
         item.component = layoutFound;
       } else {
@@ -72,8 +92,16 @@ export function transformObjToRoute<T = AppRouteModule>(routeList: AppRouteModul
   routeList.forEach((route) => {
     const component = route.component as string;
     if (component) {
-      if (component.toUpperCase() === 'LAYOUT') {
-        route.component = LayoutMap.get(component.toUpperCase());
+      /*
+       * FIXME 在登录 => 退出 => 再次登录时，读取到的 component 不是一个字符串而是一个解析完成的 import 函数
+       * 是我写的有问题还是 Vite 本身存在 bug？如何处理？
+       * 暂定以下解决方案，待修复：如果判断到 component 类型为函数，直接使用 LAYOUT 组件
+       */
+      if (
+        typeof route.component === 'function' ||
+        (typeof route.component === 'string' && component.toUpperCase() === 'LAYOUT')
+      ) {
+        route.component = LayoutMap.get('LAYOUT');
       } else {
         route.children = [cloneDeep(route)];
         route.component = LAYOUT;

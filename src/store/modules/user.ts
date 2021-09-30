@@ -195,6 +195,7 @@ export const useUserStore = defineStore({
         this.setSessionTimeout(false);
       } else {
         const permissionStore = usePermissionStore();
+        const permCodes = permissionStore.getPermCodeList;
         if (!permissionStore.isDynamicAddedRoute) {
           const routes = await permissionStore.buildRoutesAction();
           routes.forEach((route) => {
@@ -203,7 +204,11 @@ export const useUserStore = defineStore({
           router.addRoute(PAGE_NOT_FOUND_ROUTE as unknown as RouteRecordRaw);
           permissionStore.setDynamicAddedRoute(true);
         }
-        goHome && (await router.replace(PageEnum.BASE_HOME));
+
+        goHome &&
+          (await router.replace(
+            permCodes.includes('27500' as never) ? '/board/productionBoard' : PageEnum.BASE_HOME,
+          ));
       }
     },
     async getUserInfoAction() {
@@ -235,6 +240,10 @@ export const useUserStore = defineStore({
         }
       }
       this.setToken(undefined);
+      this.setAuthFeatures({});
+      this.setFeature({});
+      this.setMenu(null);
+      this.setRoleList([]);
       this.setSessionTimeout(false);
       this.setUserInfo(null);
       goLogin && router.push(PageEnum.BASE_LOGIN);

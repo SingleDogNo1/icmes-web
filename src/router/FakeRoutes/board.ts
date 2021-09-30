@@ -19,6 +19,15 @@ const board = {
       },
     },
     {
+      path: 'productionBoard/create',
+      name: 'CreateProductionBoard',
+      component: '/board/production/create',
+      meta: {
+        code: 275000,
+        title: 'routes.board.productionBoard',
+      },
+    },
+    {
       path: 'alarmBoard',
       name: 'AlarmBoard',
       component: '/board/alarm/index',

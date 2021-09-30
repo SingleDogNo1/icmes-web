@@ -12,7 +12,7 @@ import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
 interface PermissionState {
   // Permission code list
-  permCodeList: string[] | number[];
+  permCodeList: string[];
   // Whether the route has been dynamically added
   isDynamicAddedRoute: boolean;
   // To trigger a menu update
@@ -140,9 +140,11 @@ export const usePermissionStore = defineStore({
         // TODO 在这里调试，完成之后把路由替换到 modules 中
         const ori_routes = import.meta.globEager('../../router/FakeRoutes/**/*.ts');
         const routes: any[] = [];
+        console.log('ori_routes :>> ', ori_routes);
 
         Object.keys(ori_routes).forEach((key) => {
           const mod = ori_routes[key].default || {};
+          console.log('mod :>> ', mod);
           const modList = Array.isArray(mod) ? [...mod] : [mod];
           routes.push(...modList);
         });

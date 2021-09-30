@@ -2,7 +2,7 @@ export {};
 
 declare module 'vue-router' {
   interface RouteMeta extends Record<string | number | symbol, unknown> {
-    code?: string | number;
+    code?: string;
     orderNo?: number;
     // title
     title: string;
