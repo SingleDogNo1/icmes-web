@@ -5,18 +5,21 @@ import type { RouteLocationNormalized } from 'vue-router';
 import { createLocalStorage, createSessionStorage } from '/@/utils/cache';
 import { Memory } from './memory';
 import {
-  TOKEN_KEY,
-  USER_INFO_KEY,
-  ROLES_KEY,
   LOCK_INFO_KEY,
   PROJ_CFG_KEY,
   APP_LOCAL_CACHE_KEY,
   APP_SESSION_CACHE_KEY,
   MULTIPLE_TABS_KEY,
+} from '/@/enums/cacheEnum';
+import {
+  TOKEN_KEY,
+  USER_INFO_KEY,
+  ROLES_KEY,
   AUTH_FEATURE_KEY,
   FEATURE_KEY,
   MENU_KEY,
-} from '/@/enums/cacheEnum';
+  PWD_VALIDATE_KEY,
+} from '/@/enums/userEnums';
 import { DEFAULT_CACHE_TIME } from '/@/settings/encryptionSetting';
 import { toRaw } from 'vue';
 import { pick, omit } from 'lodash-es';
@@ -31,6 +34,7 @@ interface BasicStore {
   [AUTH_FEATURE_KEY]: string[];
   [FEATURE_KEY]: string[];
   [MENU_KEY]: string[];
+  [PWD_VALIDATE_KEY]: string;
 }
 
 type LocalStore = BasicStore;

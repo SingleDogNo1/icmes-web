@@ -56,4 +56,15 @@ export interface GetUserInfoModel {
   organizationId: number;
   /** 头像 */
   avatar: string;
+  /** 是否需要修改密码 */
+  changePassword?: boolean;
+}
+
+export interface resetPwdParams {
+  /** 旧密码 */
+  confirmPassword: string;
+  /** aes密钥相关 */
+  key?: string;
+  /** 新密码 */
+  password: string;
 }

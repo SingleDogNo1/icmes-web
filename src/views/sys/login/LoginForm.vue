@@ -1,6 +1,6 @@
 <template>
   <LoginFormTitle v-show="getShow" class="enter-x" />
-  <ElForm
+  <Form
     class="p-4 enter-x"
     :model="formData"
     :rules="formRules"
@@ -8,62 +8,62 @@
     v-show="getShow"
     @keypress.enter="handleLogin"
   >
-    <ElFormItem prop="employeeCode" class="enter-x">
-      <ElInput
-        v-model="formData.employeeCode"
+    <FormItem name="employeeCode" class="enter-x">
+      <Input
+        v-model:value="formData.employeeCode"
         size="large"
         :placeholder="t('sys.login.userName')"
         class="fix-auto-fill"
-        clearable
-        maxlength="20"
+        allow-clear
         @keyup.enter="handleLogin"
       />
-    </ElFormItem>
-    <ElFormItem prop="password" class="enter-x">
-      <ElInput
+    </FormItem>
+    <FormItem name="password" class="enter-x">
+      <InputPassword
         size="large"
-        v-model="formData.password"
+        visibilityToggle
+        v-model:value="formData.password"
+        allow-clear
         :placeholder="t('sys.login.password')"
-        show-password
-        clearable
       />
-    </ElFormItem>
+    </FormItem>
 
-    <ElFormItem>
-      <!-- No logic, you need to deal with it yourself -->
-      <ElCheckbox v-model:checked="rememberMe" size="small">
-        {{ t('sys.login.rememberMe') }}
-      </ElCheckbox>
-    </ElFormItem>
+    <ARow justify="end" class="enter-x">
+      <ACol :span="4">
+        <FormItem>
+          <Checkbox v-model:checked="rememberMe" size="small">
+            <span style="color: #fff">
+              {{ t('sys.login.rememberMe') }}
+            </span>
+          </Checkbox>
+        </FormItem>
+      </ACol>
+    </ARow>
 
-    <ElFormItem class="enter-x">
-      <ElButton type="primary" size="large" block @click="handleLogin" :loading="loading">
+    <FormItem class="enter-x">
+      <Button type="primary" size="large" block @click="handleLogin" :loading="loading">
         {{ t('sys.login.loginButton') }}
-      </ElButton>
-      <!-- <Button size="large" class="mt-4 enter-x" block @click="handleRegister">
-        {{ t('sys.login.registerButton') }}
-      </Button> -->
-    </ElFormItem>
-  </ElForm>
+      </Button>
+    </FormItem>
+  </Form>
 </template>
 <script lang="ts" setup>
   import { reactive, ref, toRaw, unref, computed } from 'vue';
-
-  import { ElForm, ElFormItem, ElInput, ElCheckbox, ElButton } from 'element-plus';
-
+  import { Checkbox, Form, Input, Row, Col, Button } from 'ant-design-vue';
   import LoginFormTitle from './LoginFormTitle.vue';
-
   import { useI18n } from '/@/hooks/web/useI18n';
-  import { useMessage } from '/@/hooks/web/useMessage';
-
+  // import { useMessage } from '/@/hooks/web/useMessage';
   import { useUserStore } from '/@/store/modules/user';
   import { LoginStateEnum, useLoginState } from './useLogin';
-  import { useDesign } from '/@/hooks/web/useDesign';
   import { LoginParams } from '/@/api/sys/model/userModel';
 
+  const ACol = Col;
+  const ARow = Row;
+  const FormItem = Form.Item;
+  const InputPassword = Input.Password;
+
   const { t } = useI18n();
-  const { notification, createErrorModal } = useMessage();
-  const { prefixCls } = useDesign('login');
+  // const { notification } = useMessage();
   const userStore = useUserStore();
 
   const { getLoginState } = useLoginState();
@@ -73,61 +73,55 @@
   const rememberMe = ref(false);
 
   const formData = reactive<LoginParams>({
-    employeeCode: 'TJDT0327',
+    employeeCode: 'TJDT3213',
     password: '123456',
   });
 
-  const formRules = ref({
+  const formRules = {
     employeeCode: [
       {
         required: true,
         message: t('sys.login.accountPlaceholder'),
-        trigger: ['blur', 'change'],
+        trigger: 'change',
       },
     ],
     password: [
       {
         required: true,
         message: t('sys.login.passwordPlaceholder'),
-        trigger: ['blur', 'change'],
+        trigger: 'change',
       },
     ],
-  });
+  };
 
   const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN);
 
   async function handleLogin() {
-    formRef.value.validate((validate) => {
-      if (!validate) return;
+    const validate = await formRef.value.validate();
+
+    if (!validate) return;
+    try {
       loading.value = true;
-      userStore
-        .login(
-          toRaw({
-            password: formData.password,
-            employeeCode: formData.employeeCode,
-            mode: 'none', //不要默认的错误提示
-          }),
-        )
-        .then((res) => {
-          if (res) {
-            notification.success({
-              message: t('sys.login.loginSuccessTitle'),
-              description: `${t('sys.login.loginSuccessDesc')}: ${res.name}`,
-              duration: 3,
-            });
-          }
-        })
-        .catch((error) => {
-          createErrorModal({
-            title: t('sys.api.errorTip'),
-            content:
-              (error as { [index: string]: string }).message || t('sys.api.networkExceptionMsg'),
-            getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
-          });
-        })
-        .finally(() => {
-          loading.value = false;
-        });
-    });
+      const userInfo = await userStore.login(
+        toRaw({
+          password: formData.password,
+          employeeCode: formData.employeeCode,
+          mode: 'message',
+        }),
+      );
+
+      if (!userInfo) return;
+      loading.value = false;
+
+      console.log('userInfo :>> ', userInfo);
+
+      // notification.success({
+      //   message: t('sys.login.loginSuccessTitle'),
+      //   description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.name}`,
+      //   duration: 3,
+      // });
+    } catch (error) {
+      loading.value = false;
+    }
   }
 </script>

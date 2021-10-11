@@ -65,8 +65,6 @@ export default {
     signUpFormTitle: '注册',
     forgetFormTitle: '重置密码',
 
-    signInTitle: '开箱即用的中后台管理系统',
-    signInDesc: '输入您的个人详细信息开始使用！',
     policy: '我同意xxx隐私政策',
     scanSign: `扫码后点击"确认"，即可完成登录`,
 
@@ -94,5 +92,7 @@ export default {
     email: '邮箱',
     smsCode: '短信验证码',
     mobile: '手机号码',
+    changePassword: '请修改初始密码',
+    confirmChangePassword: '确认更改',
   },
 };

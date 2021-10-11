@@ -5,16 +5,22 @@ import { defineStore } from 'pinia';
 import { store } from '/@/store';
 import { PageEnum } from '/@/enums/pageEnum';
 import {
-  ROLES_KEY,
-  TOKEN_KEY,
   USER_INFO_KEY,
   AUTH_FEATURE_KEY,
   FEATURE_KEY,
   MENU_KEY,
-} from '/@/enums/cacheEnum';
+  ROLES_KEY,
+  TOKEN_KEY,
+  PWD_VALIDATE_KEY,
+} from '/@/enums/userEnums';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
-import { GetUserInfoModel, LoginParams } from '/@/api/sys/model/userModel';
-import { logoutApi, loginApi, getPublicKeyApi } from '/@/api/sys/user';
+import {
+  GetUserInfoModel,
+  LoginParams,
+  LoginResultModel,
+  resetPwdParams,
+} from '/@/api/sys/model/userModel';
+import { logoutApi, loginApi, getPublicKeyApi, resetPwdApi } from '/@/api/sys/user';
 import { getRemoteConfigApi } from '/@/api/info/config';
 import { getRolesListByIdApi } from '/@/api/account/roles';
 import { useI18n } from '/@/hooks/web/useI18n';
@@ -25,6 +31,7 @@ import { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
 import { h } from 'vue';
 import { encryptSalt, encryptPwd } from '/@/utils/helper/sha1Helper';
+import { LoginStateEnum, useLoginState } from '/@/views/sys/login/useLogin';
 
 type Feature = { [index: string]: { [index: string]: boolean } };
 
@@ -40,6 +47,7 @@ interface UserState {
   userInfo: Nullable<UserInfo>;
   roleList: string[];
   menu: Nullable<Menu>;
+  passwordValidation: Nullable<{ [index: string]: any }>;
   sessionTimeout?: boolean;
   lastUpdateTime: number;
 }
@@ -56,6 +64,7 @@ export const useUserStore = defineStore({
     // roleList
     roleList: [],
     menu: null,
+    passwordValidation: null,
     // Whether the login expired
     sessionTimeout: false,
     // Last fetch time
@@ -76,6 +85,9 @@ export const useUserStore = defineStore({
     },
     getRoleList(): string[] {
       return this.roleList.length > 0 ? this.roleList : getAuthCache<string[]>(ROLES_KEY);
+    },
+    getPasswordValidation(): { [index: string]: any } {
+      return this.passwordValidation || getAuthCache<{ [index: string]: any }>(PWD_VALIDATE_KEY);
     },
     getSessionTimeout(): boolean {
       return !!this.sessionTimeout;
@@ -100,6 +112,10 @@ export const useUserStore = defineStore({
     setMenu(menu: Menu | null) {
       this.menu = menu ?? null;
       setAuthCache(MENU_KEY, menu);
+    },
+    setPasswordValidation(valid: { [index: string]: any } | null) {
+      this.passwordValidation = valid ?? null;
+      setAuthCache(PWD_VALIDATE_KEY, valid);
     },
     setRoleList(roleList: string[]) {
       this.roleList = roleList;
@@ -130,14 +146,13 @@ export const useUserStore = defineStore({
      */
     async login(
       params: LoginParams & {
-        goHome?: boolean;
         mode?: ErrorMessageMode;
       },
     ): Promise<GetUserInfoModel | null> {
       try {
         const remoteConfig = await this.getRemoteConfig();
         const { key, codeList } = await getPublicKeyApi();
-        const { goHome = true, mode, ...loginParams } = params;
+        const { mode, ...loginParams } = params;
         const encryptSaltPassword = encryptSalt(loginParams.password);
         const aesKey = codeList.reduce((res, pre, index) => {
           res += pre[index];
@@ -152,18 +167,20 @@ export const useUserStore = defineStore({
           },
           mode,
         );
-
-        this.setToken(data.accessToken);
         this.setMenu(remoteConfig.menus);
+        this.setPasswordValidation(JSON.parse(remoteConfig.passwordValidation));
+        data.accessToken && this.setToken(data.accessToken);
 
-        this.setUserInfo({
-          userId: data.userId,
-          name: data.name,
-          employeeId: data.employeeId,
-          organizationId: data.organizationId,
-          avatar: data.avatar,
-        });
-        this.setAuthFeatures(data.featureScopes);
+        data.accessToken &&
+          this.setUserInfo({
+            userId: data.userId,
+            name: data.name,
+            employeeId: data.employeeId,
+            organizationId: data.organizationId,
+            avatar: data.avatar,
+          });
+
+        data.featureScopes && this.setAuthFeatures(data.featureScopes);
         if (data.features) {
           for (const x in data.features) {
             if (x === '28100') {
@@ -179,40 +196,47 @@ export const useUserStore = defineStore({
           this.setFeature(data.features);
         }
 
-        return this.afterLoginAction(goHome);
+        return this.afterLoginAction(data);
       } catch (error) {
         return Promise.reject(error);
       }
     },
-    async afterLoginAction(goHome?: boolean): Promise<GetUserInfoModel | null> {
+    async afterLoginAction(data: LoginResultModel): Promise<GetUserInfoModel | null> {
       if (!this.getToken) return null;
-
-      const userInfo = await this.getUserInfoAction();
 
       const sessionTimeout = this.sessionTimeout;
       if (sessionTimeout) {
         this.setSessionTimeout(false);
       } else {
-        const feature = this.getFeature;
-        const permCodes = Object.keys(feature);
-        const permissionStore = usePermissionStore();
-        if (!permissionStore.isDynamicAddedRoute) {
-          const routes = await permissionStore.buildRoutesAction();
-          routes.forEach((route) => {
-            router.addRoute(route as unknown as RouteRecordRaw);
-          });
-          router.addRoute(PAGE_NOT_FOUND_ROUTE as unknown as RouteRecordRaw);
-          permissionStore.setDynamicAddedRoute(true);
-        }
+        const { setLoginState } = useLoginState();
+        const { createMessage } = useMessage();
+        const { t } = useI18n();
 
-        goHome &&
-          (await router.replace(
+        if (data.changePassword === true) {
+          // 首次登录，强制修改初始密码
+          createMessage.warning(t('sys.login.changePassword'));
+          setLoginState(LoginStateEnum.RESET_PASSWORD);
+        } else {
+          const permissionStore = usePermissionStore();
+          if (!permissionStore.isDynamicAddedRoute) {
+            const routes = await permissionStore.buildRoutesAction();
+            routes.forEach((route) => {
+              router.addRoute(route as unknown as RouteRecordRaw);
+            });
+            router.addRoute(PAGE_NOT_FOUND_ROUTE as unknown as RouteRecordRaw);
+            permissionStore.setDynamicAddedRoute(true);
+          }
+          // 根据权限， 跳转对应的路由
+          const features = this.getFeature;
+          const permCodes = Object.keys(features);
+          router.replace(
             permCodes.includes('27500' as never) ? '/board/productionBoard' : PageEnum.BASE_HOME,
-          ));
+          );
+        }
       }
-      return userInfo;
+      return data;
     },
-    async getUserInfoAction(): Promise<UserInfo | null> {
+    async getUserInfoAction() {
       if (!this.getToken) return null;
       const userInfo = this.getUserInfo;
       this.setUserInfo(userInfo);
@@ -223,12 +247,53 @@ export const useUserStore = defineStore({
         pageSize: 0,
       });
 
-      const roles = rolesList.reduce((res, pre) => {
-        res.push(pre.roleCode);
-        return res;
-      }, [] as string[]);
+      const roles = rolesList
+        ? rolesList.reduce((res, pre) => {
+            res.push(pre.roleCode);
+            return res;
+          }, [] as string[])
+        : [];
       this.setRoleList(roles);
-      return userInfo;
+    },
+    async resetPassword(
+      params: resetPwdParams & {
+        mode?: ErrorMessageMode;
+      },
+    ) {
+      const { mode, ...resetPwdParams } = params;
+      const { key, codeList } = await getPublicKeyApi();
+      const aesKey = codeList.reduce((res, pre, index) => {
+        res += pre[index];
+        return res;
+      }, '');
+      const encryptSaltPassword = encryptSalt(resetPwdParams.password);
+      const encryptSaltConfirmPassword = encryptSalt(resetPwdParams.confirmPassword);
+      const pwdOptions = {
+        password: encryptSaltPassword,
+        confirmPassword: encryptSaltConfirmPassword,
+        key,
+      };
+
+      const obj = encryptPwd(pwdOptions, aesKey) as unknown as resetPwdParams;
+      const data = await resetPwdApi(obj, mode);
+
+      if (!data) return;
+
+      const permissionStore = usePermissionStore();
+      if (!permissionStore.isDynamicAddedRoute) {
+        const routes = await permissionStore.buildRoutesAction();
+        routes.forEach((route) => {
+          router.addRoute(route as unknown as RouteRecordRaw);
+        });
+        router.addRoute(PAGE_NOT_FOUND_ROUTE as unknown as RouteRecordRaw);
+        permissionStore.setDynamicAddedRoute(true);
+      }
+      // 根据权限， 跳转对应的路由
+      const features = this.getFeature;
+      const permCodes = Object.keys(features);
+      router.replace(
+        permCodes.includes('27500' as never) ? '/board/productionBoard' : PageEnum.BASE_HOME,
+      );
     },
     /**
      * @description: logout
@@ -245,6 +310,7 @@ export const useUserStore = defineStore({
       this.setAuthFeatures({});
       this.setFeature({});
       this.setMenu(null);
+      this.setPasswordValidation(null);
       this.setRoleList([]);
       this.setSessionTimeout(false);
       this.setUserInfo(null);
