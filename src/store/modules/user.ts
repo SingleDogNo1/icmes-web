@@ -32,6 +32,7 @@ import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
 import { h } from 'vue';
 import { encryptSalt, encryptPwd } from '/@/utils/helper/sha1Helper';
 import { LoginStateEnum, useLoginState } from '/@/views/sys/login/useLogin';
+import { PasswordValidationModel } from '/@/api/sys/model/userModel';
 
 type Feature = { [index: string]: { [index: string]: boolean } };
 
@@ -47,7 +48,7 @@ interface UserState {
   userInfo: Nullable<UserInfo>;
   roleList: string[];
   menu: Nullable<Menu>;
-  passwordValidation: Nullable<{ [index: string]: any }>;
+  passwordValidation: Nullable<PasswordValidationModel>;
   sessionTimeout?: boolean;
   lastUpdateTime: number;
 }
@@ -86,8 +87,8 @@ export const useUserStore = defineStore({
     getRoleList(): string[] {
       return this.roleList.length > 0 ? this.roleList : getAuthCache<string[]>(ROLES_KEY);
     },
-    getPasswordValidation(): { [index: string]: any } {
-      return this.passwordValidation || getAuthCache<{ [index: string]: any }>(PWD_VALIDATE_KEY);
+    getPasswordValidation(): PasswordValidationModel {
+      return this.passwordValidation || getAuthCache<PasswordValidationModel>(PWD_VALIDATE_KEY);
     },
     getSessionTimeout(): boolean {
       return !!this.sessionTimeout;
@@ -113,7 +114,7 @@ export const useUserStore = defineStore({
       this.menu = menu ?? null;
       setAuthCache(MENU_KEY, menu);
     },
-    setPasswordValidation(valid: { [index: string]: any } | null) {
+    setPasswordValidation(valid: PasswordValidationModel | null) {
       this.passwordValidation = valid ?? null;
       setAuthCache(PWD_VALIDATE_KEY, valid);
     },

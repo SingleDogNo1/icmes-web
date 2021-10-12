@@ -31,19 +31,32 @@
   </template>
 </template>
 <script lang="ts" setup>
-  import { reactive, ref, computed, unref, toRaw } from 'vue';
+  import { reactive, ref, computed, unref, toRaw, watch, Ref } from 'vue';
   import LoginFormTitle from './LoginFormTitle.vue';
   import { Form, Input, Button } from 'ant-design-vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useLoginState, LoginStateEnum } from './useLogin';
   import { useUserStore } from '/@/store/modules/user';
+  import { ContainStatus, PasswordValidationModel } from '/@/api/sys/model/userModel';
 
   const FormItem = Form.Item;
   const InputPassword = Input.Password;
   const { t } = useI18n();
   const { getLoginState } = useLoginState();
   const userStore = useUserStore();
-  const passwordValidation = userStore.getPasswordValidation;
+  let passwordValidation: Ref<PasswordValidationModel> | Ref<null> = ref(null);
+
+  const getShow = computed(() => unref(getLoginState) === LoginStateEnum.RESET_PASSWORD);
+  watch(
+    () => getShow.value,
+    (value) => {
+      if (value) {
+        passwordValidation.value = userStore.getPasswordValidation;
+      }
+    },
+  );
+
+  console.log('getShow :>> ', getShow.value);
 
   const formRef = ref();
   const loading = ref(false);
@@ -55,25 +68,18 @@
    * @param {string} key 需要校验的参数
    * @params {RegExp} reg 校验使用的正则表达式
    */
-  enum ContainStatus {
-    /** 不可以包含 */
-    CANT_BE = 0,
-    /** 可以包含 */
-    MAY_BE = 1,
-    /** 必须包含 */
-    MUST_BE = 2,
-  }
+
   function validate(inputVal: string, value: ContainStatus, key: string, reg: RegExp) {
     const Key = key.replace(key[0], key[0].toUpperCase());
     if (value === ContainStatus.CANT_BE) {
       if (inputVal.match(reg)) {
         const $key = 'excluding' + Key;
-        return Promise.reject(passwordValidation.errorMessage[$key]);
+        return Promise.reject(passwordValidation.value?.errorMessage[$key]);
       }
     } else if (value === ContainStatus.MUST_BE) {
       if (!inputVal.match(reg)) {
         const $key = 'contain' + Key;
-        return Promise.reject(passwordValidation.errorMessage[$key]);
+        return Promise.reject(passwordValidation.value?.errorMessage[$key]);
       }
     }
   }
@@ -84,17 +90,17 @@
     const capital = /[A-Z]/;
     const character = /[#?!@$%^&*+-.]/;
 
-    const complex = passwordValidation.complex;
-    const maxLength = passwordValidation.length.max;
-    const minLength = passwordValidation.length.min;
-    const lengthTips = passwordValidation.errorMessage.lengthTips;
-    const spaceErrorTip = passwordValidation.errorMessage.containSpace;
+    const complex = passwordValidation.value?.complex;
+    const maxLength = passwordValidation.value?.length.max;
+    const minLength = passwordValidation.value?.length.min;
+    const lengthTips = passwordValidation.value?.errorMessage.lengthTips;
+    const spaceErrorTip = passwordValidation.value?.errorMessage.containSpace;
 
     if (value.includes(' ')) {
       // 校验密码有空格
       return Promise.reject(spaceErrorTip);
     }
-    if (value.length < minLength || value.length > maxLength) {
+    if (value.length < minLength! || value.length > maxLength!) {
       // 校验密码长度
       return Promise.reject(lengthTips);
     }
@@ -131,8 +137,6 @@
     }
   };
 
-  const getShow = computed(() => unref(getLoginState) === LoginStateEnum.RESET_PASSWORD);
-
   const formData = reactive({
     password: '',
     confirmPassword: '',
@@ -156,17 +160,9 @@
           mode: 'message',
         }),
       );
-
+      console.log('userInfo :>> ', userInfo);
       // if (!userInfo) return;
       loading.value = false;
-
-      console.log('userInfo :>> ', userInfo);
-
-      // notification.success({
-      //   message: t('sys.login.loginSuccessTitle'),
-      //   description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.name}`,
-      //   duration: 3,
-      // });
     } catch (error) {
       loading.value = false;
     }

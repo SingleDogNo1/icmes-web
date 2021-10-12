@@ -68,3 +68,36 @@ export interface resetPwdParams {
   /** 新密码 */
   password: string;
 }
+
+export enum ContainStatus {
+  /** 不可以包含 */
+  CANT_BE = 0,
+  /** 可以包含 */
+  MAY_BE = 1,
+  /** 必须包含 */
+  MUST_BE = 2,
+}
+
+export interface PasswordValidationModel {
+  lockedUserMessage: string;
+  lockNumber: number;
+  length: { min: number; max: number };
+  complex: {
+    number: ContainStatus;
+    lowercase: ContainStatus;
+    capital: ContainStatus;
+    character: ContainStatus;
+  };
+  errorMessage: {
+    excludingNumber: string;
+    containNumber: string;
+    excludingLowercase: string;
+    containLowercase: string;
+    excludingCapital: string;
+    containCapital: string;
+    excludingCharacter: string;
+    containCharacter: string;
+    lengthTips: string;
+    containSpace: string;
+  };
+}
