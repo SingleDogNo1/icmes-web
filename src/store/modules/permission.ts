@@ -1,4 +1,4 @@
-import type { AppRouteRecordRaw, Menu } from '/@/router/types';
+import type { AppRouteRecordRaw, Menu, BackModeRouteRecordRaw } from '/@/router/types';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
 import { useI18n } from '/@/hooks/web/useI18n';
@@ -133,7 +133,7 @@ export const usePermissionStore = defineStore({
         duration: 1,
       });
 
-      let routeList: AppRouteRecordRaw[] = [];
+      let routeList: AppRouteRecordRaw[] | BackModeRouteRecordRaw[] = [];
       try {
         this.changePermissionCode();
         // TODO 在这里调试，完成之后把路由替换到 modules 中
@@ -146,7 +146,7 @@ export const usePermissionStore = defineStore({
           routes.push(...modList);
         });
 
-        routeList = routes as unknown as AppRouteRecordRaw[];
+        routeList = routes as AppRouteRecordRaw[];
 
         routeList.sort((a, b) => (a.meta.orderNo || 0) - (b.meta.orderNo || 0));
       } catch (error) {
@@ -154,7 +154,7 @@ export const usePermissionStore = defineStore({
       }
 
       // Dynamically introduce components
-      routeList = transformObjToRoute(routeList);
+      routeList = transformObjToRoute(routeList as BackModeRouteRecordRaw[]) as AppRouteRecordRaw[];
 
       //  Background routing to menu structure
       const backMenuList = transformRouteToMenu(routeList);

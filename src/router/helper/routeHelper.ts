@@ -1,4 +1,4 @@
-import type { AppRouteModule, AppRouteRecordRaw } from '/@/router/types';
+import type { AppRouteModule, AppRouteRecordRaw, BackModeRouteRecordRaw } from '/@/router/types';
 import type { Router, RouteRecordNormalized } from 'vue-router';
 
 import { getParentLayout, LAYOUT, EXCEPTION_COMPONENT } from '/@/router/constant';
@@ -6,6 +6,7 @@ import { cloneDeep, omit } from 'lodash-es';
 import { warn } from '/@/utils/log';
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { usePermissionStore } from '/@/store/modules/permission';
+import { useUserStore } from '/@/store/modules/user';
 
 export type LayoutMapKey = 'LAYOUT';
 const IFRAME = () => import('/@/views/sys/iframe/FrameBlank.vue');
@@ -18,7 +19,7 @@ LayoutMap.set('IFRAME', IFRAME);
 let dynamicViewsModules: Record<string, () => Promise<Recordable>>;
 
 // Dynamic introduction
-function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
+function asyncImportRoute(routes: BackModeRouteRecordRaw[] | undefined) {
   const permissionStore = usePermissionStore();
   const permCodes = permissionStore.getPermCodeList;
   dynamicViewsModules = dynamicViewsModules || import.meta.glob('../../views/**/*.{vue,tsx}');
@@ -50,7 +51,7 @@ function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
       if (layoutFound) {
         item.component = layoutFound;
       } else {
-        item.component = dynamicImport(dynamicViewsModules, component as string);
+        item.component = dynamicImport(dynamicViewsModules, component as string)!;
       }
     } else if (name) {
       item.component = getParentLayout();
@@ -87,10 +88,29 @@ function dynamicImport(
 }
 
 // Turn background objects into routing objects
-export function transformObjToRoute<T = AppRouteModule>(routeList: AppRouteModule[]): T[] {
+export function transformObjToRoute<T = BackModeRouteRecordRaw>(
+  routeList: BackModeRouteRecordRaw[],
+): T[] {
   routeList.forEach((route) => {
     const component = route.component as string;
     if (component) {
+      // 查询对应的路由权限码，如果当前主菜单权限下没有任何子菜单，隐藏该主菜单
+      route.meta.hideMenu = false;
+      const userStore = useUserStore();
+      const menus = userStore.getMenu;
+      const permissionStore = usePermissionStore();
+      const permCodes = permissionStore.getPermCodeList;
+      const menuItem = menus[route.meta.code];
+      let subMenuNumber = 0;
+      for (const key in menuItem.childs) {
+        if (permCodes.includes(key as never)) {
+          subMenuNumber++;
+        }
+      }
+      if (subMenuNumber === 0) {
+        route.meta.hideMenu = true;
+      }
+
       /*
        * FIXME 在登录 => 退出 => 再次登录时，读取到的 component 不是一个字符串而是一个解析完成的 import 函数
        * 是我写的有问题还是 Vite 本身存在 bug？如何处理？
@@ -100,7 +120,7 @@ export function transformObjToRoute<T = AppRouteModule>(routeList: AppRouteModul
         typeof route.component === 'function' ||
         (typeof route.component === 'string' && component.toUpperCase() === 'LAYOUT')
       ) {
-        route.component = LayoutMap.get('LAYOUT');
+        route.component = LayoutMap.get('LAYOUT')!;
       } else {
         route.children = [cloneDeep(route)];
         route.component = LAYOUT;

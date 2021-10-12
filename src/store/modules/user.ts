@@ -159,7 +159,7 @@ export const useUserStore = defineStore({
           return res;
         }, '');
         const password = encryptPwd(encryptSaltPassword, aesKey) as unknown as string;
-        const data = await loginApi(
+        const userInfo = await loginApi(
           {
             employeeCode: loginParams.employeeCode,
             password,
@@ -169,39 +169,39 @@ export const useUserStore = defineStore({
         );
         this.setMenu(remoteConfig.menus);
         this.setPasswordValidation(JSON.parse(remoteConfig.passwordValidation));
-        data.accessToken && this.setToken(data.accessToken);
+        userInfo.accessToken && this.setToken(userInfo.accessToken);
 
-        data.accessToken &&
+        userInfo.accessToken &&
           this.setUserInfo({
-            userId: data.userId,
-            name: data.name,
-            employeeId: data.employeeId,
-            organizationId: data.organizationId,
-            avatar: data.avatar,
+            userId: userInfo.userId,
+            name: userInfo.name,
+            employeeId: userInfo.employeeId,
+            organizationId: userInfo.organizationId,
+            avatar: userInfo.avatar,
           });
 
-        data.featureScopes && this.setAuthFeatures(data.featureScopes);
-        if (data.features) {
-          for (const x in data.features) {
+        userInfo.featureScopes && this.setAuthFeatures(userInfo.featureScopes);
+        if (userInfo.features) {
+          for (const x in userInfo.features) {
             if (x === '28100') {
               if (
-                !data.features['28100'].SAFTY_VIEW &&
-                !data.features['28100'].SAFTY_EXPORT &&
-                !data.features['28100'].SAFTY_EDIT
+                !userInfo.features['28100'].SAFTY_VIEW &&
+                !userInfo.features['28100'].SAFTY_EXPORT &&
+                !userInfo.features['28100'].SAFTY_EDIT
               ) {
-                delete data.features['28100'];
+                delete userInfo.features['28100'];
               }
             }
           }
-          this.setFeature(data.features);
+          this.setFeature(userInfo.features);
         }
 
-        return this.afterLoginAction(data);
+        return this.afterLoginAction(userInfo);
       } catch (error) {
         return Promise.reject(error);
       }
     },
-    async afterLoginAction(data: LoginResultModel): Promise<GetUserInfoModel | null> {
+    async afterLoginAction(userInfo: LoginResultModel): Promise<GetUserInfoModel | null> {
       if (!this.getToken) return null;
 
       const sessionTimeout = this.sessionTimeout;
@@ -212,7 +212,7 @@ export const useUserStore = defineStore({
         const { createMessage } = useMessage();
         const { t } = useI18n();
 
-        if (data.changePassword === true) {
+        if (userInfo.changePassword === true) {
           // 首次登录，强制修改初始密码
           createMessage.warning(t('sys.login.changePassword'));
           setLoginState(LoginStateEnum.RESET_PASSWORD);
@@ -232,9 +232,16 @@ export const useUserStore = defineStore({
           router.replace(
             permCodes.includes('27500' as never) ? '/board/productionBoard' : PageEnum.BASE_HOME,
           );
+
+          const { notification } = useMessage();
+          notification.success({
+            message: t('sys.login.loginSuccessTitle'),
+            description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.name}`,
+            duration: 3,
+          });
         }
       }
-      return data;
+      return userInfo;
     },
     async getUserInfoAction() {
       if (!this.getToken) return null;
@@ -274,10 +281,10 @@ export const useUserStore = defineStore({
         key,
       };
 
-      const obj = encryptPwd(pwdOptions, aesKey) as unknown as resetPwdParams;
-      const data = await resetPwdApi(obj, mode);
+      const encryptOption = encryptPwd(pwdOptions, aesKey) as unknown as resetPwdParams;
+      const result = await resetPwdApi(encryptOption, mode);
 
-      if (!data) return;
+      if (!result) return;
 
       const permissionStore = usePermissionStore();
       if (!permissionStore.isDynamicAddedRoute) {

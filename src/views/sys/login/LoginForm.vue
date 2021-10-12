@@ -63,7 +63,7 @@
   const InputPassword = Input.Password;
 
   const { t } = useI18n();
-  // const { notification } = useMessage();
+
   const userStore = useUserStore();
 
   const { getLoginState } = useLoginState();
@@ -74,7 +74,7 @@
 
   const formData = reactive<LoginParams>({
     employeeCode: 'TJDT3213',
-    password: '123456',
+    password: 'A12345',
   });
 
   const formRules = {
@@ -114,12 +114,6 @@
       loading.value = false;
 
       console.log('userInfo :>> ', userInfo);
-
-      // notification.success({
-      //   message: t('sys.login.loginSuccessTitle'),
-      //   description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.name}`,
-      //   duration: 3,
-      // });
     } catch (error) {
       loading.value = false;
     }

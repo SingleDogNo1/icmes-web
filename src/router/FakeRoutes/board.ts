@@ -1,4 +1,6 @@
-const board = {
+import { BackModeRouteRecordRaw } from '/@/router/types';
+
+const board: BackModeRouteRecordRaw = {
   path: '/board',
   name: 'BoardLayout',
   component: 'LAYOUT',
