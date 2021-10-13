@@ -14,7 +14,7 @@
       "  const msg = ref('hello, $1');",
       "</script>",
       "",
-      "<style scoped lang=\"scss\">",
+      "<style scoped>",
       "  .$1 {",
       "    color: red;",
       "  }",

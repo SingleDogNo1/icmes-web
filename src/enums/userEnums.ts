@@ -10,3 +10,5 @@ export const ROLES_KEY = 'ROLES__KEY__';
 
 // token key
 export const TOKEN_KEY = 'TOKEN__';
+
+export const USER_DATA_RATE_KEY = 'DATA__RATA__';

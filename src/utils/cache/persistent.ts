@@ -19,6 +19,7 @@ import {
   FEATURE_KEY,
   MENU_KEY,
   PWD_VALIDATE_KEY,
+  USER_DATA_RATE_KEY,
 } from '/@/enums/userEnums';
 import { DEFAULT_CACHE_TIME } from '/@/settings/encryptionSetting';
 import { toRaw } from 'vue';
@@ -35,6 +36,7 @@ interface BasicStore {
   [FEATURE_KEY]: string[];
   [MENU_KEY]: string[];
   [PWD_VALIDATE_KEY]: string;
+  [USER_DATA_RATE_KEY]: number;
 }
 
 type LocalStore = BasicStore;

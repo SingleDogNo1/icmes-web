@@ -12,6 +12,7 @@ import {
   ROLES_KEY,
   TOKEN_KEY,
   PWD_VALIDATE_KEY,
+  USER_DATA_RATE_KEY,
 } from '/@/enums/userEnums';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
 import {
@@ -33,6 +34,7 @@ import { h } from 'vue';
 import { encryptSalt, encryptPwd } from '/@/utils/helper/sha1Helper';
 import { LoginStateEnum, useLoginState } from '/@/views/sys/login/useLogin';
 import { PasswordValidationModel } from '/@/api/sys/model/userModel';
+import axios from 'axios';
 
 type Feature = { [index: string]: { [index: string]: boolean } };
 
@@ -51,6 +53,7 @@ interface UserState {
   passwordValidation: Nullable<PasswordValidationModel>;
   sessionTimeout?: boolean;
   lastUpdateTime: number;
+  dataRate: number;
 }
 
 export const useUserStore = defineStore({
@@ -70,6 +73,7 @@ export const useUserStore = defineStore({
     sessionTimeout: false,
     // Last fetch time
     lastUpdateTime: 0,
+    dataRate: 1,
   }),
   getters: {
     getUserInfo(): UserInfo {
@@ -89,6 +93,9 @@ export const useUserStore = defineStore({
     },
     getPasswordValidation(): PasswordValidationModel {
       return this.passwordValidation || getAuthCache<PasswordValidationModel>(PWD_VALIDATE_KEY);
+    },
+    getDataRate(): number {
+      return this.dataRate || getAuthCache<number>(USER_DATA_RATE_KEY);
     },
     getSessionTimeout(): boolean {
       return !!this.sessionTimeout;
@@ -126,6 +133,10 @@ export const useUserStore = defineStore({
       this.userInfo = info;
       this.lastUpdateTime = new Date().getTime();
       setAuthCache(USER_INFO_KEY, info);
+    },
+    setDataRate(rate) {
+      this.dataRate = rate;
+      setAuthCache(USER_DATA_RATE_KEY, rate);
     },
     setSessionTimeout(flag: boolean) {
       this.sessionTimeout = flag;
@@ -205,6 +216,8 @@ export const useUserStore = defineStore({
     async afterLoginAction(userInfo: LoginResultModel): Promise<GetUserInfoModel | null> {
       if (!this.getToken) return null;
 
+      await this.getUserInfoAction();
+
       const sessionTimeout = this.sessionTimeout;
       if (sessionTimeout) {
         this.setSessionTimeout(false);
@@ -262,6 +275,11 @@ export const useUserStore = defineStore({
           }, [] as string[])
         : [];
       this.setRoleList(roles);
+
+      const {
+        data: { rate },
+      } = await axios.get(self.location.origin + '/dataRate.json');
+      this.setDataRate(rate);
     },
     async resetPassword(
       params: resetPwdParams & {
