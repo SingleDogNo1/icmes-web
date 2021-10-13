@@ -17,6 +17,7 @@
   import { DoubleRightOutlined } from '@ant-design/icons-vue';
   import { Card } from 'ant-design-vue';
   import { getDashboardRealTimeApi } from '/@/api/production/basic';
+  // import parser from 'cron-parser';
 
   const loading = ref(true);
   const date = ref('');
@@ -30,7 +31,7 @@
         loading.value = false;
         date.value = data.date;
         shiftName.value = data.shiftName;
-        rawCoalCount.value = data['入厂原煤(吨)'];
+        rawCoalCount.value = data['入洗原煤(吨)'];
 
         for (const name in data) {
           if (['块煤(吨)', '煤泥(吨)', '末煤(吨)', '籽煤(吨)'].includes(name)) {
@@ -46,6 +47,8 @@
     .catch(() => {
       loading.value = false;
     });
+
+  // const interval = parser.parseExpression('*/2 * * * ?');
 
   function toProductionData() {
     console.log('跳转到生产运行数据统计 :>> ');

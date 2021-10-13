@@ -73,8 +73,8 @@
   const rememberMe = ref(false);
 
   const formData = reactive<LoginParams>({
-    employeeCode: 'TJDT3213',
-    password: '123456',
+    employeeCode: 'TJDT1993',
+    password: 'Z930327',
   });
 
   const formRules = {

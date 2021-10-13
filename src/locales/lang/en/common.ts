@@ -17,4 +17,5 @@ export default {
 
   light: 'Light',
   dark: 'Dark',
+  resetPermissionText: '当前权限已被修改，请问是否更新权限和页面？',
 };
