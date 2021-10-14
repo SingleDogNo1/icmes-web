@@ -17,7 +17,7 @@
   import { DoubleRightOutlined } from '@ant-design/icons-vue';
   import { Card } from 'ant-design-vue';
   import { getDashboardRealTimeApi } from '/@/api/production/basic';
-  // import parser from 'cron-parser';
+  import { addTaskListener } from '/@/utils/timingTask';
 
   const loading = ref(true);
   const date = ref('');
@@ -47,8 +47,9 @@
     .catch(() => {
       loading.value = false;
     });
-
-  // const interval = parser.parseExpression('*/2 * * * ?');
+  addTaskListener('*/5 * * * * ?', (value) => {
+    console.log('111 :>> ', value);
+  });
 
   function toProductionData() {
     console.log('跳转到生产运行数据统计 :>> ');
