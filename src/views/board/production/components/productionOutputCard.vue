@@ -47,8 +47,8 @@
     .catch(() => {
       loading.value = false;
     });
-  addTaskListener('*/5 * * * * ?', (value) => {
-    console.log('111 :>> ', value);
+  addTaskListener('*/1 * * * * ?', () => {
+    console.log('111 :>> ', 111);
   });
 
   function toProductionData() {
