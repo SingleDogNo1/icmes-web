@@ -48,23 +48,19 @@ html[data-theme='light'] {
         background-color: @component-background;
         transition: none;
 
-        &:hover {
-          .ant-tabs-close-x {
-            opacity: 1;
-          }
-        }
-
         .ant-tabs-close-x {
-          width: 8px;
-          height: 12px;
-          font-size: 12px;
+          width: 16px;
+          height: 16px;
+          border-radius: 8px;
+          font-size: 16px;
           color: inherit;
-          opacity: 0;
           transition: none;
 
           &:hover {
+            background: #ddd;
+
             svg {
-              width: 0.8em;
+              fill: @text-color-base;
             }
           }
         }

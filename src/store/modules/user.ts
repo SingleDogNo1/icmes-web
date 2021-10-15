@@ -13,6 +13,9 @@ import {
   TOKEN_KEY,
   PWD_VALIDATE_KEY,
   USER_DATA_RATE_KEY,
+  DEVICE_LIST_KEY,
+  ACCOUNT_TREE_KEY,
+  ORGANIZATION_KEY,
 } from '/@/enums/userEnums';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
 import {
@@ -111,13 +114,13 @@ export const useUserStore = defineStore({
       return this.dataRate || getAuthCache<number>(USER_DATA_RATE_KEY);
     },
     getDevicesList(): DeviceModel[] | null {
-      return this.devicesList;
+      return this.devicesList || getAuthCache<DeviceModel[]>(DEVICE_LIST_KEY);
     },
     getAllAccountTree(): OrganizationEmployeeAllTreeModel[] | null {
-      return this.accountTree;
+      return this.accountTree || getAuthCache<OrganizationEmployeeAllTreeModel[]>(ACCOUNT_TREE_KEY);
     },
     getOrganizationsList(): OrganizationsFullNameModel[] | null {
-      return this.organizations;
+      return this.organizations || getAuthCache<OrganizationsFullNameModel[]>(ORGANIZATION_KEY);
     },
     getSessionTimeout(): boolean {
       return !!this.sessionTimeout;
@@ -162,12 +165,15 @@ export const useUserStore = defineStore({
     },
     setDeviceList(devices: DeviceModel[] | null) {
       this.devicesList = devices;
+      setAuthCache(DEVICE_LIST_KEY, devices);
     },
     setAllAccountTree(accountTree: OrganizationEmployeeAllTreeModel[] | null) {
       this.accountTree = accountTree;
+      setAuthCache(ACCOUNT_TREE_KEY, accountTree);
     },
     setOrganizationsList(organizations: OrganizationsFullNameModel[] | null) {
       this.organizations = organizations;
+      setAuthCache(ORGANIZATION_KEY, organizations);
     },
     setSessionTimeout(flag: boolean) {
       this.sessionTimeout = flag;

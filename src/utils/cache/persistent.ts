@@ -1,7 +1,6 @@
 import type { LockInfo, UserInfo } from '/#/store';
 import type { ProjectConfig } from '/#/config';
 import type { RouteLocationNormalized } from 'vue-router';
-
 import { createLocalStorage, createSessionStorage } from '/@/utils/cache';
 import { Memory } from './memory';
 import {
@@ -20,10 +19,18 @@ import {
   MENU_KEY,
   PWD_VALIDATE_KEY,
   USER_DATA_RATE_KEY,
+  DEVICE_LIST_KEY,
+  ACCOUNT_TREE_KEY,
+  ORGANIZATION_KEY,
 } from '/@/enums/userEnums';
 import { DEFAULT_CACHE_TIME } from '/@/settings/encryptionSetting';
 import { toRaw } from 'vue';
 import { pick, omit } from 'lodash-es';
+import { DeviceModel } from '/@/api/info/model/devicesModel';
+import {
+  OrganizationEmployeeAllTreeModel,
+  OrganizationsFullNameModel,
+} from '/@/api/info/model/organizationsModel';
 
 interface BasicStore {
   [TOKEN_KEY]: string | number | null | undefined;
@@ -37,6 +44,9 @@ interface BasicStore {
   [MENU_KEY]: string[];
   [PWD_VALIDATE_KEY]: string;
   [USER_DATA_RATE_KEY]: number;
+  [DEVICE_LIST_KEY]: DeviceModel[];
+  [ACCOUNT_TREE_KEY]: OrganizationEmployeeAllTreeModel[];
+  [ORGANIZATION_KEY]: OrganizationsFullNameModel[];
 }
 
 type LocalStore = BasicStore;

@@ -2,7 +2,7 @@
   <div :class="getWrapClass">
     <Tabs
       type="editable-card"
-      size="small"
+      size="large"
       :animated="false"
       :hideAdd="true"
       :tabBarGutter="3"

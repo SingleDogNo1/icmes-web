@@ -1,41 +1,41 @@
 <template>
   <section class="full-loading" :class="{ absolute }" v-show="loading">
-    <Spin v-bind="$attrs" :tip="tip" :size="size" :spinning="loading" />
+    <Spin v-bind="$attrs" :tip="tip" :size="size" :spinning="loading" :indicator="indicator" />
   </section>
 </template>
-<script lang="ts">
-  import { PropType } from 'vue';
-  import { defineComponent } from 'vue';
+<script lang="ts" setup>
+  import { PropType, h } from 'vue';
   import { Spin } from 'ant-design-vue';
   import { SizeEnum } from '/@/enums/sizeEnum';
+  import { LoadingOutlined } from '@ant-design/icons-vue';
 
-  export default defineComponent({
-    name: 'Loading',
-    components: { Spin },
-    props: {
-      tip: {
-        type: String as PropType<string>,
-        default: '',
-      },
-      size: {
-        type: String as PropType<SizeEnum>,
-        default: SizeEnum.LARGE,
-        validator: (v: SizeEnum): boolean => {
-          return [SizeEnum.DEFAULT, SizeEnum.SMALL, SizeEnum.LARGE].includes(v);
-        },
-      },
-      absolute: {
-        type: Boolean as PropType<boolean>,
-        default: false,
-      },
-      loading: {
-        type: Boolean as PropType<boolean>,
-        default: false,
-      },
-      background: {
-        type: String as PropType<string>,
+  defineProps({
+    tip: {
+      type: String as PropType<string>,
+      default: '',
+    },
+    size: {
+      type: String as PropType<SizeEnum>,
+      default: SizeEnum.LARGE,
+      validator: (v: SizeEnum): boolean => {
+        return [SizeEnum.DEFAULT, SizeEnum.SMALL, SizeEnum.LARGE].includes(v);
       },
     },
+    absolute: {
+      type: Boolean as PropType<boolean>,
+      default: false,
+    },
+    loading: {
+      type: Boolean as PropType<boolean>,
+      default: false,
+    },
+    background: {
+      type: String as PropType<string>,
+    },
+  });
+
+  const indicator = h(LoadingOutlined, {
+    spin: true,
   });
 </script>
 <style lang="less" scoped>
