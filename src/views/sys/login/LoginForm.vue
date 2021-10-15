@@ -112,8 +112,6 @@
 
       if (!userInfo) return;
       loading.value = false;
-
-      console.log('userInfo :>> ', userInfo);
     } catch (error) {
       loading.value = false;
     }

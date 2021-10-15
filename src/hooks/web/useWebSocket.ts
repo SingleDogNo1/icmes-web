@@ -14,11 +14,10 @@ import { h } from 'vue';
 const { socketUrl } = useGlobSetting();
 const userStore = useUserStoreWithOut();
 const permissionStore = usePermissionStoreWithOut();
-const employeeId = userStore.getUserInfo.employeeId;
-const { createConfirm } = useMessage();
-const { t } = useI18n();
+const employeeId = userStore.getUserInfo?.employeeId;
 
 export function useWebSocket() {
+  if (!employeeId) return;
   baseSocket(
     `${socketUrl}/?token=00000000-0000-0000-0000-000000000000&uid=${employeeId}_web&transport=websocket`,
     {
@@ -36,6 +35,8 @@ export function useWebSocket() {
           if (res.source !== 'server') return;
 
           const messageData = JSON.parse(res.data);
+          const { createConfirm } = useMessage();
+          const { t } = useI18n();
           switch (messageData.messageType) {
             case 'PERMISSION':
               createConfirm({

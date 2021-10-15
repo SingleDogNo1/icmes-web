@@ -21,8 +21,15 @@ import {
   LoginResultModel,
   resetPwdParams,
 } from '/@/api/sys/model/userModel';
+import { DeviceModel } from '/@/api/info/model/devicesModel';
+import {
+  OrganizationEmployeeAllTreeModel,
+  OrganizationsFullNameModel,
+} from '/@/api/info/model/organizationsModel';
 import { logoutApi, loginApi, getPublicKeyApi, resetPwdApi } from '/@/api/sys/user';
+import { getAllAccountTreeApi, getOrganizationsListApi } from '/@/api/info/organizations';
 import { getRemoteConfigApi } from '/@/api/info/config';
+import { getDevicesListApi } from '/@/api/info/devices';
 import { getRolesListByIdApi } from '/@/api/account/roles';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
@@ -54,6 +61,9 @@ interface UserState {
   sessionTimeout?: boolean;
   lastUpdateTime: number;
   dataRate: number;
+  devicesList: Nullable<DeviceModel[]>;
+  accountTree: Nullable<OrganizationEmployeeAllTreeModel[]>;
+  organizations: Nullable<OrganizationsFullNameModel[]>;
 }
 
 export const useUserStore = defineStore({
@@ -74,6 +84,9 @@ export const useUserStore = defineStore({
     // Last fetch time
     lastUpdateTime: 0,
     dataRate: 1,
+    devicesList: null,
+    accountTree: null,
+    organizations: null,
   }),
   getters: {
     getUserInfo(): UserInfo {
@@ -97,6 +110,15 @@ export const useUserStore = defineStore({
     getDataRate(): number {
       return this.dataRate || getAuthCache<number>(USER_DATA_RATE_KEY);
     },
+    getDevicesList(): DeviceModel[] | null {
+      return this.devicesList;
+    },
+    getAllAccountTree(): OrganizationEmployeeAllTreeModel[] | null {
+      return this.accountTree;
+    },
+    getOrganizationsList(): OrganizationsFullNameModel[] | null {
+      return this.organizations;
+    },
     getSessionTimeout(): boolean {
       return !!this.sessionTimeout;
     },
@@ -106,7 +128,7 @@ export const useUserStore = defineStore({
   },
   actions: {
     setToken(info: string | undefined) {
-      this.token = info ? info : ''; // for null or undefined value
+      this.token = info ?? ''; // for null or undefined value
       setAuthCache(TOKEN_KEY, info);
     },
     setAuthFeatures(features: { [index: string]: number[] }) {
@@ -134,9 +156,18 @@ export const useUserStore = defineStore({
       this.lastUpdateTime = new Date().getTime();
       setAuthCache(USER_INFO_KEY, info);
     },
-    setDataRate(rate) {
+    setDataRate(rate: number) {
       this.dataRate = rate;
       setAuthCache(USER_DATA_RATE_KEY, rate);
+    },
+    setDeviceList(devices: DeviceModel[] | null) {
+      this.devicesList = devices;
+    },
+    setAllAccountTree(accountTree: OrganizationEmployeeAllTreeModel[] | null) {
+      this.accountTree = accountTree;
+    },
+    setOrganizationsList(organizations: OrganizationsFullNameModel[] | null) {
+      this.organizations = organizations;
     },
     setSessionTimeout(flag: boolean) {
       this.sessionTimeout = flag;
@@ -231,6 +262,7 @@ export const useUserStore = defineStore({
           createMessage.warning(t('sys.login.changePassword'));
           setLoginState(LoginStateEnum.RESET_PASSWORD);
         } else {
+          // 根据权限，生成路由
           const permissionStore = usePermissionStore();
           if (!permissionStore.isDynamicAddedRoute) {
             const routes = await permissionStore.buildRoutesAction();
@@ -253,6 +285,40 @@ export const useUserStore = defineStore({
             description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.name}`,
             duration: 3,
           });
+
+          try {
+            const { items: deviceList } = await getDevicesListApi({
+              isPrimary: true,
+              orderBy: 'processNo',
+              organizationIds: [],
+              isTreeForDeviceCategory: true,
+              category: [],
+              location: [],
+              status: [],
+              hierarchy: 0,
+              globalName: '',
+              ascending: true,
+              parentId: -1,
+              pageSize: 0,
+              pageNo: 0,
+            });
+            const { items: allAccountTree } = await getAllAccountTreeApi({
+              name: '',
+            });
+            const { items: organizationsList } = await getOrganizationsListApi({
+              orderBy: 'Code',
+              ascending: true,
+              pageNo: 0,
+              pageSize: 0,
+            });
+
+            this.setDeviceList(deviceList);
+            this.setAllAccountTree(allAccountTree);
+            this.setOrganizationsList(organizationsList);
+          } catch (error) {
+            Promise.reject(error);
+            console.log(error);
+          }
         }
       }
       return userInfo;
@@ -338,6 +404,10 @@ export const useUserStore = defineStore({
       this.setMenu(null);
       this.setPasswordValidation(null);
       this.setRoleList([]);
+      this.setDataRate(1);
+      this.setDeviceList(null);
+      this.setAllAccountTree(null);
+      this.setOrganizationsList(null);
       this.setSessionTimeout(false);
       this.setUserInfo(null);
       goLogin && router.push(PageEnum.BASE_LOGIN);
