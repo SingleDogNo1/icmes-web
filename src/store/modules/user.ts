@@ -1,6 +1,6 @@
 import type { UserInfo } from '/#/store';
 import type { ErrorMessageMode } from '/#/axios';
-import type { Menu } from '/@/api/info/model/configModel';
+import type { Menu, Dict } from '/@/api/info/model/configModel';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
 import { PageEnum } from '/@/enums/pageEnum';
@@ -9,6 +9,7 @@ import {
   AUTH_FEATURE_KEY,
   FEATURE_KEY,
   MENU_KEY,
+  DICTS_KEY,
   ROLES_KEY,
   TOKEN_KEY,
   PWD_VALIDATE_KEY,
@@ -60,6 +61,7 @@ interface UserState {
   userInfo: Nullable<UserInfo>;
   roleList: string[];
   menu: Nullable<Menu>;
+  dicts: Nullable<Dict>;
   passwordValidation: Nullable<PasswordValidationModel>;
   sessionTimeout?: boolean;
   lastUpdateTime: number;
@@ -81,6 +83,7 @@ export const useUserStore = defineStore({
     // roleList
     roleList: [],
     menu: null,
+    dicts: null,
     passwordValidation: null,
     // Whether the login expired
     sessionTimeout: false,
@@ -103,6 +106,9 @@ export const useUserStore = defineStore({
     },
     getMenu(): Menu {
       return this.menu || getAuthCache<Menu>(MENU_KEY);
+    },
+    getDicts(): Dict {
+      return this.dicts || getAuthCache<Dict>(DICTS_KEY);
     },
     getRoleList(): string[] {
       return this.roleList.length > 0 ? this.roleList : getAuthCache<string[]>(ROLES_KEY);
@@ -145,6 +151,10 @@ export const useUserStore = defineStore({
     setMenu(menu: Menu | null) {
       this.menu = menu ?? null;
       setAuthCache(MENU_KEY, menu);
+    },
+    setDicts(dicts: Dict | null) {
+      this.dicts = dicts ?? null;
+      setAuthCache(DICTS_KEY, dicts);
     },
     setPasswordValidation(valid: PasswordValidationModel | null) {
       this.passwordValidation = valid ?? null;
@@ -217,6 +227,7 @@ export const useUserStore = defineStore({
           mode,
         );
         this.setMenu(remoteConfig.menus);
+        this.setDicts(remoteConfig.dicts);
         this.setPasswordValidation(JSON.parse(remoteConfig.passwordValidation));
         userInfo.accessToken && this.setToken(userInfo.accessToken);
 

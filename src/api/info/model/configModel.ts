@@ -1,7 +1,7 @@
 /** 获取系统配置接口返回数据 */
 export interface RemoteConfigResultModel {
   defaultCallRecordDayPeriod: number;
-  dicts: Dict[];
+  dicts: Dict;
   features: Feature[];
   menus: Menu;
   needCheckPLCStatus: boolean;
@@ -10,12 +10,12 @@ export interface RemoteConfigResultModel {
   sipServerUri: String;
 }
 
-interface Dict {
+export interface Dict {
   /** 数据字典是否被完全禁用 */
-  disabled: boolean;
+  disabled?: boolean;
   /** 字典中文名 */
-  name: string;
-  options: {
+  name?: string;
+  options?: {
     [index: string]: {
       /** 数据字典中的选项是否被禁用 */
       disabled: boolean;
@@ -27,7 +27,7 @@ interface Dict {
     };
   };
   /** 排序字段，越小越靠前 */
-  order: number;
+  order?: number;
 }
 
 interface Feature {

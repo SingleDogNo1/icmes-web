@@ -17,7 +17,7 @@
   import { DoubleRightOutlined } from '@ant-design/icons-vue';
   import { Card } from 'ant-design-vue';
   import { getDashboardRealTimeApi } from '/@/api/production/basic';
-  import { addTaskListener } from '/@/utils/timingTask';
+  // import { addTaskListener } from '/@/utils/timingTask';
 
   const loading = ref(true);
   const date = ref('');
@@ -47,9 +47,10 @@
     .catch(() => {
       loading.value = false;
     });
-  addTaskListener('*/1 * * * * ?', () => {
-    console.log('111 :>> ', 111);
-  });
+
+  // addTaskListener('*/1 * * * * ?', () => {
+  //   console.log('111 :>> ', 111);
+  // });
 
   function toProductionData() {
     console.log('跳转到生产运行数据统计 :>> ');

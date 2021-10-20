@@ -17,6 +17,7 @@ import {
   AUTH_FEATURE_KEY,
   FEATURE_KEY,
   MENU_KEY,
+  DICTS_KEY,
   PWD_VALIDATE_KEY,
   USER_DATA_RATE_KEY,
   DEVICE_LIST_KEY,
@@ -27,6 +28,7 @@ import { DEFAULT_CACHE_TIME } from '/@/settings/encryptionSetting';
 import { toRaw } from 'vue';
 import { pick, omit } from 'lodash-es';
 import { DeviceModel } from '/@/api/info/model/devicesModel';
+import type { Dict } from '/@/api/info/model/configModel';
 import {
   OrganizationEmployeeAllTreeModel,
   OrganizationsFullNameModel,
@@ -42,6 +44,7 @@ interface BasicStore {
   [AUTH_FEATURE_KEY]: string[];
   [FEATURE_KEY]: string[];
   [MENU_KEY]: string[];
+  [DICTS_KEY]: Dict;
   [PWD_VALIDATE_KEY]: string;
   [USER_DATA_RATE_KEY]: number;
   [DEVICE_LIST_KEY]: DeviceModel[];
