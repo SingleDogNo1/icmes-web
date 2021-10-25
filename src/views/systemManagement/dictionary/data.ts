@@ -45,17 +45,6 @@ export const schemas: FormSchema[] = [
       // placeholder: t('common.chooseText'),
     },
   },
-  {
-    field: 'globalName',
-    label: '',
-    component: 'Input',
-    defaultValue: '',
-    componentProps: {
-      maxlength: 20,
-      placeholder: '类型编码/类型名称',
-      // placeholder: t('common.chooseText'),
-    },
-  },
 ];
 
 export const columns: BasicColumn[] = [

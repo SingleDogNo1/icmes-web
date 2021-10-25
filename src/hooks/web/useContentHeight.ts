@@ -108,10 +108,10 @@ export function useContentHeight(
     });
 
     // subtract margins / paddings
-    let substractSpaceHeight = calcSubtractSpace(anchorEl) ?? 0;
-    substractSpaceRefs.forEach((item) => {
-      substractSpaceHeight += calcSubtractSpace(getEl(unref(item)));
-    });
+    // let substractSpaceHeight = calcSubtractSpace(anchorEl) ?? 0;
+    // substractSpaceRefs.forEach((item) => {
+    //   substractSpaceHeight += calcSubtractSpace(getEl(unref(item)));
+    // });
 
     // upwardSpace
     let upwardSpaceHeight = 0;
@@ -146,7 +146,7 @@ export function useContentHeight(
       unref(layoutFooterHeightRef) -
       unref(offsetHeightRef) -
       substractHeight -
-      substractSpaceHeight -
+      // substractSpaceHeight -
       upwardSpaceHeight;
 
     // compensation height

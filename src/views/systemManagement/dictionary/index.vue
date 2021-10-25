@@ -8,6 +8,7 @@
       <template #time="{ record }"> {{ formatDate(record.time, 'YYYY-MM-DD HH:mm') }} </template>
       <template #terminalType="{ record }"> {{ terminalTypeMap[record.terminalType] }} </template>
     </BasicTable> -->
+    <!-- <PageWrapper contentFullHeight> 123 </PageWrapper> -->
   </PageWrapper>
 </template>
 
