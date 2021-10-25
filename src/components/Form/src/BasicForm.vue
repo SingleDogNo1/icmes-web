@@ -6,7 +6,7 @@
     :model="formModel"
     @keypress.enter="handleEnterPress"
   >
-    <Row v-bind="getRow">
+    <Row v-if="getProps.layout !== 'inline'" v-bind="getRow">
       <slot name="formHeader"></slot>
       <template v-for="schema in getSchema" :key="schema.field">
         <FormItem
@@ -24,7 +24,11 @@
         </FormItem>
       </template>
 
-      <FormAction v-bind="getFormActionBindProps" @toggle-advanced="handleToggleAdvanced">
+      <FormAction
+        v-bind="getFormActionBindProps"
+        :layout="getProps.layout"
+        @toggle-advanced="handleToggleAdvanced"
+      >
         <template
           #[item]="data"
           v-for="item in ['resetBefore', 'submitBefore', 'advanceBefore', 'advanceAfter']"
@@ -34,6 +38,36 @@
       </FormAction>
       <slot name="formFooter"></slot>
     </Row>
+    <template v-else>
+      <FormItem
+        v-for="schema in getSchema"
+        :key="schema.field"
+        :tableAction="tableAction"
+        :formActionType="formActionType"
+        :schema="schema"
+        :formProps="getProps"
+        :allDefaultValues="defaultValueRef"
+        :formModel="formModel"
+        :setFormModel="setFormModel"
+      >
+        <template #[item]="data" v-for="item in Object.keys($slots)">
+          <slot :name="item" v-bind="data || {}"></slot>
+        </template>
+      </FormItem>
+
+      <FormAction
+        v-bind="getFormActionBindProps"
+        :layout="getProps.layout"
+        @toggle-advanced="handleToggleAdvanced"
+      >
+        <template
+          #[item]="data"
+          v-for="item in ['resetBefore', 'submitBefore', 'advanceBefore', 'advanceAfter']"
+        >
+          <slot :name="item" v-bind="data || {}"></slot>
+        </template>
+      </FormAction>
+    </template>
   </Form>
 </template>
 <script lang="ts" setup>

@@ -1,5 +1,6 @@
 type ColSpanType = number | string;
 export interface ColEx {
+  layout: 'vertical' | 'inline' | 'horizontal';
   style?: any;
   /**
    * raster number of cells to occupy, 0 corresponds to display: none

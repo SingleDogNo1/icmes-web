@@ -36,10 +36,20 @@ export const schemas: FormSchema[] = [
   },
   {
     field: 'globalName',
-    label: '关键字搜索',
+    label: '',
     component: 'Input',
     defaultValue: '',
-    colProps: { span: 6 },
+    componentProps: {
+      maxlength: 20,
+      placeholder: '类型编码/类型名称',
+      // placeholder: t('common.chooseText'),
+    },
+  },
+  {
+    field: 'globalName',
+    label: '',
+    component: 'Input',
+    defaultValue: '',
     componentProps: {
       maxlength: 20,
       placeholder: '类型编码/类型名称',

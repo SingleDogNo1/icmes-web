@@ -17,7 +17,6 @@
   import { schemas } from './data';
 
   const [register, { getFieldsValue }] = useForm({
-    labelWidth: 150,
     layout: 'inline',
     schemas,
   });

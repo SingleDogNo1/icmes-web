@@ -354,7 +354,7 @@
           return null;
         }
 
-        const { baseColProps = {} } = props.formProps;
+        const { baseColProps = {}, layout = 'horizontal' } = props.formProps;
         const realColProps = { ...baseColProps, ...colProps };
         const { isIfShow, isShow } = getShow();
         const values = unref(getValues);
@@ -368,11 +368,16 @@
         };
 
         return (
-          isIfShow && (
+          isIfShow &&
+          (layout !== 'inline' ? (
             <Col {...realColProps} v-show={isShow}>
               {getContent()}
             </Col>
-          )
+          ) : (
+            <div {...realColProps} v-show={isShow} style={'display="inline-flex"'}>
+              {getContent()}
+            </div>
+          ))
         );
       };
     },

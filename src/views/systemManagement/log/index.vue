@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { nextTick, ref } from 'vue';
+  import { nextTick, ref, onMounted } from 'vue';
   import { trimEnd } from 'lodash-es';
   import { formatDate } from '/@/utils/dateUtil';
   import { PageWrapper } from '/@/components/Page';
@@ -34,6 +34,7 @@
   const [register, { getFieldsValue, setFieldsValue }] = useForm({
     labelWidth: 150,
     schemas,
+    fieldMapToTime: [['timeRange', ['timeStart', 'timeEnd'], 'x']],
   });
 
   const [registerTable, { setTableData, getPaginationRef, setPagination }] = useTable({
@@ -72,13 +73,8 @@
   function getLogList() {
     nextTick(() => {
       loading.value = true;
-      // 如果有时间范围，转成 startTime, endTime
-      const values = getFieldsValue() as GetLogListParam & { timeRange?: number[] };
-      if (values.timeRange) {
-        values.timeStart = values.timeRange[0];
-        values.timeEnd = values.timeRange[1];
-        delete values.timeRange;
-      }
+      const values = getFieldsValue() as GetLogListParam;
+      console.log('values :>> ', values);
       getLogListApi(values)
         .then((logList) => {
           loading.value = false;
@@ -93,5 +89,7 @@
     });
   }
 
-  getLogList();
+  onMounted(() => {
+    getLogList();
+  });
 </script>

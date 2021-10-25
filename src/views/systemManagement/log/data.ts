@@ -119,7 +119,6 @@ export const schemas: FormSchema[] = [
     componentProps: {
       defaultPickerValue: [],
       format: 'YYYY-MM-DD',
-      valueFormat: 'x',
       showTime: {
         defaultValue: [moment().startOf('day'), moment().endOf('day')],
       },
