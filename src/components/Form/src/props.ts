@@ -65,7 +65,12 @@ export const basicProps = {
   // 是否显示操作按钮
   showActionButtonGroup: propTypes.bool.def(true),
   // 操作列Col配置
-  actionColOptions: Object as PropType<Partial<ColEx>>,
+  actionColOptions: {
+    type: Object as PropType<Partial<ColEx>>,
+    default: () => {
+      return { span: 24 };
+    },
+  },
   // 显示重置按钮
   showResetButton: propTypes.bool.def(true),
   // 是否聚焦第一个输入框，只在第一个表单项为input的时候作用

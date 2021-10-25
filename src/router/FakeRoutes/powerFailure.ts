@@ -1,4 +1,6 @@
-const powerFailure = {
+import { BackModeRouteRecordRaw } from '/@/router/types';
+
+const powerFailure: BackModeRouteRecordRaw = {
   path: '/powerFailure',
   name: 'PowerFailureLayout',
   component: 'LAYOUT',

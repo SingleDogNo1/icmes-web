@@ -15,6 +15,7 @@ import {
   PWD_VALIDATE_KEY,
   USER_DATA_RATE_KEY,
   DEVICE_LIST_KEY,
+  ACCOUNT_KEY,
   ACCOUNT_TREE_KEY,
   ORGANIZATION_KEY,
 } from '/@/enums/userEnums';
@@ -27,7 +28,7 @@ import {
 } from '/@/api/sys/model/userModel';
 import { DeviceModel } from '/@/api/info/model/devicesModel';
 import {
-  OrganizationEmployeeAllTreeModel,
+  OrganizationEmployeeModel,
   OrganizationsFullNameModel,
 } from '/@/api/info/model/organizationsModel';
 import { logoutApi, loginApi, getPublicKeyApi, resetPwdApi } from '/@/api/sys/user';
@@ -46,6 +47,7 @@ import { encryptSalt, encryptPwd } from '/@/utils/helper/sha1Helper';
 import { LoginStateEnum, useLoginState } from '/@/views/sys/login/useLogin';
 import { PasswordValidationModel } from '/@/api/sys/model/userModel';
 import axios from 'axios';
+import { cloneDeep } from 'lodash-es';
 
 type Feature = { [index: string]: { [index: string]: boolean } };
 
@@ -67,7 +69,8 @@ interface UserState {
   lastUpdateTime: number;
   dataRate: number;
   devicesList: Nullable<DeviceModel[]>;
-  accountTree: Nullable<OrganizationEmployeeAllTreeModel[]>;
+  account: Nullable<OrganizationEmployeeModel[]>;
+  accountTree: Nullable<OrganizationEmployeeModel>;
   organizations: Nullable<OrganizationsFullNameModel[]>;
 }
 
@@ -91,6 +94,7 @@ export const useUserStore = defineStore({
     lastUpdateTime: 0,
     dataRate: 1,
     devicesList: null,
+    account: null,
     accountTree: null,
     organizations: null,
   }),
@@ -122,8 +126,11 @@ export const useUserStore = defineStore({
     getDevicesList(): DeviceModel[] | null {
       return this.devicesList || getAuthCache<DeviceModel[]>(DEVICE_LIST_KEY);
     },
-    getAllAccountTree(): OrganizationEmployeeAllTreeModel[] | null {
-      return this.accountTree || getAuthCache<OrganizationEmployeeAllTreeModel[]>(ACCOUNT_TREE_KEY);
+    getAllAccount(): OrganizationEmployeeModel[] | null {
+      return this.account || getAuthCache<OrganizationEmployeeModel[]>(ACCOUNT_KEY);
+    },
+    getAllAccountTree(): OrganizationEmployeeModel | null {
+      return this.accountTree || getAuthCache<OrganizationEmployeeModel>(ACCOUNT_TREE_KEY);
     },
     getOrganizationsList(): OrganizationsFullNameModel[] | null {
       return this.organizations || getAuthCache<OrganizationsFullNameModel[]>(ORGANIZATION_KEY);
@@ -177,7 +184,11 @@ export const useUserStore = defineStore({
       this.devicesList = devices;
       setAuthCache(DEVICE_LIST_KEY, devices);
     },
-    setAllAccountTree(accountTree: OrganizationEmployeeAllTreeModel[] | null) {
+    setAllAccount(accountList: OrganizationEmployeeModel[] | null) {
+      this.account = accountList;
+      setAuthCache(ACCOUNT_KEY, accountList);
+    },
+    setAllAccountTree(accountTree: OrganizationEmployeeModel | null) {
       this.accountTree = accountTree;
       setAuthCache(ACCOUNT_TREE_KEY, accountTree);
     },
@@ -200,9 +211,7 @@ export const useUserStore = defineStore({
     getRemoteConfig() {
       return getRemoteConfigApi();
     },
-    /**
-     * @description: login
-     */
+
     async login(
       params: LoginParams & {
         mode?: ErrorMessageMode;
@@ -260,6 +269,24 @@ export const useUserStore = defineStore({
       } catch (error) {
         return Promise.reject(error);
       }
+    },
+    genAccountTree(list: { [key: string]: any }[], id: string, name: string) {
+      const tree: { [key: string]: any }[] = [];
+      list.map((item) => {
+        const obj: { [key: string]: any } = cloneDeep(item);
+        if (item.parentId === id) {
+          obj.id = item.realEmployeeId || item.realOrgId + new Date().getTime();
+          obj.parentName = name;
+          obj.disabled = !item.isEmployee;
+          if (item.realEmployeeId! >= 0) {
+            obj.realEmployeeId = item.realEmployeeId;
+          }
+          obj.children = this.genAccountTree(list, item.id, item.name);
+          obj.hasChild = obj.children?.length > 0;
+          tree.push(obj);
+        }
+      });
+      return tree;
     },
     async afterLoginAction(userInfo: LoginResultModel): Promise<GetUserInfoModel | null> {
       if (!this.getToken) return null;
@@ -319,7 +346,7 @@ export const useUserStore = defineStore({
               pageSize: 0,
               pageNo: 0,
             });
-            const { items: allAccountTree } = await getAllAccountTreeApi({
+            const { items: allAccount } = await getAllAccountTreeApi({
               name: '',
             });
             const { items: organizationsList } = await getOrganizationsListApi({
@@ -330,7 +357,10 @@ export const useUserStore = defineStore({
             });
 
             this.setDeviceList(deviceList);
-            this.setAllAccountTree(allAccountTree);
+            this.setAllAccount(allAccount);
+
+            const allAccountTree = this.genAccountTree(allAccount, '-1', '全体');
+            this.setAllAccountTree(allAccountTree as unknown as OrganizationEmployeeModel);
             this.setOrganizationsList(organizationsList);
           } catch (error) {
             Promise.reject(error);
@@ -423,6 +453,7 @@ export const useUserStore = defineStore({
       this.setRoleList([]);
       this.setDataRate(1);
       this.setDeviceList(null);
+      this.setAllAccount(null);
       this.setAllAccountTree(null);
       this.setOrganizationsList(null);
       this.setSessionTimeout(false);

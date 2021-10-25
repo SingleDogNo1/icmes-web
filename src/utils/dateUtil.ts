@@ -17,4 +17,9 @@ export function formatToDate(date: moment.MomentInput = undefined, format = DATE
   return moment(date).format(format);
 }
 
+export function formatDate(date: moment.MomentInput = undefined, pattern = 'YYYY-MM-DD HH:mm:ss') {
+  if (!date) return '';
+  return moment(date).format(pattern);
+}
+
 export const dateUtil = moment;

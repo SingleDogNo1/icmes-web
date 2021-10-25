@@ -21,6 +21,7 @@ import {
   PWD_VALIDATE_KEY,
   USER_DATA_RATE_KEY,
   DEVICE_LIST_KEY,
+  ACCOUNT_KEY,
   ACCOUNT_TREE_KEY,
   ORGANIZATION_KEY,
 } from '/@/enums/userEnums';
@@ -30,7 +31,7 @@ import { pick, omit } from 'lodash-es';
 import { DeviceModel } from '/@/api/info/model/devicesModel';
 import type { Dict } from '/@/api/info/model/configModel';
 import {
-  OrganizationEmployeeAllTreeModel,
+  OrganizationEmployeeModel,
   OrganizationsFullNameModel,
 } from '/@/api/info/model/organizationsModel';
 
@@ -48,7 +49,8 @@ interface BasicStore {
   [PWD_VALIDATE_KEY]: string;
   [USER_DATA_RATE_KEY]: number;
   [DEVICE_LIST_KEY]: DeviceModel[];
-  [ACCOUNT_TREE_KEY]: OrganizationEmployeeAllTreeModel[];
+  [ACCOUNT_KEY]: OrganizationEmployeeModel;
+  [ACCOUNT_TREE_KEY]: OrganizationEmployeeModel[];
   [ORGANIZATION_KEY]: OrganizationsFullNameModel[];
 }
 

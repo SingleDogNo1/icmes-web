@@ -116,7 +116,10 @@ export const basicProps = {
   bordered: propTypes.bool,
   pagination: {
     type: [Object, Boolean] as PropType<PaginationProps | boolean>,
-    default: null,
+    default: {
+      pageSizeOptions: ['10', '20', '30', '50'],
+      showQuickJumper: true,
+    },
   },
   loading: propTypes.bool,
   rowClassName: {

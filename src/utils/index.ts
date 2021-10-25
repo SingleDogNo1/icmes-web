@@ -1,6 +1,5 @@
 import type { RouteLocationNormalized, RouteRecordNormalized } from 'vue-router';
 import type { App, Plugin } from 'vue';
-import moment from 'moment';
 
 import { unref } from 'vue';
 import { isObject } from '/@/utils/is';
@@ -90,9 +89,3 @@ export const withInstall = <T>(component: T, alias?: string) => {
   };
   return component as T & Plugin;
 };
-
-/* 日期格式化 */
-export function dateParse(date, pattern = 'YYYY-MM-DD HH:mm:ss') {
-  if (!date) return '';
-  return moment(date).format(pattern);
-}

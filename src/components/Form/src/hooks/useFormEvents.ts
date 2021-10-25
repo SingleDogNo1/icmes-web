@@ -243,7 +243,8 @@ export function useFormEvents({
       const res = handleFormValues(values);
       emit('submit', res);
     } catch (error) {
-      throw new Error(error);
+      console.log('JSON>stringify(error) :>> ', JSON.stringify(error));
+      throw new Error(error as string);
     }
   }
 

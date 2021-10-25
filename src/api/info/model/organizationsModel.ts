@@ -20,10 +20,10 @@ export interface AccountTreeParams {
 }
 
 export interface AccountTreeResultModel {
-  items: OrganizationEmployeeAllTreeModel[];
+  items: OrganizationEmployeeModel[];
 }
 
-export interface OrganizationEmployeeAllTreeModel {
+export interface OrganizationEmployeeModel {
   /** 组织机构及其下属机构员工数量 */
   childNum: number;
   /** code */
