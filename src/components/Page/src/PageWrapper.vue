@@ -180,6 +180,7 @@
     &--dense {
       .@{prefix-cls}-content {
         margin: 0;
+        padding: 0;
       }
     }
   }

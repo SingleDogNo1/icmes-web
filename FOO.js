@@ -1,5 +1,43 @@
-const str =
-  '{"source":"server","type":"notify","data":"{"businessCreateUserId":0,"businessCreateUserName":"系统","businessData":"{}","businessKey":"","businessType":"REFRESH_PERMISSION_STATUS","id":"e47d08e4-fc90-43ee-93bf-e97a43bef7ed","messageType":"PERMISSION","updateTime":1634116672490}"}';
-
-// const res = str.match(/{.+}/g)[0];
-console.log('res :>> ', JSON.parse(str));
+export var a = {
+  maintenanceOrderBaseModel: {
+    versionTag: '00000000-0000-0000-0000-000000000000',
+    planStartTime: 1635151020000,
+    planEndTime: 1635154620000,
+    maintenanceType: 'MAINT_ELECTRO_NORMAL',
+    id: 12,
+    code: 'JXD20211025001',
+    deviceList: [
+      {
+        deviceCode: 'ZL0004',
+        deviceId: 3335,
+        deviceName: '自卸式防爆电磁除铁器',
+        deviceProcessNo: '101/4',
+        powerType: null,
+      },
+    ],
+    nonDevice: '',
+    projectName: 'fff',
+    status: 'MAINT_ORDER_NEW',
+    technicalStandard: '',
+    workProcess: '',
+    maintenanceContent: '',
+    dutyEmployeeList: [
+      { dutyType: 0, employeeId: 79 },
+      { dutyType: 1, employeeId: 1342 },
+      { dutyType: 2, employeeId: 1342 },
+      { dutyType: 3, employeeId: 1342 },
+      { dutyType: 4, employeeId: 1342 },
+      { dutyType: 5, employeeId: 1342 },
+    ],
+    powerCut: true,
+  },
+  maintenanceOrderSafeMeasureModel: {
+    fileId: null,
+    fileName: '',
+    specialMeasure: '11',
+    commonMeasureId: null,
+  },
+  maintenanceOrderMaterialPlanList: [],
+  maintenanceOrderElectrogasWeldingModel: { fileId: null, fileName: '', weldingMeasure: '' },
+  commitApprovalFlag: false,
+};
