@@ -18,10 +18,6 @@ function createNav() {
       link: '/guide/',
       items: [
         {
-          text: '指南',
-          link: '/guide/introduction',
-        },
-        {
           text: '深入',
           link: '/dep/icon',
         },
@@ -270,10 +266,6 @@ function createSidebar() {
       {
         text: '指南',
         children: [
-          {
-            text: '介绍',
-            link: '/guide/introduction',
-          },
           {
             text: '开始',
             link: '/guide/',

@@ -101,9 +101,9 @@ export function updateDictDataApi(
   params: UpdateDictDataParam,
   mode: ErrorMessageMode = 'message',
 ) {
-  return defHttp.post<boolean>(
+  return defHttp.put<boolean>(
     {
-      url: Api.editDictData + params.typeCode + code,
+      url: Api.editDictData + params.typeCode + '/' + code,
       params,
     },
     {

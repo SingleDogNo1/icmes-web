@@ -54,7 +54,7 @@
             message: '请输入字典编码',
           },
           {
-            validator: debounce(async (_, value) => {
+            validator: async (_, value) => {
               if (editType.value === 'edit') {
                 return Promise.resolve();
               } else {
@@ -80,7 +80,7 @@
                   loading.value = false;
                 }
               }
-            }, 200),
+            },
             trigger: 'change',
           },
         ],
@@ -110,6 +110,8 @@
                     }, [] as string[])
                   : [];
 
+                console.log('exist_names :>> ', exist_names, value, exist_names.includes(value));
+
                 if (exist_names.includes(value)) {
                   return Promise.reject('字典名称重复，请重新输入');
                 } else {
@@ -118,8 +120,8 @@
               } finally {
                 loading.value = false;
               }
-            }, 200),
-            trigger: 'change',
+            }, 300),
+            trigger: ['change', 'blur'],
           },
         ],
       },

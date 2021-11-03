@@ -16,6 +16,7 @@ import {
   ROLES_KEY,
   AUTH_FEATURE_KEY,
   FEATURE_KEY,
+  FEATURE_TREE_KEY,
   MENU_KEY,
   DICTS_KEY,
   PWD_VALIDATE_KEY,
@@ -30,6 +31,7 @@ import { toRaw } from 'vue';
 import { pick, omit } from 'lodash-es';
 import { DeviceModel } from '/@/api/info/model/devicesModel';
 import type { Dict } from '/@/api/info/model/configModel';
+import { FeaturesTreeModel } from '/@/store/modules/user';
 import {
   OrganizationEmployeeModel,
   OrganizationsFullNameModel,
@@ -44,6 +46,7 @@ interface BasicStore {
   [MULTIPLE_TABS_KEY]: RouteLocationNormalized[];
   [AUTH_FEATURE_KEY]: string[];
   [FEATURE_KEY]: string[];
+  [FEATURE_TREE_KEY]: FeaturesTreeModel[];
   [MENU_KEY]: string[];
   [DICTS_KEY]: Dict;
   [PWD_VALIDATE_KEY]: string;

@@ -8,6 +8,7 @@ import {
   USER_INFO_KEY,
   AUTH_FEATURE_KEY,
   FEATURE_KEY,
+  FEATURE_TREE_KEY,
   MENU_KEY,
   DICTS_KEY,
   ROLES_KEY,
@@ -51,6 +52,13 @@ import { cloneDeep } from 'lodash-es';
 
 type Feature = { [index: string]: { [index: string]: boolean } };
 
+export interface FeaturesTreeModel {
+  id: string;
+  isFeature: boolean;
+  label: string;
+  children?: FeaturesTreeModel[];
+}
+
 interface UserState {
   token?: string;
   userId?: number;
@@ -60,6 +68,7 @@ interface UserState {
   avatar?: string;
   featureScopes?: { [index: string]: number[] };
   feature?: Feature;
+  featuresTree: FeaturesTreeModel[];
   userInfo: Nullable<UserInfo>;
   roleList: string[];
   menu: Nullable<Menu>;
@@ -81,6 +90,7 @@ export const useUserStore = defineStore({
     token: undefined,
     featureScopes: undefined,
     feature: undefined,
+    featuresTree: [],
     // user info
     userInfo: null,
     // roleList
@@ -107,6 +117,11 @@ export const useUserStore = defineStore({
     },
     getFeature(): Feature {
       return this.feature || getAuthCache<Feature>(FEATURE_KEY);
+    },
+    getFeaturesTree(): FeaturesTreeModel[] {
+      return this.featuresTree.length > 0
+        ? this.featuresTree
+        : getAuthCache<FeaturesTreeModel[]>(FEATURE_TREE_KEY);
     },
     getMenu(): Menu {
       return this.menu || getAuthCache<Menu>(MENU_KEY);
@@ -154,6 +169,10 @@ export const useUserStore = defineStore({
     setFeature(features: { [index: string]: { [index: string]: boolean } }) {
       this.feature = features ?? {};
       setAuthCache(FEATURE_KEY, features);
+    },
+    setFeaturesTree(featuresTree: FeaturesTreeModel[]) {
+      this.featuresTree = featuresTree ?? [];
+      setAuthCache(FEATURE_TREE_KEY, featuresTree);
     },
     setMenu(menu: Menu | null) {
       this.menu = menu ?? null;
@@ -237,6 +256,7 @@ export const useUserStore = defineStore({
         );
         this.setMenu(remoteConfig.menus);
         this.setDicts(remoteConfig.dicts);
+        this.setFeaturesTree(remoteConfig.features);
         this.setPasswordValidation(JSON.parse(remoteConfig.passwordValidation));
         userInfo.accessToken && this.setToken(userInfo.accessToken);
 

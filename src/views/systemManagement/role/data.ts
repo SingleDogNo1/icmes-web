@@ -14,7 +14,7 @@ export const schemas: FormSchema[] = [
     field: 'orderBy',
     label: '排序字段',
     component: 'Input',
-    defaultValue: '',
+    defaultValue: 'code',
     show: false,
   },
   {
@@ -38,8 +38,7 @@ export const schemas: FormSchema[] = [
     defaultValue: '',
     componentProps: {
       maxlength: 20,
-      placeholder: '类型编码/类型名称',
-      // placeholder: t('common.chooseText'),
+      placeholder: '角色编码/角色名称',
     },
   },
 ];
