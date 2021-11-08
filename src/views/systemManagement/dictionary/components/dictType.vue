@@ -10,7 +10,6 @@
     </div>
     <EditDictTypeModal
       @register="registerModal"
-      :form="editForm"
       @update:dict="getDictTypesList(props.searchData)"
     />
   </PageWrapper>
@@ -46,7 +45,6 @@
   const selectedRowIndex = ref<number>(-1);
 
   const loading = ref(false);
-  const editForm = ref({}); // 点击新建/编辑时的数据
 
   const [registerTable, { setTableData, getPaginationRef, setPagination, getDataSource }] =
     useTable({
@@ -95,7 +93,6 @@
       {
         label: '编辑',
         onClick: () => {
-          editForm.value = record;
           openModal(true, record);
         },
       },

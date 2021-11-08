@@ -33,7 +33,7 @@
     disabled: {
       /** 是否不可编辑 */
       type: Boolean,
-      default: true,
+      default: false,
     },
     checkedKeys: {
       type: Array as PropType<string[]>,

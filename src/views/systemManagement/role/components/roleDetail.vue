@@ -8,7 +8,9 @@
           </PageWrapper>
         </TabPane>
         <TabPane key="member" tab="用户列表" forceRender>
-          <BasicTable @register="registerTable" @row-click="handleClickRow" />
+          <PageWrapper contentFullHeight dense>
+            <BasicTable @register="registerTable" @row-click="handleClickRow" />
+          </PageWrapper>
         </TabPane>
       </Tabs>
     </div>
@@ -19,7 +21,7 @@
   import { ref, watch } from 'vue';
   import { Tabs } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
-  import RoleTree from '/@/components/Business/src/RoleTree.vue';
+  import { RoleTree } from '/@/components/Business';
   import { BasicTable, useTable, PaginationProps } from '/@/components/Table';
   import { GetAccountOrgResultModel, RoleModel } from '/@/api/account/model/rolesModel';
 

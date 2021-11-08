@@ -146,6 +146,8 @@ export const usePermissionStore = defineStore({
           routes.push(...modList);
         });
 
+        console.log('routes :>> ', routes);
+
         routeList = routes as AppRouteRecordRaw[];
 
         routeList.sort((a, b) => (a.meta.orderNo || 0) - (b.meta.orderNo || 0));

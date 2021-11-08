@@ -18,7 +18,7 @@ const comp: AppRouteModule = {
     {
       path: 'basic',
       name: 'BasicDemo',
-      component: () => import('/@/views/demo/comp/button/index.vue'),
+      component: LAYOUT,
       meta: {
         title: t('routes.demo.comp.basic'),
       },
@@ -28,7 +28,7 @@ const comp: AppRouteModule = {
       path: 'form',
       name: 'FormDemo',
       redirect: '/comp/form/basic',
-      component: getParentLayout('FormDemo'),
+      component: LAYOUT,
       meta: {
         // icon: 'mdi:form-select',
         title: t('routes.demo.form.form'),
