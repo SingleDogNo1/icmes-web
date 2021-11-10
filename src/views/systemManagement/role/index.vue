@@ -73,7 +73,7 @@
   }
 
   function getRolesUserList(id, options = getUserListOption.value) {
-    const params = { ...options, ...{ roleId: id } };
+    const params = Object.assign(options, { roleId: id });
     return getRolesUserListByIdApi(id, params);
   }
 
@@ -98,13 +98,13 @@
   function handleChangeDictTypePage(page) {
     const value = getFieldsValue() as GetRoleListParams;
 
-    const form = { ...value, ...page };
+    const form = Object.assign(value, page);
     console.log('searchData :>> ', form);
     searchData.value = form;
   }
 
   async function handleChangeUserListPage(page) {
-    const form = { ...getUserListOption.value, ...page };
+    const form = Object.assign(getUserListOption.value, page);
     console.log('form :>> ', form, selectedRow.value);
     const userData = await getRolesUserList(selectedRow.value?.id);
     rowUserData.value = userData;

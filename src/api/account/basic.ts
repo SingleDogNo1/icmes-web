@@ -8,6 +8,7 @@ import {
   EditAccountResultModel,
   EmployeeBaseModel,
   DistributionRoleParams,
+  FeatureModel,
 } from './model/basicModel';
 
 enum Api {
@@ -127,6 +128,13 @@ export function delRoleByIdApi(
 ) {
   return defHttp.delete<EditAccountResultModel>(
     { url: Api.editAccount + id + '/organizations/' + orgId + '/roles/' + roleId },
+    { errorMessageMode: mode },
+  );
+}
+
+export function getFeaturesListByIdApi(id: string | number, mode: ErrorMessageMode = 'message') {
+  return defHttp.get<FeatureModel[]>(
+    { url: Api.editAccount + id + '/features/list' },
     { errorMessageMode: mode },
   );
 }

@@ -36,7 +36,7 @@
       default: false,
     },
     checkedKeys: {
-      type: Array as PropType<string[]>,
+      type: Array as PropType<string[] | number[]>,
       default: () => [],
     },
   });

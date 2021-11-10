@@ -84,3 +84,16 @@ export interface DistributionRoleParams {
   orgId: number;
   roleId: number;
 }
+
+export interface FeatureModel {
+  /** 功能编码 */
+  code: string;
+  /** 功能唯一标识符 */
+  id: number;
+  /** 功能所属的菜单项 */
+  menuId: number;
+  /** 功能名称 */
+  name: string;
+  /** 功能的描述 */
+  remark: string;
+}
