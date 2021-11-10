@@ -79,3 +79,8 @@ export interface EmployeeBaseModel {
   /** 专用设备号 */
   specialDevice: string;
 }
+
+export interface DistributionRoleParams {
+  orgId: number;
+  roleId: number;
+}

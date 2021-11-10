@@ -195,7 +195,7 @@ export class VAxios {
 
     const { requestOptions } = this.options;
 
-    const opt: RequestOptions = Object.assign({}, requestOptions, options);
+    const opt: RequestOptions = { ...{}, ...requestOptions, ...options };
 
     const { beforeRequestHook, requestCatchHook, transformRequestHook } = transform || {};
     if (beforeRequestHook && isFunction(beforeRequestHook)) {

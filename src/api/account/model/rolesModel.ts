@@ -29,7 +29,7 @@ export interface AccountRoleModel {
 
 export interface GetRoleListParams {
   /** 正序倒序 */
-  ascending?: true;
+  ascending?: boolean;
   /** 角色编码 */
   code?: string;
   /** 模糊查询 */
@@ -37,13 +37,13 @@ export interface GetRoleListParams {
   /** 角色编码 */
   id?: number;
   /** 角色名称 */
-  name: string;
+  name?: string;
   /** 排序列名 */
-  orderBy: string;
+  orderBy?: string;
   /** 当前页数 */
-  pageNo: number;
+  pageNo?: number;
   /** 每页条数 */
-  pageSize: number;
+  pageSize?: number;
 }
 
 export interface GetRoleListResultModel {

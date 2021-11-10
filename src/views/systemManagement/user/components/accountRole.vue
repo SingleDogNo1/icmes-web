@@ -1,16 +1,18 @@
 <template>
   <BasicTable @register="registerTable" :loading="loading">
     <template #toolbar>
-      <a-button type="primary" @click="openDialog">分配角色</a-button>
+      <a-button type="primary" @click="openModal(true, {})">分配角色</a-button>
     </template>
     <template #action="{ record }">
       <TableAction :actions="createActions(record)" />
     </template>
   </BasicTable>
+
+  <DistributionRoleModal @register="registerModal" @submit="handleDistributionRole" />
 </template>
 
 <script lang="ts" setup>
-  import { ref, watch } from 'vue';
+  import { ref, watch, PropType } from 'vue';
   import {
     BasicTable,
     useTable,
@@ -18,12 +20,20 @@
     PaginationProps,
     ActionItem,
   } from '/@/components/Table';
+  import { useModal } from '/@/components/Modal';
   import { getRolesListByIdApi } from '/@/api/account/roles';
-  import { GetRoleListByIdParams } from '/@/api/account/model/rolesModel';
+  import { distributionRoleByIdApi, delRoleByIdApi } from '/@/api/account/basic';
+  import { GetRoleListByIdParams, AccountRoleModel } from '/@/api/account/model/rolesModel';
+  import { AccountModel } from '/@/api/account/model/basicModel';
+  import DistributionRoleModal from './distributionRoleModal.vue';
+  import { useMessage } from '/@/hooks/web/useMessage';
+
+  const { createMessage } = useMessage();
 
   const props = defineProps({
     user: {
-      type: Object,
+      type: Object as PropType<AccountModel>,
+      required: true,
     },
   });
 
@@ -63,7 +73,9 @@
     },
   });
 
-  function createActions(record): ActionItem[] {
+  const [registerModal, { openModal }] = useModal();
+
+  function createActions(record: AccountRoleModel): ActionItem[] {
     return [
       {
         label: '删除',
@@ -71,15 +83,19 @@
         popConfirm: {
           title: '数据删除后将无法恢复，确认删除数据？',
           confirm: () => {
-            console.log('删除 :>> ', record);
+            loading.value = true;
+            delRoleByIdApi(props.user.employeeId, record.organizationId, record.roleId)
+              .then(() => {
+                createMessage.success('删除成功');
+                refreshData();
+              })
+              .finally(() => {
+                loading.value = false;
+              });
           },
         },
       },
     ];
-  }
-
-  function openDialog() {
-    console.log('分配角色 :>> ');
   }
 
   function getRolesListById(id, options) {
@@ -97,14 +113,35 @@
       });
   }
 
+  function refreshData() {
+    // 重置分页
+    setPagination({ current: 1, pageSize: 10 });
+    const options = { ...searchForm.value, ...{ pageNo: 1, pageSize: 10 } };
+    getRolesListById(props.user.employeeId, options);
+  }
+
+  function handleDistributionRole({ orgId, roleId }) {
+    loading.value = true;
+    console.log('val :>> ', orgId, roleId);
+    const { employeeId } = props.user;
+    distributionRoleByIdApi(employeeId, {
+      orgId,
+      roleId,
+    })
+      .then(() => {
+        createMessage.success('保存成功');
+        refreshData();
+      })
+      .finally(() => {
+        loading.value = false;
+      });
+  }
+
   watch(
     () => props.user,
-    (value) => {
+    () => {
       loading.value = true;
-      // 重置分页
-      setPagination({ current: 1, pageSize: 10 });
-      const options = { ...searchForm.value, ...{ pageNo: 1, pageSize: 10 } };
-      getRolesListById(value?.employeeId, options);
+      refreshData();
     },
     {
       deep: true,

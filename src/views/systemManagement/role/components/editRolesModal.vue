@@ -7,20 +7,18 @@
     @register="register"
     @ok="handleSubmit"
   >
-    <div class="pt-3px pr-3px">
-      <Tabs type="card">
-        <TabPane key="member" tab="用户列表" forceRender>
-          <PageWrapper contentFullHeight fixedHeight dense>
-            <BasicForm @register="registerForm" />
-          </PageWrapper>
-        </TabPane>
-        <TabPane key="permission" tab="用户权限">
-          <PageWrapper contentFullHeight dense>
-            <RoleTree :checked-keys="rowPermission" />
-          </PageWrapper>
-        </TabPane>
-      </Tabs>
-    </div>
+    <Tabs type="card">
+      <TabPane key="member" tab="用户列表" forceRender>
+        <PageWrapper contentFullHeight fixedHeight dense>
+          <BasicForm @register="registerForm" />
+        </PageWrapper>
+      </TabPane>
+      <TabPane key="permission" tab="用户权限">
+        <PageWrapper contentFullHeight dense>
+          <RoleTree :checked-keys="rowPermission" />
+        </PageWrapper>
+      </TabPane>
+    </Tabs>
   </BasicModal>
 </template>
 

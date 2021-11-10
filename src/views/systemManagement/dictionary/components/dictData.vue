@@ -14,11 +14,7 @@
         </template>
       </BasicTable>
     </div>
-    <EditDictDataModal
-      @register="registerModal"
-      :form="editForm"
-      :dict-type="props.selectRow.typeCode"
-    />
+    <EditDictDataModal @register="registerModal" :dict-type="props.selectRow.typeCode" />
   </PageWrapper>
 </template>
 
@@ -46,7 +42,6 @@
   });
 
   const loading = ref(false);
-  const editForm = ref({});
   const selectedRowIndex = ref<number>(-1);
 
   const [registerTable, { setTableData, getPaginationRef, setPagination, getDataSource }] =
@@ -114,7 +109,6 @@
       {
         label: '编辑',
         onClick: () => {
-          editForm.value = record;
           openModal(true, record);
         },
       },

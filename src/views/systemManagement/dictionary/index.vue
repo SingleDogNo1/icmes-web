@@ -63,7 +63,7 @@
   function handleChangeDictTypePage(page) {
     const value = getFieldsValue() as GetDictTypesParam;
 
-    const form = Object.assign(value, page);
+    const form = { ...value, ...page };
     console.log('searchData :>> ', form);
     searchData.value = form;
   }

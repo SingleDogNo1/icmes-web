@@ -7,9 +7,7 @@
     @register="register"
     @ok="handleSubmit"
   >
-    <div class="pt-3px pr-3px">
-      <BasicForm @register="registerForm" :model="model" />
-    </div>
+    <BasicForm @register="registerForm" :model="model" />
   </BasicModal>
 </template>
 <script lang="ts" setup>

@@ -74,7 +74,7 @@ export interface OrganizationsListResultModel {
   totalPages: number;
   /** 数据总条数 */
   totalCount: number;
-  items: OrganizationsFullNameModel[];
+  items: Nullable<OrganizationsFullNameModel[]>;
 }
 
 export interface OrganizationsFullNameModel {

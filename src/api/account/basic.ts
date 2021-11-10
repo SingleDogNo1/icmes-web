@@ -7,6 +7,7 @@ import {
   EditAccountParams,
   EditAccountResultModel,
   EmployeeBaseModel,
+  DistributionRoleParams,
 } from './model/basicModel';
 
 enum Api {
@@ -103,6 +104,29 @@ export function resetPasswordByIdApi(id: string | number, mode: ErrorMessageMode
 export function resetFaceByIdApi(id: string | number, mode: ErrorMessageMode = 'message') {
   return defHttp.put<EditAccountResultModel>(
     { url: Api.editAccount + id + '/face/reset' },
+    { errorMessageMode: mode },
+  );
+}
+
+export function distributionRoleByIdApi(
+  id: string | number,
+  params: DistributionRoleParams,
+  mode: ErrorMessageMode = 'message',
+) {
+  return defHttp.post<EditAccountResultModel>(
+    { url: Api.editAccount + id + '/relation/role-organization', params },
+    { errorMessageMode: mode },
+  );
+}
+
+export function delRoleByIdApi(
+  id: string | number,
+  orgId: string | number,
+  roleId: string | number,
+  mode: ErrorMessageMode = 'message',
+) {
+  return defHttp.delete<EditAccountResultModel>(
+    { url: Api.editAccount + id + '/organizations/' + orgId + '/roles/' + roleId },
     { errorMessageMode: mode },
   );
 }
