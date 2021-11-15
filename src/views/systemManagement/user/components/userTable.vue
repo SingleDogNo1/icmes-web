@@ -1,6 +1,6 @@
 <template>
   <PageWrapper contentFullHeight fixedHeight dense>
-    <div class="h-full overflow-auto mt-4 p-4 bg-white">
+    <div class="h-full p-4 mt-4 overflow-auto bg-white">
       <a-button class="mb-2.5" type="primary" @click="openModal(true, {})">新增账号</a-button>
       <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
         <template #employeeId="{ record }">
@@ -77,7 +77,7 @@
         return selectedRowIndex.value === index ? 'row__active' : '';
       },
       actionColumn: {
-        width: 160,
+        width: 200,
         title: '操作',
         dataIndex: 'action',
         slots: { customRender: 'action' },

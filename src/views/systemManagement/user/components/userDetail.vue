@@ -15,7 +15,9 @@
           </PageWrapper>
         </TabPane>
         <TabPane key="agentAppoint" tab="指派代理" forceRender>
-          <PageWrapper contentFullHeight dense> 指派代理 </PageWrapper>
+          <PageWrapper contentFullHeight dense>
+            <AssignmentAgent :user="selectedRow" />
+          </PageWrapper>
         </TabPane>
         <TabPane key="agentTake" tab="接手代理" forceRender>
           <PageWrapper contentFullHeight dense> 接手代理 </PageWrapper>
@@ -31,6 +33,7 @@
   import { PageWrapper } from '/@/components/Page';
   import { AccountModel } from '/@/api/account/model/basicModel';
   import AccountRole from './accountRole.vue';
+  import AssignmentAgent from './assignmentAgent.vue';
   import { RoleTree } from '/@/components/Business';
   import { getFeaturesListByIdApi } from '/@/api/account/basic';
 

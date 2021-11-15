@@ -9,6 +9,8 @@ import {
   EmployeeBaseModel,
   DistributionRoleParams,
   FeatureModel,
+  getAssignmentAgentParams,
+  getAssignmentAgentResultModel,
 } from './model/basicModel';
 
 enum Api {
@@ -135,6 +137,17 @@ export function delRoleByIdApi(
 export function getFeaturesListByIdApi(id: string | number, mode: ErrorMessageMode = 'message') {
   return defHttp.get<FeatureModel[]>(
     { url: Api.editAccount + id + '/features/list' },
+    { errorMessageMode: mode },
+  );
+}
+
+export function getAssignmentAgentListApi(
+  id: string,
+  params: getAssignmentAgentParams,
+  mode: ErrorMessageMode = 'message',
+) {
+  return defHttp.post<getAssignmentAgentResultModel>(
+    { url: Api.editAccount + id + '/consignProxies/list/', params },
     { errorMessageMode: mode },
   );
 }

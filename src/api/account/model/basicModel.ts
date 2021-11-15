@@ -97,3 +97,37 @@ export interface FeatureModel {
   /** 功能的描述 */
   remark: string;
 }
+
+export interface getAssignmentAgentParams {
+  /** 正序倒序 */
+  ascending: boolean;
+  /** 排序列名 */
+  orderBy: string;
+  /** 当前页数 */
+  pageNo: number;
+  /** 每页条数 */
+  pageSize: number;
+}
+
+export interface getAssignmentAgentResultModel {
+  items: Nullable<AccountConsignProxyModel[]>;
+  totalCount: number;
+  totalPages: number;
+}
+
+export interface AccountConsignProxyModel {
+  assId: number;
+  assignProxyCode: string;
+  assignProxyId: string;
+  assignProxyName: string;
+  assignProxyUserId: number;
+  fullOrgName: string;
+  id: number;
+  periodDays: string;
+  proxyEndDate: number;
+  proxyStartDate: number;
+  roleCode: string;
+  roleId: number;
+  roleName: string;
+  versionTag: string;
+}
