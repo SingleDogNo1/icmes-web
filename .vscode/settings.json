@@ -125,6 +125,7 @@
     "brotli",
     "browserslist",
     "childs",
+    "ciphertext",
     "codemirror",
     "commitlint",
     "cropperjs",
@@ -155,6 +156,7 @@
     "vitepress",
     "vueuse",
     "windi",
+    "zeropadding",
     "zxcvbn"
   ]
 }

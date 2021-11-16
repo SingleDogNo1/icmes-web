@@ -9,7 +9,7 @@ const comp: AppRouteModule = {
   component: LAYOUT,
   redirect: '/comp/basic',
   meta: {
-    orderNo: 30,
+    orderNo: 0,
     icon: 'ion:layers-outline',
     title: t('routes.demo.comp.comp'),
   },

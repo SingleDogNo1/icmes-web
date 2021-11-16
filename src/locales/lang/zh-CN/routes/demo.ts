@@ -1,4 +1,5 @@
 export default {
+  title: '示例',
   charts: {
     baiduMap: '百度地图',
     aMap: '高德地图',

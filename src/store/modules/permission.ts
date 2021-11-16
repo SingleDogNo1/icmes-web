@@ -1,5 +1,6 @@
 import type { AppRouteRecordRaw, Menu, BackModeRouteRecordRaw } from '/@/router/types';
 import { defineStore } from 'pinia';
+import { remove } from 'lodash-es';
 import { store } from '/@/store';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useUserStore } from './user';
@@ -10,6 +11,7 @@ import { ERROR_LOG_ROUTE, PAGE_NOT_FOUND_ROUTE, HOMEPAGE_ROUTE } from '/@/router
 import { filter } from '/@/utils/helper/treeHelper';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
+
 interface PermissionState {
   // Permission code list
   permCodeList: string[];
@@ -146,13 +148,18 @@ export const usePermissionStore = defineStore({
           routes.push(...modList);
         });
 
-        console.log('routes :>> ', routes);
+        if (!import.meta.env.DEV) {
+          remove(routes, (item) => item.name === 'Demo');
+        }
 
         routeList = routes as AppRouteRecordRaw[];
+
+        console.log('routeList :>> ', routeList);
 
         routeList.sort((a, b) => (a.meta.orderNo || 0) - (b.meta.orderNo || 0));
       } catch (error) {
         console.error(error);
+        throw error;
       }
 
       // Dynamically introduce components
