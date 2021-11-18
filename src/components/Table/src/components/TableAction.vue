@@ -25,14 +25,13 @@
     >
       <slot name="more"></slot>
       <a-button type="link" size="small" v-if="!$slots.more">
-        <MoreOutlined class="icon-more" />
+        更多<Icon icon="akar-icons:chevron-down" />
       </a-button>
     </Dropdown>
   </div>
 </template>
 <script lang="ts">
   import { defineComponent, PropType, computed, toRaw, unref } from 'vue';
-  import { MoreOutlined } from '@ant-design/icons-vue';
   import { Divider, Tooltip, TooltipProps } from 'ant-design-vue';
   import Icon from '/@/components/Icon/index';
   import { ActionItem, TableActionType } from '/@/components/Table';
@@ -46,8 +45,7 @@
   import { ACTION_COLUMN_FLAG } from '../const';
 
   export default defineComponent({
-    name: 'TableAction',
-    components: { Icon, PopConfirmButton, Divider, Dropdown, MoreOutlined, Tooltip },
+    components: { Icon, PopConfirmButton, Divider, Dropdown, Tooltip },
     props: {
       actions: {
         type: Array as PropType<ActionItem[]>,

@@ -77,7 +77,7 @@
         return selectedRowIndex.value === index ? 'row__active' : '';
       },
       actionColumn: {
-        width: 200,
+        width: 220,
         title: '操作',
         dataIndex: 'action',
         slots: { customRender: 'action' },

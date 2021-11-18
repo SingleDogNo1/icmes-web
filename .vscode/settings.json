@@ -158,5 +158,8 @@
     "windi",
     "zeropadding",
     "zxcvbn"
-  ]
+  ],
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  }
 }

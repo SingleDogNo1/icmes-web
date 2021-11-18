@@ -1,9 +1,9 @@
 /** 通过 ID 获取账号角色列表接口参数 */
 export interface GetRoleListByIdParams {
   /** 正序倒序 */
-  ascending: boolean;
+  ascending?: boolean;
   /** 排序列名 */
-  orderBy: string;
+  orderBy?: string;
   /** 当前页数 */
   pageNo: number;
   /** 每页条数 */

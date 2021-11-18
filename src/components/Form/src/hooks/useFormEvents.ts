@@ -243,7 +243,7 @@ export function useFormEvents({
       const res = handleFormValues(values);
       emit('submit', res);
     } catch (error) {
-      console.log('JSON>stringify(error) :>> ', JSON.stringify(error));
+      console.log('表单校验失败 :>>', JSON.stringify(error));
       throw new Error(error as string);
     }
   }

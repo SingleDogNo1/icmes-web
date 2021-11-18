@@ -6,17 +6,14 @@ import { encrypt } from 'crypto-js/aes';
 import { forEach, isString, isObject } from 'lodash-es';
 
 export function encryptSalt(data) {
-  const salt = MD5(data).toString();
-  const result = MD5(salt + data).toString();
-  return result;
+  return MD5(MD5(data).toString() + data).toString();
 }
 
 export function encryptPwd(data, aesKey) {
   const iv = UTF8.parse(aesKey + aesKey.substr(0, 6));
   const aesOption = { iv, padding };
   if (isString(data)) {
-    const ciphertext = encrypt(data, iv, aesOption).ciphertext;
-    return HEX.stringify(ciphertext).toString();
+    return HEX.stringify(encrypt(data, iv, aesOption).ciphertext).toString();
   }
 
   if (isObject(data)) {
