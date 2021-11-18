@@ -4,10 +4,10 @@ import { GetLogListParam, GetLogListResultModel } from './model/logModel';
 import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
-  /** 获取操作日志列表 */
   systemLog = '/info/log/list/',
 }
 
+/** 获取操作日志列表 */
 export function getLogListApi(params: GetLogListParam, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<GetLogListResultModel>(
     {

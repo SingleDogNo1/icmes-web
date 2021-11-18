@@ -11,6 +11,7 @@ import { ErrorMessageMode } from '/#/axios';
 enum Api {
   editProxies = '/account/proxies/',
 }
+
 /** 新增指派代理 */
 export function addProxyApi(params: addProxyParam, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<EditProxyResultModel>(
@@ -23,6 +24,7 @@ export function addProxyApi(params: addProxyParam, mode: ErrorMessageMode = 'mod
     },
   );
 }
+
 /** 查找指派代理 */
 export function getProxiesByIdApi(id: number | string, mode: ErrorMessageMode = 'modal') {
   return defHttp.get<GetProxyResultModel>(

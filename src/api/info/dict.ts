@@ -15,16 +15,13 @@ import {
 import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
-  /** 字典类型查询 */
   getDictTypesList = '/info/dictTypes/list/',
-  /** 新增/修改/删除字典类型 */
   editDictType = '/info/dictTypes/',
-  /** 字典数据列表查询 */
   getDictDataList = '/info/dictDatas/list/',
-  /** 新增/查询/删除/修改/启用/禁用字典数据 */
   editDictData = '/info/dictDatas/',
 }
 
+/** 字典类型查询--作者：何秋菊 */
 export function getDictTypesListApi(params: GetDictTypesParam, mode: ErrorMessageMode = 'message') {
   return defHttp.post<GetDictTypesResultModel>(
     {
@@ -37,6 +34,7 @@ export function getDictTypesListApi(params: GetDictTypesParam, mode: ErrorMessag
   );
 }
 
+/** 新增字典类型-作者：何秋菊 */
 export function addDictTypeApi(params: AddDictTypeParam, mode: ErrorMessageMode = 'message') {
   return defHttp.post<AddDictTypeResultModel>(
     {
@@ -49,6 +47,7 @@ export function addDictTypeApi(params: AddDictTypeParam, mode: ErrorMessageMode 
   );
 }
 
+/** 修改字典类型-作者：何秋菊 */
 export function editDictTypeApi(params: EditDictTypeParam, mode: ErrorMessageMode = 'message') {
   return defHttp.put<EditDictTypeResultModel>(
     {
@@ -61,6 +60,7 @@ export function editDictTypeApi(params: EditDictTypeParam, mode: ErrorMessageMod
   );
 }
 
+/** 删除字典类型-作者：何秋菊 */
 export function deleteDictTypeApi(code: string, mode: ErrorMessageMode = 'message') {
   return defHttp.delete<boolean>(
     {
@@ -72,6 +72,7 @@ export function deleteDictTypeApi(code: string, mode: ErrorMessageMode = 'messag
   );
 }
 
+/** 字典类型详情-作者：何秋菊 */
 export function getDictDataApi(params: GetDictDataParam, mode: ErrorMessageMode = 'message') {
   return defHttp.post<GetDictDataResultModel>(
     {
@@ -84,6 +85,7 @@ export function getDictDataApi(params: GetDictDataParam, mode: ErrorMessageMode 
   );
 }
 
+/** 新增字典数据-作者：何秋菊 */
 export function addDictDataApi(params: AddDictDataParam, mode: ErrorMessageMode = 'message') {
   return defHttp.post<boolean>(
     {
@@ -96,6 +98,7 @@ export function addDictDataApi(params: AddDictDataParam, mode: ErrorMessageMode 
   );
 }
 
+/** 修改字典数据-作者：何秋菊 */
 export function updateDictDataApi(
   code: string,
   params: UpdateDictDataParam,

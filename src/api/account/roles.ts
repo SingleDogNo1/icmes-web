@@ -25,6 +25,7 @@ enum Api {
   editRole = '/account/roles',
 }
 
+/** 账号角色列表查询--作者：张瑞晗 */
 export function getRolesListByIdApi(
   id: number | string,
   params: GetRoleListByIdParams,
@@ -41,6 +42,7 @@ export function getRolesListByIdApi(
   );
 }
 
+/** 角色查询列表--作者：张瑞晗 */
 export function getRolesListApi(params: GetRoleListParams, mode: ErrorMessageMode = 'message') {
   return defHttp.post<GetRoleListResultModel>(
     {
@@ -53,6 +55,7 @@ export function getRolesListApi(params: GetRoleListParams, mode: ErrorMessageMod
   );
 }
 
+/** 角色新增--作者：张瑞晗 */
 export function addRoleApi(params: AddRoleParams, mode: ErrorMessageMode = 'message') {
   return defHttp.post<AddRoleResultModel>(
     {
@@ -65,6 +68,7 @@ export function addRoleApi(params: AddRoleParams, mode: ErrorMessageMode = 'mess
   );
 }
 
+/** 角色修改--作者：张瑞晗 */
 export function editRoleApi(
   id: number | string,
   params: EditRoleParams,
@@ -81,6 +85,7 @@ export function editRoleApi(
   );
 }
 
+/** 角色权限列表查询--作者：徐宏亮 */
 export function getRoleFeaturesByIdApi(id: number | string, mode: ErrorMessageMode = 'message') {
   return defHttp.get<GetFeaturesResultModel[]>(
     {
@@ -92,6 +97,7 @@ export function getRoleFeaturesByIdApi(id: number | string, mode: ErrorMessageMo
   );
 }
 
+/** 角色用户列表查询--作者：徐宏亮 */
 export function getRolesUserListByIdApi(
   roleId: number | string,
   params: GetAccountOrgParams,

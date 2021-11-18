@@ -4,10 +4,10 @@ import { GetDevicesListParam, GetDevicesListResultModel } from './model/devicesM
 import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
-  /** 设备查询 */
   devicesList = '/info/devices/list/',
 }
 
+/** 设备查询 */
 export function getDevicesListApi(params: GetDevicesListParam, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<GetDevicesListResultModel>(
     {

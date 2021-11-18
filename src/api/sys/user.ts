@@ -3,19 +3,18 @@ import { ErrorMessageMode } from '/#/axios';
 import { PublicKeyModel, LoginParams, LoginResultModel, resetPwdParams } from './model/userModel';
 
 enum Api {
-  /** 获取publicKey */
   getPublicKey = '/account/publicKey',
-  /** 系统登录 */
   Login = '/account/login',
   resetPwd = '/account/password/initialize',
-  /** 系统登出 */
   Logout = '/account/exit',
 }
 
+/** 获取publicKey */
 export function getPublicKeyApi() {
   return defHttp.get<PublicKeyModel>({ url: Api.getPublicKey }, { errorMessageMode: 'none' });
 }
 
+/** 系统登录 */
 export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') {
   return defHttp.post<LoginResultModel>(
     {
@@ -28,6 +27,7 @@ export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'modal') 
   );
 }
 
+/** 初始化密码--作者：徐宏亮 */
 export function resetPwdApi(params: resetPwdParams, mode: ErrorMessageMode = 'modal') {
   return defHttp.put(
     {
@@ -40,6 +40,7 @@ export function resetPwdApi(params: resetPwdParams, mode: ErrorMessageMode = 'mo
   );
 }
 
+/** 系统登出 */
 export function logoutApi() {
   return defHttp.get({ url: Api.Logout });
 }

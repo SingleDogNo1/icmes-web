@@ -9,12 +9,11 @@ import {
 import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
-  /** 组织机构挂接人员查询树形结构 */
   accountTree = '/info/organizations/account/allTree/list/',
-  /** 组织机构查询 */
   organizationsList = '/info/organizations/list/',
 }
 
+/** 组织机构挂接人员查询树形结构 */
 export function getAllAccountTreeApi(
   params: AccountTreeParams,
   mode: ErrorMessageMode = 'message',
@@ -30,6 +29,7 @@ export function getAllAccountTreeApi(
   );
 }
 
+/** 组织机构查询 */
 export function getOrganizationsListApi(
   params: OrganizationsListParams,
   mode: ErrorMessageMode = 'message',
