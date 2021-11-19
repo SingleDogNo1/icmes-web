@@ -20,7 +20,14 @@
           </PageWrapper>
         </TabPane>
         <TabPane key="agentTake" tab="接手代理" forceRender>
-          <PageWrapper contentFullHeight dense> 接手代理 </PageWrapper>
+          <PageWrapper contentFullHeight dense>
+            <BasicTable @register="registerTakeAgentTable" :loading="loading">
+              <template #startDate="{ record }">{{ formatToDate(record.proxyStartDate) }}</template>
+              <template #endDate="{ record }">{{ formatToDate(record.proxyEndDate) }}</template>
+              <template #proxyType="{ record }">{{ parseProxyType(record.periodDays) }}</template>
+              <template #proxyCycle="{ record }">{{ parseProxyCycle(record.periodDays) }}</template>
+            </BasicTable>
+          </PageWrapper>
         </TabPane>
       </Tabs>
     </div>
@@ -35,7 +42,9 @@
   import AccountRole from './accountRole.vue';
   import AssignmentAgent from './assignmentAgent.vue';
   import { RoleTree } from '/@/components/Business';
-  import { getFeaturesListByIdApi } from '/@/api/account/basic';
+  import { getFeaturesListByIdApi, getAssignmentProxiesListApi } from '/@/api/account/basic';
+  import { BasicTable, useTable, PaginationProps } from '/@/components/Table';
+  import { formatToDate, parseProxyType, parseProxyCycle } from '../helper';
 
   const TabPane = Tabs.TabPane;
 
@@ -49,20 +58,72 @@
   const userPermission = ref<string[]>([]);
   const loading = ref<boolean>(false);
 
-  watch(
-    () => props.selectedRow,
-    (value) => {
+  const getProxyForm = ref({
+    ascending: true,
+    pageNo: 1,
+    pageSize: 10,
+  });
+
+  const [registerTakeAgentTable, { setTableData, getPaginationRef, setPagination }] = useTable({
+    columns: [
+      { title: '组织机构', dataIndex: 'fullOrgName', fixed: 'left' },
+      { title: '角色', dataIndex: 'roleName', fixed: 'left' },
+      { title: '指派人', dataIndex: 'consignProxyName', fixed: 'left' },
+      { title: '开始时间', dataIndex: 'proxyStartDate', slots: { customRender: 'startDate' } },
+      { title: '结束时间', dataIndex: 'proxyEndDate', slots: { customRender: 'endDate' } },
+      { title: '代理类型', dataIndex: 'periodDays', slots: { customRender: 'proxyType' } },
+      { title: '周期', dataIndex: 'periodDays', slots: { customRender: 'proxyCycle' } },
+    ],
+    striped: false,
+    ellipsis: false,
+    onChange: () => {
       loading.value = true;
-      getFeaturesListByIdApi(value.employeeId)
-        .then((data) => {
-          userPermission.value = data.reduce((res, pre) => {
-            res.push(pre.id + '');
-            return res;
-          }, [] as string[]);
+      const page = getPaginationRef() as PaginationProps;
+      const options = {
+        ...getProxyForm.value,
+        ...{ pageNo: page.current!, pageSize: page.pageSize! },
+      };
+      getAssignmentProxiesListApi(props.selectedRow?.employeeId, options)
+        .then(({ items, totalCount }) => {
+          setTableData(items || []);
+          setPagination({
+            current: page.current,
+            pageSize: page.pageSize,
+            total: totalCount,
+          });
         })
         .finally(() => {
           loading.value = false;
         });
+    },
+  });
+
+  watch(
+    () => props.selectedRow,
+    async (value) => {
+      loading.value = true;
+      try {
+        const permission = await getFeaturesListByIdApi(value.employeeId);
+        userPermission.value = permission.reduce((res, pre) => {
+          res.push(pre.id + '');
+          return res;
+        }, [] as string[]);
+
+        const { items: proxiesList, totalCount } = await getAssignmentProxiesListApi(
+          value.employeeId,
+          getProxyForm.value,
+        );
+
+        setTableData(proxiesList || []);
+
+        setPagination({
+          total: totalCount,
+        });
+
+        console.log('object :>> ', proxiesList);
+      } finally {
+        loading.value = false;
+      }
     },
     {
       deep: true,

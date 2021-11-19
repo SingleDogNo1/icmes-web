@@ -98,11 +98,11 @@ export interface FeatureModel {
   remark: string;
 }
 
-export interface getAssignmentAgentParams {
+export interface getAssignmentParams {
   /** 正序倒序 */
-  ascending: boolean;
+  ascending?: boolean;
   /** 排序列名 */
-  orderBy: string;
+  orderBy?: string;
   /** 当前页数 */
   pageNo: number;
   /** 每页条数 */
@@ -130,4 +130,27 @@ export interface AccountConsignProxyModel {
   roleId: number;
   roleName: string;
   versionTag: string;
+}
+
+export interface AccountAssignProxyModel {
+  assId: number;
+  consignProxyId: string;
+  consignProxyName: string;
+  consignProxyUserId: number;
+  fullOrgName: string;
+  id: number;
+  organizationCode: string;
+  organizationId: number;
+  periodDays: string;
+  proxyEndDate: number;
+  proxyStartDate: number;
+  roleCode: string;
+  roleId: number;
+  roleName: string;
+  versionTag: string;
+}
+export interface getAssignmentProxiesResultModel {
+  items: Nullable<AccountAssignProxyModel[]>;
+  totalCount: number;
+  totalPages: number;
 }

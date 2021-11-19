@@ -9,8 +9,9 @@ import {
   EmployeeBaseModel,
   DistributionRoleParams,
   FeatureModel,
-  getAssignmentAgentParams,
+  getAssignmentParams,
   getAssignmentAgentResultModel,
+  getAssignmentProxiesResultModel,
 } from './model/basicModel';
 
 enum Api {
@@ -153,11 +154,23 @@ export function getFeaturesListByIdApi(id: string | number, mode: ErrorMessageMo
 /** 账号指派代理人列表查询--作者：徐宏亮 */
 export function getAssignmentAgentListApi(
   id: string,
-  params: getAssignmentAgentParams,
+  params: getAssignmentParams,
   mode: ErrorMessageMode = 'message',
 ) {
   return defHttp.post<getAssignmentAgentResultModel>(
     { url: Api.editAccount + id + '/consignProxies/list/', params },
+    { errorMessageMode: mode },
+  );
+}
+
+/** 账号接手代理人查询--作者：张瑞晗 */
+export function getAssignmentProxiesListApi(
+  id: number,
+  params: getAssignmentParams,
+  mode: ErrorMessageMode = 'message',
+) {
+  return defHttp.post<getAssignmentProxiesResultModel>(
+    { url: Api.editAccount + id + '/assignProxies/list/', params },
     { errorMessageMode: mode },
   );
 }
