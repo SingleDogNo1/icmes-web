@@ -1,6 +1,6 @@
 <template>
   <PageWrapper contentFullHeight fixedHeight dense>
-    <div class="h-full overflow-auto mt-4 p-4 bg-white">
+    <div class="h-full p-4 mt-4 overflow-auto bg-white">
       <a-button class="mb-2.5" type="primary" @click="openModal(true, {})">新建</a-button>
       <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
         <template #action="{ record }">

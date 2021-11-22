@@ -30,6 +30,12 @@
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { RoleModel } from '/@/api/account/model/rolesModel';
   import { Tabs } from 'ant-design-vue';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import { addRoleApi, editRoleApi } from '/@/api/account/roles';
+
+  const { createMessage } = useMessage();
+
+  const emit = defineEmits(['update:role']);
 
   const TabPane = Tabs.TabPane;
 
@@ -40,6 +46,7 @@
   });
   const loading = ref<boolean>(false);
   const editType: Ref<'create' | 'edit' | ''> = ref('');
+  const editId = ref<Number | null>(null);
 
   const [registerForm, { getFieldsValue, setFieldsValue, updateSchema }] = useForm({
     schemas: [
@@ -96,15 +103,36 @@
 
     // 如果存在versionTag 字段，是编辑，否则是新建。并且编辑时，code 选项不可操作
     editType.value = data.versionTag ? 'edit' : 'create';
+    if (editType.value === 'edit') editId.value = data.id;
     updateSchema({ field: 'code', componentProps: { disabled: Boolean(data.versionTag) } });
   }
 
-  const [register] = useModalInner((data) => {
+  const [register, { closeModal }] = useModalInner((data) => {
     data && onDataReceive(data);
   });
 
   function handleSubmit() {
+    loading.value = true;
     const values = getFieldsValue();
+    if (editType.value === 'create') {
+      addRoleApi(values)
+        .then(() => {
+          createMessage.success('保存成功');
+        })
+        .finally(() => {
+          loading.value = false;
+        });
+    } else {
+      editRoleApi(editId.value, values)
+        .then(() => {
+          createMessage.success('保存成功');
+        })
+        .finally(() => {
+          loading.value = false;
+        });
+    }
+    closeModal();
+    emit('update:role');
     console.log('object :>> ', values);
   }
 </script>

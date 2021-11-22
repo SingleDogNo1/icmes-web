@@ -10,6 +10,8 @@ import {
   GetDictDataResultModel,
   AddDictDataParam,
   UpdateDictDataParam,
+  DisabledDictDataParam,
+  EnabledDictDataParam,
 } from './model/dictModel';
 
 import { ErrorMessageMode } from '/#/axios';
@@ -108,6 +110,58 @@ export function updateDictDataApi(
     {
       url: Api.editDictData + params.typeCode + '/' + code,
       params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
+/** 禁用字典数据-作者：何秋菊 */
+export function disabledDictDataApi(
+  typeCode: string,
+  code: string,
+  params: DisabledDictDataParam,
+  mode: ErrorMessageMode = 'message',
+) {
+  return defHttp.put<boolean>(
+    {
+      url: Api.editDictData + typeCode + '/' + code + '/disabled',
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
+/** 启用字典数据-作者：何秋菊 */
+export function enabledDictDataApi(
+  typeCode: string,
+  code: string,
+  params: EnabledDictDataParam,
+  mode: ErrorMessageMode = 'message',
+) {
+  return defHttp.put<boolean>(
+    {
+      url: Api.editDictData + typeCode + '/' + code + '/enabled',
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
+/** 字典数据删除-作者：何秋菊 */
+export function deleteDictDataApi(
+  typeCode: string,
+  code: string,
+  mode: ErrorMessageMode = 'message',
+) {
+  return defHttp.delete<boolean>(
+    {
+      url: Api.editDictData + typeCode + '/' + code,
     },
     {
       errorMessageMode: mode,
