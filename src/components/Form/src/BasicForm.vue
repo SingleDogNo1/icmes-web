@@ -70,6 +70,13 @@
     </template>
   </Form>
 </template>
+
+<script lang="ts">
+  export default {
+    name: 'BasicForm',
+  };
+</script>
+
 <script lang="ts" setup>
   import type { FormActionType, FormProps, FormSchema } from './types/form';
   import type { AdvanceState } from './types/hooks';

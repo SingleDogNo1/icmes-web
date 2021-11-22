@@ -32,6 +32,15 @@ const demo: BackModeRouteRecordRaw = {
           },
         },
         {
+          path: 'drag-panel',
+          name: 'DragPanel',
+          component: '/demo/comp/dragPanel/index',
+          meta: {
+            code: 27500,
+            title: 'routes.demo.comp.dragPanel',
+          },
+        },
+        {
           path: 'form',
           name: 'FormDemo',
           redirect: '/comp/form/basic',

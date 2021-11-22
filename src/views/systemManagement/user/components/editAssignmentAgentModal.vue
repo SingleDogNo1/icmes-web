@@ -19,7 +19,7 @@
   import { BasicTable, useTable } from '/@/components/Table';
   import { BasicForm, useForm } from '/@/components/Form';
   import { BasicModal, useModalInner } from '/@/components/Modal';
-  import moment from 'moment';
+  import { dateUtil } from '/@/utils/dateUtil';
   import { useUserStoreWithOut } from '/@/store/modules/user';
   import { useUserState } from '/@/hooks/web/useUserState';
   import { PageWrapper } from '/@/components/Page';
@@ -70,7 +70,7 @@
           defaultPickerValue: [],
           format: 'YYYY-MM-DD',
           showTime: {
-            defaultValue: [moment().startOf('day'), moment().endOf('day')],
+            defaultValue: [dateUtil().startOf('day'), dateUtil().endOf('day')],
           },
         },
         rules: [

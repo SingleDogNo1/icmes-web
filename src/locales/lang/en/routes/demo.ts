@@ -12,6 +12,7 @@ export default {
   comp: {
     comp: 'Component',
     basic: 'Basic',
+    dragPanel: 'Drag Panel',
     transition: 'Animation',
     countTo: 'Count To',
 

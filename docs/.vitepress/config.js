@@ -118,6 +118,10 @@ function createSidebar() {
             link: '/components/basic',
           },
           {
+            text: 'DragPanel',
+            link: '/components/drag-panel',
+          },
+          {
             text: 'Page',
             link: '/components/page',
           },

@@ -3,7 +3,6 @@
   "editor.formatOnSave": true,
   "typescript.tsdk": "./node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "volar.tsPlugin": false,
   "vetur.validation.script": false,
   //===========================================
   //============= Editor ======================
@@ -144,6 +143,7 @@
     "nprogress",
     "pinia",
     "qrcode",
+    "resizer",
     "SAFTY",
     "sider",
     "sortablejs",

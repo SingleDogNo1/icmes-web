@@ -1,6 +1,6 @@
 import { FormSchema } from '/@/components/Form/index';
 import { useI18n } from '/@/hooks/web/useI18n';
-import moment from 'moment';
+import { dateUtil } from '/@/utils/dateUtil';
 import { useUserState } from '/@/hooks/web/useUserState';
 import { useUserStoreWithOut } from '/@/store/modules/user';
 import type { BasicColumn } from '/@/components/Table/index';
@@ -120,7 +120,7 @@ export const schemas: FormSchema[] = [
       defaultPickerValue: [],
       format: 'YYYY-MM-DD',
       showTime: {
-        defaultValue: [moment().startOf('day'), moment().endOf('day')],
+        defaultValue: [dateUtil().startOf('day'), dateUtil().endOf('day')],
       },
     },
   },

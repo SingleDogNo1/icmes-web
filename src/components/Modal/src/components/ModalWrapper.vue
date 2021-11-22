@@ -1,4 +1,4 @@
-<template inherit-attrs="false">
+<template>
   <ScrollContainer ref="wrapperRef">
     <div
       :class="`${prefixCls}-container`"
@@ -15,6 +15,14 @@
     </div>
   </ScrollContainer>
 </template>
+
+<script lang="ts">
+  export default {
+    name: 'ModalWrapper',
+    inheritAttrs: false,
+  };
+</script>
+
 <script lang="ts" setup>
   import type { CSSProperties } from 'vue';
   import { computed, ref, watchEffect, unref, watch, onMounted, nextTick, onUnmounted } from 'vue';
