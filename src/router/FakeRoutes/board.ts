@@ -47,6 +47,15 @@ const board: BackModeRouteRecordRaw = {
         title: 'routes.board.taskBoard',
       },
     },
+    {
+      path: 'https://www.baidu.com/',
+      name: 'BaiDuExternal',
+      component: 'IFRAME',
+      meta: {
+        code: 27600,
+        title: 'routes.demo.iframe.docExternal',
+      },
+    },
   ],
 };
 

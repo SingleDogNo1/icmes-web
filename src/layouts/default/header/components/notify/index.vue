@@ -1,8 +1,8 @@
 <template>
   <div :class="prefixCls">
     <Popover title="" trigger="click" :overlayClassName="`${prefixCls}__overlay`">
-      <Badge :count="count" dot :numberStyle="numberStyle">
-        <BellOutlined />
+      <Badge :count="count" :offset="[-5, 15]">
+        <Icon icon="fa-regular:bell" :size="18" />
       </Badge>
       <template #content>
         <Tabs>
@@ -22,45 +22,33 @@
     </Popover>
   </div>
 </template>
-<script lang="ts">
-  import { computed, defineComponent, ref } from 'vue';
+<script lang="ts" setup>
+  import { ref } from 'vue';
   import { Popover, Tabs, Badge } from 'ant-design-vue';
-  import { BellOutlined } from '@ant-design/icons-vue';
   import { tabListData, ListItem } from './data';
   import NoticeList from './NoticeList.vue';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { Icon } from '/@/components/Icon';
 
-  export default defineComponent({
-    components: { Popover, BellOutlined, Tabs, TabPane: Tabs.TabPane, Badge, NoticeList },
-    setup() {
-      const { prefixCls } = useDesign('header-notify');
-      const { createMessage } = useMessage();
-      const listData = ref(tabListData);
+  const TabPane = Tabs.TabPane;
 
-      const count = computed(() => {
-        let count = 0;
-        for (let i = 0; i < tabListData.length; i++) {
-          count += tabListData[i].list.length;
-        }
-        return count;
-      });
-
-      function onNoticeClick(record: ListItem) {
-        createMessage.success('你点击了通知，ID=' + record.id);
-        // 可以直接将其标记为已读（为标题添加删除线）,此处演示的代码会切换删除线状态
-        record.titleDelete = !record.titleDelete;
-      }
-
-      return {
-        prefixCls,
-        listData,
-        count,
-        onNoticeClick,
-        numberStyle: {},
-      };
+  defineProps({
+    count: {
+      type: Number,
+      required: true,
     },
   });
+
+  const { prefixCls } = useDesign('header-notify');
+  const { createMessage } = useMessage();
+  const listData = ref(tabListData);
+
+  function onNoticeClick(record: ListItem) {
+    createMessage.success('你点击了通知，ID=' + record.id);
+    // 可以直接将其标记为已读（为标题添加删除线）,此处演示的代码会切换删除线状态
+    record.titleDelete = !record.titleDelete;
+  }
 </script>
 <style lang="less">
   @prefix-cls: ~'@{namespace}-header-notify';

@@ -1,8 +1,6 @@
 <template>
   <Header :class="getHeaderClass">
-    <!-- left start -->
     <div :class="`${prefixCls}-left`">
-      <!-- logo -->
       <AppLogo
         v-if="getShowHeaderLogo || getIsMobile"
         :class="`${prefixCls}-logo`"
@@ -18,9 +16,7 @@
       />
       <LayoutBreadcrumb v-if="getShowContent && getShowBread" :theme="getHeaderTheme" />
     </div>
-    <!-- left end -->
 
-    <!-- menu start -->
     <div :class="`${prefixCls}-menu`" v-if="getShowTopMenu && !getIsMobile">
       <LayoutMenu
         :isHorizontal="true"
@@ -29,171 +25,149 @@
         :menuMode="getMenuMode"
       />
     </div>
-    <!-- menu-end -->
 
-    <!-- action  -->
     <div :class="`${prefixCls}-action`">
-      <AppSearch :class="`${prefixCls}-action__item `" v-if="getShowSearch" />
-
+      <AppSearch :class="`${prefixCls}-action__item`" v-if="getShowSearch" />
       <ErrorAction v-if="getUseErrorHandle" :class="`${prefixCls}-action__item error-action`" />
+      <Audit :class="`${prefixCls}-action__item notify-item`" :count="approvalNum" />
+      <Task :class="`${prefixCls}-action__item notify-item`" :count="taskNum" />
 
-      <Notify v-if="getShowNotice" :class="`${prefixCls}-action__item notify-item`" />
-
+      <Notify
+        v-if="getShowNotice"
+        :class="`${prefixCls}-action__item notify-item`"
+        :count="messageNum"
+      />
       <FullScreen v-if="getShowFullScreen" :class="`${prefixCls}-action__item fullscreen-item`" />
-
       <AppLocalePicker
         v-if="getShowLocalePicker"
         :reload="true"
         :showText="false"
         :class="`${prefixCls}-action__item`"
       />
-
       <UserDropDown :theme="getHeaderTheme" />
-
       <SettingDrawer v-if="getShowSetting" :class="`${prefixCls}-action__item`" />
     </div>
   </Header>
 </template>
+
 <script lang="ts">
-  import { defineComponent, unref, computed } from 'vue';
+  export default {
+    name: 'LayoutHeader',
+  };
+</script>
 
-  import { propTypes } from '/@/utils/propTypes';
-
+<script lang="ts" setup>
+  import { ref, unref, computed } from 'vue';
   import { Layout } from 'ant-design-vue';
   import { AppLogo } from '/@/components/Application';
   import LayoutMenu from '../menu/index.vue';
   import LayoutTrigger from '../trigger/index.vue';
-
   import { AppSearch } from '/@/components/Application';
-
   import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting';
   import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
   import { useRootSetting } from '/@/hooks/setting/useRootSetting';
-
   import { MenuModeEnum, MenuSplitTyeEnum } from '/@/enums/menuEnum';
   import { SettingButtonPositionEnum } from '/@/enums/appEnum';
   import { AppLocalePicker } from '/@/components/Application';
-
-  import { UserDropDown, LayoutBreadcrumb, FullScreen, Notify, ErrorAction } from './components';
+  import {
+    UserDropDown,
+    LayoutBreadcrumb,
+    FullScreen,
+    Notify,
+    ErrorAction,
+    Audit,
+    Task,
+  } from './components';
   import { useAppInject } from '/@/hooks/web/useAppInject';
   import { useDesign } from '/@/hooks/web/useDesign';
-
   import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
   import { useLocale } from '/@/locales/useLocale';
+  import { getUnreadNoticeApi } from '/@/api/notice/basic';
 
-  export default defineComponent({
-    name: 'LayoutHeader',
-    components: {
-      Header: Layout.Header,
-      AppLogo,
-      LayoutTrigger,
-      LayoutBreadcrumb,
-      LayoutMenu,
-      UserDropDown,
-      AppLocalePicker,
-      FullScreen,
-      Notify,
-      AppSearch,
-      ErrorAction,
-      SettingDrawer: createAsyncComponent(() => import('/@/layouts/default/setting/index.vue'), {
-        loading: true,
-      }),
-    },
-    props: {
-      fixed: propTypes.bool,
-    },
-    setup(props) {
-      const { prefixCls } = useDesign('layout-header');
-      const {
-        getShowTopMenu,
-        getShowHeaderTrigger,
-        getSplit,
-        getIsMixMode,
-        getMenuWidth,
-        getIsMixSidebar,
-      } = useMenuSetting();
-      const { getUseErrorHandle, getShowSettingButton, getSettingButtonPosition } =
-        useRootSetting();
+  const Header = Layout.Header;
+  const SettingDrawer = createAsyncComponent(() => import('/@/layouts/default/setting/index.vue'), {
+    loading: true,
+  });
 
-      const {
-        getHeaderTheme,
-        getShowFullScreen,
-        getShowNotice,
-        getShowContent,
-        getShowBread,
-        getShowHeaderLogo,
-        getShowHeader,
-        getShowSearch,
-      } = useHeaderSetting();
+  const props = defineProps({
+    fixed: Boolean,
+  });
 
-      const { getShowLocalePicker } = useLocale();
+  const { prefixCls } = useDesign('layout-header');
+  const {
+    getShowTopMenu,
+    getShowHeaderTrigger,
+    getSplit,
+    getIsMixMode,
+    getMenuWidth,
+    getIsMixSidebar,
+  } = useMenuSetting();
 
-      const { getIsMobile } = useAppInject();
+  const { getUseErrorHandle, getShowSettingButton, getSettingButtonPosition } = useRootSetting();
 
-      const getHeaderClass = computed(() => {
-        const theme = unref(getHeaderTheme);
-        return [
-          prefixCls,
-          {
-            [`${prefixCls}--fixed`]: props.fixed,
-            [`${prefixCls}--mobile`]: unref(getIsMobile),
-            [`${prefixCls}--${theme}`]: theme,
-          },
-        ];
-      });
+  const {
+    getHeaderTheme,
+    getShowFullScreen,
+    getShowNotice,
+    getShowContent,
+    getShowBread,
+    getShowHeaderLogo,
+    getShowHeader,
+    getShowSearch,
+  } = useHeaderSetting();
 
-      const getShowSetting = computed(() => {
-        if (!unref(getShowSettingButton)) {
-          return false;
-        }
-        const settingButtonPosition = unref(getSettingButtonPosition);
+  const getHeaderClass = computed(() => {
+    const theme = unref(getHeaderTheme);
+    return [
+      prefixCls,
+      {
+        [`${prefixCls}--fixed`]: props.fixed,
+        [`${prefixCls}--mobile`]: unref(getIsMobile),
+        [`${prefixCls}--${theme}`]: theme,
+      },
+    ];
+  });
 
-        if (settingButtonPosition === SettingButtonPositionEnum.AUTO) {
-          return unref(getShowHeader);
-        }
-        return settingButtonPosition === SettingButtonPositionEnum.HEADER;
-      });
+  const { getShowLocalePicker } = useLocale();
 
-      const getLogoWidth = computed(() => {
-        if (!unref(getIsMixMode) || unref(getIsMobile)) {
-          return {};
-        }
-        const width = unref(getMenuWidth) < 180 ? 180 : unref(getMenuWidth);
-        return { width: `${width}px` };
-      });
+  const { getIsMobile } = useAppInject();
 
-      const getSplitType = computed(() => {
-        return unref(getSplit) ? MenuSplitTyeEnum.TOP : MenuSplitTyeEnum.NONE;
-      });
+  const getShowSetting = computed(() => {
+    if (!unref(getShowSettingButton)) {
+      return false;
+    }
+    const settingButtonPosition = unref(getSettingButtonPosition);
 
-      const getMenuMode = computed(() => {
-        return unref(getSplit) ? MenuModeEnum.HORIZONTAL : null;
-      });
+    if (settingButtonPosition === SettingButtonPositionEnum.AUTO) {
+      return unref(getShowHeader);
+    }
+    return settingButtonPosition === SettingButtonPositionEnum.HEADER;
+  });
 
-      return {
-        prefixCls,
-        getHeaderClass,
-        getShowHeaderLogo,
-        getHeaderTheme,
-        getShowHeaderTrigger,
-        getIsMobile,
-        getShowBread,
-        getShowContent,
-        getSplitType,
-        getSplit,
-        getMenuMode,
-        getShowTopMenu,
-        getShowLocalePicker,
-        getShowFullScreen,
-        getShowNotice,
-        getUseErrorHandle,
-        getLogoWidth,
-        getIsMixSidebar,
-        getShowSettingButton,
-        getShowSetting,
-        getShowSearch,
-      };
-    },
+  const getLogoWidth = computed(() => {
+    if (!unref(getIsMixMode) || unref(getIsMobile)) {
+      return {};
+    }
+    const width = unref(getMenuWidth) < 180 ? 180 : unref(getMenuWidth);
+    return { width: `${width}px` };
+  });
+
+  const getSplitType = computed(() => {
+    return unref(getSplit) ? MenuSplitTyeEnum.TOP : MenuSplitTyeEnum.NONE;
+  });
+
+  const getMenuMode = computed(() => {
+    return unref(getSplit) ? MenuModeEnum.HORIZONTAL : null;
+  });
+
+  const approvalNum = ref(0); // 审批数
+  const taskNum = ref(0); // 任务数
+  const messageNum = ref(0); // 未读消息数
+
+  getUnreadNoticeApi().then((data) => {
+    approvalNum.value = data.approvalNum;
+    taskNum.value = data.taskNum;
+    messageNum.value = data.messageNum;
   });
 </script>
 <style lang="less">

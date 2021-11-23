@@ -1,7 +1,5 @@
 # 开始
 
-本文会帮助你从头启动项目
-
 ## 环境准备
 
 本地环境需要安装 [Yarn1.x](https://yarnpkg.com/)、[Node.js](http://nodejs.org/) 和 [Git](https://git-scm.com/)
@@ -9,13 +7,13 @@
 ::: warning 注意
 
 - 推荐使用[Yarn1.x](https://yarnpkg.com/)，否则依赖可能安装不上。
-- [Node.js](http://nodejs.org/) 版本要求`12.x`以上，且不能为`13.x`版本，这里推荐 `14.x` 及以上。
+- [Node.js](http://nodejs.org/) 要求`16.x` 及以上。
 
 :::
 
 ## 工具配置
 
-如果您使用的 IDE 是[vscode](https://code.visualstudio.com/)(推荐)的话，可以安装以下工具来提高开发效率及代码格式化
+如果您使用的 IDE 是[vscode](https://code.visualstudio.com/)的话，建议安装以下工具来提高开发效率
 
 - [Iconify IntelliSense](https://marketplace.visualstudio.com/items?itemName=antfu.iconify) - Iconify 图标插件
 - [windicss IntelliSense](https://marketplace.visualstudio.com/items?itemName=voorjaar.windicss-intellisense) - windicss 提示插件
@@ -30,7 +28,7 @@
 
 ### yarn 安装
 
-必须使用 [Yarn](https://github.com/yarnpkg/yarn)进行依赖安装（若其他包管理器安装不了需要自行处理）。
+**必须**使用 [Yarn](https://github.com/yarnpkg/yarn)进行依赖安装（若其他包管理器安装不了需要自行处理）。
 
 如果未安装`yarn`，可以用下面命令来进行全局安装
 
@@ -42,24 +40,6 @@ yarn -v # 出现对应版本号即代表安装成功
 # 安装依赖
 yarn
 ```
-
-### imagemin 依赖安装失败解决方法
-
-由于 imagemin 在国内安装困难，提供以下几个解决方案：
-
-- 如果你使用 `yarn`,不需要做任何操作，`package.json` 已经配置过了
-
-- 如果使用 `npm`，在电脑 `host` 文件加上如下配置即可
-
-```bash
-199.232.4.133 raw.githubusercontent.com
-```
-
-::: tip 安装依赖时 husky 安装失败
-
-`husky` 需要依赖 `git` 才能安装。此时需使用 `git init` 初始化项目，再尝试重新安装即可。
-
-:::
 
 ## npm script
 
