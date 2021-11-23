@@ -123,3 +123,12 @@ export interface UpdateDictDataParam {
   /** 控制版本 */
   versionTag?: string;
 }
+
+export interface DisabledDictDataParam {
+  /** 控制版本 */
+  versionTag?: string;
+}
+export interface EnabledDictDataParam {
+  /** 控制版本 */
+  versionTag?: string;
+}

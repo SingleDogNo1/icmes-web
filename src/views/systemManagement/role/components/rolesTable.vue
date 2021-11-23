@@ -1,6 +1,6 @@
 <template>
   <PageWrapper contentFullHeight fixedHeight dense>
-    <div class="h-full overflow-auto mt-4 p-4 bg-white">
+    <div class="h-full p-4 mt-4 overflow-auto bg-white">
       <a-button class="mb-2.5" type="primary" @click="openModal(true, {})">新增角色</a-button>
       <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
         <template #action="{ record }">
@@ -11,7 +11,7 @@
     <EditRolesModal
       :active-row="selectedRow"
       @register="registerModal"
-      @update:dict="getDictTypesList(props.searchData)"
+      @update:role="getRolesList(props.searchData)"
     />
   </PageWrapper>
 </template>
@@ -26,7 +26,7 @@
     PaginationProps,
     ActionItem,
   } from '/@/components/Table';
-  import { getRolesListApi } from '/@/api/account/roles';
+  import { getRolesListApi, deleteRoleApi } from '/@/api/account/roles';
   import { GetRoleListParams, RoleModel } from '/@/api/account/model/rolesModel';
   import EditRolesModal from './editRolesModal.vue';
   import { useModal } from '/@/components/Modal';
@@ -77,7 +77,7 @@
   watch(
     () => props.searchData,
     (value) => {
-      getDictTypesList(value);
+      getRolesList(value);
       setPagination({
         current: value.pageNo,
       });
@@ -101,21 +101,21 @@
         popConfirm: {
           title: '数据删除后将无法恢复，确认删除数据？',
           confirm: () => {
-            // deleteDictTypeApi(record.code)
-            //   .then(() => {
-            //     createMessage.success('删除成功');
-            //     getDictTypesList(props.searchData);
-            //   })
-            //   .catch((error) => {
-            //     console.log('error :>> ', JSON.stringify(error));
-            //   });
+            deleteRoleApi(record.id)
+              .then(() => {
+                createMessage.success('删除成功');
+                getRolesList(props.searchData);
+              })
+              .catch((error) => {
+                console.log('error :>> ', JSON.stringify(error));
+              });
           },
         },
       },
     ];
   }
 
-  function getDictTypesList(form) {
+  function getRolesList(form) {
     loading.value = true;
     getRolesListApi(form)
       .then((data) => {

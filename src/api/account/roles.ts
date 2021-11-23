@@ -76,8 +76,20 @@ export function editRoleApi(
 ) {
   return defHttp.put<EditRoleResultModel>(
     {
-      url: Api.getRolesList + '/' + id,
+      url: Api.editRole + '/' + id,
       params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
+/** 角色删除--作者：张瑞晗 */
+export function deleteRoleApi(id: number | string, mode: ErrorMessageMode = 'message') {
+  return defHttp.delete<boolean>(
+    {
+      url: Api.editRole + '/' + id + '/force=true',
     },
     {
       errorMessageMode: mode,

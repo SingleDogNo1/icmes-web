@@ -1,6 +1,6 @@
 <template>
   <PageWrapper contentFullHeight fixedHeight dense>
-    <div class="h-full overflow-auto mt-4 p-4 bg-white">
+    <div class="h-full p-4 mt-4 overflow-auto bg-white">
       <a-button class="mb-2.5" type="primary" @click="openModal(true, {})">新增字典</a-button>
       <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
         <template #lastUpdateTime="{ record }">
@@ -28,11 +28,23 @@
     ActionItem,
     PaginationProps,
   } from '/@/components/Table';
-  import { getDictDataApi } from '/@/api/info/dict';
-  import { GetDictDataParam } from '/@/api/info/model/dictModel';
+  import {
+    getDictDataApi,
+    enabledDictDataApi,
+    disabledDictDataApi,
+    deleteDictDataApi,
+  } from '/@/api/info/dict';
+  import {
+    GetDictDataParam,
+    DisabledDictDataParam,
+    EnabledDictDataParam,
+  } from '/@/api/info/model/dictModel';
   import EditDictDataModal from './editDictDataModal.vue';
   import { useModal } from '/@/components/Modal';
   import { formatDate } from '/@/utils/dateUtil';
+  import { useMessage } from '/@/hooks/web/useMessage';
+
+  const { createMessage } = useMessage();
 
   const props = defineProps({
     selectRow: {
@@ -43,6 +55,8 @@
 
   const loading = ref(false);
   const selectedRowIndex = ref<number>(-1);
+  const disabledDictDataParam = ref({}) as Ref<DisabledDictDataParam>;
+  const enabledDictDataParam = ref({}) as Ref<EnabledDictDataParam>;
 
   const [registerTable, { setTableData, getPaginationRef, setPagination, getDataSource }] =
     useTable({
@@ -104,34 +118,63 @@
     },
   );
 
-  function createActions(record, column): ActionItem[] {
-    return [
-      {
-        label: '编辑',
-        onClick: () => {
-          openModal(true, record);
-        },
-      },
-      {
-        label: '禁用',
-        popConfirm: {
-          title: '是否确认禁用？',
-          confirm: () => {
-            console.log('confirmDelete :>> ', record, column);
+  function createActions(record): ActionItem[] {
+    if (!record.disabled) {
+      return [
+        {
+          label: '编辑',
+          onClick: () => {
+            openModal(true, record);
           },
         },
-      },
-      {
-        label: '删除',
-        color: 'error',
-        popConfirm: {
-          title: '数据删除后将无法恢复，确认删除数据？',
-          confirm: () => {
-            console.log('confirmDelete :>> ', record, column);
+        {
+          label: '禁用',
+          popConfirm: {
+            title: '是否确认禁用？',
+            confirm: () => {
+              disabledDictDataParam.value.versionTag = record.versionTag;
+              disabledDictDataApi(record.typeCode, record.code, disabledDictDataParam.value).then(
+                () => {
+                  createMessage.success('禁用成功');
+                  getDictTypesList(props.selectRow);
+                },
+              );
+            },
           },
         },
-      },
-    ];
+        {
+          label: '删除',
+          color: 'error',
+          popConfirm: {
+            title: '数据删除后将无法恢复，确认删除数据？',
+            confirm: () => {
+              deleteDictDataApi(record.typeCode, record.code).then(() => {
+                createMessage.success('删除成功');
+                getDictTypesList(props.selectRow);
+              });
+            },
+          },
+        },
+      ];
+    } else {
+      return [
+        {
+          label: '启用',
+          popConfirm: {
+            title: '是否确认启用？',
+            confirm: () => {
+              enabledDictDataParam.value.versionTag = record.versionTag;
+              enabledDictDataApi(record.typeCode, record.code, enabledDictDataParam.value).then(
+                () => {
+                  createMessage.success('启用成功');
+                  getDictTypesList(props.selectRow);
+                },
+              );
+            },
+          },
+        },
+      ];
+    }
   }
 
   function getDictTypesList(form) {
