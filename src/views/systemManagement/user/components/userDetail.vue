@@ -115,12 +115,9 @@
         );
 
         setTableData(proxiesList || []);
-
-        setPagination({
-          total: totalCount,
-        });
-
-        console.log('object :>> ', proxiesList);
+        setPagination({ total: totalCount });
+      } catch (error) {
+        console.log('error :>> ', error);
       } finally {
         loading.value = false;
       }

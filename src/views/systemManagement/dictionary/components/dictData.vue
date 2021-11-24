@@ -9,8 +9,8 @@
         <template #disabled="{ record }">
           {{ record.disabled ? '禁用' : '启用' }}
         </template>
-        <template #action="{ record, column }">
-          <TableAction :actions="createActions(record, column)" />
+        <template #action="{ record }">
+          <TableAction :actions="createActions(record)" />
         </template>
       </BasicTable>
     </div>
@@ -34,11 +34,7 @@
     disabledDictDataApi,
     deleteDictDataApi,
   } from '/@/api/info/dict';
-  import {
-    GetDictDataParam,
-    DisabledDictDataParam,
-    EnabledDictDataParam,
-  } from '/@/api/info/model/dictModel';
+  import { GetDictDataParam, DictDataModel } from '/@/api/info/model/dictModel';
   import EditDictDataModal from './editDictDataModal.vue';
   import { useModal } from '/@/components/Modal';
   import { formatDate } from '/@/utils/dateUtil';
@@ -55,8 +51,6 @@
 
   const loading = ref(false);
   const selectedRowIndex = ref<number>(-1);
-  const disabledDictDataParam = ref({}) as Ref<DisabledDictDataParam>;
-  const enabledDictDataParam = ref({}) as Ref<EnabledDictDataParam>;
 
   const [registerTable, { setTableData, getPaginationRef, setPagination, getDataSource }] =
     useTable({
@@ -118,7 +112,7 @@
     },
   );
 
-  function createActions(record): ActionItem[] {
+  function createActions(record: DictDataModel): ActionItem[] {
     if (!record.disabled) {
       return [
         {
@@ -131,14 +125,19 @@
           label: '禁用',
           popConfirm: {
             title: '是否确认禁用？',
-            confirm: () => {
-              disabledDictDataParam.value.versionTag = record.versionTag;
-              disabledDictDataApi(record.typeCode, record.code, disabledDictDataParam.value).then(
-                () => {
-                  createMessage.success('禁用成功');
-                  getDictTypesList(props.selectRow);
-                },
-              );
+            confirm: async () => {
+              loading.value = true;
+              try {
+                await disabledDictDataApi(record.typeCode, record.code, {
+                  versionTag: record.versionTag,
+                });
+                createMessage.success('禁用成功');
+                await getDictTypesList(props.selectRow);
+              } catch (error) {
+                console.log('error :>> ', error);
+              } finally {
+                loading.value = false;
+              }
             },
           },
         },
@@ -147,11 +146,17 @@
           color: 'error',
           popConfirm: {
             title: '数据删除后将无法恢复，确认删除数据？',
-            confirm: () => {
-              deleteDictDataApi(record.typeCode, record.code).then(() => {
+            confirm: async () => {
+              loading.value = true;
+              try {
+                await deleteDictDataApi(record.typeCode, record.code);
                 createMessage.success('删除成功');
-                getDictTypesList(props.selectRow);
-              });
+                await getDictTypesList(props.selectRow);
+              } catch (error) {
+                console.log('error :>> ', error);
+              } finally {
+                loading.value = false;
+              }
             },
           },
         },
@@ -162,14 +167,20 @@
           label: '启用',
           popConfirm: {
             title: '是否确认启用？',
-            confirm: () => {
-              enabledDictDataParam.value.versionTag = record.versionTag;
-              enabledDictDataApi(record.typeCode, record.code, enabledDictDataParam.value).then(
-                () => {
-                  createMessage.success('启用成功');
-                  getDictTypesList(props.selectRow);
-                },
-              );
+            confirm: async () => {
+              loading.value = true;
+
+              try {
+                await enabledDictDataApi(record.typeCode, record.code, {
+                  versionTag: record.versionTag,
+                });
+                createMessage.success('启用成功');
+                await getDictTypesList(props.selectRow);
+              } catch (error) {
+                console.log('error :>> ', error);
+              } finally {
+                loading.value = false;
+              }
             },
           },
         },
@@ -177,24 +188,23 @@
     }
   }
 
-  function getDictTypesList(form) {
+  async function getDictTypesList(form) {
     loading.value = true;
-    getDictDataApi(form)
-      .then((data) => {
-        setTableData(data.items || []);
-        if (data.items) {
-          // 有数据，默认选中第一条，查询详情
-          selectedRowIndex.value = -1;
-          const tableData = getDataSource();
-          handleClickRow(tableData[0], 0);
-        }
-        setPagination({
-          total: data.totalCount,
-        });
-      })
-      .finally(() => {
-        loading.value = false;
-      });
+    try {
+      const { items, totalCount } = await getDictDataApi(form);
+      setTableData(items || []);
+      setPagination({ total: totalCount });
+      if (items) {
+        // 有数据，默认选中第一条，查询详情
+        selectedRowIndex.value = -1;
+        const tableData = getDataSource();
+        handleClickRow(tableData[0], 0);
+      }
+    } catch (error) {
+      console.log('error :>> ', error);
+    } finally {
+      loading.value = false;
+    }
   }
 
   function handleClickRow(_, index?) {

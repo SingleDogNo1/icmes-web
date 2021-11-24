@@ -111,36 +111,27 @@
     data && onDataReceive(data);
   });
 
-  function handleSubmit() {
+  async function handleSubmit() {
     loading.value = true;
-    validate()
-      .then(() => {
-        const value = getFieldsValue() as AddDictTypeParam | EditDictTypeParam;
-        if (editType.value === 'create') {
-          delete (value as EditDictTypeParam).versionTag;
-          addDictTypeApi(value as AddDictTypeParam)
-            .then(() => {
-              createMessage.success('保存成功！');
-              closeModal();
-              emit('update:dict');
-            })
-            .finally(() => {
-              loading.value = false;
-            });
-        } else if (editType.value === 'edit') {
-          editDictTypeApi(value as EditDictTypeParam)
-            .then(() => {
-              createMessage.success('保存成功！');
-              closeModal();
-              emit('update:dict');
-            })
-            .finally(() => {
-              loading.value = false;
-            });
-        }
-      })
-      .catch(() => {
-        console.log('error :>> ');
-      });
+    await validate();
+
+    const value = getFieldsValue() as AddDictTypeParam | EditDictTypeParam;
+
+    try {
+      if (editType.value === 'create') {
+        delete (value as EditDictTypeParam).versionTag;
+        await addDictTypeApi(value as AddDictTypeParam);
+      } else if (editType.value === 'edit') {
+        await editDictTypeApi(value as EditDictTypeParam);
+        await closeModal();
+      }
+      createMessage.success('保存成功！');
+      closeModal();
+      emit('update:dict');
+    } catch (error) {
+      console.log('error :>> ', error);
+    } finally {
+      loading.value = false;
+    }
   }
 </script>

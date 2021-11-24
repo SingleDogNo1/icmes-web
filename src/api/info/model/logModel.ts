@@ -14,7 +14,7 @@ export interface GetLogListParam {
 }
 
 export interface GetLogListResultModel {
-  items: LogModel[];
+  items: Nullable<LogModel[]>;
   totalCount: number;
   totalPages: number;
 }

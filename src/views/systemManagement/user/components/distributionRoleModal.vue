@@ -65,7 +65,7 @@
         { title: '描述', dataIndex: 'remark' },
       ],
       rowSelection: { type: 'radio' },
-      onChange: () => {
+      onChange: async () => {
         loading.value = true;
         const page = getPaginationRef() as PaginationProps;
         setPagination({
@@ -76,13 +76,16 @@
           ...getRolesListParams.value,
           ...{ pageNo: page.current, pageSize: page.pageSize },
         };
-        getRolesListApi(params).then(({ items, totalCount }) => {
-          loading.value = false;
+
+        try {
+          const { items, totalCount } = await getRolesListApi(params);
           setTableData(items || []);
-          setPagination({
-            total: totalCount,
-          });
-        });
+          setPagination({ total: totalCount });
+        } catch (error) {
+          console.log('error :>> ', error);
+        } finally {
+          loading.value = false;
+        }
       },
     });
 

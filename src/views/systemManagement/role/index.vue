@@ -18,10 +18,11 @@
       <Col :span="12" class="pr-4">
         <Spin :spinning="loading">
           <RoleDetail
+            v-if="selectedRow && rowUserData"
             :disabled="true"
-            :selected-row="selectedRow!"
+            :selected-row="selectedRow"
             :row-permission="rowPermission"
-            :row-user-data="rowUserData!"
+            :row-user-data="rowUserData"
             @change-page="handleChangeUserListPage"
           />
         </Spin>

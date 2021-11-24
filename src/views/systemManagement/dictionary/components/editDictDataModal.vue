@@ -34,12 +34,14 @@
     },
   });
 
+  const emit = defineEmits(['update:data']);
+
   const model = ref({});
   const loading = ref(false);
   // 编辑的类型，通过参数中是否存在versionTag，判断是新建还是编辑
   const editType: Ref<'create' | 'edit' | ''> = ref('');
 
-  const [registerForm, { getFieldsValue, setFieldsValue, updateSchema }] = useForm({
+  const [registerForm, { getFieldsValue, setFieldsValue, updateSchema, validate }] = useForm({
     schemas: [
       {
         field: 'code',
@@ -163,36 +165,32 @@
     updateSchema({ field: 'code', componentProps: { disabled: Boolean(data.versionTag) } });
   }
 
-  const [register] = useModalInner((data) => {
+  const [register, { closeModal }] = useModalInner((data) => {
     data && onDataReceive(data);
   });
 
-  function handleSubmit() {
+  async function handleSubmit() {
+    await validate();
     loading.value = true;
     const value = getFieldsValue() as AddDictDataParam | UpdateDictDataParam;
 
     const code = (value as AddDictDataParam).code!;
-    if (editType.value === 'create') {
-      delete (value as UpdateDictDataParam).versionTag;
-      addDictDataApi(value)
-        .then(() => {
-          createMessage.success('保存成功！');
-        })
-        .finally(() => {
-          loading.value = false;
-        });
-    } else if (editType.value === 'edit') {
-      delete (value as AddDictDataParam).code;
-      updateDictDataApi(code, value)
-        .then((data) => {
-          console.log('data :>> ', data);
-        })
-        .catch((error) => {
-          console.log('error :>> ', error);
-        })
-        .finally(() => {
-          loading.value = false;
-        });
+
+    try {
+      if (editType.value === 'create') {
+        delete (value as UpdateDictDataParam).versionTag;
+        await addDictDataApi(value);
+      } else if (editType.value === 'edit') {
+        delete (value as AddDictDataParam).code;
+        await updateDictDataApi(code, value);
+      }
+      createMessage.success('保存成功！');
+      closeModal();
+      emit('update:data');
+    } catch (error) {
+      console.log('error :>> ', error);
+    } finally {
+      loading.value = false;
     }
   }
 </script>
