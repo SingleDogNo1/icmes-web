@@ -1,17 +1,25 @@
 <template>
   <div class="power-failure">
-    {{ msg }}
+    <header>
+      <BasicForm
+        autoFocusFirstItem
+        :labelWidth="100"
+        :schemas="schemas"
+        :actionColOptions="{ span: 24 }"
+      />
+    </header>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
-
-  const msg = ref('hello, power-failure');
+  import { BasicForm } from '/@/components/Form/index';
+  import { schemas } from './data';
 </script>
 
-<style scoped>
+<style lang="less" scoped>
   .power-failure {
-    color: red;
+    header {
+      padding: 30px;
+    }
   }
 </style>

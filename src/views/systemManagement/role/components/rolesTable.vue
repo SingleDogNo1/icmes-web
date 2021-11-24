@@ -30,6 +30,9 @@
   import { GetRoleListParams, RoleModel } from '/@/api/account/model/rolesModel';
   import EditRolesModal from './editRolesModal.vue';
   import { useModal } from '/@/components/Modal';
+  import { useMessage } from '/@/hooks/web/useMessage';
+
+  const { createMessage } = useMessage();
 
   const props = defineProps({
     searchData: {
@@ -100,15 +103,17 @@
         color: 'error',
         popConfirm: {
           title: '数据删除后将无法恢复，确认删除数据？',
-          confirm: () => {
-            deleteRoleApi(record.id)
-              .then(() => {
-                createMessage.success('删除成功');
-                getRolesList(props.searchData);
-              })
-              .catch((error) => {
-                console.log('error :>> ', JSON.stringify(error));
-              });
+          confirm: async () => {
+            loading.value = true;
+            try {
+              await deleteRoleApi(record.id);
+              await getRolesList(props.searchData);
+              createMessage.success('删除成功');
+            } catch (err) {
+              console.log(err);
+            } finally {
+              loading.value = false;
+            }
           },
         },
       },
