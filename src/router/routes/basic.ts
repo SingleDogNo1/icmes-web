@@ -99,3 +99,23 @@ export const HOMEPAGE_ROUTE: AppRouteRecordRaw = {
     },
   ],
 };
+
+export const USER_CENTER: AppRouteRecordRaw = {
+  path: '/user',
+  name: 'AccountPage',
+  component: LAYOUT,
+  redirect: '/user/center',
+  meta: {
+    title: t('routes.demo.page.account'),
+  },
+  children: [
+    {
+      path: 'center',
+      name: 'AccountCenterPage',
+      component: () => import('/@/views/sys/userCenter/index.vue'),
+      meta: {
+        title: t('routes.demo.page.accountCenter'),
+      },
+    },
+  ],
+};

@@ -39,7 +39,6 @@ export function useWebSocket() {
           const { t } = useI18n();
           switch (messageData.messageType) {
             case 'PERMISSION':
-              // {"businessData":"{\"alreadyCompleteCount\":0,\"alreadyConfirmCompleteCount\":0,\"alreadyConfirmCount\":0,\"alreadyConfirmTestCount\":0,\"alreadyStopCount\":0,\"duringCount\":10,\"errorTaskCount\":0,\"waitConfirmCompleteCount\":0,\"waitConfirmCount\":11,\"waitConfirmTestCount\":0}"}
               createConfirm({
                 iconType: 'warning',
                 title: () => h('span', t('sys.app.logoutTip')),
@@ -88,6 +87,9 @@ export function useWebSocket() {
               break;
             case 'ETM_REAL_TIME':
               console.log('ETM_REAL_TIME :>> ', messageData.businessData);
+              break;
+            case 'POWER_CUT_FORM_TODAY_COUNT':
+              console.log('POWER_CUT_FORM_TODAY_COUNT :>> ', messageData.businessData);
               break;
             case 'POWER_CUT_FORM_TODAY_COUNT':
               console.log('POWER_CUT_FORM_TODAY_COUNT :>> ', messageData.businessData);
