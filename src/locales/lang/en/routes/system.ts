@@ -4,4 +4,5 @@ export default {
   dictionary: 'Dictionary',
   role: 'Role',
   user: 'User',
+  workflow: 'Workflow',
 };

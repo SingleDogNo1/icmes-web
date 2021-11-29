@@ -33,7 +33,7 @@
       default: false,
     },
     selectedRow: {
-      type: Object as PropType<RoleModel>,
+      type: Object as PropType<Nullable<RoleModel>>,
       required: true,
     },
     rowPermission: {
@@ -59,7 +59,7 @@
       ],
       ellipsis: false,
       rowClassName: (_, index) => {
-        return selectedRowIndex.value === index ? 'row__active' : '';
+        return selectedRowIndex.value === index ? 'ant-table-row-hover' : '';
       },
       onChange: () => {
         const page = getPaginationRef() as PaginationProps;

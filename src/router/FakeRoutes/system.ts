@@ -47,6 +47,15 @@ const systemManagement: BackModeRouteRecordRaw = {
         title: 'routes.system.user',
       },
     },
+    {
+      path: 'workflow',
+      name: 'systemManagementWorkflow',
+      component: '/systemManagement/workflow/index',
+      meta: {
+        code: 24500,
+        title: 'routes.system.workflow',
+      },
+    },
   ],
 };
 

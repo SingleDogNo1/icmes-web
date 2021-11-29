@@ -14,7 +14,11 @@
         </template>
       </BasicTable>
     </div>
-    <EditDictDataModal @register="registerModal" :dict-type="props.selectRow.typeCode" />
+    <EditDictDataModal
+      @register="registerModal"
+      :dict-type="props.selectRow.typeCode"
+      @update:data="getDictTypesList(props.selectRow)"
+    />
   </PageWrapper>
 </template>
 
@@ -75,7 +79,7 @@
       striped: false,
       ellipsis: false,
       rowClassName: (_, index) => {
-        return selectedRowIndex.value === index ? 'row__active' : '';
+        return selectedRowIndex.value === index ? 'ant-table-row-hover' : '';
       },
       actionColumn: {
         width: 160,
@@ -212,14 +216,3 @@
     selectedRowIndex.value = index;
   }
 </script>
-
-<style scoped lang="less">
-  // 点击表格高亮当前行
-  @activeClass: row__active;
-
-  ::v-deep(.@{activeClass}) {
-    &:not(.ant-table-expanded-row):not(.ant-table-row-selected) > td {
-      background: #e3f4fc;
-    }
-  }
-</style>

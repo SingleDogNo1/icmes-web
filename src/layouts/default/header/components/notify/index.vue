@@ -1,37 +1,35 @@
 <template>
   <div :class="prefixCls">
-    <Popover title="" trigger="click" :overlayClassName="`${prefixCls}__overlay`">
+    <Popover
+      title=""
+      trigger="click"
+      :overlayClassName="`${prefixCls}__overlay`"
+      @visibleChange="toggleShow"
+    >
       <Badge :count="count" :offset="[-5, 15]">
         <Icon icon="fa-regular:bell" :size="18" />
       </Badge>
       <template #content>
-        <Tabs>
-          <template v-for="item in listData" :key="item.key">
-            <TabPane>
-              <template #tab>
-                {{ item.name }}
-                <span v-if="item.list.length !== 0">({{ item.list.length }})</span>
-              </template>
-              <!-- 绑定title-click事件的通知列表中标题是“可点击”的-->
-              <NoticeList :list="item.list" v-if="item.key === '1'" @title-click="onNoticeClick" />
-              <NoticeList :list="item.list" v-else />
-            </TabPane>
-          </template>
-        </Tabs>
+        <NoticeList
+          :loading="loading"
+          :list="listData"
+          :pageSize="form.pageSize"
+          :totalCount="total"
+          @title-click="onNoticeClick"
+          @update:currentPage="handleChangeCurrentPage"
+        />
       </template>
     </Popover>
   </div>
 </template>
 <script lang="ts" setup>
-  import { ref } from 'vue';
-  import { Popover, Tabs, Badge } from 'ant-design-vue';
-  import { tabListData, ListItem } from './data';
+  import { ref, unref } from 'vue';
+  import { Popover, Badge } from 'ant-design-vue';
   import NoticeList from './NoticeList.vue';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import { useMessage } from '/@/hooks/web/useMessage';
   import { Icon } from '/@/components/Icon';
-
-  const TabPane = Tabs.TabPane;
+  import { getNoticeListApi, readNoticeByIdApi } from '/@/api/notice/message';
+  import { MessageModel } from '/@/api/notice/model/messageModel';
 
   defineProps({
     count: {
@@ -40,14 +38,55 @@
     },
   });
 
+  const loading = ref<boolean>(false);
   const { prefixCls } = useDesign('header-notify');
-  const { createMessage } = useMessage();
-  const listData = ref(tabListData);
+  const listData = ref<MessageModel[]>([]);
+  const form = ref({
+    pageNo: 1,
+    pageSize: 5,
+  });
 
-  function onNoticeClick(record: ListItem) {
-    createMessage.success('你点击了通知，ID=' + record.id);
-    // 可以直接将其标记为已读（为标题添加删除线）,此处演示的代码会切换删除线状态
-    record.titleDelete = !record.titleDelete;
+  const total = ref<number>(0);
+
+  async function getNoticeList() {
+    loading.value = true;
+    try {
+      const { items, totalCount } = await getNoticeListApi(unref(form));
+      items?.map((item) => {
+        // item.businessData 值为字符串，需要 parse 才能使用
+        item.businessData = JSON.parse(item.businessData as unknown as string);
+      });
+      listData.value = items ?? [];
+      total.value = totalCount;
+    } catch (error) {
+      console.log('error :>> ', error);
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  function toggleShow(visible: boolean) {
+    if (visible) {
+      getNoticeList();
+    }
+  }
+
+  async function onNoticeClick(id: number) {
+    loading.value = true;
+    try {
+      const res = await readNoticeByIdApi(id);
+      console.log('res :>> ', res);
+      await getNoticeList();
+    } catch (error) {
+      console.log('error :>> ', error);
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  function handleChangeCurrentPage(pageNo) {
+    form.value = { ...unref(form), ...{ pageNo } };
+    getNoticeList();
   }
 </script>
 <style lang="less">
@@ -57,11 +96,7 @@
     padding-top: 2px;
 
     &__overlay {
-      max-width: 360px;
-    }
-
-    .ant-tabs-content {
-      width: 300px;
+      width: 400px;
     }
 
     .ant-badge {
