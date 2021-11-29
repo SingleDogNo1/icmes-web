@@ -99,35 +99,35 @@
         color: 'error',
         popConfirm: {
           title: '数据删除后将无法恢复，确认删除数据？',
-          confirm: () => {
+          confirm: async () => {
             loading.value = true;
-            delProxyByIdApi(record.id)
-              .then(() => {
-                createMessage.success('删除成功');
-                refreshData();
-              })
-              .finally(() => {
-                loading.value = false;
-              });
+            try {
+              await delProxyByIdApi(record.id);
+              createMessage.success('删除成功');
+              await refreshData();
+            } catch (error) {
+              console.log('error :>> ', error);
+            } finally {
+              loading.value = false;
+            }
           },
         },
       },
     ];
   }
 
-  function getRolesListById(id, options) {
+  async function getRolesListById(id, options) {
     loading.value = true;
-    getAssignmentAgentListApi(id, options)
-      .then((data) => {
-        loading.value = false;
-        setTableData(data.items || []);
-        setPagination({
-          total: data.totalCount,
-        });
-      })
-      .catch(() => {
-        loading.value = false;
-      });
+
+    try {
+      const { items, totalCount } = await getAssignmentAgentListApi(id, options);
+      setTableData(items || []);
+      setPagination({ total: totalCount });
+    } catch (error) {
+      console.log('error :>> ', error);
+    } finally {
+      loading.value = false;
+    }
   }
 
   function refreshData() {

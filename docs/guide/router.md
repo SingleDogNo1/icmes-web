@@ -1,144 +1,68 @@
 # 路由
 
-项目路由配置存放于 [src/router/routes](https://github.com/anncwb/vue-vben-admin/tree/main/src/router/routes) 下面。 [src/router/routes/modules](https://github.com/anncwb/vue-vben-admin/tree/main/src/router/routes/modules)用于存放路由模块，在该目录下的文件会自动注册。
+项目路由配置存放于 `src/router/routes` 下面。 `src/router/routes/modules`用于存放路由模块，在该目录下的文件会自动注册。
 
 ## 配置
 
 ### 模块说明
 
-在 [src/router/routes/modules](https://github.com/anncwb/vue-vben-admin/tree/main/src/router/routes/modules) 内的 `.ts` 文件会被视为一个路由模块。
+::: warning 注意事项
 
-一个路由模块包含以下结构
+当前项目重构未完成，路由配置在`src/router/FakeRoutes`下。重构完成还需要修改路由结构到`src/router/routes/modules`中
 
-```ts
-import type { AppRouteModule } from '/@/router/types';
-
-import { LAYOUT } from '/@/router/constant';
-import { t } from '/@/hooks/web/useI18n';
-
-const dashboard: AppRouteModule = {
-  path: '/dashboard',
-  name: 'Dashboard',
-  component: LAYOUT,
-  redirect: '/dashboard/analysis',
-  meta: {
-    icon: 'ion:grid-outline',
-    title: t('routes.dashboard.dashboard'),
-  },
-  children: [
-    {
-      path: 'analysis',
-      name: 'Analysis',
-      component: () => import('/@/views/dashboard/analysis/index.vue'),
-      meta: {
-        affix: true,
-        title: t('routes.dashboard.analysis'),
-      },
-    },
-    {
-      path: 'workbench',
-      name: 'Workbench',
-      component: () => import('/@/views/dashboard/workbench/index.vue'),
-      meta: {
-        title: t('routes.dashboard.workbench'),
-      },
-    },
-  ],
-};
-export default dashboard;
-```
-
-### 多级路由
+:::
 
 ::: warning 注意事项
 
 - 整个项目所有路由 `name` 不能重复
 - 所有的多级路由最终都会转成二级路由，所以不能内嵌子路由
 - 除了 layout 对应的 path 前面需要加 `/`，其余子路由都不要以`/`开头
+- 必须定义`meta.code`，表示后端对该目录设置的权限
 
 :::
 
-**示例**
+在 `src/router/routes/modules`内的 `.ts` 文件会被视为一个路由模块，本项目由后端鉴权，路由格式参照如下
 
 ```ts
-import type { AppRouteModule } from '/@/router/types';
-import { getParentLayout, LAYOUT } from '/@/router/constant';
-import { t } from '/@/hooks/web/useI18n';
-const permission: AppRouteModule = {
-  path: '/level',
-  name: 'Level',
-  component: LAYOUT,
-  redirect: '/level/menu1/menu1-1/menu1-1-1',
-  meta: {
-    icon: 'ion:menu-outline',
-    title: t('routes.demo.level.level'),
-  },
+import { BackModeRouteRecordRaw } from '/@/router/types';
 
+const powerFailure: BackModeRouteRecordRaw = {
+  path: '/powerFailure',
+  name: 'PowerFailureLayout',
+  component: 'LAYOUT', // 布局组件，'LAYOUT' | 'IFRAME'
+  redirect: '/powerFailure/index',
+  meta: {
+    code: 10100,
+    icon: 'ion:grid-outline',
+    title: 'routes.powerFailure.title',
+  },
   children: [
     {
-      path: 'tabs/:id',
-      name: 'TabsParams',
-      component: getParentLayout('TabsParams'),
+      path: 'index',
+      name: 'PowerFailure',
+      // 表示 src/views/powerFailure/index.vue, 省略 src/views 和 .vue 结尾
+      component: '/powerFailure/index',
       meta: {
-        carryParam: true,
-        hidePathForChildren: true, // 本级path将会在子级菜单中合成完整path时会忽略这一层级
+        code: 25800,
+        title: 'routes.powerFailure.powerFailure',
       },
-      children: [
-        path: 'tabs/id1', // 其上级有标记hidePathForChildren，所以本级在生成菜单时最终的path为  /level/tabs/id1
-        name: 'TabsParams',
-        component: getParentLayout('TabsParams'),
-        meta: {
-          carryParam: true,
-          ignoreRoute: true,  // 本路由仅用于菜单生成，不会在实际的路由表中出现
-        },
-      ]
-    },
-    {
-      path: 'menu1',
-      name: 'Menu1Demo',
-      component: getParentLayout('Menu1Demo'),
-      meta: {
-        title: 'Menu1',
-      },
-      redirect: '/level/menu1/menu1-1/menu1-1-1',
-      children: [
-        {
-          path: 'menu1-1',
-          name: 'Menu11Demo',
-          component: getParentLayout('Menu11Demo'),
-          meta: {
-            title: 'Menu1-1',
-          },
-          redirect: '/level/menu1/menu1-1/menu1-1-1',
-          children: [
-            {
-              path: 'menu1-1-1',
-              name: 'Menu111Demo',
-              component: () => import('/@/views/demo/level/Menu111.vue'),
-              meta: {
-                title: 'Menu111',
-              },
-            },
-          ],
-        },
-      ],
     },
   ],
 };
 
-export default permission;
+export default powerFailure;
 ```
+
+登录成功后，[buildRoutesAction](`/src/store/modules/permission.ts`)方法会生成可用的路由列表
 
 ### Meta 配置说明
 
 ```ts
 export interface RouteMeta {
+  // 必填，路由权限
+  code: string | number;
   // 路由title  一般必填
   title: string;
-  // 是否忽略权限，只在权限模式为Role的时候有效
-  ignoreAuth?: boolean;
-  // 可以访问的角色，只在权限模式为Role的时候有效
-  roles?: RoleEnum[];
   // 是否忽略KeepAlive缓存
   ignoreKeepAlive?: boolean;
   // 是否固定标签
@@ -179,9 +103,9 @@ const IFrame = () => import('/@/views/sys/iframe/FrameBlank.vue');
 {
   path: 'doc',
   name: 'Doc',
-  component: IFrame,
+  component: `IFrame`,
   meta: {
-    frameSrc: 'https://vvbin.cn/doc-next/',
+    frameSrc: 'https://www.baidu.com/',
     title: t('routes.demo.iframe.doc'),
   },
 },
@@ -193,11 +117,11 @@ const IFrame = () => import('/@/views/sys/iframe/FrameBlank.vue');
 
 ```ts
 {
-  path: 'https://vvbin.cn/doc-next/',
-  name: 'DocExternal',
-  component: IFrame,
+  path: 'https://www.baidu.com/',
+  name: 'BaiDuExternal',
+  component: 'IFrame',
   meta: {
-    title: t('routes.demo.iframe.docExternal'),
+    title: '百度',
   },
 }
 ```
@@ -210,45 +134,44 @@ const IFrame = () => import('/@/views/sys/iframe/FrameBlank.vue');
 
 ### 如何新增一个路由模块
 
-1. 在 [src/router/routes/modules](https://github.com/anncwb/vue-vben-admin/tree/main/src/router/routes/modules) 内新增一个模块文件。
+1. 在 `src/router/routes/modules` 内新增一个模块文件。
 
 示例，新增 test.ts 文件
 
 ```ts
-import type { AppRouteModule } from '/@/router/types';
-import { LAYOUT } from '/@/router/constant';
-import { t } from '/@/hooks/web/useI18n';
+import { BackModeRouteRecordRaw } from '/@/router/types';
 
-const dashboard: AppRouteModule = {
-  path: '/about',
-  name: 'About',
-  component: LAYOUT,
-  redirect: '/about/index',
+const test: BackModeRouteRecordRaw = {
+  path: '/test',
+  name: 'TEST',
+  component: 'LAYOUT',
+  redirect: '/test/index',
   meta: {
-    icon: 'simple-icons:about-dot-me',
-    title: t('routes.dashboard.about'),
+    code: 'TEST_ROUTE_CODE',
+    icon: 'ion:grid-outline',
+    title: 'routes.test.title',
   },
   children: [
     {
       path: 'index',
-      name: 'AboutPage',
-      component: () => import('/@/views/sys/about/index.vue'),
+      name: 'TEST_INDEX',
+      component: '/test/index',
       meta: {
-        title: t('routes.dashboard.about'),
-        icon: 'simple-icons:about-dot-me',
+        code: 'TEST_CHILD_ROUTE_CODE',
+        title: 'routes.test.title',
       },
     },
   ],
 };
 
-export default dashboard;
+export default test;
 ```
 
-此时路由已添加完成，不需要手动引入，放在[src/router/routes/modules](https://github.com/anncwb/vue-vben-admin/tree/main/src/router/routes/modules) 内的文件会自动被加载。
+此时路由已添加完成，不需要手动引入便会自动被加载。
 
 ### 验证
 
-访问 **ip:端口/about/index** 出现对应组件内容即代表成功
+访问 **ip:端口/test/index** 出现对应组件内容即代表成功
 
 ## 路由刷新
 
@@ -271,7 +194,7 @@ export default defineComponent({
 
 ### Redirect
 
-[src/views/sys/redirect/index.vue](https://github.com/anncwb/vue-vben-admin/tree/main/src/views/sys/redirect/index.vue)
+`src/views/sys/redirect/index.vue`
 
 ```ts
 import { defineComponent, unref } from 'vue';
@@ -321,7 +244,7 @@ export default defineComponent({
 
 开启缓存有 3 个条件
 
-1. 在 [src/settings/projectSetting.ts](https://github.com/anncwb/vue-vben-admin/tree/main/src/settings/projectSetting.ts) 内将`openKeepAlive` 设置为 `true`
+1. 在 `src/settings/projectSetting.ts`内将`openKeepAlive` 设置为 `true`
 2. 路由设置 `name`，且**不能重复**
 3. 路由对应的组件加上 `name`，与路由设置的 `name` 保持一致
 

@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { nextTick, ref, onMounted } from 'vue';
+  import { nextTick, ref } from 'vue';
   import { trimEnd } from 'lodash-es';
   import { formatDate } from '/@/utils/dateUtil';
   import { PageWrapper } from '/@/components/Page';
@@ -70,26 +70,22 @@
     return content;
   }
 
-  function getLogList() {
-    nextTick(() => {
-      loading.value = true;
-      const values = getFieldsValue() as GetLogListParam;
-      console.log('values :>> ', values);
-      getLogListApi(values)
-        .then((logList) => {
-          loading.value = false;
-          setTableData(logList.items);
-          setPagination({
-            total: logList.totalCount,
-          });
-        })
-        .catch(() => {
-          loading.value = false;
-        });
-    });
+  async function getLogList() {
+    loading.value = true;
+    await nextTick();
+    const values = getFieldsValue() as GetLogListParam;
+    try {
+      const { items, totalCount } = await getLogListApi(values);
+      setTableData(items || []);
+      setPagination({
+        total: totalCount,
+      });
+    } catch (error) {
+      console.log('error :>> ', error);
+    } finally {
+      loading.value = false;
+    }
   }
 
-  onMounted(() => {
-    getLogList();
-  });
+  getLogList();
 </script>

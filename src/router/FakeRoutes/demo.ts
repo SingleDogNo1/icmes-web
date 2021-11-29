@@ -12,6 +12,25 @@ const demo: BackModeRouteRecordRaw = {
   },
   children: [
     {
+      path: 'https://2x.antdv.com/components/icon-cn',
+      name: 'DocExternal',
+      component: 'IFRAME',
+      meta: {
+        code: 27600,
+        title: 'routes.demo.iframe.docExternal',
+      },
+    },
+    {
+      path: 'doc',
+      name: 'Doc',
+      component: 'IFRAME',
+      meta: {
+        code: 27600,
+        frameSrc: 'https://2x.antdv.com/components/icon-cn',
+        title: 'routes.demo.iframe.doc',
+      },
+    },
+    {
       path: 'comp',
       name: 'comp',
       component: 'LAYOUT',

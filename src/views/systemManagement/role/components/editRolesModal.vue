@@ -28,7 +28,7 @@
   import { RoleTree } from '/@/components/Business';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form/index';
-  import { RoleModel } from '/@/api/account/model/rolesModel';
+  import { RoleModel, AddRoleParams, EditRoleParams } from '/@/api/account/model/rolesModel';
   import { Tabs } from 'ant-design-vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { addRoleApi, editRoleApi } from '/@/api/account/roles';
@@ -46,7 +46,7 @@
   });
   const loading = ref<boolean>(false);
   const editType: Ref<'create' | 'edit' | ''> = ref('');
-  const editId = ref<Number | null>(null);
+  const editId = ref<Number | undefined>(undefined);
 
   const [registerForm, { getFieldsValue, setFieldsValue, updateSchema }] = useForm({
     schemas: [
@@ -111,28 +111,23 @@
     data && onDataReceive(data);
   });
 
-  function handleSubmit() {
+  async function handleSubmit() {
     loading.value = true;
-    const values = getFieldsValue();
-    if (editType.value === 'create') {
-      addRoleApi(values)
-        .then(() => {
-          createMessage.success('保存成功');
-        })
-        .finally(() => {
-          loading.value = false;
-        });
-    } else {
-      editRoleApi(editId.value, values)
-        .then(() => {
-          createMessage.success('保存成功');
-        })
-        .finally(() => {
-          loading.value = false;
-        });
+    const values = getFieldsValue() as AddRoleParams | EditRoleParams;
+    try {
+      if (editType.value === 'create') {
+        await addRoleApi(values as AddRoleParams);
+      } else if (editType.value === 'edit') {
+        await editRoleApi(editId.value as number, values as EditRoleParams);
+      }
+
+      createMessage.success('保存成功');
+      closeModal();
+      emit('update:role');
+    } catch (error) {
+      console.log('error :>> ', error);
+    } finally {
+      loading.value = false;
     }
-    closeModal();
-    emit('update:role');
-    console.log('object :>> ', values);
   }
 </script>

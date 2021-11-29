@@ -109,35 +109,26 @@
     data && onDataReceive(data);
   });
 
-  function handleSubmit() {
+  async function handleSubmit() {
+    await validate();
+
     loading.value = true;
-    validate()
-      .then(() => {
-        const value = getFieldsValue() as EditAccountParams;
-        if (editType.value === 'create') {
-          addAccountApi(value)
-            .then(() => {
-              createMessage.success('保存成功！');
-              closeModal();
-              emit('update:user');
-            })
-            .finally(() => {
-              loading.value = false;
-            });
-        } else if (editType.value === 'edit') {
-          editAccountApi(value.id!, value)
-            .then(() => {
-              createMessage.success('保存成功！');
-              closeModal();
-              emit('update:user');
-            })
-            .finally(() => {
-              loading.value = false;
-            });
-        }
-      })
-      .catch((error) => {
-        console.log('表单校验失败 :>> ', error);
-      });
+    const value = getFieldsValue() as EditAccountParams;
+
+    try {
+      if (editType.value === 'create') {
+        await addAccountApi(value);
+        createMessage.success('保存成功！');
+      } else if (editType.value === 'edit') {
+        await editAccountApi(value.id!, value);
+        createMessage.success('保存成功！');
+      }
+      closeModal();
+      emit('update:user');
+    } catch (error) {
+      console.log('error :>> ', error);
+    } finally {
+      loading.value = false;
+    }
   }
 </script>

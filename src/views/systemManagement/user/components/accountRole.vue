@@ -68,7 +68,10 @@
         current: page.current,
         pageSize: page.pageSize,
       });
-      const options = { ...searchForm.value, ...{ pageNo: page.current, pageSize: page.pageSize } };
+      const options = {
+        ...searchForm.value,
+        ...{ pageNo: page.current!, pageSize: page.pageSize! },
+      };
       getRolesListById(props.user?.employeeId, options);
     },
   });
@@ -82,35 +85,35 @@
         color: 'error',
         popConfirm: {
           title: '数据删除后将无法恢复，确认删除数据？',
-          confirm: () => {
+          confirm: async () => {
             loading.value = true;
-            delRoleByIdApi(props.user.employeeId, record.organizationId, record.roleId)
-              .then(() => {
-                createMessage.success('删除成功');
-                refreshData();
-              })
-              .finally(() => {
-                loading.value = false;
-              });
+
+            try {
+              await delRoleByIdApi(props.user.employeeId, record.organizationId, record.roleId);
+              createMessage.success('删除成功');
+              await refreshData();
+            } catch (error) {
+              console.log('error :>> ', error);
+            } finally {
+              loading.value = false;
+            }
           },
         },
       },
     ];
   }
 
-  function getRolesListById(id, options) {
+  async function getRolesListById(id: number, options: GetRoleListByIdParams) {
     loading.value = true;
-    getRolesListByIdApi(id, options)
-      .then((data) => {
-        loading.value = false;
-        setTableData(data.items || []);
-        setPagination({
-          total: data.totalCount,
-        });
-      })
-      .catch(() => {
-        loading.value = false;
-      });
+    try {
+      const { items, totalCount } = await getRolesListByIdApi(id, options);
+      setTableData(items || []);
+      setPagination({ total: totalCount });
+    } catch (error) {
+      console.log('error :>> ', error);
+    } finally {
+      loading.value = false;
+    }
   }
 
   function refreshData() {
@@ -120,21 +123,18 @@
     getRolesListById(props.user.employeeId, options);
   }
 
-  function handleDistributionRole({ orgId, roleId }) {
+  async function handleDistributionRole({ orgId, roleId }: { orgId: number; roleId: number }) {
     loading.value = true;
-    console.log('val :>> ', orgId, roleId);
     const { employeeId } = props.user;
-    distributionRoleByIdApi(employeeId, {
-      orgId,
-      roleId,
-    })
-      .then(() => {
-        createMessage.success('保存成功');
-        refreshData();
-      })
-      .finally(() => {
-        loading.value = false;
-      });
+    try {
+      await distributionRoleByIdApi(employeeId, { orgId, roleId });
+      createMessage.success('保存成功');
+      await refreshData();
+    } catch (error) {
+      console.log('error :>> ', error);
+    } finally {
+      loading.value = false;
+    }
   }
 
   watch(

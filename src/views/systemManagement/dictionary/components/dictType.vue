@@ -103,39 +103,41 @@
         color: 'error',
         popConfirm: {
           title: '数据删除后将无法恢复，确认删除数据？',
-          confirm: () => {
-            deleteDictTypeApi(record.code)
-              .then(() => {
-                createMessage.success('删除成功');
-                getDictTypesList(props.searchData);
-              })
-              .catch((error) => {
-                console.log('error :>> ', JSON.stringify(error));
-              });
+          confirm: async () => {
+            loading.value = false;
+            try {
+              await deleteDictTypeApi(record.code);
+              createMessage.success('删除成功');
+              await getDictTypesList(props.searchData);
+            } catch (error) {
+              console.log('error :>> ', error);
+            } finally {
+              loading.value = false;
+            }
           },
         },
       },
     ];
   }
 
-  function getDictTypesList(form) {
+  async function getDictTypesList(form) {
     loading.value = true;
-    getDictTypesListApi(form)
-      .then((data) => {
-        setTableData(data.items || []);
-        if (data.items) {
-          // 有数据，默认选中第一条，查询详情
-          selectedRowIndex.value = -1;
-          const tableData = getDataSource();
-          handleClickRow(tableData[0], 0);
-        }
-        setPagination({
-          total: data.totalCount,
-        });
-      })
-      .finally(() => {
-        loading.value = false;
-      });
+
+    try {
+      const { items, totalCount } = await getDictTypesListApi(form);
+      setTableData(items || []);
+      setPagination({ total: totalCount });
+      if (items) {
+        // 有数据，默认选中第一条，查询详情
+        selectedRowIndex.value = -1;
+        const tableData = getDataSource();
+        handleClickRow(tableData[0], 0);
+      }
+    } catch (error) {
+      console.log('error :>> ', error);
+    } finally {
+      loading.value = false;
+    }
   }
 
   function handleClickRow(row, index?) {

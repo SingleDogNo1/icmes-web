@@ -79,7 +79,6 @@
   watch(
     () => props.rowUserData,
     (value) => {
-      console.log('value :>> ', value?.items);
       setTableData(value?.items || []);
       if (value?.items) {
         // 有数据，默认选中第一条

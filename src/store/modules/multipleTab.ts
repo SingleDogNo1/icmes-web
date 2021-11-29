@@ -118,8 +118,6 @@ export const useMultipleTabStore = defineStore({
     },
 
     async addTab(route: RouteLocationNormalized) {
-      console.log(111);
-
       const { path, name, fullPath, params, query } = getRawRoute(route);
       // 404  The page does not need to add a tab
       if (
@@ -137,8 +135,6 @@ export const useMultipleTabStore = defineStore({
         updateIndex = index;
         return tab.path === path;
       });
-
-      console.log(tabHasExits);
 
       // If the tab already exists, perform the update operation
       if (tabHasExits) {

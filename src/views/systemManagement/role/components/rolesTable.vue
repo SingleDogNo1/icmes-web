@@ -32,8 +32,6 @@
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
 
-  const { createMessage } = useMessage();
-
   const props = defineProps({
     searchData: {
       type: Object as PropType<GetRoleListParams>,
@@ -42,6 +40,7 @@
   });
 
   const emit = defineEmits(['selectRow', 'changePage']);
+  const { createMessage } = useMessage();
 
   const selectedRowIndex = ref<number>(-1);
   const selectedRow = ref({});
@@ -104,13 +103,13 @@
         popConfirm: {
           title: '数据删除后将无法恢复，确认删除数据？',
           confirm: async () => {
-            loading.value = true;
+            loading.value = false;
             try {
               await deleteRoleApi(record.id);
-              await getRolesList(props.searchData);
               createMessage.success('删除成功');
-            } catch (err) {
-              console.log(err);
+              await getRolesList(props.searchData);
+            } catch (error) {
+              console.log('error :>> ', error);
             } finally {
               loading.value = false;
             }
@@ -120,24 +119,24 @@
     ];
   }
 
-  function getRolesList(form) {
+  async function getRolesList(form) {
     loading.value = true;
-    getRolesListApi(form)
-      .then((data) => {
-        setTableData(data.items || []);
-        if (data.items) {
-          // 有数据，默认选中第一条，查询详情
-          selectedRowIndex.value = -1;
-          const tableData = getDataSource();
-          handleClickRow(tableData[0], 0);
-        }
-        setPagination({
-          total: data.totalCount,
-        });
-      })
-      .finally(() => {
-        loading.value = false;
-      });
+
+    try {
+      const { items, totalCount } = await getRolesListApi(form);
+      setTableData(items || []);
+      setPagination({ total: totalCount });
+      if (items) {
+        // 有数据，默认选中第一条，查询详情
+        selectedRowIndex.value = -1;
+        const tableData = getDataSource();
+        handleClickRow(tableData[0], 0);
+      }
+    } catch (error) {
+      console.log('error :>> ', error);
+    } finally {
+      loading.value = false;
+    }
   }
 
   function handleClickRow(row, index?) {

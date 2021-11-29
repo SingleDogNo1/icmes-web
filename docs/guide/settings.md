@@ -4,7 +4,7 @@
 
 ## 环境变量配置
 
-项目的环境变量配置位于项目根目录下的 [.env](https://github.com/anncwb/vue-vben-admin/blob/main/.env)、[.env.development](https://github.com/anncwb/vue-vben-admin/blob/main/.env.development)、[.env.production](https://github.com/anncwb/vue-vben-admin/blob/main/.env.production)
+项目的环境变量配置位于项目根目录下的 `.env`、`.env.development`、`.env.test`、`.env.production`
 
 具体可以参考 [Vite 文档](https://github.com/vitejs/vite#modes-and-environment-variables)
 
@@ -18,74 +18,42 @@
 
 ### 配置项说明
 
-### .env
-
-所有环境适用
+- .env: 所有环境适用
+- .env.development 开发环境适用
+- .env.test 测试环境适用
+- .env.production 生产环境适用
 
 ```bash
 # 端口号
 VITE_PORT=3100
 # 网站标题
-VITE_GLOB_APP_TITLE=vben admin
+VITE_GLOB_APP_TITLE=ICMES系统
 # 简称，用于配置文件名字 不要出现空格、数字开头等特殊字符
-VITE_GLOB_APP_SHORT_NAME=vben_admin
-```
-
-### .env.development
-
-开发环境适用
-
-```bash
-# 是否开启mock数据，关闭时需要自行对接后台接口
+VITE_GLOB_APP_SHORT_NAME=icmes_web
+# 是否开启mock数据
 VITE_USE_MOCK=true
 # 资源公共路径,需要以 /开头和结尾
 VITE_PUBLIC_PATH=/
 # 是否删除Console.log
-VITE_DROP_CONSOLE=false
+VITE_DROP_CONSOLE=true
+# 打包是否输出gz｜br文件
+# 可选: gzip | brotli | none
+# 也可以有多个, 例如 ‘gzip’|'brotli',这样会同时生成 .gz和.br文件
+VITE_BUILD_COMPRESS = 'gzip'
 # 本地开发代理，可以解决跨域及多地址代理
 # 如果接口地址匹配到，则会转发到http://localhost:3000，防止本地出现跨域问题
 # 可以有多个，注意多个不能换行，否则代理将会失效
 VITE_PROXY=[["/api","http://localhost:3000"],["api1","http://localhost:3001"],["/upload","http://localhost:3001/upload"]]
 # 接口地址
-# 如果没有跨域问题，直接在这里配置即可
-VITE_GLOB_API_URL=/api
-# 文件上传接口  可选
+VITE_GLOB_API_URL=http://192.168.88.151:8088
+# 文件上传接口
 VITE_GLOB_UPLOAD_URL=/upload
+# websocket接口
+VITE_GLOB_SOCKET_URL = ws://192.168.88.151:5990/socket.io
 # 接口地址前缀，有些系统所有接口地址都有前缀，可以在这里统一加，方便切换
 VITE_GLOB_API_URL_PREFIX=
-```
-
-::: warning 注意
-
-这里配置的 `VITE_PROXY` 以及 `VITE_GLOB_API_URL`, /api 需要是唯一的，不要和接口有的名字冲突
-
-如果你的接口是 `http://localhost:3000/api` 之类的，请考虑将 `VITE_GLOB_API_URL=/xxxx` 换成别的名字
-
-:::
-
-### .env.production
-
-生产环境适用
-
-```bash
-# 是否开启mock
-VITE_USE_MOCK=true
-# 接口地址 可以由nginx做转发或者直接写实际地址
-VITE_GLOB_API_URL=/api
-# 文件上传地址 可以由nginx做转发或者直接写实际地址
-VITE_GLOB_UPLOAD_URL=/upload
-# 接口地址前缀，有些系统所有接口地址都有前缀，可以在这里统一加，方便切换
-VITE_GLOB_API_URL_PREFIX=
-# 是否删除Console.log
-VITE_DROP_CONSOLE=true
-# 资源公共路径,需要以 / 开头和结尾
-VITE_PUBLIC_PATH=/
-# 打包是否输出gz｜br文件
-# 可选: gzip | brotli | none
-# 也可以有多个, 例如 ‘gzip’|'brotli',这样会同时生成 .gz和.br文件
-VITE_BUILD_COMPRESS = 'gzip'
 # 打包是否压缩图片
-VITE_USE_IMAGEMIN = false
+VITE_USE_IMAGEMIN = true
 # 打包是否开启pwa功能
 VITE_USE_PWA = false
 # 是否兼容旧版浏览器。开启后打包时间会慢一倍左右。会多打出旧浏览器兼容包,且会根据浏览器兼容性自动使用相应的版本
@@ -118,15 +86,15 @@ window.__PRODUCTION__VUE_VBEN_ADMIN__CONF__ = {
 
 ### 如何获取全局变量
 
-想要获取 `_app.config.js` 内的变量，可以使用 [src/hooks/setting/index.ts](https://github.com/anncwb/vue-vben-admin/tree/main/src/hooks/setting/index.ts) 提供的函数来进行获取
+想要获取 `_app.config.js` 内的变量，可以使用 `src/hooks/setting/index.ts`提供的函数来进行获取
 
-### 如何新增(新增一个可动态修改的配置项)
+### 如何新增配置项
 
 1. 首先在 `.env` 或者对应的开发环境配置文件内，新增需要可动态配置的变量，需要以 `VITE_GLOB_`开头
 
 2. `VITE_GLOB_` 开头的变量会自动加入环境变量，通过在 `src/types/config.d.ts` 内修改 `GlobEnvConfig` 和 `GlobConfig` 两个环境变量的值来定义新添加的类型
 
-3. [useGlobSetting](https://github.com/anncwb/vue-vben-admin/tree/main/src/hooks/setting/index.ts) 函数中添加刚新增的返回值即可
+3. [useGlobSetting](/src/hooks/setting/index.ts) 函数中添加刚新增的返回值即可
 
 ```js
 const {
@@ -161,29 +129,22 @@ export const useGlobSetting = (): SettingWrap => {
 
 ### 配置文件路径
 
-[src/settings/projectSetting.ts](https://github.com/anncwb/vue-vben-admin/tree/main/src/settings/projectSetting.ts)
+`src/settings/projectSetting.ts`
 
 ### 说明
 
 ```js
-// ! 改动后需要清空浏览器缓存
+// !改动后需要清空浏览器缓存
 const setting: ProjectConfig = {
   // 是否显示SettingButton
   showSettingButton: true,
-
   // 是否显示主题切换按钮
   showDarkModeToggle: true,
-
   // 设置按钮位置 可选项
   // SettingButtonPositionEnum.AUTO: 自动选择
   // SettingButtonPositionEnum.HEADER: 位于头部
   // SettingButtonPositionEnum.FIXED: 固定在右侧
   settingButtonPosition: SettingButtonPositionEnum.AUTO,
-
-  // 权限模式,默认前端角色权限模式
-  // ROUTE_MAPPING: 前端模式（菜单由路由生成，默认）
-  // ROLE：前端模式（菜单路由分开）
-  permissionMode: PermissionModeEnum.ROUTE_MAPPING,
   // 权限缓存存放位置。默认存放于localStorage
   permissionCacheType: CacheTypeEnum.LOCAL,
   // 会话超时处理方案
@@ -316,9 +277,9 @@ const setting: ProjectConfig = {
 
 用于配置缓存内容加密信息，对缓存到浏览器的信息进行 AES 加密
 
-在 [/@/settings/encryptionSetting.ts](https://github.com/anncwb/vue-vben-admin/blob/main/src/settings/encryptionSetting.ts) 内可以配置 `localStorage` 及 `sessionStorage` 缓存信息
+在 `/@/settings/encryptionSetting.ts` 内可以配置 `localStorage` 及 `sessionStorage` 缓存信息
 
-**前提:** 使用项目自带的缓存工具类 [/@/utils/cache](https://github.com/anncwb/vue-vben-admin/blob/main/src/utils/cache/index.ts) 来进行缓存操作
+**前提:** 使用项目自带的缓存工具类 `/@/utils/cache`来进行缓存操作
 
 ```ts
 import { isDevMode } from '/@/utils/env';
@@ -340,7 +301,7 @@ export const enableStorageEncryption = !isDevMode();
 
 用于配置多语言信息
 
-在 [src/settings/localeSetting.ts](https://github.com/anncwb/vue-vben-admin/tree/main/src/settings/localeSetting.ts) 内配置
+在 `src/settings/localeSetting.ts`内配置
 
 ```ts
 export const LOCALE: { [key: string]: LocaleType } = {
@@ -374,9 +335,9 @@ export const localeList: DropMenu[] = [
 
 ## 主题色配置
 
-默认全局主题色配置位于 [build/config/glob/themeConfig.ts](https://github.com/anncwb/vue-vben-admin/tree/main/build/config/themeConfig.ts) 内
+默认全局主题色配置位于 `build/config/glob/themeConfig.ts` 内
 
-只需要修改 primaryColor 为您需要的配色，然后重新执行 `yarn serve` 即可
+只需要修改 `primaryColor` 为您需要的配色，然后重新执行 `yarn serve` 即可
 
 ```js
 /**
@@ -391,16 +352,16 @@ export const primaryColor = '#0960bd';
 
 用于修改项目内组件 class 的统一前缀
 
-- 在 [src/settings/designSetting.ts](https://github.com/anncwb/vue-vben-admin/blob/main/src/settings/designSetting.ts) 内配置
+- 在 `src/settings/designSetting.ts`内配置
 
 ```ts
-export const prefixCls = 'vben';
+export const prefixCls = 'icmes';
 ```
 
-- 在 [src/design/var/index.less](https://github.com/anncwb/vue-vben-admin/blob/main/src/design/var/index.less) 配置 css 前缀
+- 在 `src/design/var/index.less`配置 css 前缀
 
 ```less
-@namespace: vben;
+@namespace: icmes;
 ```
 
 ### 前缀使用
@@ -423,16 +384,14 @@ export const prefixCls = 'vben';
 ```ts
 import { useDesign } from '/@/hooks/web/useDesign';
 
-const { prefixCls } = useDesign('app-logo');
-
-// prefixCls => vben-app-logo
+const { prefixCls } = useDesign('app-logo'); // prefixCls => vben-app-logo
 ```
 
 ## 颜色配置
 
 用于预设一些颜色数组
 
-在 [src/settings/designSetting.ts](https://github.com/anncwb/vue-vben-admin/tree/main/src/settings/designSetting.ts) 内配置
+在 `src/settings/designSetting.ts`内配置
 
 ```ts
 //  app主题色预设
@@ -481,7 +440,7 @@ export const SIDE_BAR_BG_COLOR_LIST: string[] = [
 
 ## 组件默认参数配置
 
-在 [src/settings/componentSetting.ts](https://github.com/anncwb/vue-vben-admin/tree/main/src/settings/componentSetting.ts) 内配置
+在 `src/settings/componentSetting.ts`内配置
 
 ```ts
 // 用于配置某些组件的常规配置，而无需修改组件

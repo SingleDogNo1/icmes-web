@@ -45,17 +45,13 @@
   function handleSubmit() {
     nextTick(() => {
       const value = getFieldsValue() as GetAccountListParams;
-
-      console.log('value :>> ', value);
       searchData.value = value;
     });
   }
 
   function handleChangeUserTablePage(page) {
     const value = getFieldsValue() as GetAccountListParams;
-
     const form = { ...value, ...page };
-    console.log('searchData :>> ', form);
     searchData.value = form;
   }
 
@@ -63,7 +59,9 @@
     selectedRow.value = row;
   }
 
-  handleSubmit();
+  nextTick(() => {
+    handleSubmit();
+  });
 </script>
 
 <style scoped lang="less">

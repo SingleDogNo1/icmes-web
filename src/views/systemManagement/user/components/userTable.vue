@@ -113,19 +113,17 @@
           label: '解除锁定',
           popConfirm: {
             title: '是否确认解除锁定？',
-            confirm: () => {
-              console.log('解除锁定 :>> ', record);
+            confirm: async () => {
               loading.value = true;
-              unlockAccountByIdApi(record.employeeId)
-                .then(() => {
-                  loading.value = false;
-                  createMessage.success('解除锁定成功！');
-                  getAccountList(props.searchData);
-                })
-                .catch((error) => {
-                  loading.value = false;
-                  createMessage.error(error);
-                });
+              try {
+                await unlockAccountByIdApi(record.employeeId);
+                createMessage.success('解除锁定成功！');
+                await getAccountList(props.searchData);
+              } catch (error) {
+                console.log('error :>> ', error);
+              } finally {
+                loading.value = false;
+              }
             },
           },
         },
@@ -143,18 +141,17 @@
           color: 'error',
           popConfirm: {
             title: '数据删除后将无法恢复，确认删除数据？',
-            confirm: () => {
+            confirm: async () => {
               loading.value = true;
-              deleteAccountByIdApi(record.employeeId)
-                .then(() => {
-                  loading.value = false;
-                  createMessage.success('删除成功！');
-                  getAccountList(props.searchData);
-                })
-                .catch((error) => {
-                  loading.value = false;
-                  createMessage.error(error);
-                });
+              try {
+                await deleteAccountByIdApi(record.employeeId);
+                createMessage.success('删除成功！');
+                await getAccountList(props.searchData);
+              } catch (error) {
+                console.log('error :>> ', error);
+              } finally {
+                loading.value = false;
+              }
             },
           },
         },
@@ -162,18 +159,17 @@
           label: '锁定',
           popConfirm: {
             title: '是否确认锁定？',
-            confirm: () => {
+            confirm: async () => {
               loading.value = true;
-              lockAccountByIdApi(record.employeeId)
-                .then(() => {
-                  loading.value = false;
-                  createMessage.success('锁定成功！');
-                  getAccountList(props.searchData);
-                })
-                .catch((error) => {
-                  loading.value = false;
-                  createMessage.error(error);
-                });
+              try {
+                await lockAccountByIdApi(record.employeeId);
+                createMessage.success('锁定成功！');
+                await getAccountList(props.searchData);
+              } catch (error) {
+                console.log('error :>> ', error);
+              } finally {
+                loading.value = false;
+              }
             },
           },
         },
@@ -189,17 +185,16 @@
           label: '初始化密码',
           popConfirm: {
             title: '密码将重置为123456，是否确认？',
-            confirm: () => {
+            confirm: async () => {
               loading.value = true;
-              resetPasswordByIdApi(record.employeeId)
-                .then(() => {
-                  loading.value = false;
-                  createMessage.success('密码初始化成功');
-                })
-                .catch((error) => {
-                  loading.value = false;
-                  createMessage.error(error);
-                });
+              try {
+                await resetPasswordByIdApi(record.employeeId);
+                createMessage.success('密码初始化成功');
+              } catch (error) {
+                console.log('error :>> ', error);
+              } finally {
+                loading.value = false;
+              }
             },
           },
         },
@@ -207,18 +202,16 @@
           label: '初始化人脸',
           popConfirm: {
             title: '是否确定初始化人脸？',
-            confirm: () => {
-              console.log('record :>> ', record);
+            confirm: async () => {
               loading.value = true;
-              resetFaceByIdApi(record.employeeId)
-                .then(() => {
-                  loading.value = false;
-                  createMessage.success('初始化人脸成功');
-                })
-                .catch((error) => {
-                  loading.value = false;
-                  createMessage.error(error);
-                });
+              try {
+                await resetFaceByIdApi(record.employeeId);
+                createMessage.success('初始化人脸成功');
+              } catch (error) {
+                console.log('error :>> ', error);
+              } finally {
+                loading.value = false;
+              }
             },
           },
         },
@@ -226,25 +219,23 @@
     }
   }
 
-  function getAccountList(form) {
+  async function getAccountList(form) {
     loading.value = true;
-    getAccountListApi(form)
-      .then((data) => {
-        console.log('data :>> ', data);
-        setTableData(data.items || []);
-        if (data.items) {
-          // 有数据，默认选中第一条，查询详情
-          selectedRowIndex.value = -1;
-          const tableData = getDataSource();
-          handleClickRow(tableData[0], 0);
-        }
-        setPagination({
-          total: data.totalCount,
-        });
-      })
-      .finally(() => {
-        loading.value = false;
-      });
+    try {
+      const { items, totalCount } = await getAccountListApi(form);
+      setTableData(items || []);
+      setPagination({ total: totalCount });
+      if (items) {
+        // 有数据，默认选中第一条，查询详情
+        selectedRowIndex.value = -1;
+        const tableData = getDataSource();
+        handleClickRow(tableData[0], 0);
+      }
+    } catch (error) {
+      console.log('error :>> ', error);
+    } finally {
+      loading.value = false;
+    }
   }
 
   function handleClickRow(row, index?) {

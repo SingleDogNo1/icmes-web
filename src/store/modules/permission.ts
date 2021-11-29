@@ -8,6 +8,7 @@ import { toRaw } from 'vue';
 import { transformObjToRoute, flatMultiLevelRoutes } from '/@/router/helper/routeHelper';
 import { transformRouteToMenu } from '/@/router/helper/menuHelper';
 import { ERROR_LOG_ROUTE, PAGE_NOT_FOUND_ROUTE, HOMEPAGE_ROUTE } from '/@/router/routes/basic';
+import ABOUT_PAGE_ROUTE from '/@/router/routes/modules/about';
 import { filter } from '/@/utils/helper/treeHelper';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
@@ -172,7 +173,7 @@ export const usePermissionStore = defineStore({
       routeList = routeList.filter(routeRemoveIgnoreFilter);
 
       routeList = flatMultiLevelRoutes(routeList);
-      routes = [PAGE_NOT_FOUND_ROUTE, HOMEPAGE_ROUTE, ...routeList];
+      routes = [PAGE_NOT_FOUND_ROUTE, HOMEPAGE_ROUTE, ABOUT_PAGE_ROUTE, ...routeList];
 
       routes.push(ERROR_LOG_ROUTE);
       patchHomeAffix(routes);

@@ -18,7 +18,7 @@ const employeeId = userStore.getUserInfo?.employeeId;
 
 export function useWebSocket() {
   if (!employeeId) return;
-  baseSocket(
+  const { send, data, status, open, close } = baseSocket(
     `${socketUrl}/?token=00000000-0000-0000-0000-000000000000&uid=${employeeId}_web&transport=websocket`,
     {
       autoReconnect: true,
@@ -39,6 +39,7 @@ export function useWebSocket() {
           const { t } = useI18n();
           switch (messageData.messageType) {
             case 'PERMISSION':
+              // {"businessData":"{\"alreadyCompleteCount\":0,\"alreadyConfirmCompleteCount\":0,\"alreadyConfirmCount\":0,\"alreadyConfirmTestCount\":0,\"alreadyStopCount\":0,\"duringCount\":10,\"errorTaskCount\":0,\"waitConfirmCompleteCount\":0,\"waitConfirmCount\":11,\"waitConfirmTestCount\":0}"}
               createConfirm({
                 iconType: 'warning',
                 title: () => h('span', t('sys.app.logoutTip')),
@@ -68,22 +69,28 @@ export function useWebSocket() {
 
               break;
             case 'MESSAGE':
-              console.log('消息通知 :>> ');
+              console.log('消息通知 :>> ', messageData.businessData);
               break;
             case 'CARBON':
-              console.log('抄送通知 :>> ');
+              console.log('抄送通知 :>> ', messageData.businessData);
               break;
             case 'TASK':
-              console.log('任务通知 :>> ');
+              console.log('任务通知 :>> ', messageData.businessData);
               break;
             case 'APPROVAL':
-              console.log('审批通知 :>> ');
+              console.log('审批通知 :>> ', messageData.businessData);
               break;
             case 'DICTIONARY':
-              console.log('字典变更通知 :>> ');
+              console.log('字典变更通知 :>> ', messageData.businessData);
               break;
             case 'LOGIN':
-              console.log('LOGIN :>> ');
+              console.log('LOGIN :>> ', messageData.businessData);
+              break;
+            case 'ETM_REAL_TIME':
+              console.log('ETM_REAL_TIME :>> ', messageData.businessData);
+              break;
+            case 'POWER_CUT_FORM_TODAY_COUNT':
+              console.log('POWER_CUT_FORM_TODAY_COUNT :>> ', messageData.businessData);
               break;
           }
         }
@@ -93,4 +100,12 @@ export function useWebSocket() {
       },
     },
   );
+
+  return {
+    send,
+    data,
+    status,
+    open,
+    close,
+  };
 }
