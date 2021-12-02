@@ -1,3 +1,4 @@
+import { h, unref } from 'vue';
 import { useWebSocket as baseSocket } from '@vueuse/core';
 import { useGlobSetting } from '/@/hooks/setting';
 import { useUserStoreWithOut } from '/@/store/modules/user';
@@ -6,10 +7,10 @@ import { getPermissionApi } from '/@/api/account/basic';
 import { router } from '/@/router';
 import { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
-import { PageEnum } from '/@/enums/pageEnum';
 import { useMessage } from './useMessage';
 import { useI18n } from '/@/hooks/web/useI18n';
-import { h } from 'vue';
+import { REDIRECT_NAME } from '/@/router/constant';
+import { notification } from 'ant-design-vue';
 
 const { socketUrl } = useGlobSetting();
 const userStore = useUserStoreWithOut();
@@ -38,6 +39,7 @@ export function useWebSocket() {
           if (res.source !== 'server') return;
 
           const messageData = JSON.parse(res.data);
+          const businessData = JSON.parse(messageData.businessData);
           const { createConfirm } = useMessage();
           const { t } = useI18n();
           switch (messageData.messageType) {
@@ -59,8 +61,25 @@ export function useWebSocket() {
                     });
                     router.addRoute(PAGE_NOT_FOUND_ROUTE as unknown as RouteRecordRaw);
 
-                    // TODO 应跳转到当前页 || 首页
-                    router.replace(PageEnum.BASE_HOME);
+                    // 刷新当前页
+                    const { push, currentRoute } = router;
+                    console.log('push, currentRoute :>> ', push, currentRoute);
+                    const { query, params = {}, name, fullPath } = unref(currentRoute.value);
+
+                    return new Promise((resolve) => {
+                      if (name === REDIRECT_NAME) {
+                        resolve(false);
+                        return;
+                      }
+                      if (name && Object.keys(params).length > 0) {
+                        params['_redirect_type'] = 'name';
+                        params['path'] = String(name);
+                      } else {
+                        params['_redirect_type'] = 'path';
+                        params['path'] = fullPath;
+                      }
+                      push({ name: REDIRECT_NAME, params, query }).then(() => resolve(true));
+                    });
                   } catch (error) {
                     throw new Error(JSON.stringify(error));
                   }
@@ -68,19 +87,39 @@ export function useWebSocket() {
               });
               break;
             case 'MESSAGE':
-              console.log('消息通知 :>> ', messageData.businessData);
+              console.log('消息通知 :>> ', businessData);
+              notification.info({
+                message: businessData.title,
+                description: businessData.content,
+              });
               break;
             case 'CARBON':
-              console.log('抄送通知 :>> ', messageData.businessData);
+              console.log('抄送通知 :>> ', businessData);
+              notification.info({
+                message: businessData.title,
+                description: businessData.content,
+              });
               break;
             case 'TASK':
-              console.log('任务通知 :>> ', messageData.businessData);
+              console.log('任务通知 :>> ', businessData);
+              notification.info({
+                message: businessData.title,
+                description: businessData.content,
+              });
               break;
             case 'APPROVAL':
-              console.log('审批通知 :>> ', messageData.businessData);
+              console.log('审批通知 :>> ', businessData);
+              notification.info({
+                message: businessData.title,
+                description: businessData.content,
+              });
               break;
             case 'DICTIONARY':
-              console.log('字典变更通知 :>> ', messageData.businessData);
+              console.log('字典变更通知 :>> ', businessData);
+              notification.info({
+                message: businessData.title,
+                description: businessData.content,
+              });
               break;
             case 'LOGIN':
               console.log('LOGIN :>> ', messageData.businessData);
