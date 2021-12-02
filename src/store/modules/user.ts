@@ -36,9 +36,10 @@ import { logoutApi, loginApi, getPublicKeyApi, resetPwdApi } from '/@/api/sys/us
 import { getAllAccountTreeApi, getOrganizationsListApi } from '/@/api/info/organizations';
 import { getRemoteConfigApi } from '/@/api/info/config';
 import { getDevicesListApi } from '/@/api/info/devices';
-import { getRolesListByIdApi } from '/@/api/account/roles';
+import { getRolesListByIdApi } from '/@/api/account/basic';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
+import { useGlobSetting } from '/@/hooks/setting';
 import { router } from '/@/router';
 import { usePermissionStore } from '/@/store/modules/permission';
 import { RouteRecordRaw } from 'vue-router';
@@ -254,6 +255,8 @@ export const useUserStore = defineStore({
           },
           mode,
         );
+
+        const { apiUrl } = useGlobSetting();
         this.setMenu(remoteConfig.menus);
         this.setDicts(remoteConfig.dicts);
         this.setFeaturesTree(remoteConfig.features);
@@ -266,7 +269,9 @@ export const useUserStore = defineStore({
             name: userInfo.name,
             employeeId: userInfo.employeeId,
             organizationId: userInfo.organizationId,
-            avatar: userInfo.avatar,
+            avatar: userInfo.avatar
+              ? `${apiUrl}/info/files/image/${userInfo.avatar}?access_token=${this.getToken}`
+              : '',
           });
 
         userInfo.featureScopes && this.setAuthFeatures(userInfo.featureScopes);

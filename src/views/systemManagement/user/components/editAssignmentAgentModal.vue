@@ -24,7 +24,7 @@
   import { useUserState } from '/@/hooks/web/useUserState';
   import { PageWrapper } from '/@/components/Page';
   import { AccountConsignProxyModel } from '/@/api/account/model/basicModel';
-  import { getRolesListByIdApi } from '/@/api/account/roles';
+  import { getRolesListByIdApi } from '/@/api/account/basic';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { addProxyApi, EditProxyByIdApi } from '/@/api/account/proxies';
   import { addProxyParam, EditProxyParam } from '/@/api/account/model/proxiesModel';
@@ -166,12 +166,13 @@
         pageSize: 0,
       });
 
-      setTableData(
-        allRolesList.reduce((res, pre, index) => {
-          res.push({ ...pre, ...{ id: index } });
-          return res;
-        }, [] as any[]),
-      );
+      allRolesList &&
+        setTableData(
+          allRolesList.reduce((res, pre, index) => {
+            res.push({ ...pre, ...{ id: index } });
+            return res;
+          }, [] as any[]),
+        );
       // 设置当前页显示条数 = 总条数 & 隐藏分页器
       setPagination({ pageSize: totalCount });
       setShowPagination(false);

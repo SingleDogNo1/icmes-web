@@ -12,7 +12,7 @@ export interface GetRoleListByIdParams {
 
 /** 通过 ID 获取账号角色列表接口返回数据 */
 export interface GetRoleListByIdResultModel {
-  items: AccountRoleModel[];
+  items: Nullable<AccountRoleModel[]>;
   totalCount: number;
   totalPages: number;
 }

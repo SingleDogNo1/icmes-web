@@ -138,7 +138,7 @@
                 createMessage.success('禁用成功');
                 await getDictTypesList(props.selectRow);
               } catch (error) {
-                console.log('error :>> ', error);
+                throw new Error(JSON.stringify(error));
               } finally {
                 loading.value = false;
               }
@@ -157,7 +157,7 @@
                 createMessage.success('删除成功');
                 await getDictTypesList(props.selectRow);
               } catch (error) {
-                console.log('error :>> ', error);
+                throw new Error(JSON.stringify(error));
               } finally {
                 loading.value = false;
               }
@@ -181,7 +181,7 @@
                 createMessage.success('启用成功');
                 await getDictTypesList(props.selectRow);
               } catch (error) {
-                console.log('error :>> ', error);
+                throw new Error(JSON.stringify(error));
               } finally {
                 loading.value = false;
               }
@@ -205,7 +205,7 @@
         handleClickRow(tableData[0], 0);
       }
     } catch (error) {
-      console.log('error :>> ', error);
+      throw new Error(JSON.stringify(error));
     } finally {
       loading.value = false;
     }

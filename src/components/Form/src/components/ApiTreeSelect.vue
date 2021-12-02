@@ -69,7 +69,7 @@
         try {
           result = await api(props.params);
         } catch (e) {
-          console.error(e);
+          throw new Error(JSON.stringify(e));
         }
         loading.value = false;
         if (!result) return;

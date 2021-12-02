@@ -29,6 +29,9 @@ export function useWebSocket() {
       onConnected() {
         console.log('websocket 连接成功: ' + new Date().toLocaleString());
       },
+      onDisconnected() {
+        console.log('websocket 断开连接: ' + new Date().toLocaleString());
+      },
       onMessage(_ws, { data }) {
         if (data.includes('broadcast')) {
           const res = JSON.parse(data.match(/{.+}/g)[0]);
@@ -44,28 +47,25 @@ export function useWebSocket() {
                 title: () => h('span', t('sys.app.logoutTip')),
                 content: () => h('span', t('common.resetPermissionText')),
                 onOk: async () => {
-                  getPermissionApi()
-                    .then((data) => {
-                      userStore.setAuthFeatures(data.featureScopes);
-                      userStore.setFeature(data.features);
-                    })
-                    .then(() => {
-                      userStore.getUserInfoAction();
-                    })
-                    .then(() => {
-                      permissionStore.buildRoutesAction().then((routes) => {
-                        routes.forEach((route) => {
-                          router.addRoute(route as unknown as RouteRecordRaw);
-                        });
-                        router.addRoute(PAGE_NOT_FOUND_ROUTE as unknown as RouteRecordRaw);
+                  try {
+                    const { featureScopes, features } = await getPermissionApi();
+                    userStore.setAuthFeatures(featureScopes);
+                    userStore.setFeature(features);
+                    userStore.getUserInfoAction();
+                    const routes = await permissionStore.buildRoutesAction();
 
-                        // TODO 应跳转到当前页 || 首页
-                        router.replace(PageEnum.BASE_HOME);
-                      });
+                    routes.forEach((route) => {
+                      router.addRoute(route as unknown as RouteRecordRaw);
                     });
+                    router.addRoute(PAGE_NOT_FOUND_ROUTE as unknown as RouteRecordRaw);
+
+                    // TODO 应跳转到当前页 || 首页
+                    router.replace(PageEnum.BASE_HOME);
+                  } catch (error) {
+                    throw new Error(JSON.stringify(error));
+                  }
                 },
               });
-
               break;
             case 'MESSAGE':
               console.log('消息通知 :>> ', messageData.businessData);
@@ -91,14 +91,8 @@ export function useWebSocket() {
             case 'POWER_CUT_FORM_TODAY_COUNT':
               console.log('POWER_CUT_FORM_TODAY_COUNT :>> ', messageData.businessData);
               break;
-            case 'POWER_CUT_FORM_TODAY_COUNT':
-              console.log('POWER_CUT_FORM_TODAY_COUNT :>> ', messageData.businessData);
-              break;
           }
         }
-      },
-      onDisconnected() {
-        console.log('websocket 断开连接: ' + new Date().toLocaleString());
       },
     },
   );

@@ -120,7 +120,7 @@
                 createMessage.success('解除锁定成功！');
                 await getAccountList(props.searchData);
               } catch (error) {
-                console.log('error :>> ', error);
+                throw new Error(JSON.stringify(error));
               } finally {
                 loading.value = false;
               }
@@ -148,7 +148,7 @@
                 createMessage.success('删除成功！');
                 await getAccountList(props.searchData);
               } catch (error) {
-                console.log('error :>> ', error);
+                throw new Error(JSON.stringify(error));
               } finally {
                 loading.value = false;
               }
@@ -166,7 +166,7 @@
                 createMessage.success('锁定成功！');
                 await getAccountList(props.searchData);
               } catch (error) {
-                console.log('error :>> ', error);
+                throw new Error(JSON.stringify(error));
               } finally {
                 loading.value = false;
               }
@@ -191,7 +191,7 @@
                 await resetPasswordByIdApi(record.employeeId);
                 createMessage.success('密码初始化成功');
               } catch (error) {
-                console.log('error :>> ', error);
+                throw new Error(JSON.stringify(error));
               } finally {
                 loading.value = false;
               }
@@ -208,7 +208,7 @@
                 await resetFaceByIdApi(record.employeeId);
                 createMessage.success('初始化人脸成功');
               } catch (error) {
-                console.log('error :>> ', error);
+                throw new Error(JSON.stringify(error));
               } finally {
                 loading.value = false;
               }
@@ -232,7 +232,7 @@
         handleClickRow(tableData[0], 0);
       }
     } catch (error) {
-      console.log('error :>> ', error);
+      throw new Error(JSON.stringify(error));
     } finally {
       loading.value = false;
     }

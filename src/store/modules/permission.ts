@@ -162,7 +162,6 @@ export const usePermissionStore = defineStore({
 
         routeList.sort((a, b) => (a.meta.orderNo || 0) - (b.meta.orderNo || 0));
       } catch (error) {
-        console.error(error);
         throw error;
       }
 

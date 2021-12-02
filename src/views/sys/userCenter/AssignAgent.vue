@@ -1,24 +1,24 @@
 <template>
-  <BasicTable @register="registerTable" :loading="loading">
-    <template #toolbar>
-      <a-button type="primary" @click="openModal(true, { employeeId: user.employeeId })">
-        指派代理
-      </a-button>
-    </template>
-    <template #startDate="{ record }">{{ formatToDate(record.proxyStartDate) }}</template>
-    <template #endDate="{ record }">{{ formatToDate(record.proxyEndDate) }}</template>
-    <template #proxyType="{ record }">{{ parseProxyType(record.periodDays) }}</template>
-    <template #proxyCycle="{ record }">{{ parseProxyCycle(record.periodDays) }}</template>
-    <template #action="{ record }">
-      <TableAction :actions="createActions(record)" />
-    </template>
-  </BasicTable>
+  <CollapseContainer title="指派代理" :canExpan="false">
+    <BasicTable @register="registerTable" :loading="loading">
+      <template #toolbar>
+        <a-button type="primary" @click="openModal(true, { employeeId })"> 指派代理 </a-button>
+      </template>
+      <template #startDate="{ record }">{{ formatToDate(record.proxyStartDate) }}</template>
+      <template #endDate="{ record }">{{ formatToDate(record.proxyEndDate) }}</template>
+      <template #proxyType="{ record }">{{ parseProxyType(record.periodDays) }}</template>
+      <template #proxyCycle="{ record }">{{ parseProxyCycle(record.periodDays) }}</template>
+      <template #action="{ record }">
+        <TableAction :actions="createActions(record)" />
+      </template>
+    </BasicTable>
 
-  <EditAssignmentAgentModal @register="registerModal" @done="refreshData" />
+    <EditAssignmentAgentModal @register="registerModal" @done="refreshData" />
+  </CollapseContainer>
 </template>
 
 <script lang="ts" setup>
-  import { ref, watch, PropType } from 'vue';
+  import { ref } from 'vue';
   import {
     BasicTable,
     useTable,
@@ -27,23 +27,23 @@
     ActionItem,
   } from '/@/components/Table';
   import { useModal } from '/@/components/Modal';
+  import { CollapseContainer } from '/@/components/Container';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { getAssignmentAgentListApi } from '/@/api/account/basic';
-  import {
-    getAssignmentParams,
-    AccountModel,
-    AccountConsignProxyModel,
-  } from '/@/api/account/model/basicModel';
-  import EditAssignmentAgentModal from './editAssignmentAgentModal.vue';
+  import { getAssignmentParams, AccountConsignProxyModel } from '/@/api/account/model/basicModel';
+  import EditAssignmentAgentModal from '/@/views/systemManagement/user/components/editAssignmentAgentModal.vue';
   import { delProxyByIdApi } from '/@/api/account/proxies';
-  import { formatToDate, parseProxyType, parseProxyCycle } from '../helper';
+  import {
+    formatToDate,
+    parseProxyType,
+    parseProxyCycle,
+  } from '/@/views/systemManagement/user/helper';
+  import { useUserStore } from '/@/store/modules/user';
+  import { agentTableColumns } from './data';
 
-  const props = defineProps({
-    user: {
-      type: Object as PropType<AccountModel>,
-      required: true,
-    },
-  });
+  const userStore = useUserStore();
+
+  const { employeeId } = userStore.getUserInfo;
 
   const { createMessage } = useMessage();
 
@@ -56,15 +56,7 @@
   });
 
   const [registerTable, { setTableData, getPaginationRef, setPagination }] = useTable({
-    columns: [
-      { title: '组织机构', dataIndex: 'fullOrgName', fixed: 'left' },
-      { title: '角色', dataIndex: 'roleName', fixed: 'left' },
-      { title: '接手人', dataIndex: 'assignProxyName', fixed: 'left' },
-      { title: '开始时间', dataIndex: 'proxyStartDate', slots: { customRender: 'startDate' } },
-      { title: '结束时间', dataIndex: 'proxyEndDate', slots: { customRender: 'endDate' } },
-      { title: '代理类型', dataIndex: 'proxyType', slots: { customRender: 'proxyType' } },
-      { title: '周期', dataIndex: 'proxyCycle', slots: { customRender: 'proxyCycle' } },
-    ],
+    columns: agentTableColumns,
     striped: false,
     ellipsis: false,
     actionColumn: {
@@ -80,7 +72,7 @@
         pageSize: page.pageSize,
       });
       const options = { ...searchForm.value, ...{ pageNo: page.current, pageSize: page.pageSize } };
-      getRolesListById(props.user?.employeeId, options);
+      getRolesListById(employeeId, options);
     },
   });
 
@@ -91,7 +83,7 @@
       {
         label: '编辑',
         onClick: () => {
-          openModal(true, { ...record, ...{ employeeId: props.user.employeeId } });
+          openModal(true, { ...record, ...{ employeeId } });
         },
       },
       {
@@ -134,18 +126,8 @@
     // 重置分页
     setPagination({ current: 1, pageSize: 10 });
     const options = { ...searchForm.value, ...{ pageNo: 1, pageSize: 10 } };
-    getRolesListById(props.user.employeeId, options);
+    getRolesListById(employeeId, options);
   }
 
-  watch(
-    () => props.user,
-    (val) => {
-      console.log('val :>> ', val);
-      loading.value = true;
-      refreshData();
-    },
-    {
-      deep: true,
-    },
-  );
+  getRolesListById(employeeId, searchForm.value);
 </script>

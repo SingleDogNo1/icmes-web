@@ -244,7 +244,7 @@ export function useFormEvents({
       emit('submit', res);
     } catch (error) {
       console.log('表单校验失败 :>>', JSON.stringify(error));
-      throw new Error(error as string);
+      throw new Error(JSON.stringify(error));
     }
   }
 

@@ -154,3 +154,14 @@ export interface getAssignmentProxiesResultModel {
   totalCount: number;
   totalPages: number;
 }
+
+export interface ChangePWDParams {
+  /** 确认密码 */
+  confirmPassword: string;
+  /** aes密钥 */
+  key: string;
+  /** 原始密码 */
+  orgPassword: string;
+  /** 新密码 */
+  password: string;
+}

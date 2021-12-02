@@ -12,12 +12,16 @@ import {
   getAssignmentParams,
   getAssignmentAgentResultModel,
   getAssignmentProxiesResultModel,
+  ChangePWDParams,
 } from './model/basicModel';
+
+import { GetRoleListByIdParams, GetRoleListByIdResultModel } from './model/rolesModel';
 
 enum Api {
   getPermission = '/account/permission',
   getAccountList = '/account/list/',
   editAccount = '/account/',
+  uploadAvatar = '/account/profile/avatar',
   getAccountInfoById = '/account/info/',
 }
 
@@ -118,6 +122,23 @@ export function resetFaceByIdApi(id: string | number, mode: ErrorMessageMode = '
   );
 }
 
+/** 账号角色列表查询--作者：张瑞晗 */
+export function getRolesListByIdApi(
+  id: number | string,
+  params: GetRoleListByIdParams,
+  mode: ErrorMessageMode = 'modal',
+) {
+  return defHttp.post<GetRoleListByIdResultModel>(
+    {
+      url: `/account/${id}/roles/list/`,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
 /** 用户角色编辑(分配角色)--作者：徐宏亮 */
 export function distributionRoleByIdApi(
   id: string | number,
@@ -171,6 +192,37 @@ export function getAssignmentProxiesListApi(
 ) {
   return defHttp.post<getAssignmentProxiesResultModel>(
     { url: Api.editAccount + id + '/assignProxies/list/', params },
+    { errorMessageMode: mode },
+  );
+}
+
+/** 上传头像--作者：徐宏亮 */
+export function uploadAvatarApi(
+  params: { name: string; file: string },
+  mode: ErrorMessageMode = 'message',
+) {
+  const data = new FormData();
+  const files = { name: params.name, content: params.file.substring(22) };
+  data.append('files', JSON.stringify(files));
+
+  return defHttp.post(
+    {
+      url: Api.uploadAvatar,
+      params: data,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
+/** 修改密码--作者：徐宏亮 */
+export function changePasswordApi(params: ChangePWDParams, mode: ErrorMessageMode = 'message') {
+  return defHttp.put<EditAccountResultModel>(
+    {
+      url: Api.editAccount + '/password/',
+      params,
+    },
     { errorMessageMode: mode },
   );
 }

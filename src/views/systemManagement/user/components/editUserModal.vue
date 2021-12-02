@@ -126,7 +126,7 @@
       closeModal();
       emit('update:user');
     } catch (error) {
-      console.log('error :>> ', error);
+      throw new Error(JSON.stringify(error));
     } finally {
       loading.value = false;
     }

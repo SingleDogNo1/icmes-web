@@ -59,7 +59,7 @@
       listData.value = items ?? [];
       total.value = totalCount;
     } catch (error) {
-      console.log('error :>> ', error);
+      throw new Error(JSON.stringify(error));
     } finally {
       loading.value = false;
     }
@@ -78,7 +78,7 @@
       console.log('res :>> ', res);
       await getNoticeList();
     } catch (error) {
-      console.log('error :>> ', error);
+      throw new Error(JSON.stringify(error));
     } finally {
       loading.value = false;
     }

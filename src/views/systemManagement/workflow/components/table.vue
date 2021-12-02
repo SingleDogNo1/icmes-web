@@ -129,7 +129,7 @@
                 createMessage.success('发布成功');
                 await getWorkflowsList(props.searchData);
               } catch (error) {
-                console.log('error :>> ', error);
+                throw new Error(JSON.stringify(error));
               } finally {
                 loading.value = false;
               }
@@ -178,7 +178,7 @@
         handleClickRow(tableData[0], 0);
       }
     } catch (error) {
-      console.log('error :>> ', error);
+      throw new Error(JSON.stringify(error));
     } finally {
       loading.value = false;
     }
@@ -197,7 +197,7 @@
       createMessage.success('删除成功');
       await getWorkflowsList(props.searchData);
     } catch (error) {
-      console.log('error :>> ', error);
+      throw new Error(JSON.stringify(error));
     } finally {
       loading.value = false;
     }

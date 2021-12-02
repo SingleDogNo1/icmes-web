@@ -161,7 +161,7 @@
 
       spinEl.style.overflow = 'hidden';
     } catch (error) {
-      console.log(error);
+      throw new Error(JSON.stringify(error));
     }
   }
 </script>

@@ -163,16 +163,12 @@
     ],
   });
 
-  onMounted(() => {
-    nextTick(() => {
-      const form = getFieldsValue() as GetAlarmsListParam;
-      console.log('form :>> ', form);
-      getAlarmsListApi(form).then((data) => {
-        console.log('data :>> ', data);
-        const tableData = data.items ?? [];
-        setTableData(tableData);
-      });
-    });
+  onMounted(async () => {
+    await nextTick();
+    const form = getFieldsValue() as GetAlarmsListParam;
+    console.log('form :>> ', form);
+    const { items } = await getAlarmsListApi(form);
+    setTableData(items || []);
   });
 
   function toWarningSettings() {
