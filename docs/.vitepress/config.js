@@ -49,43 +49,6 @@ function createNav() {
         },
       ],
     },
-    {
-      text: '相关链接',
-      items: [
-        {
-          text: 'Discord Chat',
-          link: 'https://discord.gg/8GuAdwDhj6',
-        },
-        {
-          text: '完整版预览',
-          link: 'https://vvbin.cn/next',
-        },
-        {
-          text: '完整版源码',
-          link: 'https://github.com/anncwb/vue-vben-admin',
-        },
-        {
-          text: '精简版预览',
-          link: 'https://vvbin.cn/thin/next',
-        },
-        {
-          text: '精简版源码',
-          link: 'https://github.com/anncwb/vben-admin-thin-next',
-        },
-        {
-          text: '文档源码',
-          link: 'https://github.com/anncwb/vue-vben-admin-doc',
-        },
-        {
-          text: '更新日志',
-          link: 'https://github.com/anncwb/vue-vben-admin/blob/main/CHANGELOG.md',
-        },
-      ],
-    },
-    {
-      text: '赞助',
-      link: '/other/donate',
-    },
   ];
 }
 
@@ -303,26 +266,14 @@ function createSidebar() {
             link: '/guide/design',
           },
           {
-            text: '外部模块',
-            link: '/guide/lib',
-          },
-          {
             text: '构建&部署',
             link: '/guide/deploy',
-          },
-          {
-            text: 'Electron',
-            link: '/guide/electron',
           },
         ],
       },
       {
         text: '深入',
         children: [
-          {
-            text: '跨域处理',
-            link: '/dep/cors',
-          },
           {
             text: '图标',
             link: '/dep/icon',
@@ -347,14 +298,6 @@ function createSidebar() {
           {
             text: '常见问题',
             link: '/other/faq',
-          },
-          {
-            text: '常见疑点',
-            link: '/other/doubt',
-          },
-          {
-            text: '测试服务',
-            link: '/other/server',
           },
         ],
       },

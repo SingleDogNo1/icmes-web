@@ -13,7 +13,7 @@ import {
   HOMEPAGE_ROUTE,
   USER_CENTER,
 } from '/@/router/routes/basic';
-import ABOUT_PAGE_ROUTE from '/@/router/routes/modules/about';
+import { ABOUT_PAGE_ROUTE } from '/@/router/routes/basic';
 import { filter } from '/@/utils/helper/treeHelper';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';

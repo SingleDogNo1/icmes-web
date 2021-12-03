@@ -133,14 +133,6 @@ const page: AppRouteModule = {
             title: t('routes.demo.page.accountCenter'),
           },
         },
-        {
-          path: 'setting',
-          name: 'AccountSettingPage',
-          component: () => import('/@/views/demo/page/account/setting/index.vue'),
-          meta: {
-            title: t('routes.demo.page.accountSetting'),
-          },
-        },
       ],
     },
     // =============================account end=============================

@@ -33,7 +33,7 @@ config.less 这个文件会被全局注入到所有文件，所以在页面内�
 </style>
 ```
 
-## tailwindcss(2.5.0+)
+## tailwindcss
 
 项目中引用到了 [tailwindcss](https://tailwindcss.com/docs),具体可以见文件使用说明。
 
@@ -42,24 +42,6 @@ config.less 这个文件会被全局注入到所有文件，所以在页面内�
 ```html
 <div class="relative w-full h-full px-4"></div>
 ```
-
-## windicss(2.5.0 已弃用)
-
-项目中使用了 [windicss](https://windicss.org/)，具体参见文件使用说明。
-
-语法如下:
-
-```html
-<div class="relative w-full h-full px-4"></div>
-```
-
-::: danger 注意事项
-
-windcss 目前会造成本地开发内存溢出，所以后续可能会考虑切换到 TailwindCss，两者基本相同。
-
-所以尽量少用 Windicss 新增的特性，防止后续切换成本高。
-
-:::
 
 ## 为什么使用 Less
 

@@ -384,7 +384,7 @@ export const prefixCls = 'icmes';
 ```ts
 import { useDesign } from '/@/hooks/web/useDesign';
 
-const { prefixCls } = useDesign('app-logo'); // prefixCls => vben-app-logo
+const { prefixCls } = useDesign('app-logo'); // prefixCls => icmes-app-logo
 ```
 
 ## 颜色配置
