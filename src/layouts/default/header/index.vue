@@ -27,15 +27,9 @@
     </div>
 
     <div :class="`${prefixCls}-action`">
-      <Tooltip>
-        <template #title> 搜索 </template>
-        <AppSearch :class="`${prefixCls}-action__item`" v-if="getShowSearch" />
-      </Tooltip>
+      <AppSearch :class="`${prefixCls}-action__item`" v-if="getShowSearch" />
 
-      <Tooltip>
-        <template #title> 错误日志 </template>
-        <ErrorAction v-if="getUseErrorHandle" :class="`${prefixCls}-action__item error-action`" />
-      </Tooltip>
+      <ErrorAction v-if="getUseErrorHandle" :class="`${prefixCls}-action__item error-action`" />
 
       <Tooltip>
         <template #title> 我的审批 </template>

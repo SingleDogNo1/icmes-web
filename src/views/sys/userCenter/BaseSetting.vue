@@ -72,7 +72,7 @@
   import { uploadAvatarApi } from '/@/api/account/basic';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useUserState } from '/@/hooks/web/useUserState';
-  import { cloneDeep } from 'lodash';
+  import { cloneDeep } from 'lodash-es';
 
   const InputGroup = Input.Group;
 
