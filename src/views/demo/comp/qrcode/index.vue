@@ -76,12 +76,12 @@
 </template>
 <script lang="ts">
   import { defineComponent, ref, unref } from 'vue';
-  import { QrCode, QrCodeActionType } from '/@/components/Qrcode/index';
+  import { QrCode, QrCodeActionType } from '/@/components/Qrcode';
   import LogoImg from '/@/assets/images/logo.png';
-  import { CollapseContainer } from '/@/components/Container/index';
+  import { CollapseContainer } from '/@/components/Container';
   import { PageWrapper } from '/@/components/Page';
 
-  const qrCodeUrl = 'https://www.vvbin.cn';
+  const qrCodeUrl = 'https://www.baidu.com';
   export default defineComponent({
     components: { CollapseContainer, QrCode, PageWrapper },
     setup() {

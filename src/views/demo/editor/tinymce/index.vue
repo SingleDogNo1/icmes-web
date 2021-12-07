@@ -5,7 +5,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, ref } from 'vue';
-  import { Tinymce } from '/@/components/Tinymce/index';
+  import { Tinymce } from '/@/components/Tinymce';
   import { PageWrapper } from '/@/components/Page';
 
   export default defineComponent({

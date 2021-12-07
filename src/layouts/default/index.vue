@@ -7,7 +7,7 @@
       <Layout :class="`${prefixCls}-main`">
         <LayoutMultipleHeader />
         <LayoutContent />
-        <!-- <LayoutFooter /> -->
+        <LayoutFooter />
       </Layout>
     </Layout>
   </Layout>
@@ -37,7 +37,7 @@
   import { useAppInject } from '/@/hooks/web/useAppInject';
 
   const LayoutFeatures = createAsyncComponent(() => import('/@/layouts/default/feature/index.vue'));
-  // const LayoutFooter = createAsyncComponent(() => import('/@/layouts/default/footer/index.vue'));
+  const LayoutFooter = createAsyncComponent(() => import('/@/layouts/default/footer/index.vue'));
 
   const { prefixCls } = useDesign('default-layout');
   const { getIsMobile } = useAppInject();

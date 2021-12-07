@@ -11,7 +11,7 @@
 </template>
 <script lang="ts" setup>
   import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form/index';
+  import { BasicForm, useForm } from '/@/components/Form';
   import { ref, Ref } from 'vue';
   import { AccountModel, EditAccountParams } from '/@/api/account/model/basicModel';
   import { getAccountByCodeApi, addAccountApi, editAccountApi } from '/@/api/account/basic';

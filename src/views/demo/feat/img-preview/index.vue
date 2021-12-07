@@ -6,7 +6,7 @@
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { createImgPreview, ImagePreview } from '/@/components/Preview/index';
+  import { createImgPreview, ImagePreview } from '/@/components/Preview';
   import { PageWrapper } from '/@/components/Page';
   // import { PreviewActions } from '/@/components/Preview/src/typing';
 

@@ -19,7 +19,7 @@
   import { defineComponent } from 'vue';
   import { BasicUpload } from '/@/components/Upload';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { BasicForm, FormSchema, useForm } from '/@/components/Form/index';
+  import { BasicForm, FormSchema, useForm } from '/@/components/Form';
   import { PageWrapper } from '/@/components/Page';
   import { Alert } from 'ant-design-vue';
   import { uploadApi } from '/@/api/sys/upload';

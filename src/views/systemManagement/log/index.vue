@@ -16,7 +16,7 @@
   import { trimEnd } from 'lodash-es';
   import { formatDate } from '/@/utils/dateUtil';
   import { PageWrapper } from '/@/components/Page';
-  import { BasicForm, useForm } from '/@/components/Form/index';
+  import { BasicForm, useForm } from '/@/components/Form';
   import { BasicTable, useTable } from '/@/components/Table';
   import { useUserState } from '/@/hooks/web/useUserState';
   import { getLogListApi } from '/@/api/info/log';

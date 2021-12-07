@@ -11,7 +11,7 @@
 </template>
 <script lang="ts" setup>
   import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form/index';
+  import { BasicForm, useForm } from '/@/components/Form';
   import { ref, Ref } from 'vue';
   import { addDictTypeApi, editDictTypeApi } from '/@/api/info/dict';
   import { AddDictTypeParam, DictTypeModel, EditDictTypeParam } from '/@/api/info/model/dictModel';

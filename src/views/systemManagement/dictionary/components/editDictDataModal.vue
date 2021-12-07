@@ -12,7 +12,7 @@
 </template>
 <script lang="ts" setup>
   import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form/index';
+  import { BasicForm, useForm } from '/@/components/Form';
   import { ref, Ref, PropType } from 'vue';
   import { debounce } from 'lodash-es';
   import { addDictDataApi, updateDictDataApi, getDictDataApi } from '/@/api/info/dict';

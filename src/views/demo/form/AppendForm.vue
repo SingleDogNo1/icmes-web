@@ -12,8 +12,8 @@
 </template>
 <script lang="ts">
   import { defineComponent, ref } from 'vue';
-  import { BasicForm, useForm } from '/@/components/Form/index';
-  import { CollapseContainer } from '/@/components/Container/index';
+  import { BasicForm, useForm } from '/@/components/Form';
+  import { CollapseContainer } from '/@/components/Container';
   import { Input } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
   import { Button } from '/@/components/Button';
