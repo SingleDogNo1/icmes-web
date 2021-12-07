@@ -1,5 +1,5 @@
-import type { FormSchema } from '/@/components/Form/index';
-import type { BasicColumn } from '/@/components/Table/index';
+import type { FormSchema } from '/@/components/Form';
+import type { BasicColumn } from '/@/components/Table';
 
 export const schemas: FormSchema[] = [
   {

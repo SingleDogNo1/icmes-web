@@ -11,12 +11,12 @@
   import { AppProvider } from '/@/components/Application';
   import { useTitle } from '/@/hooks/web/useTitle';
   import { useLocale } from '/@/locales/useLocale';
-  // import { useWebSocket } from '/@/hooks/web/useWebSocket';
+  import { useWebSocket } from '/@/hooks/web/useWebSocket';
 
   // support Multi-language
   const { getAntdLocale } = useLocale();
 
-  // useWebSocket();
+  useWebSocket();
 
   // Listening to page changes and dynamically changing site titles
   useTitle();

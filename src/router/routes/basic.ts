@@ -99,3 +99,48 @@ export const HOMEPAGE_ROUTE: AppRouteRecordRaw = {
     },
   ],
 };
+
+export const USER_CENTER: AppRouteRecordRaw = {
+  path: '/user',
+  name: 'AccountPage',
+  component: LAYOUT,
+  redirect: '/user/center',
+  meta: {
+    title: t('routes.demo.page.account'),
+  },
+  children: [
+    {
+      path: 'center',
+      name: 'AccountCenterPage',
+      component: () => import('/@/views/sys/userCenter/index.vue'),
+      meta: {
+        title: t('routes.demo.page.accountCenter'),
+      },
+    },
+  ],
+};
+
+export const ABOUT_PAGE_ROUTE: AppRouteRecordRaw = {
+  path: '/about',
+  name: 'About',
+  component: LAYOUT,
+  redirect: '/about/index',
+  meta: {
+    hideChildrenInMenu: true,
+    icon: 'simple-icons:about-dot-me',
+    title: t('routes.dashboard.about'),
+    orderNo: 100000,
+  },
+  children: [
+    {
+      path: 'index',
+      name: 'AboutPage',
+      component: () => import('/@/views/sys/about/index.vue'),
+      meta: {
+        title: t('routes.dashboard.about'),
+        icon: 'simple-icons:about-dot-me',
+        hideMenu: true,
+      },
+    },
+  ],
+};

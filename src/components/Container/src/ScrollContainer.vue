@@ -82,7 +82,7 @@
     height: 100%;
 
     .scrollbar__wrap {
-      margin-bottom: 18px !important;
+      margin-bottom: 0 !important;
       overflow-x: hidden;
     }
 

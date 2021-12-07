@@ -111,8 +111,9 @@
       );
 
       if (!userInfo) return;
-      loading.value = false;
     } catch (error) {
+      throw new Error(JSON.stringify(error));
+    } finally {
       loading.value = false;
     }
   }

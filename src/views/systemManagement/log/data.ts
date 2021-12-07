@@ -1,9 +1,9 @@
-import { FormSchema } from '/@/components/Form/index';
+import { FormSchema } from '/@/components/Form';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { dateUtil } from '/@/utils/dateUtil';
 import { useUserState } from '/@/hooks/web/useUserState';
 import { useUserStoreWithOut } from '/@/store/modules/user';
-import type { BasicColumn } from '/@/components/Table/index';
+import type { BasicColumn } from '/@/components/Table';
 
 const userStore = useUserStoreWithOut();
 const { getDictOptions } = useUserState();

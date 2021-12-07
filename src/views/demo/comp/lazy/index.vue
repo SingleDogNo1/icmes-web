@@ -18,7 +18,7 @@
   import { defineComponent } from 'vue';
   import { Skeleton } from 'ant-design-vue';
   import TargetContent from './TargetContent.vue';
-  import { LazyContainer } from '/@/components/Container/index';
+  import { LazyContainer } from '/@/components/Container';
   import { PageWrapper } from '/@/components/Page';
 
   export default defineComponent({

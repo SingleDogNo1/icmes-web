@@ -35,7 +35,7 @@
 <script lang="ts" setup>
   import { ref, Ref, nextTick } from 'vue';
   import { PageWrapper } from '/@/components/Page';
-  import { BasicForm, useForm } from '/@/components/Form/index';
+  import { BasicForm, useForm } from '/@/components/Form';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { getWorkflowsListSchemas } from './data';
   import { GetWorkflowsListParam, WorkFlowModel } from '/@/api/flow/model/workflowModel';

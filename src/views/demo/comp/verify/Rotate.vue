@@ -7,7 +7,7 @@
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { RotateDragVerify } from '/@/components/Verify/index';
+  import { RotateDragVerify } from '/@/components/Verify';
 
   import img from '/@/assets/images/header.jpg';
 

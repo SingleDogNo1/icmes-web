@@ -21,7 +21,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, ref, unref } from 'vue';
-  import { ScrollContainer, ScrollActionType } from '/@/components/Container/index';
+  import { ScrollContainer, ScrollActionType } from '/@/components/Container';
   import { PageWrapper } from '/@/components/Page';
 
   export default defineComponent({

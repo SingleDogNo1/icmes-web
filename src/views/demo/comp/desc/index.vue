@@ -24,7 +24,7 @@
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { Description, DescItem, useDescription } from '/@/components/Description/index';
+  import { Description, DescItem, useDescription } from '/@/components/Description';
   import { PageWrapper } from '/@/components/Page';
 
   const mockData: Recordable = {

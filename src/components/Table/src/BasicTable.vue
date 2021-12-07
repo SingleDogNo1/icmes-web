@@ -41,7 +41,7 @@
 
   import { defineComponent, ref, computed, unref, toRaw, inject, watchEffect } from 'vue';
   import { Table } from 'ant-design-vue';
-  import { BasicForm, useForm } from '/@/components/Form/index';
+  import { BasicForm, useForm } from '/@/components/Form';
   import { PageWrapperFixedHeightKey } from '/@/components/Page';
   import expandIcon from './components/ExpandIcon';
   import HeaderCell from './components/HeaderCell.vue';

@@ -21,7 +21,7 @@
     ActionItem,
   } from '/@/components/Table';
   import { useModal } from '/@/components/Modal';
-  import { getRolesListByIdApi } from '/@/api/account/roles';
+  import { getRolesListByIdApi } from '/@/api/account/basic';
   import { distributionRoleByIdApi, delRoleByIdApi } from '/@/api/account/basic';
   import { GetRoleListByIdParams, AccountRoleModel } from '/@/api/account/model/rolesModel';
   import { AccountModel } from '/@/api/account/model/basicModel';
@@ -93,7 +93,7 @@
               createMessage.success('删除成功');
               await refreshData();
             } catch (error) {
-              console.log('error :>> ', error);
+              throw new Error(JSON.stringify(error));
             } finally {
               loading.value = false;
             }
@@ -110,7 +110,7 @@
       setTableData(items || []);
       setPagination({ total: totalCount });
     } catch (error) {
-      console.log('error :>> ', error);
+      throw new Error(JSON.stringify(error));
     } finally {
       loading.value = false;
     }
@@ -131,7 +131,7 @@
       createMessage.success('保存成功');
       await refreshData();
     } catch (error) {
-      console.log('error :>> ', error);
+      throw new Error(JSON.stringify(error));
     } finally {
       loading.value = false;
     }

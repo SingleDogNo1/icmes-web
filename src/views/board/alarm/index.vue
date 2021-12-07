@@ -16,7 +16,7 @@
 </template>
 <script lang="ts" setup>
   import { Row, Col } from 'ant-design-vue';
-  import { BasicForm, FormSchema, useForm } from '/@/components/Form/index';
+  import { BasicForm, FormSchema, useForm } from '/@/components/Form';
   import { BasicTable, useTable } from '/@/components/Table';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { PageWrapper } from '/@/components/Page';
@@ -163,16 +163,12 @@
     ],
   });
 
-  onMounted(() => {
-    nextTick(() => {
-      const form = getFieldsValue() as GetAlarmsListParam;
-      console.log('form :>> ', form);
-      getAlarmsListApi(form).then((data) => {
-        console.log('data :>> ', data);
-        const tableData = data.items ?? [];
-        setTableData(tableData);
-      });
-    });
+  onMounted(async () => {
+    await nextTick();
+    const form = getFieldsValue() as GetAlarmsListParam;
+    console.log('form :>> ', form);
+    const { items } = await getAlarmsListApi(form);
+    setTableData(items || []);
   });
 
   function toWarningSettings() {

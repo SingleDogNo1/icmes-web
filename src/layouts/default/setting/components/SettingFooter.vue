@@ -66,7 +66,7 @@
           updateGrayMode(grayMode);
           createMessage.success(t('layout.setting.resetSuccess'));
         } catch (error) {
-          createMessage.error(error);
+          createMessage.error(error as string);
         }
       }
 

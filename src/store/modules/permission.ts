@@ -7,8 +7,13 @@ import { useUserStore } from './user';
 import { toRaw } from 'vue';
 import { transformObjToRoute, flatMultiLevelRoutes } from '/@/router/helper/routeHelper';
 import { transformRouteToMenu } from '/@/router/helper/menuHelper';
-import { ERROR_LOG_ROUTE, PAGE_NOT_FOUND_ROUTE, HOMEPAGE_ROUTE } from '/@/router/routes/basic';
-import ABOUT_PAGE_ROUTE from '/@/router/routes/modules/about';
+import {
+  ERROR_LOG_ROUTE,
+  PAGE_NOT_FOUND_ROUTE,
+  HOMEPAGE_ROUTE,
+  USER_CENTER,
+} from '/@/router/routes/basic';
+import { ABOUT_PAGE_ROUTE } from '/@/router/routes/basic';
 import { filter } from '/@/utils/helper/treeHelper';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
@@ -157,7 +162,6 @@ export const usePermissionStore = defineStore({
 
         routeList.sort((a, b) => (a.meta.orderNo || 0) - (b.meta.orderNo || 0));
       } catch (error) {
-        console.error(error);
         throw error;
       }
 
@@ -166,6 +170,7 @@ export const usePermissionStore = defineStore({
 
       //  Background routing to menu structure
       const backMenuList = transformRouteToMenu(routeList);
+
       this.setBackMenuList(backMenuList);
 
       // remove meta.ignoreRoute item
@@ -173,8 +178,10 @@ export const usePermissionStore = defineStore({
       routeList = routeList.filter(routeRemoveIgnoreFilter);
 
       routeList = flatMultiLevelRoutes(routeList);
-      routes = [PAGE_NOT_FOUND_ROUTE, HOMEPAGE_ROUTE, ABOUT_PAGE_ROUTE, ...routeList];
 
+      routes = [PAGE_NOT_FOUND_ROUTE, HOMEPAGE_ROUTE, ABOUT_PAGE_ROUTE, USER_CENTER, ...routeList];
+      console.log('routes :>> ', routes);
+      // 404路由必须出现在最后，所以最后再 push
       routes.push(ERROR_LOG_ROUTE);
       patchHomeAffix(routes);
       return routes;

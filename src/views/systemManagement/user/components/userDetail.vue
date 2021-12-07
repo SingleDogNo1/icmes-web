@@ -76,25 +76,29 @@
     ],
     striped: false,
     ellipsis: false,
-    onChange: () => {
+    onChange: async () => {
       loading.value = true;
       const page = getPaginationRef() as PaginationProps;
       const options = {
         ...getProxyForm.value,
         ...{ pageNo: page.current!, pageSize: page.pageSize! },
       };
-      getAssignmentProxiesListApi(props.selectedRow?.employeeId, options)
-        .then(({ items, totalCount }) => {
-          setTableData(items || []);
-          setPagination({
-            current: page.current,
-            pageSize: page.pageSize,
-            total: totalCount,
-          });
-        })
-        .finally(() => {
-          loading.value = false;
+      try {
+        const { items, totalCount } = await getAssignmentProxiesListApi(
+          props.selectedRow?.employeeId,
+          options,
+        );
+        setTableData(items || []);
+        setPagination({
+          current: page.current,
+          pageSize: page.pageSize,
+          total: totalCount,
         });
+      } catch (error) {
+        throw new Error(JSON.stringify(error));
+      } finally {
+        loading.value = false;
+      }
     },
   });
 
@@ -117,7 +121,7 @@
         setTableData(proxiesList || []);
         setPagination({ total: totalCount });
       } catch (error) {
-        console.log('error :>> ', error);
+        throw new Error(JSON.stringify(error));
       } finally {
         loading.value = false;
       }

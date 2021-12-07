@@ -52,7 +52,7 @@
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { CollapseContainer } from '/@/components/Container/index';
+  import { CollapseContainer } from '/@/components/Container';
   import { Alert } from 'ant-design-vue';
   import {
     QqCircleFilled,
@@ -64,7 +64,7 @@
     CodepenCircleFilled,
   } from '@ant-design/icons-vue';
 
-  import { Icon, IconPicker, SvgIcon } from '/@/components/Icon/index';
+  import { Icon, IconPicker, SvgIcon } from '/@/components/Icon';
 
   import { openWindow } from '/@/utils';
   import { PageWrapper } from '/@/components/Page';

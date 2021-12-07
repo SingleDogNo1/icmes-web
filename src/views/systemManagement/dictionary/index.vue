@@ -25,7 +25,7 @@
 <script lang="ts" setup>
   import { ref, nextTick, Ref } from 'vue';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import { BasicForm, useForm } from '/@/components/Form/index';
+  import { BasicForm, useForm } from '/@/components/Form';
   import { schemas } from './data';
   import { Row, Col } from 'ant-design-vue';
   import DictType from './components/dictType.vue';

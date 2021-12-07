@@ -76,7 +76,7 @@
   </template>
 </template>
 <script lang="ts" setup>
-  import type { ColEx } from '../types/index';
+  import type { ColEx } from '../types';
   import { computed, PropType } from 'vue';
   import { Form, Col } from 'ant-design-vue';
   import { Button, ButtonProps } from '/@/components/Button';

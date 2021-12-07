@@ -62,8 +62,8 @@
       { title: '接手人', dataIndex: 'assignProxyName', fixed: 'left' },
       { title: '开始时间', dataIndex: 'proxyStartDate', slots: { customRender: 'startDate' } },
       { title: '结束时间', dataIndex: 'proxyEndDate', slots: { customRender: 'endDate' } },
-      { title: '代理类型', dataIndex: 'periodDays', slots: { customRender: 'proxyType' } },
-      { title: '周期', dataIndex: 'periodDays', slots: { customRender: 'proxyCycle' } },
+      { title: '代理类型', dataIndex: 'proxyType', slots: { customRender: 'proxyType' } },
+      { title: '周期', dataIndex: 'proxyCycle', slots: { customRender: 'proxyCycle' } },
     ],
     striped: false,
     ellipsis: false,
@@ -106,7 +106,7 @@
               createMessage.success('删除成功');
               await refreshData();
             } catch (error) {
-              console.log('error :>> ', error);
+              throw new Error(JSON.stringify(error));
             } finally {
               loading.value = false;
             }
@@ -124,7 +124,7 @@
       setTableData(items || []);
       setPagination({ total: totalCount });
     } catch (error) {
-      console.log('error :>> ', error);
+      throw new Error(JSON.stringify(error));
     } finally {
       loading.value = false;
     }

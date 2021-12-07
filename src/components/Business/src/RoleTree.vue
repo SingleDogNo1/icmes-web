@@ -11,7 +11,7 @@
 </template>
 <script lang="ts" setup>
   import { ref } from 'vue';
-  import { BasicTree, TreeActionType } from '/@/components/Tree/index';
+  import { BasicTree, TreeActionType } from '/@/components/Tree';
   import { useUserStore, FeaturesTreeModel } from '/@/store/modules/user';
 
   const userStore = useUserStore();

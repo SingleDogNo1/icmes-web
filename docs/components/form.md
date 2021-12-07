@@ -112,7 +112,7 @@ form 组件还提供了 `useForm`，方便调用函数内部方法
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { BasicForm, FormSchema, useForm } from '/@/components/Form/index';
+  import { BasicForm, FormSchema, useForm } from '/@/components/Form';
   import { CollapseContainer } from '/@/components/Container/index';
   import { useMessage } from '/@/hooks/web/useMessage';
   const schemas: FormSchema[] = [
@@ -549,7 +549,7 @@ useComponentRegister('StrengthMeter', StrengthMeter);
 </template>
 <script lang="ts">
   import { defineComponent, h } from 'vue';
-  import { BasicForm, FormSchema, useForm } from '/@/components/Form/index';
+  import { BasicForm, FormSchema, useForm } from '/@/components/Form';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { Input } from 'ant-design-vue';
   const schemas: FormSchema[] = [
@@ -670,7 +670,7 @@ useComponentRegister('StrengthMeter', StrengthMeter);
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { BasicForm, FormSchema, useForm } from '/@/components/Form/index';
+  import { BasicForm, FormSchema, useForm } from '/@/components/Form';
   const schemas: FormSchema[] = [
     {
       field: 'field1',

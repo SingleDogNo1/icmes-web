@@ -13,7 +13,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, ref } from 'vue';
-  import { CollapseContainer } from '/@/components/Container/index';
+  import { CollapseContainer } from '/@/components/Container';
   import { useWatermark } from '/@/hooks/web/useWatermark';
   import { PageWrapper } from '/@/components/Page';
 

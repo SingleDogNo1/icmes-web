@@ -45,7 +45,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, nextTick, ref, unref } from 'vue';
-  import { BasicTree, TreeActionType, TreeItem } from '/@/components/Tree/index';
+  import { BasicTree, TreeActionType, TreeItem } from '/@/components/Tree';
   import { treeData } from './data';
   import { PageWrapper } from '/@/components/Page';
   import { Card, Row, Col, Spin } from 'ant-design-vue';

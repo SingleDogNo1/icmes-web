@@ -27,7 +27,7 @@
   import { PageWrapper } from '/@/components/Page';
   import { RoleTree } from '/@/components/Business';
   import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form/index';
+  import { BasicForm, useForm } from '/@/components/Form';
   import { RoleModel, AddRoleParams, EditRoleParams } from '/@/api/account/model/rolesModel';
   import { Tabs } from 'ant-design-vue';
   import { useMessage } from '/@/hooks/web/useMessage';
@@ -125,7 +125,7 @@
       closeModal();
       emit('update:role');
     } catch (error) {
-      console.log('error :>> ', error);
+      throw new Error(JSON.stringify(error));
     } finally {
       loading.value = false;
     }

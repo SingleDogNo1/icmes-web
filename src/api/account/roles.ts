@@ -1,7 +1,5 @@
 import { defHttp } from '/@/utils/http/axios';
 import {
-  GetRoleListByIdParams,
-  GetRoleListByIdResultModel,
   GetRoleListParams,
   GetRoleListResultModel,
   AddRoleParams,
@@ -23,23 +21,6 @@ enum Api {
   getRolesList = '/account/roles/list/',
   /** 新增/删除/修改/查找角色 */
   editRole = '/account/roles',
-}
-
-/** 账号角色列表查询--作者：张瑞晗 */
-export function getRolesListByIdApi(
-  id: number | string,
-  params: GetRoleListByIdParams,
-  mode: ErrorMessageMode = 'modal',
-) {
-  return defHttp.post<GetRoleListByIdResultModel>(
-    {
-      url: `/account/${id}` + Api.getRoleListById,
-      params,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
 }
 
 /** 角色查询列表--作者：张瑞晗 */

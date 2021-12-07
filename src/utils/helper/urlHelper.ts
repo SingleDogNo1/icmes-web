@@ -1,4 +1,4 @@
-import { forIn, isArray, forEach, join, trimEnd } from 'lodash';
+import { forIn, isArray, forEach, join, trimEnd } from 'lodash-es';
 
 export function formatUrl(url: string, data: { [index: string]: string }) {
   const paths: string[] = [];

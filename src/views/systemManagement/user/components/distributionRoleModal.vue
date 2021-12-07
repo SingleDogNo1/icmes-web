@@ -82,7 +82,7 @@
           setTableData(items || []);
           setPagination({ total: totalCount });
         } catch (error) {
-          console.log('error :>> ', error);
+          throw new Error(JSON.stringify(error));
         } finally {
           loading.value = false;
         }
