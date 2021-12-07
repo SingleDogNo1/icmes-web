@@ -170,6 +170,7 @@ export const usePermissionStore = defineStore({
 
       //  Background routing to menu structure
       const backMenuList = transformRouteToMenu(routeList);
+
       this.setBackMenuList(backMenuList);
 
       // remove meta.ignoreRoute item
@@ -177,8 +178,9 @@ export const usePermissionStore = defineStore({
       routeList = routeList.filter(routeRemoveIgnoreFilter);
 
       routeList = flatMultiLevelRoutes(routeList);
-      routes = [PAGE_NOT_FOUND_ROUTE, HOMEPAGE_ROUTE, ABOUT_PAGE_ROUTE, USER_CENTER, ...routeList];
 
+      routes = [PAGE_NOT_FOUND_ROUTE, HOMEPAGE_ROUTE, ABOUT_PAGE_ROUTE, USER_CENTER, ...routeList];
+      console.log('routes :>> ', routes);
       // 404路由必须出现在最后，所以最后再 push
       routes.push(ERROR_LOG_ROUTE);
       patchHomeAffix(routes);
