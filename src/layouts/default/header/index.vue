@@ -27,25 +27,53 @@
     </div>
 
     <div :class="`${prefixCls}-action`">
-      <AppSearch :class="`${prefixCls}-action__item`" v-if="getShowSearch" />
-      <ErrorAction v-if="getUseErrorHandle" :class="`${prefixCls}-action__item error-action`" />
-      <Audit :class="`${prefixCls}-action__item notify-item`" :count="approvalNum" />
-      <Task :class="`${prefixCls}-action__item notify-item`" :count="taskNum" />
+      <Tooltip>
+        <template #title> 搜索 </template>
+        <AppSearch :class="`${prefixCls}-action__item`" v-if="getShowSearch" />
+      </Tooltip>
 
-      <Notify
-        v-if="getShowNotice"
-        :class="`${prefixCls}-action__item notify-item`"
-        :count="messageNum"
-      />
+      <Tooltip>
+        <template #title> 错误日志 </template>
+        <ErrorAction v-if="getUseErrorHandle" :class="`${prefixCls}-action__item error-action`" />
+      </Tooltip>
+
+      <Tooltip>
+        <template #title> 我的审批 </template>
+        <Audit :class="`${prefixCls}-action__item notify-item`" :count="approvalNum" />
+      </Tooltip>
+
+      <Tooltip>
+        <template #title> 我的任务 </template>
+        <Task :class="`${prefixCls}-action__item notify-item`" :count="taskNum" />
+      </Tooltip>
+
+      <Tooltip>
+        <template #title> 我的消息 </template>
+        <Notify
+          v-if="getShowNotice"
+          :class="`${prefixCls}-action__item notify-item`"
+          :count="messageNum"
+        />
+      </Tooltip>
+
       <FullScreen v-if="getShowFullScreen" :class="`${prefixCls}-action__item fullscreen-item`" />
-      <AppLocalePicker
-        v-if="getShowLocalePicker"
-        :reload="true"
-        :showText="false"
-        :class="`${prefixCls}-action__item`"
-      />
+
+      <Tooltip>
+        <template #title> 选择语言 </template>
+        <AppLocalePicker
+          v-if="getShowLocalePicker"
+          :reload="true"
+          :showText="false"
+          :class="`${prefixCls}-action__item`"
+        />
+      </Tooltip>
+
       <UserDropDown :theme="getHeaderTheme" />
-      <SettingDrawer v-if="getShowSetting" :class="`${prefixCls}-action__item`" />
+
+      <Tooltip>
+        <template #title> 设置 </template>
+        <SettingDrawer v-if="getShowSetting" :class="`${prefixCls}-action__item`" />
+      </Tooltip>
     </div>
   </Header>
 </template>
@@ -58,7 +86,7 @@
 
 <script lang="ts" setup>
   import { ref, unref, computed } from 'vue';
-  import { Layout } from 'ant-design-vue';
+  import { Layout, Tooltip } from 'ant-design-vue';
   import { AppLogo } from '/@/components/Application';
   import LayoutMenu from '../menu/index.vue';
   import LayoutTrigger from '../trigger/index.vue';

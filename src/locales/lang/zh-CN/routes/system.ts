@@ -5,4 +5,5 @@ export default {
   role: '角色管理',
   user: '账号管理',
   notificationWay: '通知方式',
+  workflow: '工作流',
 };

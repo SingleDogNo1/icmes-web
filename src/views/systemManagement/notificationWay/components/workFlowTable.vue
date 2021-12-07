@@ -28,7 +28,11 @@
     columns: [
       { title: '业务类型', dataIndex: 'businessType' },
       { title: '通知类型', dataIndex: 'notificationType' },
-      { title: '手机推送', dataIndex: 'mobilePush' },
+      {
+        title: '手机推送',
+        dataIndex: 'mobilePush',
+        slots: { customRender: 'img' },
+      },
       { title: 'WEB推送', dataIndex: 'webPush' },
     ],
     ellipsis: false,

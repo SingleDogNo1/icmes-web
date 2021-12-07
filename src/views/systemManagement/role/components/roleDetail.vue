@@ -1,6 +1,6 @@
 <template>
   <PageWrapper contentFullHeight fixedHeight dense>
-    <div class="h-full overflow-auto mt-4 p-4 bg-white">
+    <div class="h-full p-4 mt-4 overflow-auto bg-white">
       <Tabs type="card">
         <TabPane key="permission" tab="用户权限">
           <PageWrapper contentFullHeight fixedHeight dense>
@@ -33,7 +33,7 @@
       default: false,
     },
     selectedRow: {
-      type: Object as PropType<RoleModel>,
+      type: Object as PropType<Nullable<RoleModel>>,
       required: true,
     },
     rowPermission: {
@@ -59,7 +59,7 @@
       ],
       ellipsis: false,
       rowClassName: (_, index) => {
-        return selectedRowIndex.value === index ? 'row__active' : '';
+        return selectedRowIndex.value === index ? 'ant-table-row-hover' : '';
       },
       onChange: () => {
         const page = getPaginationRef() as PaginationProps;
