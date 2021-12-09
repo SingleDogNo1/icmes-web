@@ -1,43 +1,56 @@
 <template>
-  <div :class="[prefixCls, { light: isLightTheme }]" :style="{ width: totalWidth + 'px' }">
-    <div class="flex">
-      <Saturation
-        ref="saturation"
-        :color="rgbString"
-        :hsv="hsv"
-        :size="data.hueHeight"
-        @selectSaturation="selectSaturation"
-      />
-      <Hue
-        ref="hue"
-        :hsv="hsv"
-        :width="data.hueWidth"
-        :height="data.hueHeight"
-        @selectHue="selectHue"
-      />
-      <Alpha
-        ref="alpha"
-        :color="rgbString"
-        :rgba="rgba"
-        :width="data.hueWidth"
-        :height="data.hueHeight"
-        @selectAlpha="selectAlpha"
-      />
+  <Popover
+    v-model:visible="visible"
+    :overlayClassName="`${prefixCls}-popover`"
+    placement="bottomRight"
+    trigger="click"
+  >
+    <template #content>
+      <div :class="[prefixCls, { light: isLightTheme }]" :style="{ width: totalWidth + 'px' }">
+        <div class="flex">
+          <Saturation
+            ref="saturation"
+            :color="rgbString"
+            :hsv="hsv"
+            :size="data.hueHeight"
+            @selectSaturation="selectSaturation"
+          />
+          <Hue
+            ref="hue"
+            :hsv="hsv"
+            :width="data.hueWidth"
+            :height="data.hueHeight"
+            @selectHue="selectHue"
+          />
+          <Alpha
+            ref="alpha"
+            :color="rgbString"
+            :rgba="rgba"
+            :width="data.hueWidth"
+            :height="data.hueHeight"
+            @selectAlpha="selectAlpha"
+          />
+        </div>
+        <Box name="HEX" :color="data.modelHex" @inputColor="inputHex" />
+        <Box name="RGBA" :color="data.modelRgba" @inputColor="inputRgba" />
+        <Colors
+          :color="rgbaString"
+          :colors-default="colorsDefault"
+          :colors-history-key="colorsHistoryKey"
+          @selectColor="selectColor"
+        />
+        <a-button class="mt-2" size="small" @click="chooseColor">确认</a-button>
+      </div>
+    </template>
+    <div :class="`${prefixCls}-trigger`">
+      <span :style="{ background: color_new }"></span>
     </div>
-    <Box name="HEX" :color="data.modelHex" @inputColor="inputHex" />
-    <Box name="RGBA" :color="data.modelRgba" @inputColor="inputRgba" />
-    <Colors
-      :color="rgbaString"
-      :colors-default="colorsDefault"
-      :colors-history-key="colorsHistoryKey"
-      @selectColor="selectColor"
-    />
-    <slot></slot>
-  </div>
+  </Popover>
 </template>
 
 <script lang="ts" setup>
   import { ref, computed, nextTick, watch, PropType } from 'vue';
+  import { Popover } from 'ant-design-vue';
   import { setColorValue, rgb2hex } from './composible';
   import Saturation from './Saturation.vue';
   import Hue from './Hue.vue';
@@ -102,6 +115,8 @@
 
   const saturation = ref();
   const hue = ref();
+  const color_new = ref(props.color);
+  const visible = ref<boolean>(false);
 
   const isLightTheme = computed(() => props.theme === 'light');
   const totalWidth = computed(() => data.value.hueHeight + (data.value.hueWidth + 8) * 2);
@@ -190,17 +205,22 @@
     });
   }
 
+  function chooseColor() {
+    visible.value = false;
+    emit('changeColor', {
+      rgba: rgba.value,
+      hsv: hsv.value,
+      hex: data.value.modelHex,
+    });
+  }
+
   Object.assign(data.value, setColorValue(props.color));
   setText();
 
   watch(
     () => rgba.value,
-    () => {
-      emit('changeColor', {
-        rgba: rgba.value,
-        hsv: hsv.value,
-        hex: data.value.modelHex,
-      });
+    (value) => {
+      color_new.value = `rgba(${value.r},${value.g},${value.b},${value.a})`;
     },
   );
 </script>
@@ -209,6 +229,9 @@
   @prefix-cls: ~'@{namespace}-color-picker';
   @prefix-type-cls: ~'@{prefix-cls}-type';
   @prefix-colors-cls: ~'@{prefix-cls}-colors';
+  @prefix-popover-cls: ~'@{prefix-cls}-popover';
+  @prefix-trigger-cls: ~'@{prefix-cls}-trigger';
+
   .@{prefix-cls} {
     box-sizing: content-box;
     padding: 10px;
@@ -234,6 +257,21 @@
 
     canvas {
       vertical-align: top;
+    }
+  }
+
+  .@{prefix-popover-cls} {
+    .ant-popover-inner-content {
+      padding: 0;
+    }
+  }
+  .@{prefix-trigger-cls} {
+    @apply border bg-white p-1;
+    width: 40px;
+    height: 40px;
+
+    span {
+      @apply w-full h-full block;
     }
   }
 </style>
