@@ -20,7 +20,6 @@ import { registerGlobComp } from '/@/components/registerGlobComp';
 // Therefore, only enable on-demand importing in production environments .
 if (import.meta.env.DEV) {
   import('ant-design-vue/dist/antd.less');
-  import('element-plus/dist/index.css');
 }
 
 async function bootstrap() {

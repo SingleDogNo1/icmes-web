@@ -4,6 +4,7 @@ import { replaceStyleVariables } from 'vite-plugin-theme/es/client';
 import { mixLighten, mixDarken, tinycolor } from 'vite-plugin-theme/es/colorUtils';
 
 export async function changeTheme(color: string) {
+  console.log('color :>> ', color);
   const colors = generateColors({
     mixDarken,
     mixLighten,

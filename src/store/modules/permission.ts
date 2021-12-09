@@ -148,9 +148,26 @@ export const usePermissionStore = defineStore({
         const ori_routes = import.meta.globEager('../../router/FakeRoutes/**/*.ts');
         const routes: any[] = [];
 
+        const userStore = useUserStore();
+        const menu = userStore.getMenu;
+        const menuList: any[] = [];
+        for (const code in menu) {
+          const item = menu[code];
+          menuList.push({ ...item, ...{ code: Number(code) } });
+        }
+
+        console.log('menuList :>> ', menuList);
+
         Object.keys(ori_routes).forEach((key) => {
           const mod = ori_routes[key].default || {};
           const modList = Array.isArray(mod) ? [...mod] : [mod];
+          console.log('modList :>> ', modList);
+          menuList.map((item) => {
+            if (item.code === modList[0].meta.code) {
+              modList[0].meta.orderNo = item.order;
+              console.log('item :>> ', item);
+            }
+          });
           routes.push(...modList);
         });
 
@@ -180,7 +197,7 @@ export const usePermissionStore = defineStore({
       routeList = flatMultiLevelRoutes(routeList);
 
       routes = [PAGE_NOT_FOUND_ROUTE, HOMEPAGE_ROUTE, ABOUT_PAGE_ROUTE, USER_CENTER, ...routeList];
-      console.log('routes :>> ', routes);
+
       // 404路由必须出现在最后，所以最后再 push
       routes.push(ERROR_LOG_ROUTE);
       patchHomeAffix(routes);

@@ -1,5 +1,6 @@
 export default {
   title: '示例',
+  colorPicker: '取色器',
   charts: {
     baiduMap: '百度地图',
     aMap: '高德地图',
