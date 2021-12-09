@@ -54,6 +54,15 @@ const demo: BackModeRouteRecordRaw = {
       },
     },
     {
+      path: 'color-picker',
+      name: 'ColorPicker',
+      component: '/demo/colorPicker/index',
+      meta: {
+        code: DEMO_CHILDREN_CODE,
+        title: 'routes.demo.colorPicker',
+      },
+    },
+    {
       path: 'transition',
       name: 'transitionDemo',
       component: '/demo/comp/transition/index',

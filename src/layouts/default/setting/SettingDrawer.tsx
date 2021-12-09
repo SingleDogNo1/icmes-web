@@ -9,6 +9,7 @@ import {
   SelectItem,
   InputNumberItem,
 } from './components';
+import { ColorPicker } from '/@/components/ColorPicker';
 
 import { AppDarkModeToggle } from '/@/components/Application';
 
@@ -135,10 +136,12 @@ export default defineComponent({
 
     function renderMainTheme() {
       return (
-        <ThemeColorPicker
-          colorList={APP_PRESET_COLOR_LIST}
-          def={unref(getThemeColor)}
-          event={HandlerEnum.CHANGE_THEME_COLOR}
+        <ColorPicker
+          colorsDefault={APP_PRESET_COLOR_LIST}
+          color={unref(getThemeColor)}
+          onChangeColor={(value) => {
+            console.log('value :>> ', value);
+          }}
         />
       );
     }

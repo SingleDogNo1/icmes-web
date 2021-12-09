@@ -1,5 +1,6 @@
 export default {
   title: 'Demo',
+  colorPicker: 'Color Picker',
   charts: {
     baiduMap: 'Baidu map',
     aMap: 'A map',

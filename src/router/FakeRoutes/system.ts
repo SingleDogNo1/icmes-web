@@ -6,7 +6,7 @@ const systemManagement: BackModeRouteRecordRaw = {
   component: 'LAYOUT',
   redirect: '/system/log',
   meta: {
-    code: 10100,
+    code: 14000,
     icon: 'uil:setting',
     title: 'routes.system.title',
   },

@@ -2,7 +2,7 @@ import { BackModeRouteRecordRaw } from '/@/router/types';
 
 const archives: BackModeRouteRecordRaw = {
   path: '/archives',
-  name: 'BoardLayout',
+  name: 'ArchivesLayout',
   component: 'LAYOUT',
   redirect: '/archives/organization',
   meta: {
@@ -14,7 +14,7 @@ const archives: BackModeRouteRecordRaw = {
     {
       path: 'organization',
       name: 'Organization',
-      component: '/record/organization/index',
+      component: '/archives/organization/index',
       meta: {
         code: 21000,
         title: 'routes.archives.organization',
@@ -23,7 +23,7 @@ const archives: BackModeRouteRecordRaw = {
     {
       path: 'location',
       name: 'Location',
-      component: '/record/locations/index',
+      component: '/archives/locations/index',
       meta: {
         code: 21100,
         title: 'routes.archives.location',

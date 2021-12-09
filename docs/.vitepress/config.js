@@ -85,6 +85,10 @@ function createSidebar() {
             link: '/components/drag-panel',
           },
           {
+            text: 'ColorPicker',
+            link: '/components/color-picker',
+          },
+          {
             text: 'Page',
             link: '/components/page',
           },
