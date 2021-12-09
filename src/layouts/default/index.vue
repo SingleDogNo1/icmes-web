@@ -57,7 +57,6 @@
 </script>
 <style lang="less">
   @prefix-cls: ~'@{namespace}-default-layout';
-
   .@{prefix-cls} {
     display: flex;
     width: 100%;

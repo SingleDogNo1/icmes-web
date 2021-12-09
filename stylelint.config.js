@@ -2,7 +2,7 @@ module.exports = {
   root: true,
   plugins: ['stylelint-order'],
   customSyntax: 'postcss-html',
-  extends: ['stylelint-config-standard', 'stylelint-config-prettier'],
+  extends: ['stylelint-config-prettier'],
   rules: {
     'selector-class-pattern': null,
     'selector-pseudo-class-no-unknown': [
