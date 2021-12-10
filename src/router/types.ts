@@ -59,7 +59,7 @@ export type AppRouteModule = AppRouteRecordRaw;
 
 export interface BackModeRouteRecordRaw {
   path: string;
-  name: string;
+  name?: string;
   component: string | (() => Promise<unknown>) | 'LAYOUT' | 'IFRAME';
   redirect?: string;
   meta: {

@@ -13,7 +13,7 @@
 
 <script lang="ts" setup>
   import { onMounted, ref, watch } from 'vue';
-  import { createAlphaSquare, createLinearGradient } from './composible';
+  import { createAlphaSquare, createLinearGradient } from './helper';
   import { useDesign } from '/@/hooks/web/useDesign';
 
   const props = defineProps({

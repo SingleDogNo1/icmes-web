@@ -13,7 +13,7 @@ const archives: BackModeRouteRecordRaw = {
   children: [
     {
       path: 'organization',
-      name: 'Organization',
+      name: 'ArchivesOrganization',
       component: '/archives/organization/index',
       meta: {
         code: 21000,
@@ -22,12 +22,44 @@ const archives: BackModeRouteRecordRaw = {
     },
     {
       path: 'location',
-      name: 'Location',
+      name: 'ArchivesLocation',
       component: '/archives/locations/index',
       meta: {
         code: 21100,
         title: 'routes.archives.location',
       },
+    },
+    {
+      path: 'power-cut-config',
+      redirect: '/archives/power-cut-config/index',
+      component: 'LAYOUT',
+      meta: {
+        code: 21600,
+        hideChildrenInMenu: true,
+        title: 'routes.archives.powerCutConfig.title',
+      },
+      children: [
+        {
+          path: 'index',
+          name: 'ArchivesPowerCutConfig',
+          component: '/archives/powerCutConfig/index',
+          meta: {
+            code: 21600,
+            title: 'routes.archives.powerCutConfig.title',
+          },
+        },
+        {
+          path: 'edit',
+          name: 'ArchivesEditPowerCutConfig',
+          component: '/archives/powerCutConfig/edit',
+          meta: {
+            code: 21600,
+            hideTab: true,
+            hideMenu: true,
+            title: 'routes.archives.powerCutConfig.title',
+          },
+        },
+      ],
     },
   ],
 };

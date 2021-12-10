@@ -7,7 +7,7 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { createLinearGradient } from './composible';
+  import { createLinearGradient } from './helper';
 
   export default defineComponent({
     props: {

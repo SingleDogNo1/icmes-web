@@ -23,7 +23,7 @@
 
 <script lang="ts" setup>
   import { onUnmounted, ref, PropType } from 'vue';
-  import { createAlphaSquare } from './composible';
+  import { createAlphaSquare } from './helper';
   import { useDesign } from '/@/hooks/web/useDesign';
 
   const props = defineProps({

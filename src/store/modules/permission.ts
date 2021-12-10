@@ -156,16 +156,12 @@ export const usePermissionStore = defineStore({
           menuList.push({ ...item, ...{ code: Number(code) } });
         }
 
-        console.log('menuList :>> ', menuList);
-
         Object.keys(ori_routes).forEach((key) => {
           const mod = ori_routes[key].default || {};
           const modList = Array.isArray(mod) ? [...mod] : [mod];
-          console.log('modList :>> ', modList);
           menuList.map((item) => {
             if (item.code === modList[0].meta.code) {
               modList[0].meta.orderNo = item.order;
-              console.log('item :>> ', item);
             }
           });
           routes.push(...modList);

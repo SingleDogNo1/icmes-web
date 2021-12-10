@@ -14,3 +14,4 @@ dist
 /bin
 Dockerfile
 .vscode
+index.html

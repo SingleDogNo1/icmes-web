@@ -51,7 +51,7 @@
 <script lang="ts" setup>
   import { ref, computed, nextTick, watch, PropType } from 'vue';
   import { Popover } from 'ant-design-vue';
-  import { setColorValue, rgb2hex } from './composible';
+  import { setColorValue, rgb2hex } from './helper';
   import Saturation from './Saturation.vue';
   import Hue from './Hue.vue';
   import Alpha from './Alpha.vue';
