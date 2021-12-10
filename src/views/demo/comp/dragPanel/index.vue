@@ -1,6 +1,6 @@
 <template>
   <PageWrapper content-full-height fixed-height dense>
-    <DragPanel :min-percent="20" :default-percent="30" split="vertical">
+    <DragPanel :min-percent="0" :default-percent="30" split="vertical">
       <template #paneL> A </template>
       <template #paneR>
         <DragPanel split="horizontal">

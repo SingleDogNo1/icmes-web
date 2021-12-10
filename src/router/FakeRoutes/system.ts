@@ -48,6 +48,15 @@ const systemManagement: BackModeRouteRecordRaw = {
       },
     },
     {
+      path: 'notificationWay',
+      name: 'systemManagementNotificationWay',
+      component: '/systemManagement/notificationWay/index',
+      meta: {
+        code: 24500,
+        title: 'routes.system.notificationWay',
+      },
+    },
+    {
       path: 'workflow',
       name: 'systemManagementWorkflow',
       component: '/systemManagement/workflow/index',

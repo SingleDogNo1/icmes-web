@@ -2,7 +2,7 @@
   <BasicModal
     :loading="loading"
     v-bind="$attrs"
-    :title="`${editType === 'create' ? '新建' : '编辑'}数据字典`"
+    :title="`${editType === 'create' ? '新建' : '编辑'}角色`"
     :height="400"
     @register="register"
     @ok="handleSubmit"

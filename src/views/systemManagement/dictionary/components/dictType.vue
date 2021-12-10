@@ -79,9 +79,11 @@
     () => props.searchData,
     (value) => {
       getDictTypesList(value);
-      setPagination({
-        current: value.pageNo,
-      });
+      if (value) {
+        setPagination({
+          current: value.pageNo,
+        });
+      }
     },
     {
       deep: true,
