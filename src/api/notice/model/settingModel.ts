@@ -30,3 +30,16 @@ export interface ReminderConfigModel {
   webPush: boolean;
   workflowFlag: boolean;
 }
+
+export interface UpdateNoticeSettingConfigParams {
+  /** 消息提醒 **/
+  messageReminder?: boolean;
+  /** 手机推送 **/
+  mobilePush?: boolean;
+  /** 版本号tag **/
+  tag?: string;
+  /** 版本号 **/
+  versionTag?: string;
+  /** WEB推送 **/
+  webPush?: boolean;
+}
