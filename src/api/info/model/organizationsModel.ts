@@ -61,6 +61,8 @@ export interface OrganizationsListParams {
   name?: string;
   /** 排序字段 */
   orderBy?: string;
+  /** 查询的父节点 */
+  parentId?: number;
   /** 当前页码 */
   pageNo?: number;
   /** 每页条数 */

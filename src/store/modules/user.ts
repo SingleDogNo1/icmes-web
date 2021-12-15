@@ -49,7 +49,7 @@ import { encryptSalt, encryptPwd } from '/@/utils/helper/sha1Helper';
 import { LoginStateEnum, useLoginState } from '/@/views/sys/login/useLogin';
 import { PasswordValidationModel } from '/@/api/sys/model/userModel';
 import axios from 'axios';
-import { cloneDeep } from 'lodash-es';
+import { listToTree } from '/@/utils/helper/treeHelper';
 
 type Feature = { [index: string]: { [index: string]: boolean } };
 
@@ -295,24 +295,6 @@ export const useUserStore = defineStore({
         return Promise.reject(error);
       }
     },
-    genAccountTree(list: { [key: string]: any }[], id: string, name: string) {
-      const tree: { [key: string]: any }[] = [];
-      list.map((item) => {
-        const obj: { [key: string]: any } = cloneDeep(item);
-        if (item.parentId === id) {
-          obj.id = item.realEmployeeId || item.realOrgId + new Date().getTime();
-          obj.parentName = name;
-          obj.disabled = !item.isEmployee;
-          if (item.realEmployeeId! >= 0) {
-            obj.realEmployeeId = item.realEmployeeId;
-          }
-          obj.children = this.genAccountTree(list, item.id, item.name);
-          obj.hasChild = obj.children?.length > 0;
-          tree.push(obj);
-        }
-      });
-      return tree;
-    },
     async afterLoginAction(userInfo: LoginResultModel): Promise<GetUserInfoModel | null> {
       if (!this.getToken) return null;
 
@@ -384,7 +366,7 @@ export const useUserStore = defineStore({
             this.setDeviceList(deviceList);
             this.setAllAccount(allAccount);
 
-            const allAccountTree = this.genAccountTree(allAccount, '-1', '全体');
+            const allAccountTree = listToTree(allAccount);
             this.setAllAccountTree(allAccountTree as unknown as OrganizationEmployeeModel);
             this.setOrganizationsList(organizationsList);
           } catch (error) {

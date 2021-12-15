@@ -15,8 +15,11 @@
 
 <script lang="ts" setup>
   import { ref, watch } from 'vue';
-  import { RadioGroup, RadioButton } from 'ant-design-vue';
+  import { Radio } from 'ant-design-vue';
   import WorkflowTable from './components/workFlowTable.vue';
+
+  const RadioGroup = Radio.Group;
+  const RadioButton = Radio.Button;
 
   const activeIndex = ref<number>(0);
   const workflowFlag = ref<boolean>(true);

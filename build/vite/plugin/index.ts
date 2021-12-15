@@ -25,6 +25,8 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
     VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE,
   } = viteEnv;
 
+  console.log('isBuild :>> ', isBuild, VITE_USE_IMAGEMIN);
+
   const vitePlugins: (Plugin | Plugin[])[] = [
     // have to
     vue(),

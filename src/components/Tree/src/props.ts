@@ -29,7 +29,7 @@ export const basicProps = {
   search: propTypes.bool,
   searchValue: propTypes.string,
   checkStrictly: propTypes.bool,
-  clickRowToExpand: propTypes.bool.def(true),
+  clickRowToExpand: propTypes.bool.def(false),
   checkable: propTypes.bool.def(false),
   defaultExpandLevel: {
     type: [String, Number] as PropType<string | number>,

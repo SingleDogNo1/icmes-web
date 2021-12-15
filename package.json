@@ -6,10 +6,6 @@
     "email": "1418291550@qq.com",
     "url": "https://github.com/lost-dream"
   },
-  "license": "MIT",
-  "engines": {
-    "node": "^12 || >=14"
-  },
   "scripts": {
     "bootstrap": "pnpm install",
     "dev": "vite",
@@ -46,20 +42,20 @@
   "dependencies": {
     "@ant-design/colors": "^6.0.0",
     "@ant-design/icons-vue": "^6.0.1",
-    "@iconify/iconify": "^2.0.4",
-    "@logicflow/core": "^0.6.16",
-    "@logicflow/extension": "^0.6.16",
-    "@vueuse/core": "^6.4.1",
-    "@vueuse/shared": "^7.1.2",
-    "@zxcvbn-ts/core": "^1.0.0-beta.0",
+    "@iconify/iconify": "^2.1.0",
+    "@logicflow/core": "^0.7.14",
+    "@logicflow/extension": "^0.7.14",
+    "@vueuse/core": "^7.3.0",
+    "@vueuse/shared": "^7.3.0",
+    "@zxcvbn-ts/core": "^1.0.0",
     "ant-design-vue": "2.2.8",
-    "axios": "^0.21.4",
-    "codemirror": "^5.63.0",
+    "axios": "^0.24.0",
+    "codemirror": "^5.64.0",
     "cron-parser": "^4.1.0",
     "cropperjs": "^1.5.12",
     "crypto-js": "^4.1.1",
     "echarts": "^5.2.1",
-    "intro.js": "^4.2.2",
+    "intro.js": "^4.3.0",
     "lodash-es": "^4.17.21",
     "mitt": "^3.0.0",
     "mockjs": "^1.1.0",
@@ -68,17 +64,17 @@
     "path-to-regexp": "^6.2.0",
     "pinia": "2.0.6",
     "print-js": "^1.6.0",
-    "qrcode": "^1.4.4",
+    "qrcode": "^1.5.0",
     "qs": "^6.10.2",
     "resize-observer-polyfill": "^1.5.1",
     "showdown": "^1.9.1",
     "sortablejs": "^1.14.0",
-    "tinymce": "^5.9.2",
-    "vditor": "^3.8.7",
+    "tinymce": "^5.10.2",
+    "vditor": "^3.8.8",
     "vue": "^3.2.16",
-    "vue-i18n": "^9.1.7",
-    "vue-json-pretty": "^2.0.4",
-    "vue-router": "^4.0.11",
+    "vue-i18n": "^9.1.9",
+    "vue-json-pretty": "^2.0.6",
+    "vue-router": "^4.0.12",
     "vue-types": "^4.1.0",
     "xlsx": "^0.17.2"
   },
@@ -159,15 +155,18 @@
     "vite-plugin-svg-icons": "^1.0.4",
     "vite-plugin-theme": "^0.8.1",
     "vite-plugin-vue-setup-extend": "^0.1.0",
-    "vite-plugin-windicss": "^1.4.5",
+    "vite-plugin-windicss": "^1.5.4",
     "vitepress": "^0.20.0",
     "vue-eslint-parser": "^7.11.0",
-    "vue-tsc": "^0.3.0",
-    "windicss": "^3.1.9"
+    "vue-tsc": "^0.3.0"
   },
   "resolutions": {
     "bin-wrapper": "npm:bin-wrapper-china",
     "rollup": "^2.56.3",
     "gifsicle": "5.2.0"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": "^12 || >=14"
   }
 }

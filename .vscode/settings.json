@@ -4,6 +4,7 @@
   "typescript.tsdk": "./node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "vetur.validation.script": false,
+  "vetur.validation.template": false,
   //===========================================
   //============= Editor ======================
   //===========================================

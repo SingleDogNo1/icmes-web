@@ -20,7 +20,7 @@
       "  const msg = ref('hello, $1');",
       "</script>",
       "",
-      "<style scoped>",
+      "<style lang=\"less\" scoped>",
       "  .$1 {",
       "    color: red;",
       "  }",
