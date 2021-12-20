@@ -300,8 +300,8 @@ updateSchema([
 | compact | `boolean` | `false` | `true/false` | 紧凑类型表单，减少 margin-bottom |  |
 | size | `string` | `default` | `'default' , 'small' , 'large'` | 向表单内所有组件传递 size 参数,自定义组件需自行实现 size 接收 |  |
 | disabled | `boolean` | `false` | `true/false` | 向表单内所有组件传递 disabled 属性，自定义组件需自行实现 disabled 接收 |  |
-| autoSetPlaceHolder | `boolean` | `true` | ` true/false` | 自动设置表单内组件的 placeholder，自定义组件需自行实现 |  |
-| autoSubmitOnEnter | `boolean` | `false` | ` true/false` | 在 input 中输入时按回车自动提交 | 2.4.0 |
+| autoSetPlaceHolder | `boolean` | `true` | `true/false` | 自动设置表单内组件的 placeholder，自定义组件需自行实现 |  |
+| autoSubmitOnEnter | `boolean` | `false` | `true/false` | 在 input 中输入时按回车自动提交 | 2.4.0 |
 | rulesMessageJoinLabel | `boolean` | `false` | `true/false` | 如果表单项有校验，会自动生成校验信息，该参数控制是否将字段中文名字拼接到自动生成的信息后方 |  |
 | showAdvancedButton | `boolean` | `false` | `true/false` | 是否显示收起展开按钮 |  |
 | emptySpan | `number , Partial<ColEx>` | 0 | - | 空白行格,可以是数值或者 col 对象 数 |  |
@@ -313,17 +313,17 @@ updateSchema([
 | resetButtonOptions | `object` |  | - | 重置按钮配置见下方 ActionButtonOption |  |
 | showSubmitButton | `boolean` | `true` | - | 是否显示提交按钮 |  |
 | submitButtonOptions | `object` |  | - | 确认按钮配置见下方 ActionButtonOption |  |
-| resetFunc | ` () => Promise<void>` |  | - | 自定义重置按钮逻辑`() => Promise<void>;` |  |
-| submitFunc | ` () => Promise<void>` |  | - | 自定义提交按钮逻辑`() => Promise<void>;` |  |
+| resetFunc | `() => Promise<void>` |  | - | 自定义重置按钮逻辑`() => Promise<void>;` |  |
+| submitFunc | `() => Promise<void>` |  | - | 自定义提交按钮逻辑`() => Promise<void>;` |  |
 | fieldMapToTime | `[string, [string, string], string?][]` |  | - | 用于将表单内时间区域的应设成 2 个字段,见下方说明 |  |
 
 ### ColEx
 
-见[src/components/Form/src/types/index.ts](https://github.com/anncwb/vue-vben-admin/tree/main/src/components/Form/src/types/index.ts)
+见`src/components/Form/src/types/index.ts`
 
 ### ActionButtonOption
 
-[BasicButtonProps](https://github.com/anncwb/vue-vben-admin/tree/main/src/components/Button/types.ts)
+见`src/components/Button/types.ts`
 
 ```ts
 export interface ButtonProps extends BasicButtonProps {
@@ -386,9 +386,9 @@ useForm({
 | renderComponentContent | `(renderCallbackParams: RenderCallbackParams) => any / string` | - | - | 自定义渲染组内部的 slot |
 | slot | `string` | - | - | 自定义 slot，渲染组件 |
 | colSlot | `string` | - | - | 自定义 slot，渲染组件 （需要自行包含 formItem） |
-| show | ` boolean / ((renderCallbackParams: RenderCallbackParams) => boolean)` | - | - | 动态判断当前组件是否显示，css 控制，不会删除 dom |
-| ifShow | ` boolean / ((renderCallbackParams: RenderCallbackParams) => boolean)` | - | - | 动态判断当前组件是否显示，js 控制，会删除 dom |
-| dynamicDisabled | `boolean / ((renderCallbackParams: RenderCallbackParams) => boolean) ` | - | - | 动态判断当前组件是否禁用 |
+| show | `boolean / ((renderCallbackParams: RenderCallbackParams) => boolean)` | - | - | 动态判断当前组件是否显示，css 控制，不会删除 dom |
+| ifShow | `boolean / ((renderCallbackParams: RenderCallbackParams) => boolean)` | - | - | 动态判断当前组件是否显示，js 控制，会删除 dom |
+| dynamicDisabled | `boolean / ((renderCallbackParams: RenderCallbackParams) => boolean)` | - | - | 动态判断当前组件是否禁用 |
 | dynamicRules | `boolean / ((renderCallbackParams: RenderCallbackParams) => boolean)` | - | - | 动态判返当前组件你校验规则 |
 
 **RenderCallbackParams**

@@ -4,7 +4,7 @@
 
 用于项目内组件的展示，基本支持所有图标库（支持按需加载，只打包所用到的图标）
 
-icon 组件位于 [src/components/Icon](https://github.com/anncwb/vue-vben-admin/tree/main/src/components/Icon) 内
+icon 组件位于 `src/components/Icon` 内
 
 ::: tip
 

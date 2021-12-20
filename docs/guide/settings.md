@@ -71,9 +71,9 @@ VITE_LEGACY = false
 ```js
 // _app.config.js
 // 变量名命名规则  __PRODUCTION__xxx_CONF__   xxx：为.env配置的VITE_GLOB_APP_SHORT_NAME
-window.__PRODUCTION__VUE_VBEN_ADMIN__CONF__ = {
-  VITE_GLOB_APP_TITLE: 'vben admin',
-  VITE_GLOB_APP_SHORT_NAME: 'vue_vben_admin',
+window.__PRODUCTION__ICMES_WEB__CONF__ = {
+  VITE_GLOB_APP_TITLE: 'ICMES系统',
+  VITE_GLOB_APP_SHORT_NAME: 'icmes_web',
   VITE_GLOB_API_URL: '/app',
   VITE_GLOB_API_URL_PREFIX: '/',
   VITE_GLOB_UPLOAD_URL: '/upload',

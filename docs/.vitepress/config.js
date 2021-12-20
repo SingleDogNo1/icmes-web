@@ -1,11 +1,9 @@
 module.exports = {
   base: '',
-  root: '/guide/introduction',
+  root: '/guide',
   title: 'ICMES-WEB',
   lang: 'zh-CN',
-  description: '一个开箱即用的前端框架',
   themeConfig: {
-    editLinkText: '为此页提供修改建议',
     nav: createNav(),
     sidebar: createSidebar(),
   },
