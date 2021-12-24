@@ -24,21 +24,22 @@
 - [Stylelint](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint) - css 格式化
 - [DotENV](https://marketplace.visualstudio.com/items?itemName=mikestead.dotenv) - .env 文件 高亮
 
+输入`vue3`点击`tab`可以快速插入 `vue3 setup + ts`模板，其他参考 `.vscode` 配置
+
 ## 安装
 
 ### yarn 安装
 
-**必须**使用 [Yarn](https://github.com/yarnpkg/yarn)进行依赖安装（若其他包管理器安装不了需要自行处理）。
+**必须**使用 `npm run bootstrap`进行依赖安装（若其他包管理器安装不了需要自行处理）。
 
-如果未安装`yarn`，可以用下面命令来进行全局安装
+如果未安装`yarn` 或 `pnpm`，可以用下面命令来进行全局安装
 
 ```bash
-# 全局安装yarn
 npm i -g yarn
-# 验证
-yarn -v # 出现对应版本号即代表安装成功
-# 安装依赖
-yarn
+yarn -v
+
+npx pnpm add -g pnpm
+pnpm -v
 ```
 
 ## npm script

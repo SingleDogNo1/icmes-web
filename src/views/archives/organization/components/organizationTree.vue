@@ -31,7 +31,7 @@
   import { BasicTree, TreeActionType } from '/@/components/Tree';
   import { getOrganizationsListApi } from '/@/api/info/organizations';
   import { OrganizationsFullNameModel } from '/@/api/info/model/organizationsModel';
-  import { listToTree } from '/@/utils/helper/treeHelper';
+  import { listToTreeAsParentId } from '/@/utils/helper/treeHelper';
   import { cloneDeep } from 'lodash-es';
 
   const emit = defineEmits(['select']);
@@ -55,7 +55,7 @@
       list.map((item) => {
         item.title = item.parentId === -1 ? item.name : `${item.code} ${item.name}`;
       });
-      treeData.value = listToTree(list);
+      treeData.value = listToTreeAsParentId(list);
       await nextTick();
       // 展开第一层 & 选中根节点（id === 0）
       getTree()?.filterByLevel(1);

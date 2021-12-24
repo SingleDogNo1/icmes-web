@@ -1,13 +1,13 @@
 ---
 home: true
-tagline: Hero subtitle
+tagline: 开发文档
 actionText: Get Started
 actionLink: /guide/
 features:
-  - title: Simplicity First
-    details: Minimal setup with markdown-centered project structure helps you focus on writing.
-  - title: Vue-Powered
-    details: Enjoy the dev experience of Vue + webpack, use Vue components in markdown, and develop custom themes with Vue.
-  - title: Performant
-    details: VitePress generates pre-rendered static HTML for each page, and runs as an SPA once a page is loaded.
+  - title: Vue3 + ts
+    details: 新的语法规则，让开发更加愉悦；新的 vue 框架，让网站性能原地起飞
+  - title: vitePress
+    details: 文档基于 vitePress，请继续维护该文档
+  - title: vue-vben-admin
+    details: 感谢 Vben-admin 开源脚手架提供方便
 ---

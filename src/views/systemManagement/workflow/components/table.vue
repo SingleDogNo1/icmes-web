@@ -12,11 +12,11 @@
 
         <template #isDeploy="{ record }">
           <div v-if="record.isDeploy">
-            <AlertTwoTone two-tone-color="red" />
+            <AlertTwoTone :two-tone-color="successColor" />
             <span class="ml-2.5">已发布</span>
           </div>
           <div v-else>
-            <AlertTwoTone two-tone-color="blue" />
+            <AlertTwoTone :two-tone-color="primaryColor" />
             <span class="ml-2.5">未发布</span>
           </div>
         </template>
@@ -45,6 +45,7 @@
     PaginationProps,
     ActionItem,
   } from '/@/components/Table';
+  import { successColor, primaryColor } from '/@/settings/designSetting';
   import { useModal } from '/@/components/Modal';
   import { delWorkflowApi, getWorkflowsListApi, publishWorkflowApi } from '/@/api/flow/workflow';
   import { GetWorkflowsListParam, WorkFlowModel } from '/@/api/flow/model/workflowModel';

@@ -4,16 +4,16 @@
       <CollapseContainer
         title="基础示例"
         :canExpan="true"
-        class="text-center mb-6 qrcode-demo-item"
+        class="mb-6 text-center qrcode-demo-item"
       >
         <QrCode :value="qrCodeUrl" />
       </CollapseContainer>
 
-      <CollapseContainer title="渲染成img标签示例" class="text-center mb-6 qrcode-demo-item">
+      <CollapseContainer title="渲染成img标签示例" class="mb-6 text-center qrcode-demo-item">
         <QrCode :value="qrCodeUrl" tag="img" />
       </CollapseContainer>
 
-      <CollapseContainer title="配置样式示例" class="text-center mb-6 qrcode-demo-item">
+      <CollapseContainer title="配置样式示例" class="mb-6 text-center qrcode-demo-item">
         <QrCode
           :value="qrCodeUrl"
           :options="{
@@ -22,11 +22,11 @@
         />
       </CollapseContainer>
 
-      <CollapseContainer title="本地logo示例" class="text-center mb-6 qrcode-demo-item">
+      <CollapseContainer title="本地logo示例" class="mb-6 text-center qrcode-demo-item">
         <QrCode :value="qrCodeUrl" :logo="LogoImg" />
       </CollapseContainer>
 
-      <CollapseContainer title="在线logo示例" class="text-center mb-6 qrcode-demo-item">
+      <CollapseContainer title="在线logo示例" class="mb-6 text-center qrcode-demo-item">
         <QrCode
           :value="qrCodeUrl"
           logo="https://vebn.oss-cn-beijing.aliyuncs.com/vben/logo.png"
@@ -36,7 +36,7 @@
         />
       </CollapseContainer>
 
-      <CollapseContainer title="logo配置示例" class="text-center mb-6 qrcode-demo-item">
+      <CollapseContainer title="logo配置示例" class="mb-6 text-center qrcode-demo-item">
         <QrCode
           :value="qrCodeUrl"
           :logo="{

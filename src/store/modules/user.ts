@@ -49,7 +49,7 @@ import { encryptSalt, encryptPwd } from '/@/utils/helper/sha1Helper';
 import { LoginStateEnum, useLoginState } from '/@/views/sys/login/useLogin';
 import { PasswordValidationModel } from '/@/api/sys/model/userModel';
 import axios from 'axios';
-import { listToTree } from '/@/utils/helper/treeHelper';
+import { listToTreeAsParentId } from '/@/utils/helper/treeHelper';
 
 type Feature = { [index: string]: { [index: string]: boolean } };
 
@@ -366,7 +366,7 @@ export const useUserStore = defineStore({
             this.setDeviceList(deviceList);
             this.setAllAccount(allAccount);
 
-            const allAccountTree = listToTree(allAccount);
+            const allAccountTree = listToTreeAsParentId(allAccount);
             this.setAllAccountTree(allAccountTree as unknown as OrganizationEmployeeModel);
             this.setOrganizationsList(organizationsList);
           } catch (error) {

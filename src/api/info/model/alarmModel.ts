@@ -1,3 +1,14 @@
+export enum AlarmStatusEnum {
+  /** 待处理 */
+  UNDONE = 1,
+  /** 已处理/处理完毕 */
+  DONE = 2,
+  /** 已报修 */
+  REPAIRED = 3,
+  /** 已关闭 */
+  CLOSED = 4,
+}
+
 export interface GetAlarmsListParam {
   /** 是否正序 */
   ascending: boolean;
@@ -75,7 +86,29 @@ export interface AlarmObjectModel {
   /** 更新者编号 */
   updateUserId: number;
   /** 用于高并发的数据版本控制 */
-  versionTag: 'string';
+  versionTag: string;
   /** 报警来源 */
-  warningSource: 'string';
+  warningSource: string;
+}
+
+export interface UpdateAlarmsOperationsParam {
+  /** 处理描述 */
+  handlingDesc: string;
+  /** 处理人id */
+  handlingUserId?: number;
+  /** 主键标识符 */
+  id: number;
+  /** 报警状态 */
+  optionStatus: AlarmStatusEnum;
+  /** 版本控制 */
+  versionTag: string;
+}
+
+export interface UpdateAlarmsOperationsResultModel {
+  code: number;
+}
+
+export interface AlarmsObjectAdvanceModel extends AlarmObjectModel {
+  /** 处理人名称 */
+  handlingUserName: string;
 }

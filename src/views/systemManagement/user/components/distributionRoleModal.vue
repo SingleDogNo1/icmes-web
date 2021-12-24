@@ -33,7 +33,7 @@
   import { BasicTree, TreeActionType } from '/@/components/Tree';
   import { getOrganizationsListApi } from '/@/api/info/organizations';
   import { getRolesListApi } from '/@/api/account/roles';
-  import { listToTree } from '/@/utils/helper/treeHelper';
+  import { listToTreeAsParentId } from '/@/utils/helper/treeHelper';
   import { useMessage } from '/@/hooks/web/useMessage';
 
   const { createMessage } = useMessage();
@@ -98,7 +98,7 @@
         (item as unknown as { [index: string]: string }).title = item.code + item.name;
       });
 
-      treeData.value = listToTree(list || []);
+      treeData.value = listToTreeAsParentId(list || []);
       await nextTick();
       getTree().expandAll(true);
       // 默认选中根目录，根目录 id 固定为 0

@@ -1,6 +1,5 @@
 <template>
   <PageWrapper contentFullHeight :contentBackground="true">
-    <a-button @click="getFormValues" class="mr-2"> 获取表单值 </a-button>
     <BasicForm @register="register" @submit="handleSubmit" />
     <Row justify="end">
       <Col :span="24" class="text-right">
@@ -10,165 +9,199 @@
         </a-button-group>
       </Col>
     </Row>
+    <BasicTable @register="registerTable" :loading="loading">
+      <template #warningSource="{ record }">
+        {{ alarmSrcMap[record.warningSource] || record.warningSource }}
+      </template>
 
-    <BasicTable @register="registerTable" @change="change" />
+      <template #kind="{ record }"> {{ alarmKindMap[record.kind] || record.kind }} </template>
+
+      <template #level="{ record }"> {{ alarmLevelMap[record.level] || record.level }} </template>
+
+      <template #startTime="{ record }">
+        {{ formatDate(record.startTime, 'YYYY-MM-DD HH:mm') }}
+      </template>
+
+      <template #endTime="{ record }">
+        <span v-if="record.warningSource === '离线点检'"> -- </span>
+        <span v-else></span>
+        {{ formatDate(record.endTime, 'YYYY-MM-DD HH:mm') }}
+      </template>
+
+      <template #durationTime="{ record }">
+        <span v-if="record.warningSource === '离线点检'"> -- </span>
+        <span v-else> {{ calcDurationTime(record.endTime, record.startTime) }}</span>
+      </template>
+
+      <template #optionStatus="{ record }">
+        <AlertTwoTone :two-tone-color="alarmOptionsMap[record.optionStatus].color" />
+        <span class="ml-2.5"> {{ alarmOptionsMap[record.optionStatus].text }} </span>
+      </template>
+
+      <template #action="{ record }">
+        <TableAction :actions="createActions(record)" />
+      </template>
+    </BasicTable>
+
+    <ProcessModal @register="registerProcessModal" @done="initAlarmListData" />
+    <RepairModal @register="registerRepairModal" @done="initAlarmListData" />
+    <DetailModal @register="registerDetailModal" @done="initAlarmListData" />
   </PageWrapper>
 </template>
+
 <script lang="ts" setup>
   import { Row, Col } from 'ant-design-vue';
-  import { BasicForm, FormSchema, useForm } from '/@/components/Form';
-  import { BasicTable, useTable } from '/@/components/Table';
-  import { useMessage } from '/@/hooks/web/useMessage';
+  // TODO 咱们这个灯能不能导出成 SVG 格式，可以省很多事
+  import { AlertTwoTone } from '@ant-design/icons-vue';
+  import { BasicForm, useForm } from '/@/components/Form';
+  import {
+    BasicTable,
+    useTable,
+    PaginationProps,
+    TableAction,
+    ActionItem,
+  } from '/@/components/Table';
   import { PageWrapper } from '/@/components/Page';
-  import { useUserState } from '/@/hooks/web/useUserState';
-  import { onMounted, nextTick } from 'vue';
+  import { onMounted, nextTick, ref } from 'vue';
   import { getAlarmsListApi } from '/@/api/info/alarms';
-  import type { GetAlarmsListParam } from '/@/api/info/model/alarmModel';
+  import type { GetAlarmsListParam, AlarmObjectModel } from '/@/api/info/model/alarmModel';
+  import { schemas, columns } from './data';
+  import { useUserState } from '/@/hooks/web/useUserState';
+  import { formatDate } from '/@/utils/dateUtil';
+  import { calcDurationTime } from './helper';
+  import {
+    disabledColor,
+    warningColor,
+    successColor,
+    primaryColor,
+  } from '/@/settings/designSetting';
+  // import { useGo } from '/@/hooks/web/usePage';
+  import { useModal } from '/@/components/Modal';
+  import ProcessModal from './components/processModal.vue';
+  import RepairModal from './components/repairModal.vue';
+  import DetailModal from './components/detailModal.vue';
 
-  const { getDictOptions } = useUserState();
-  const { createMessage } = useMessage();
+  const { getDictMap } = useUserState();
+  // const go = useGo();
 
-  // 报警来源
-  const warningSourceOptions = getDictOptions('DT_ALARM_SOURCE');
-  warningSourceOptions.unshift({ label: '全部', value: '' });
-
-  // 报警类别
-  const warningKindOptions = getDictOptions('DT_ALARM_KIND');
-  warningKindOptions.unshift({ label: '全部', value: '' });
-
-  // 报警级别
-  const warningLevelOptions = getDictOptions('DT_ALARM_LEVEL');
-  warningLevelOptions.unshift({ label: '全部', value: '' });
-
-  const schemas: FormSchema[] = [
-    {
-      component: 'Checkbox',
-      label: '升序',
-      field: 'ascending',
-      required: true,
-      defaultValue: true,
-      show: false,
-    },
-    {
-      component: 'Input',
-      label: '排序字段',
-      field: 'orderBy',
-      required: true,
-      defaultValue: 'startTime',
-      show: false,
-    },
-    {
-      component: 'Input',
-      label: '报警对象或报警内容',
-      field: 'globalName',
-      colProps: { span: 6 },
-      componentProps: {
-        maxlength: 20,
-        placeholder: '设备编号/对象名称',
-      },
-    },
-    {
-      component: 'Select',
-      label: '报警来源',
-      field: 'warningSource',
-      defaultValue: '',
-      colProps: { span: 6 },
-      componentProps: {
-        options: warningSourceOptions,
-      },
-    },
-    {
-      component: 'Select',
-      label: '报警类别',
-      field: 'kind',
-      defaultValue: '',
-      colProps: { span: 6 },
-      componentProps: {
-        options: warningKindOptions,
-      },
-    },
-    {
-      component: 'Select',
-      label: '报警级别',
-      field: 'level',
-      defaultValue: '',
-      colProps: { span: 6 },
-      componentProps: {
-        options: warningLevelOptions,
-      },
-    },
-    {
-      component: 'Select',
-      label: '处理状态',
-      field: 'status',
-      defaultValue: 1,
-      colProps: { span: 6 },
-      componentProps: {
-        options: [
-          { value: 1, label: '待处理' },
-          { value: 2, label: '已处理' },
-          { value: 3, label: '已报修' },
-          { value: 4, label: '已关闭' },
-        ],
-      },
-    },
-  ];
+  const alarmSrcMap = getDictMap('DT_ALARM_SOURCE');
+  const alarmKindMap = getDictMap('DT_ALARM_KIND');
+  const alarmLevelMap = getDictMap('DT_ALARM_LEVEL');
+  const alarmOptionsMap = {
+    '1': { color: warningColor, text: '待处理' },
+    '2': { color: successColor, text: '已处理' },
+    '3': { color: primaryColor, text: '已报修' },
+    '4': { color: disabledColor, text: '已关闭' },
+  };
+  const loading = ref(false);
 
   const [register, { getFieldsValue }] = useForm({
-    labelWidth: 150,
+    labelWidth: 80,
     actionColOptions: { span: 24 },
     schemas,
   });
 
-  const [registerTable, { setTableData, getPaginationRef }] = useTable({
-    columns: [
-      {
-        title: 'ID',
-        dataIndex: 'id',
-        fixed: 'left',
-        width: 200,
-      },
-      {
-        title: '姓名',
-        dataIndex: 'name',
-        width: 150,
-        filters: [
-          { text: 'Male', value: 'male' },
-          { text: 'Female', value: 'female' },
-        ],
-      },
-      {
-        title: '地址',
-        dataIndex: 'address',
-      },
-      {
-        title: '编号',
-        dataIndex: 'no',
-        width: 150,
-        sorter: true,
-        defaultHidden: true,
-      },
-      {
-        title: '开始时间',
-        width: 150,
-        sorter: true,
-        dataIndex: 'beginTime',
-      },
-      {
-        title: '结束时间',
-        width: 150,
-        sorter: true,
-        dataIndex: 'endTime',
-      },
-    ],
+  const [registerTable, { setTableData, setPagination, getPaginationRef }] = useTable({
+    columns,
+    actionColumn: {
+      width: 120,
+      title: '操作',
+      dataIndex: 'action',
+      slots: { customRender: 'action' },
+    },
+    onChange: async () => {
+      const page = getPaginationRef() as PaginationProps;
+      setPagination({ current: page.current, pageSize: page.pageSize });
+      await nextTick();
+      const form = getFieldsValue() as GetAlarmsListParam;
+
+      const params: GetAlarmsListParam = {
+        ...form,
+        ...{ pageNo: page.current!, pageSize: page.pageSize! },
+      };
+      console.log('params :>> ', params);
+      getAlarmsList(params);
+    },
   });
 
-  onMounted(async () => {
+  const [registerProcessModal, { openModal: openProcessModal }] = useModal();
+  const [registerRepairModal, { openModal: openRepairModal }] = useModal();
+  const [registerDetailModal, { openModal: openDetailModal }] = useModal();
+
+  function createActions(record: AlarmObjectModel): ActionItem[] {
+    if (record.optionStatus === 1) {
+      return [
+        {
+          label: '处理',
+          onClick: () => {
+            openProcessModal(true, record);
+          },
+        },
+        {
+          label: '报修',
+          onClick: () => {
+            openRepairModal(true, record);
+          },
+        },
+      ];
+    } else {
+      if (record.optionStatus === 3) {
+        return [
+          {
+            label: '查看',
+            onClick: () => {
+              openDetailModal(true, record);
+            },
+          },
+          {
+            label: '报修单',
+            onClick: () => {
+              if (!record.maintenanceCode) return;
+              // TODO 暂无该路由
+              // go({
+              //   name: 'CheckDeviceRepair',
+              //   query: {
+              //     maintenanceCode: record.maintenanceCode,
+              //     act: 'view',
+              //   },
+              // });
+            },
+          },
+        ];
+      } else {
+        return [
+          {
+            label: '查看',
+            onClick: () => {
+              openDetailModal(true, record);
+            },
+          },
+        ];
+      }
+    }
+  }
+
+  async function getAlarmsList(params: GetAlarmsListParam) {
+    loading.value = true;
+    try {
+      const { items, totalCount } = await getAlarmsListApi(params);
+      setTableData(items || []);
+      setPagination({ total: totalCount });
+    } catch (error) {
+      throw new Error(JSON.stringify(error));
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function initAlarmListData() {
     await nextTick();
     const form = getFieldsValue() as GetAlarmsListParam;
-    console.log('form :>> ', form);
-    const { items } = await getAlarmsListApi(form);
-    setTableData(items || []);
+    await getAlarmsList(form);
+  }
+
+  onMounted(() => {
+    initAlarmListData();
   });
 
   function toWarningSettings() {
@@ -180,17 +213,6 @@
   }
 
   function handleSubmit(values) {
-    createMessage.success('click search,values:' + JSON.stringify(values));
-  }
-
-  function getFormValues() {
-    const values = getFieldsValue();
-    console.log('values :>> ', values);
-    createMessage.success('values:' + JSON.stringify(values));
-  }
-
-  function change() {
-    const pagination = getPaginationRef();
-    console.log('1111 :>> ', pagination);
+    getAlarmsList(values);
   }
 </script>

@@ -2,6 +2,7 @@ interface TreeHelperConfig {
   id: string;
   children: string;
   parentId: string;
+  name?: string;
 }
 const DEFAULT_CONFIG: TreeHelperConfig = {
   id: 'id',
@@ -11,8 +12,11 @@ const DEFAULT_CONFIG: TreeHelperConfig = {
 
 const getConfig = (config: Partial<TreeHelperConfig>) => Object.assign({}, DEFAULT_CONFIG, config);
 
-// tree from list
-export function listToTree<T = any>(list: any[], config: Partial<TreeHelperConfig> = {}): T[] {
+// 根据父子id关系将列表组织为树结构
+export function listToTreeAsParentId<T = any>(
+  list: any[],
+  config: Partial<TreeHelperConfig> = {},
+): T[] {
   const conf = getConfig(config) as TreeHelperConfig;
   const nodeMap = new Map();
   const result: T[] = [];
@@ -27,6 +31,89 @@ export function listToTree<T = any>(list: any[], config: Partial<TreeHelperConfi
     (parent ? parent.children : result).push(node);
   }
   return result;
+}
+
+/**
+ * @description 根据分类关系将列表组织为树结构
+ * @param list
+ * @param config
+ * @returns
+ * @example
+    const list = [
+      { id: 3339, parentPathName: '103斗式提升机', name: '斗式提升机', categoryId: 88, categoryName: '斗式提升机' },
+      { id: 3694, parentPathName: '377斗式提升机', name: '斗式提升机', categoryId: 88, categoryName: '斗式提升机' },
+      { id: 4028, parentPathName: '设备NSF001', name: '设备NSF001', categoryId: 0, categoryName: null },
+      { id: 4037, parentPathName: '设备NSF003', name: '设备NSF003', categoryId: 0, categoryName: null },
+      { id: 3619, parentPathName: '315离心机', name: '离心机', categoryId: 22, categoryName: '卧式振动离心机' },
+    ]
+    ========>
+    [
+      {
+        name: '全部',
+        id: -1,
+        children: [
+          {
+            name: '斗式提升机',
+            id: 88,
+            children: [
+              { id: 3339, parentPathName: '103斗式提升机', name: '斗式提升机', categoryId: 88, categoryName: '斗式提升机' },
+              { id: 3694, parentPathName: '377斗式提升机', name: '斗式提升机', categoryId: 88, categoryName: '斗式提升机' }
+            ]
+          },
+          {
+            name: '未知',
+            id: 0,
+            children: [
+              { id: 4028, parentPathName: '设备NSF001', name: '设备NSF001', categoryId: 0, categoryName: null },
+              { id: 4037, parentPathName: '设备NSF003', name: '设备NSF003', categoryId: 0, categoryName: null }
+            ]
+          },
+          {
+            name: '卧式振动离心机',
+            id: 22,
+            children: [
+              { id: 3619, parentPathName: '315离心机', name: '离心机', categoryId: 22, categoryName: '卧式振动离心机' }
+            ]
+          }
+        ]
+      }
+    ]
+ */
+export function listToTreeAsGroup(
+  list: any[],
+  config: Partial<TreeHelperConfig> = { parentId: 'categoryId', name: 'categoryName' },
+) {
+  const conf = getConfig(config) as TreeHelperConfig;
+  const menus = list.reduce((res, pre) => {
+    const keys = res.reduce((res1, pre1) => {
+      res1.push(pre1[conf.id]);
+      return res1;
+    }, []);
+    if (!keys.includes(pre[conf.parentId])) {
+      res.push({
+        name: pre[conf.name!] || '未知',
+        id: pre[conf.parentId],
+        children: [],
+      });
+    }
+    return res;
+  }, []);
+
+  list.map((item) => {
+    menus.map((menu) => {
+      if (item[conf.parentId] === menu.id) {
+        menu.children.push(item);
+      }
+    });
+  });
+
+  return [
+    {
+      name: '全部',
+      id: -1,
+      children: menus,
+    },
+  ];
 }
 
 export function treeToList<T = any>(tree: any, config: Partial<TreeHelperConfig> = {}): T {
