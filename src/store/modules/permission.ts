@@ -168,6 +168,7 @@ export const usePermissionStore = defineStore({
         });
 
         if (!import.meta.env.DEV) {
+          // 非开发环境，删除 demo 路由
           remove(routes, (item) => item.name === 'Demo');
         }
 
@@ -175,7 +176,7 @@ export const usePermissionStore = defineStore({
 
         routeList.sort((a, b) => (a.meta.orderNo || 0) - (b.meta.orderNo || 0));
       } catch (error) {
-        throw error;
+        throw new Error(JSON.stringify(error));
       }
 
       // Dynamically introduce components

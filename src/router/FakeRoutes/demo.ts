@@ -54,6 +54,26 @@ const demo: BackModeRouteRecordRaw = {
       },
     },
     {
+      path: 'grid-layout',
+      name: 'GridLayout',
+      component: 'LAYOUT',
+      meta: {
+        code: DEMO_CHILDREN_CODE,
+        title: 'routes.demo.gridLayout.title',
+      },
+      children: [
+        {
+          path: 'basic',
+          name: 'GridLayoutBasic',
+          component: '/demo/grid-layout/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.gridLayout.basic',
+          },
+        },
+      ],
+    },
+    {
       path: 'color-picker',
       name: 'ColorPicker',
       component: '/demo/colorPicker/index',

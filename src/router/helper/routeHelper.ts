@@ -132,7 +132,7 @@ export function transformObjToRoute<T = BackModeRouteRecordRaw>(
         route.meta = meta;
       }
     } else {
-      warn('请正确配置路由：' + route?.name + '的component属性');
+      warn('请正确配置路由:' + route?.name + '的component属性');
     }
     route.children && asyncImportRoute(route.children);
   });

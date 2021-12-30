@@ -87,6 +87,10 @@ function createSidebar() {
             link: '/components/color-picker',
           },
           {
+            text: 'GridLayout',
+            link: '/components/grid-layout',
+          },
+          {
             text: 'Page',
             link: '/components/page',
           },

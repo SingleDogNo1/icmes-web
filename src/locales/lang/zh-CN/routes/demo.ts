@@ -1,6 +1,10 @@
 export default {
   title: '示例',
   colorPicker: '取色器',
+  gridLayout: {
+    title: '可拖拽网格组件',
+    basic: '基础示例',
+  },
   charts: {
     baiduMap: '百度地图',
     aMap: '高德地图',

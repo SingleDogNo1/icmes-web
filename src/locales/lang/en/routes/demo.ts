@@ -1,6 +1,10 @@
 export default {
   title: 'Demo',
   colorPicker: 'Color Picker',
+  gridLayout: {
+    title: 'Grid Layout',
+    basic: 'Basic',
+  },
   charts: {
     baiduMap: 'Baidu map',
     aMap: 'A map',
