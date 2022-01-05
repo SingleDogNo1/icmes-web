@@ -7,12 +7,14 @@
         </template>
       </BasicTable>
     </div>
+
+    <EditOrganizationModal :org-tree="organizationTree" @register="registerModal" />
   </PageWrapper>
 </template>
 
 <script lang="ts">
   export default {
-    name: 'Table',
+    name: 'OrganizationTableTable',
   };
 </script>
 
@@ -27,6 +29,8 @@
     ActionItem,
   } from '/@/components/Table';
   import { columns } from '../data';
+  import EditOrganizationModal from './editOrganizationModal.vue';
+  import { useModal } from '/@/components/Modal';
 
   const props = defineProps({
     data: {
@@ -43,11 +47,17 @@
       type: Boolean,
       default: false,
     },
+    organizationTree: {
+      type: Array,
+      default: () => [],
+    },
   });
 
   const emit = defineEmits(['changePage']);
 
   const selectedRowIndex = ref<number>(-1);
+
+  const [registerModal, { openModal }] = useModal();
 
   const [registerTable, { setTableData, getPaginationRef, setPagination }] = useTable({
     columns,
@@ -76,8 +86,7 @@
       {
         label: '编辑',
         onClick: () => {
-          // openModal(true, record);
-          console.log('record :>> ', record);
+          openModal(true, { ...record, ...{ type: 'edit' } });
         },
       },
       {

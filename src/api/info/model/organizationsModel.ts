@@ -99,3 +99,28 @@ export interface OrganizationsFullNameModel {
   /** 版本标志 */
   versionTag: string;
 }
+
+export interface CreateOrganizationParams {
+  /** 组织机构code */
+  code: string;
+  /** 组织机构全称 */
+  fullName: string;
+  /** 是否有子集 */
+  hasChild?: boolean;
+  /** 组织机构ID */
+  id?: number;
+  /** 组织机构名称 */
+  name: string;
+  /** 父级机构全称 */
+  parentFullName: string;
+  /** 父级机构ID */
+  parentId: number;
+  /** 电话 */
+  phone: string;
+  /** 版本标志 */
+  versionTag?: string;
+}
+
+export interface EditOrganizationsResultModel {
+  code: string | number;
+}

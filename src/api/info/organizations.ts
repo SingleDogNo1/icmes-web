@@ -4,11 +4,14 @@ import {
   AccountTreeResultModel,
   OrganizationsListParams,
   OrganizationsListResultModel,
+  CreateOrganizationParams,
+  EditOrganizationsResultModel,
 } from './model/organizationsModel';
 
 import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
+  basicUrl = '/info/organizations',
   accountTree = '/info/organizations/account/allTree/list/',
   organizationsList = '/info/organizations/list/',
 }
@@ -37,6 +40,21 @@ export function getOrganizationsListApi(
   return defHttp.post<OrganizationsListResultModel>(
     {
       url: Api.organizationsList,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
+export function createOrganizationApi(
+  params: CreateOrganizationParams,
+  mode: ErrorMessageMode = 'modal',
+) {
+  return defHttp.post<EditOrganizationsResultModel>(
+    {
+      url: Api.basicUrl,
       params,
     },
     {

@@ -140,7 +140,7 @@ const transform: AxiosTransform = {
     const token = getToken();
     if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
       // jwt token
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers!.Authorization = `Bearer ${token}`;
     }
     return config;
   },

@@ -28,7 +28,7 @@ export function listToTreeAsParentId<T = any>(
   }
   for (const node of list) {
     const parent = nodeMap.get(node[parentId]);
-    (parent ? parent.children : result).push(node);
+    (parent ? parent[children] : result).push(node);
   }
   return result;
 }

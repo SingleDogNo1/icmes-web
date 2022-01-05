@@ -12,106 +12,122 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, Ref, PropType } from 'vue';
+  import { computed, ref, Ref, unref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { RoleModel, AddRoleParams, EditRoleParams } from '/@/api/account/model/rolesModel';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { addRoleApi, editRoleApi } from '/@/api/account/roles';
+  import { OrganizationsFullNameModel } from '/@/api/info/model/organizationsModel';
+  import { listToTreeAsParentId, treeToList } from '/@/utils/helper/treeHelper';
+  import { editOrgSchemas } from '../data';
+  // import { useMessage } from '/@/hooks/web/useMessage';
 
-  const { createMessage } = useMessage();
+  // const { createMessage } = useMessage();
 
-  const emit = defineEmits(['update:role']);
+  // const emit = defineEmits(['update:role']);
 
-  defineProps({
-    rowPermission: {
-      type: Object as PropType<string[]>,
+  const props = defineProps({
+    orgTree: {
+      required: true,
+      type: Object,
     },
   });
   const loading = ref<boolean>(false);
   const editType: Ref<'create' | 'edit' | ''> = ref('');
-  const editId = ref<Number | undefined>(undefined);
 
-  const [registerForm, { getFieldsValue, setFieldsValue, updateSchema }] = useForm({
-    schemas: [
-      {
-        field: 'code',
-        label: '角色编码',
-        component: 'Input',
-        defaultValue: '',
-        rules: [
-          {
-            required: true,
-            message: '请输入角色编码',
-          },
-        ],
-      },
-      {
-        field: 'name',
-        label: '角色名称',
-        component: 'Input',
-        defaultValue: '',
-        rules: [
-          {
-            required: true,
-            message: '请输入角色名称',
-          },
-        ],
-      },
-      {
-        field: 'remark',
-        label: '角色描述',
-        component: 'Input',
-        defaultValue: '',
-      },
-      {
-        field: 'versionTag',
-        label: '数据版本',
-        component: 'Input',
-        defaultValue: null,
-        show: false,
-      },
-    ],
+  const organizationTree = computed(() => props.orgTree);
+
+  const [registerForm, { getFieldsValue, setFieldsValue, updateSchema, validate }] = useForm({
+    schemas: editOrgSchemas(organizationTree.value),
     labelWidth: 120,
     showActionButtonGroup: false,
   });
 
-  function onDataReceive(data: RoleModel) {
-    console.log('data :>> ', data);
-    setFieldsValue({
-      code: data.code ?? '',
-      name: data.name ?? '',
-      remark: data.remark ?? '',
-      versionTag: data.versionTag ?? '',
-    });
+  const [register, { closeModal }] = useModalInner(
+    async (data: OrganizationsFullNameModel & { type: string }) => {
+      editType.value = data.type === 'edit' ? 'edit' : 'create';
 
-    // 如果存在versionTag 字段，是编辑，否则是新建。并且编辑时，code 选项不可操作
-    editType.value = data.versionTag ? 'edit' : 'create';
-    if (editType.value === 'edit') editId.value = data.id;
-    updateSchema({ field: 'code', componentProps: { disabled: Boolean(data.versionTag) } });
-  }
+      updateSchema({ field: 'code', componentProps: { disabled: data.type === 'edit' } });
 
-  const [register, { closeModal }] = useModalInner((data) => {
-    data && onDataReceive(data);
-  });
+      switch (data.type) {
+        case 'createSiblings': // 新建同级
+          setFieldsValue({
+            parentId: data.parentId,
+            parentFullName: data.parentFullName,
+          });
+          break;
+        case 'createChildren': // 新建子级
+          setFieldsValue({
+            parentId: data.id,
+            parentFullName: data.fullName,
+          });
+          break;
+        case 'edit': // 编辑
+          setFieldsValue({
+            id: data.id,
+            phone: data.phone,
+            code: data.code,
+            name: data.name,
+            parentId: data.parentId,
+            parentFullName: data.parentFullName,
+            versionTag: data.versionTag,
+            parentOrganization: data.fullName,
+          });
+
+          // updateSchema({
+          //   field: 'parentOrganization',
+          //   componentProps: { treeData: [] },
+          // });
+
+          // const orgTree = toRef(props, 'orgTree');
+          // console.log('orgTree :>> ', orgTree);
+          const treeList = treeToList(unref(organizationTree));
+          treeList.map((item) => {
+            item.children = [];
+            item.disabled = false;
+            if (item.id === data.id || item.parentId === data.id) {
+              item.disabled = true;
+            }
+          });
+          console.log('treeList :>> ', treeList);
+
+          const new_tree = listToTreeAsParentId(treeList);
+          console.log('new_tree :>> ', new_tree);
+
+          // updateSchema({
+          //   field: 'parentOrganization',
+          //   componentProps: { treeData: [] },
+          // });
+          // setTimeout(() => {
+          //   updateSchema({
+          //     field: 'parentOrganization',
+          //     componentProps: { treeData: new_tree },
+          //   });
+          // }, 1000);
+
+          break;
+      }
+    },
+  );
 
   async function handleSubmit() {
-    loading.value = true;
-    const values = getFieldsValue() as AddRoleParams | EditRoleParams;
-    try {
-      if (editType.value === 'create') {
-        await addRoleApi(values as AddRoleParams);
-      } else if (editType.value === 'edit') {
-        await editRoleApi(editId.value as number, values as EditRoleParams);
-      }
+    // loading.value = true;
+    await validate();
+    const values = getFieldsValue();
+    console.log('values :>> ', values);
+    closeModal();
+    // try {
+    //   if (editType.value === 'create') {
+    //     await addRoleApi(values as AddRoleParams);
+    //   } else if (editType.value === 'edit') {
+    //     await editRoleApi(editId.value as number, values as EditRoleParams);
+    //   }
 
-      createMessage.success('保存成功');
-      closeModal();
-      emit('update:role');
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
-    } finally {
-      loading.value = false;
-    }
+    //   createMessage.success('保存成功');
+    //   closeModal();
+    //   emit('update:role');
+    // } catch (error) {
+    //   throw new Error(JSON.stringify(error));
+    // } finally {
+    //   loading.value = false;
+    // }
   }
 </script>

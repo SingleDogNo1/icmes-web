@@ -9,7 +9,7 @@
 
     <Row :class="`${prefixCls}-content-wrapper`" :gutter="16">
       <Col :span="8">
-        <OrganizationTree @select="handleSelect" />
+        <OrganizationTree @gen-org-tree="handleGenOrgTree" @select="handleSelect" />
       </Col>
       <Col :span="16" class="pr-4">
         <OrganizationTable
@@ -17,6 +17,7 @@
           :total-pages="tableData.totalPages"
           :total-count="tableData.totalCount"
           :loading="loading"
+          :organization-tree="organizationTree"
           @change-page="handleChangePage"
         />
       </Col>
@@ -26,7 +27,7 @@
 
 <script lang="ts">
   export default {
-    name: 'Organization',
+    name: 'ArchivesOrganization',
   };
 </script>
 
@@ -43,6 +44,7 @@
   const { prefixCls } = useDesign('organization');
   const loading = ref(false);
   const searchForm = ref({});
+  const organizationTree = ref<any[]>();
   let tableData = reactive<{ list: any[]; totalPages: number; totalCount: number }>({
     list: [],
     totalPages: 0,
@@ -61,6 +63,10 @@
 
     getOrganizationsList(unref(searchForm));
   });
+
+  function handleGenOrgTree(tree: any[]) {
+    organizationTree.value = tree;
+  }
 
   async function getOrganizationsList(params) {
     loading.value = true;

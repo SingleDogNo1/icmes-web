@@ -13,6 +13,8 @@ tests/server/static/upload
 .env.local
 .env.*.local
 .eslintcache
+DATA_PARSE.js
+DATA_PARSE.ts
 
 # Log files
 npm-debug.log*
