@@ -57,74 +57,65 @@ export const columns: BasicColumn[] = [
   { title: '办公室电话', dataIndex: 'phone' },
 ];
 
-export const editOrgSchemas = (treeData): FormSchema[] => {
-  return [
-    {
-      field: 'code',
-      label: '编号',
-      component: 'Input',
-      required: true,
-      componentProps: {
-        maxlength: 20,
+export const editOrgSchemas: FormSchema[] = [
+  {
+    field: 'code',
+    label: '编号',
+    component: 'Input',
+    required: true,
+    componentProps: {
+      maxlength: 20,
+    },
+  },
+  {
+    field: 'name',
+    label: '名称',
+    component: 'Input',
+    required: true,
+  },
+  {
+    field: 'parentOrganization',
+    label: '上级机构',
+    component: 'TreeSelect',
+    required: true,
+    componentProps: {
+      showSearch: true,
+      dropdownStyle: { maxHeight: '400px', overflow: 'auto' },
+      replaceFields: {
+        title: 'name',
+        key: 'id',
+        value: 'fullName',
+      },
+      getPopupContainer: () => document.body,
+    },
+  },
+  {
+    field: 'parentFullName',
+    label: '父级机构全称',
+    show: false,
+    component: 'Input',
+  },
+  {
+    field: 'parentId',
+    label: '父级机构ID',
+    show: false,
+    component: 'Input',
+  },
+  {
+    field: 'phone',
+    label: '办公室电话',
+    component: 'Input',
+    componentProps: {
+      maxlength: 11,
+      onChange: (e: ChangeEvent) => {
+        e.target.value = e.target.value.replace(/[^\d]/g, '');
       },
     },
-    {
-      field: 'name',
-      label: '名称',
-      component: 'Input',
-      required: true,
-    },
-    {
-      field: 'parentOrganization',
-      label: '上级机构',
-      component: 'TreeSelect',
-      required: true,
-      componentProps: ({ formModel }) => {
-        return {
-          showSearch: true,
-          dropdownStyle: { maxHeight: '400px', overflow: 'auto' },
-          treeData,
-          replaceFields: {
-            title: 'name',
-            key: 'id',
-            value: 'fullName',
-          },
-          getPopupContainer: () => document.body,
-          onChange: async (_val, _label, { triggerNode: { dataRef: checkedNode } }) => {
-            formModel.parentFullName = checkedNode.fullName;
-            formModel.parentId = checkedNode.id;
-          },
-        };
-      },
-    },
-    {
-      field: 'parentFullName',
-      label: '父级机构全称',
-      show: false,
-      component: 'Input',
-    },
-    {
-      field: 'parentId',
-      label: '父级机构ID',
-      show: false,
-      component: 'Input',
-    },
-    {
-      field: 'phone',
-      label: '办公室电话',
-      component: 'Input',
-      componentProps: {
-        maxlength: 11,
-        onChange: (e: ChangeEvent) => {
-          e.target.value = e.target.value.replace(/[^\d]/g, '');
-        },
-      },
-    },
-    {
-      field: 'versionTag',
-      label: '数据版本',
-      component: 'Input',
-      show: false,
-    },
-  ];
-};
+  },
+  {
+    field: 'versionTag',
+    label: '数据版本',
+    component: 'Input',
+    show: false,
+  },
+];

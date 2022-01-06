@@ -24,7 +24,7 @@
       </PageWrapper>
     </div>
 
-    <EditOrganizationModal :org-tree="treeData" @register="registerModal" />
+    <EditOrganizationModal @register="registerModal" @done="handleEditOrgSuccess" />
   </PageWrapper>
 </template>
 
@@ -35,7 +35,7 @@
 </script>
 
 <script lang="ts" setup>
-  import { nextTick, ref, unref } from 'vue';
+  import { nextTick, ref, unref, reactive } from 'vue';
   import { Spin } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
   import { BasicTree, TreeActionType } from '/@/components/Tree';
@@ -48,13 +48,18 @@
 
   const [registerModal, { openModal }] = useModal();
 
-  const emit = defineEmits(['select', 'genOrgTree']);
+  const emit = defineEmits(['select']);
 
   const treeRef = ref<Nullable<TreeActionType>>(null);
   const treeData = ref<any[]>([]);
   const loading = ref(false);
   const isRoot = ref(true);
   const selectedNode = ref(null);
+  const getOrgListParams = reactive({
+    parentId: 0,
+    orderBy: 'Code',
+    ascending: true,
+  });
 
   function getTree() {
     const tree = unref(treeRef);
@@ -81,7 +86,6 @@
       getTree()?.filterByLevel(1);
       getTree()?.setSelectedKeys([0]);
       emit('select', 0);
-      emit('genOrgTree', organizationTree);
     } catch (error) {
       throw new Error(JSON.stringify(error));
     } finally {
@@ -100,9 +104,10 @@
     emit('select', id);
   }
 
-  getOrganizationsList({
-    parentId: 0,
-    orderBy: 'Code',
-    ascending: true,
-  });
+  function handleEditOrgSuccess() {
+    // 编辑组织机构成功, 刷新数据
+    getOrganizationsList(getOrgListParams);
+  }
+
+  getOrganizationsList(getOrgListParams);
 </script>

@@ -86,6 +86,8 @@ export interface OrganizationsFullNameModel {
   fullName: string;
   /** 是否有子集 */
   hasChild: boolean;
+  /** 子集 */
+  children: OrganizationsFullNameModel[];
   /** 组织机构ID */
   id: number;
   /** 组织机构名称 */
@@ -100,7 +102,7 @@ export interface OrganizationsFullNameModel {
   versionTag: string;
 }
 
-export interface CreateOrganizationParams {
+export interface OrganizationParams {
   /** 组织机构code */
   code: string;
   /** 组织机构全称 */

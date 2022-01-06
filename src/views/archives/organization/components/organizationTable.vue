@@ -8,7 +8,7 @@
       </BasicTable>
     </div>
 
-    <EditOrganizationModal :org-tree="organizationTree" @register="registerModal" />
+    <EditOrganizationModal @register="registerModal" @done="handleEditOrgSuccess" />
   </PageWrapper>
 </template>
 
@@ -29,8 +29,12 @@
     ActionItem,
   } from '/@/components/Table';
   import { columns } from '../data';
+  import { delOrganizationApi } from '/@/api/info/organizations';
   import EditOrganizationModal from './editOrganizationModal.vue';
   import { useModal } from '/@/components/Modal';
+  import { useMessage } from '/@/hooks/web/useMessage';
+
+  const { createMessage } = useMessage();
 
   const props = defineProps({
     data: {
@@ -47,13 +51,9 @@
       type: Boolean,
       default: false,
     },
-    organizationTree: {
-      type: Array,
-      default: () => [],
-    },
   });
 
-  const emit = defineEmits(['changePage']);
+  const emit = defineEmits(['changePage', 'delRow']);
 
   const selectedRowIndex = ref<number>(-1);
 
@@ -96,16 +96,17 @@
           title: '数据删除后将无法恢复，确认删除数据？',
           confirm: async () => {
             console.log('record :>> ', record);
-            // loading.value = false;
-            // try {
-            //   await deleteRoleApi(record.id);
-            //   createMessage.success('删除成功');
-            //   await getRolesList(props.searchData);
-            // } catch (error) {
-            //   throw new Error(JSON.stringify(error));
-            // } finally {
-            //   loading.value = false;
-            // }
+            if (record.id === 0) {
+              createMessage.error('根节点不能删除');
+              return;
+            }
+            try {
+              await delOrganizationApi(record.id);
+              createMessage.success('删除成功');
+              emit('delRow', record);
+            } catch (error) {
+              throw new Error(JSON.stringify(error));
+            }
           },
         },
       },
@@ -115,6 +116,11 @@
   function handleClickRow(_row, index) {
     if (selectedRowIndex.value === index) return;
     selectedRowIndex.value = index;
+  }
+
+  function handleEditOrgSuccess() {
+    // 编辑组织机构成功, 刷新数据
+    setTableData(props.data);
   }
 
   watch(

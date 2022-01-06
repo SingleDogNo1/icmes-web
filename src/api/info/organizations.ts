@@ -4,7 +4,7 @@ import {
   AccountTreeResultModel,
   OrganizationsListParams,
   OrganizationsListResultModel,
-  CreateOrganizationParams,
+  OrganizationParams,
   EditOrganizationsResultModel,
 } from './model/organizationsModel';
 
@@ -48,14 +48,44 @@ export function getOrganizationsListApi(
   );
 }
 
+/** 新增组织机构 */
 export function createOrganizationApi(
-  params: CreateOrganizationParams,
-  mode: ErrorMessageMode = 'modal',
+  params: OrganizationParams,
+  mode: ErrorMessageMode = 'message',
 ) {
   return defHttp.post<EditOrganizationsResultModel>(
     {
       url: Api.basicUrl,
       params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
+/** 编辑组织机构 */
+export function editOrganizationApi(
+  id: number,
+  params: OrganizationParams,
+  mode: ErrorMessageMode = 'message',
+) {
+  return defHttp.put<EditOrganizationsResultModel>(
+    {
+      url: `${Api.basicUrl}/${id}`,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
+/** 删除组织机构 */
+export function delOrganizationApi(id: number, mode: ErrorMessageMode = 'message') {
+  return defHttp.delete<EditOrganizationsResultModel>(
+    {
+      url: `${Api.basicUrl}/${id}`,
     },
     {
       errorMessageMode: mode,

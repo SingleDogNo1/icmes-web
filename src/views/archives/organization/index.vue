@@ -9,7 +9,7 @@
 
     <Row :class="`${prefixCls}-content-wrapper`" :gutter="16">
       <Col :span="8">
-        <OrganizationTree @gen-org-tree="handleGenOrgTree" @select="handleSelect" />
+        <OrganizationTree @select="handleSelect" />
       </Col>
       <Col :span="16" class="pr-4">
         <OrganizationTable
@@ -17,8 +17,8 @@
           :total-pages="tableData.totalPages"
           :total-count="tableData.totalCount"
           :loading="loading"
-          :organization-tree="organizationTree"
           @change-page="handleChangePage"
+          @del-row="handleDelOrg"
         />
       </Col>
     </Row>
@@ -44,7 +44,6 @@
   const { prefixCls } = useDesign('organization');
   const loading = ref(false);
   const searchForm = ref({});
-  const organizationTree = ref<any[]>();
   let tableData = reactive<{ list: any[]; totalPages: number; totalCount: number }>({
     list: [],
     totalPages: 0,
@@ -63,10 +62,6 @@
 
     getOrganizationsList(unref(searchForm));
   });
-
-  function handleGenOrgTree(tree: any[]) {
-    organizationTree.value = tree;
-  }
 
   async function getOrganizationsList(params) {
     loading.value = true;
@@ -94,6 +89,11 @@
     const form = { ...searchForm.value, ...{ parentId: nodeId } };
     setFieldsValue(form);
     getOrganizationsList(form);
+  }
+
+  async function handleDelOrg(row) {
+    // 删除组织机构的回调
+    console.log('del success :>> ', row);
   }
 
   function handleSubmit(value) {
