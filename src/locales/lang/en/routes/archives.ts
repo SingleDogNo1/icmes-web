@@ -5,4 +5,5 @@ export default {
   powerCutConfig: {
     title: 'Power Cut Config',
   },
+  vendor: 'Vendor',
 };

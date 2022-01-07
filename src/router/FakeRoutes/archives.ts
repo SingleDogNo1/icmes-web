@@ -30,6 +30,15 @@ const archives: BackModeRouteRecordRaw = {
       },
     },
     {
+      path: 'vendor',
+      name: 'ArchivesVendor',
+      component: '/archives/vendor/index',
+      meta: {
+        code: 21300,
+        title: 'routes.archives.vendor',
+      },
+    },
+    {
       path: 'power-cut-config',
       redirect: '/archives/power-cut-config/index',
       component: 'LAYOUT',

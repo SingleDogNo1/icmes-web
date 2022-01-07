@@ -5,4 +5,5 @@ export default {
   powerCutConfig: {
     title: '停送电配置',
   },
+  vendor: '厂商资料',
 };
