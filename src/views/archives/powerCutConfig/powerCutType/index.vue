@@ -16,10 +16,7 @@
         </template>
       </BasicTable>
 
-      <EditPowerCutTypeModal
-        @register="registerModal"
-        @done="getPowerCutConfigList(getPowerCutConfigParams)"
-      />
+      <EditModal @register="registerModal" @done="getPowerCutConfigList(getPowerCutConfigParams)" />
     </div>
   </PageWrapper>
 </template>
@@ -40,7 +37,7 @@
     PaginationProps,
     ActionItem,
   } from '/@/components/Table';
-  import { powerCutTypeColumns as columns } from './data';
+  import { powerCutTypeColumns as columns } from '../data';
   import {
     getPowerCutConfigListApi,
     changePowerCutConfigUsefulApi,
@@ -52,7 +49,7 @@
   } from '/@/api/info/model/powerCutConfigModel';
   import { Switch } from 'ant-design-vue';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import EditPowerCutTypeModal from './editPowerCutTypeModal.vue';
+  import EditModal from './editModal.vue';
   import { useModal } from '/@/components/Modal';
 
   const { createMessage } = useMessage();

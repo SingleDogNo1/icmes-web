@@ -15,7 +15,7 @@
 <script lang="ts" setup>
   import { Tabs } from 'ant-design-vue';
   import { ScrollContainer } from '/@/components/Container';
-  import PowerCutType from './powerCutType.vue';
+  import PowerCutType from './powerCutType/index.vue';
   import DeviceChargedType from './deviceChargedType.vue';
   import PLCJudgmentRule from './plcJudgmentRule.vue';
   import SafetyTechnology from './safetyTechnology.vue';
