@@ -1,7 +1,7 @@
 <template>
-  <div class="DeviceChargedType">
-    {{ msg }}
-  </div>
+  <PageWrapper contentFullHeight fixedHeight dense>
+    <div class="h-full p-4 mt-4 overflow-auto bg-white"> {{ msg }} </div>
+  </PageWrapper>
 </template>
 
 <script lang="ts">

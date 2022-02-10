@@ -126,7 +126,7 @@ export function resetFaceByIdApi(id: string | number, mode: ErrorMessageMode = '
 export function getRolesListByIdApi(
   id: number | string,
   params: GetRoleListByIdParams,
-  mode: ErrorMessageMode = 'modal',
+  mode: ErrorMessageMode = 'message',
 ) {
   return defHttp.post<GetRoleListByIdResultModel>(
     {

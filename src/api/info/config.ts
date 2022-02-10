@@ -8,7 +8,7 @@ enum Api {
 }
 
 /** 获取系统配置信息 */
-export function getRemoteConfigApi(mode: ErrorMessageMode = 'modal') {
+export function getRemoteConfigApi(mode: ErrorMessageMode = 'message') {
   return defHttp.get<RemoteConfigResultModel>(
     {
       url: Api.systemConfig,
