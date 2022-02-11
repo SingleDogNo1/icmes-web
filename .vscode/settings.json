@@ -2,12 +2,12 @@
   "vetur.format.enable": false,
   "editor.formatOnSave": true,
   "typescript.tsdk": "./node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
   "vetur.validation.script": false,
   "vetur.validation.template": false,
   //===========================================
   //============= Editor ======================
   //===========================================
+  "npm.packageManager": "pnpm",
   "explorer.openEditors.visible": 0,
   "editor.tabSize": 2,
   "editor.defaultFormatter": "esbenp.prettier-vscode",

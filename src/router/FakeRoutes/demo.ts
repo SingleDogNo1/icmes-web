@@ -450,6 +450,15 @@ const demo: BackModeRouteRecordRaw = {
                 title: 'routes.demo.table.authColumn',
               },
             },
+            {
+              path: 'resizeParentHeightTable',
+              name: 'ResizeParentHeightTable',
+              component: '/demo/table/ResizeParentHeightTable',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.table.resizeParentHeightTable',
+              },
+            },
           ],
         },
         {

@@ -25,15 +25,16 @@
     >
       <slot name="more"></slot>
       <a-button type="link" size="small" v-if="!$slots.more">
-        更多<Icon icon="akar-icons:chevron-down" />
+        <MoreOutlined class="icon-more" />
       </a-button>
     </Dropdown>
   </div>
 </template>
 <script lang="ts">
   import { defineComponent, PropType, computed, toRaw, unref } from 'vue';
+  import { MoreOutlined } from '@ant-design/icons-vue';
   import { Divider, Tooltip, TooltipProps } from 'ant-design-vue';
-  import Icon from '/@/components/Icon';
+  import Icon from '/@/components/Icon/index';
   import { ActionItem, TableActionType } from '/@/components/Table';
   import { PopConfirmButton } from '/@/components/Button';
   import { Dropdown } from '/@/components/Dropdown';
@@ -45,7 +46,8 @@
   import { ACTION_COLUMN_FLAG } from '../const';
 
   export default defineComponent({
-    components: { Icon, PopConfirmButton, Divider, Dropdown, Tooltip },
+    name: 'TableAction',
+    components: { Icon, PopConfirmButton, Divider, Dropdown, MoreOutlined, Tooltip },
     props: {
       actions: {
         type: Array as PropType<ActionItem[]>,
@@ -102,21 +104,20 @@
       });
 
       const getDropdownList = computed((): any[] => {
-        return (toRaw(props.dropDownActions) || [])
-          .filter((action) => {
-            return hasPermission(action.auth) && isIfShow(action);
-          })
-          .map((action, index) => {
-            const { label, popConfirm } = action;
-            return {
-              ...action,
-              ...popConfirm,
-              onConfirm: popConfirm?.confirm,
-              onCancel: popConfirm?.cancel,
-              text: label,
-              divider: index < props.dropDownActions.length - 1 ? props.divider : false,
-            };
-          });
+        const list = (toRaw(props.dropDownActions) || []).filter((action) => {
+          return hasPermission(action.auth) && isIfShow(action);
+        });
+        return list.map((action, index) => {
+          const { label, popConfirm } = action;
+          return {
+            ...action,
+            ...popConfirm,
+            onConfirm: popConfirm?.confirm,
+            onCancel: popConfirm?.cancel,
+            text: label,
+            divider: index < list.length - 1 ? props.divider : false,
+          };
+        });
       });
 
       const getAlign = computed(() => {

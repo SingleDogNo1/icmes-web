@@ -96,7 +96,7 @@
     padding-top: 2px;
 
     &__overlay {
-      width: 400px;
+      width: 420px;
     }
 
     .ant-badge {
