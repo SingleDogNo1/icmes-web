@@ -346,6 +346,14 @@ export const localeList: DropMenu[] = [
 export const primaryColor = '#0960bd';
 ```
 
+## ant-design 相关颜色配置
+
+如果你需要修改项目中`ant-design`全局或者部分组件的主题色, 可以在`/ROOT/build/generate/generateModifyVars.ts`中进行配置,需要注意的是:
+
+- 修改的键名必须与`ant-design`定义的键名一致
+- `ant-design` 组件相关配置项[在这里](https://github.com/vueComponent/ant-design-vue/blob/next/components/style/themes/default.less)
+- 该配置文件不参与热更新, 修改之后建议重启应用
+
 ## 样式配置
 
 ### css 前缀设置

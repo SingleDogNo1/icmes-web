@@ -39,6 +39,15 @@ const archives: BackModeRouteRecordRaw = {
       },
     },
     {
+      path: 'calendar',
+      name: 'ArchivesCalendar',
+      component: '/archives/calendar/index',
+      meta: {
+        code: 25300,
+        title: 'routes.archives.calendar',
+      },
+    },
+    {
       path: 'power-cut-config',
       redirect: '/archives/power-cut-config/index',
       component: 'LAYOUT',

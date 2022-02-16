@@ -1,6 +1,7 @@
 export default {
   title: 'Demo',
   colorPicker: 'Color Picker',
+  calendar: 'Calendar',
   gridLayout: {
     title: 'Grid Layout',
     basic: 'Basic',

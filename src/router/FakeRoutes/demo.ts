@@ -54,6 +54,15 @@ const demo: BackModeRouteRecordRaw = {
       },
     },
     {
+      path: 'calendar',
+      name: 'CalendarComponent',
+      component: '/demo/calendar/index',
+      meta: {
+        code: DEMO_CHILDREN_CODE,
+        title: 'routes.demo.calendar',
+      },
+    },
+    {
       path: 'grid-layout',
       name: 'GridLayout',
       component: 'LAYOUT',

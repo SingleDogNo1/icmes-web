@@ -365,6 +365,12 @@
       }
     }
 
+    .ant-table-row-hover {
+      td {
+        background: @table-row-hover-bg !important;
+      }
+    }
+
     &-form-container {
       padding: 16px;
 
@@ -417,7 +423,7 @@
     }
 
     .ant-table-footer {
-      padding: 0;
+      padding: 0 !important;
 
       .ant-table-wrapper {
         padding: 0;
