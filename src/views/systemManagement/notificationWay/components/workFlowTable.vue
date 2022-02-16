@@ -53,9 +53,8 @@
 
   const { getDictMap } = useUserState();
 
-  const businessTypeMap = props.workflowFlag
-    ? getDictMap('DT_BUSINESS_TYPE')
-    : getDictMap('DT_NOTICE_BUSINESS_TYPE');
+  console.log(props.workflowFlag);
+  let businessTypeMap = ref({});
   const notificationTypeMap = {
     0: '任务',
     1: '抄送',
@@ -87,6 +86,8 @@
           current: page.current,
           pageSize: page.pageSize,
         });
+
+        Object.assign(searchForm.value, { pageNo: page.current, pageSize: page.pageSize });
         emit('changePage', { pageNo: page.current, pageSize: page.pageSize });
       },
     });
@@ -122,6 +123,7 @@
     try {
       loading.value = true;
       await updateNoticeSettingConfigApi(record);
+      getWorkFlowList();
     } catch (error) {
     } finally {
       loading.value = false;
@@ -135,7 +137,21 @@
   watch(
     () => props.workflowFlag,
     (value) => {
+      businessTypeMap.value = value
+        ? getDictMap('DT_BUSINESS_TYPE')
+        : getDictMap('DT_NOTICE_BUSINESS_TYPE');
       searchForm.value.workflowFlag = value;
+      getWorkFlowList();
+    },
+    {
+      deep: true,
+    },
+  );
+
+  // 监听翻页
+  watch(
+    () => searchForm.value,
+    () => {
       getWorkFlowList();
     },
     {

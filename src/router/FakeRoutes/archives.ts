@@ -70,6 +70,15 @@ const archives: BackModeRouteRecordRaw = {
         },
       ],
     },
+    {
+      path: 'staff-info',
+      name: 'StaffInfo',
+      component: '/archives/staffInfo/index',
+      meta: {
+        code: 22000,
+        title: 'routes.archives.staffInfo',
+      },
+    },
   ],
 };
 

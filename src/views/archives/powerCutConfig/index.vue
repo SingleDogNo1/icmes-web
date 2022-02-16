@@ -16,14 +16,14 @@
   import { Tabs } from 'ant-design-vue';
   import { ScrollContainer } from '/@/components/Container';
   import PowerCutType from './powerCutType/index.vue';
-  import DeviceChargedType from './deviceChargedType.vue';
+  import DeviceChargedType from './deviceChargedType/index.vue';
   import PLCJudgmentRule from './plcJudgmentRule.vue';
   import SafetyTechnology from './safetyTechnology.vue';
   import OperationTicket from './operationTicket.vue';
   import PowerSystemList from './powerSystemList.vue';
   import ElectricianSetting from './electricianSetting.vue';
   import ErrorMessage from './errorMessage.vue';
-  import { tabsList } from './data';
+  import { tabsList } from './powerCutType/data';
   import { useDesign } from '/@/hooks/web/useDesign';
 
   const TabPane = Tabs.TabPane;

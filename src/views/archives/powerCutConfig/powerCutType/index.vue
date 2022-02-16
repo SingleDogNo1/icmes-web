@@ -37,7 +37,7 @@
     PaginationProps,
     ActionItem,
   } from '/@/components/Table';
-  import { powerCutTypeColumns as columns } from '../data';
+  import { powerCutTypeColumns as columns } from './data';
   import {
     getPowerCutConfigListApi,
     changePowerCutConfigUsefulApi,

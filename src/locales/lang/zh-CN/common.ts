@@ -11,6 +11,7 @@ export default {
 
   inputText: '请输入',
   chooseText: '请选择',
+  treeSearchText: '输入关键字进行过滤',
 
   redo: '刷新',
   back: '返回',

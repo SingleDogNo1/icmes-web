@@ -16,7 +16,7 @@
   import { BasicForm, useForm } from '/@/components/Form';
   import { getOrganizationsListApi } from '/@/api/info/organizations';
   import { listToTreeAsParentId } from '/@/utils/helper/treeHelper';
-  import { editPowerCutConfigSchema as schemas } from '../data';
+  import { editPowerCutConfigSchema as schemas } from './data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import {
     EditPowerCutConfigModel,

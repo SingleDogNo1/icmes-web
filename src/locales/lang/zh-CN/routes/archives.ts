@@ -6,4 +6,5 @@ export default {
     title: '停送电配置',
   },
   vendor: '厂商资料',
+  staffInfo: '员工信息',
 };

@@ -81,9 +81,11 @@ export function listToTreeAsParentId<T = any>(
  */
 export function listToTreeAsGroup(
   list: any[],
-  config: Partial<TreeHelperConfig> = { parentId: 'categoryId', name: 'categoryName' },
+  config: Partial<TreeHelperConfig> = { parentId: 'categoryId', id: 'id', name: 'categoryName' },
 ) {
   const conf = getConfig(config) as TreeHelperConfig;
+  console.log('conf', conf);
+
   const menus = list.reduce((res, pre) => {
     const keys = res.reduce((res1, pre1) => {
       res1.push(pre1[conf.id]);
@@ -98,6 +100,8 @@ export function listToTreeAsGroup(
     }
     return res;
   }, []);
+
+  console.log(list, menus);
 
   list.map((item) => {
     menus.map((menu) => {

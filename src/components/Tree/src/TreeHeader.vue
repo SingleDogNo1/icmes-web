@@ -1,5 +1,5 @@
 <template>
-  <div class="flex px-2 py-1.5 items-center basic-tree-header">
+  <div class="flex py-1.5 items-center basic-tree-header">
     <slot name="headerTitle" v-if="$slots.headerTitle"></slot>
     <BasicTitle :helpMessage="helpMessage" v-if="!$slots.headerTitle && title">
       {{ title }}
@@ -11,8 +11,8 @@
     >
       <div :class="getInputSearchCls" v-if="search">
         <InputSearch
-          :placeholder="t('common.searchText')"
-          size="small"
+          :placeholder="t('common.treeSearchText')"
+          size="middle"
           allowClear
           v-model:value="searchValue"
         />
@@ -158,6 +158,7 @@
         () => searchValue.value,
         (v) => {
           debounceEmitChange(v);
+          props.expandAll?.(true);
         },
       );
       watch(
@@ -172,12 +173,22 @@
       //   debounceEmitChange(e.target.value);
       // }
 
-      return { t, toolbarList, handleMenuClick, searchValue, getInputSearchCls };
+      return {
+        t,
+        toolbarList,
+        handleMenuClick,
+        searchValue,
+        getInputSearchCls,
+      };
     },
   });
 </script>
 <style lang="less" scoped>
   .basic-tree-header {
     border-bottom: 1px solid @border-color-base;
+
+    .ant-input-search {
+      margin-right: 16px;
+    }
   }
 </style>

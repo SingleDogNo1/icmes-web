@@ -235,3 +235,99 @@ export interface DeviceSpecDataModel {
   unit: string;
   value: string;
 }
+
+/** 设备带电类型设备查询接口请求数据 */
+export interface getDevicesPowerListParam {
+  /** 是否正序 */
+  ascending?: boolean;
+  /** 设别标识符集合 */
+  category?: string[];
+  /** 全局搜索（设备类型名称、设备名称（包含附属设备）、设备编号、工艺号）*/
+  globalName?: string;
+  /** 迭代层级数，全集为0 */
+  // hierarchy?: number;
+  /** 是否是当前组织id */
+  // isCurrentOrganizationIds?: boolean;
+  /** 是否为主设备，1主设备，0附属设备，不传或传空为两者全要 */
+  // isPrimary?: boolean | null;
+  /** 是否按照设备类型分类返回一棵假树 */
+  needTree?: boolean;
+  /** 排序的字段名 */
+  orderBy?: string;
+  /** 权限组织id集合 */
+  organizationIds?: number[];
+  /** 当前页码 */
+  pageNo?: number;
+  /** 一页多少条记录 0表示不分页全部显示 */
+  pageSize?: number;
+  /** 所属父级设备标识符，为-1或者小于-1或者空时，为查询主设备 */
+  parentId?: number;
+  /** 优先排序所需的父级设备标识符(关联设备) */
+  parentIdsOrderBy?: number[];
+  /** PLC检测类型(单选) */
+  plcDetectType?: number;
+  /** PLC检测类型(多选) */
+  plcDetectTypes?: number[];
+  /** 带电类型(单选) */
+  powerType?: number;
+  /** 带电类型(多选) */
+  powerTypes?: number[];
+  /** 此参数用于仅返回该设备ID下的所有关联设备 */
+  relativeDeviceIds?: number[];
+}
+
+/** 设备带电类型设备查询接口返回数据 */
+export interface getDevicesPowerListResultModel {
+  /** 已关联设备 */
+  associatedDevices: number[];
+  items: DevicePowerModel[];
+}
+
+export interface DevicePowerModel {
+  /** 附属设备数量 */
+  appurtenanceCount?: number;
+  /** 设备编码 */
+  categoryCode?: string;
+  /** 设备标识符 */
+  categoryId?: number;
+  /** 设备类型名称 */
+  categoryName?: string;
+  /** 按照设备类型创造假树的标识符–仅查询假树时有效 */
+  categoryTreeId?: string;
+  /** 按照设备类型创造假树的父节点标识符–仅查询假树时有效 */
+  categoryTreeParentId?: string;
+  /** 设备编号 */
+  code?: string;
+  /** 全父级id */
+  fullParentIds?: string;
+  /** 设备id */
+  id?: number;
+  /** 设备类型 */
+  isPrimary?: string;
+  /** 是否是检索匹配的数据记录 1：匹配 */
+  matched?: number;
+  /** 设备名称 */
+  name?: string;
+  /** 组织id */
+  organizationId?: number;
+  /** 父设备标识符 */
+  parentId?: number;
+  /** PLC检测类型 */
+  plcDetectType?: number;
+  /** 带电类型 */
+  powerType?: number;
+  /** 主设备唯一编码 */
+  primaryCode?: string;
+  /** 主设备ID */
+  primaryId?: number;
+  /** 主设备ID */
+  primaryId?: number;
+  /** 主设备名称 */
+  primaryName?: string;
+  /** 主设备工艺号 */
+  primaryProcessNo: string;
+  /** 设备工艺号 */
+  processNo: string;
+  /** 设备状态 */
+  status: string;
+}
