@@ -55,7 +55,7 @@ export interface GetDevicesListParam {
 
 /** 设备查询接口返回数据 */
 export interface GetDevicesListResultModel {
-  items: DeviceModel[];
+  items: Nullable<DeviceModel[]>;
 }
 
 export interface DeviceModel {
@@ -262,6 +262,25 @@ export interface getDevicesPowerListParam {
   pageSize?: number;
   /** 所属父级设备标识符，为-1或者小于-1或者空时，为查询主设备 */
   parentId?: number;
+}
+export interface GetPowerCutDevicesListParam {
+  /** 是否正序 */
+  ascending: boolean;
+  category: number[];
+  /** 全局搜索(设备类型名称、设备名称(包含附属设备、设备编号、工艺号) */
+  globalName: string;
+  /** 是否按照设备类型分类返回一棵假树 */
+  needTree: boolean;
+  /** 排序的字段名 */
+  orderBy: string;
+  /** 权限组织id集合 */
+  organizationIds: number[];
+  /** 当前页码 */
+  pageNo: number;
+  /** 一页多少条记录(0标识不分页全部显示) */
+  pageSize: number;
+  /** 所属父级设备标识符，为-1或者小于-1或者空时，为查询主设备 */
+  parentId: number;
   /** 优先排序所需的父级设备标识符(关联设备) */
   parentIdsOrderBy?: number[];
   /** PLC检测类型(单选) */
@@ -324,6 +343,53 @@ export interface DevicePowerModel {
   primaryId?: number;
   /** 主设备名称 */
   primaryName?: string;
+}
+export interface GetPowerCutDevicesListResultModel {
+  associatedDevices: Nullable<number[]>;
+  items: Nullable<PowerCutDeviceModel[]>;
+  totalCount: number;
+  totalPages: number;
+}
+
+export interface PowerCutDeviceModel {
+  /** 附属设备数量 */
+  appurtenanceCount: number;
+  /** 设备编码 */
+  categoryCode: string;
+  /** 设备标识符 */
+  categoryId: number;
+  /** 设备类型名称 */
+  categoryName: string;
+  /** 按照设备类型创造假树的标识符–仅查询假树时有效 */
+  categoryTreeId: string;
+  /** 按照设备类型创造假树的父节点标识符–仅查询假树时有效 */
+  categoryTreeParentId: string;
+  /** 设备编号 */
+  code: string;
+  /** 全父级id */
+  fullParentIds: string;
+  /** 设备id */
+  id: number;
+  /** 设备类型 */
+  isPrimary: boolean;
+  /** 是否是检索匹配的数据记录 1：匹配 */
+  matched: number;
+  /** 设备名称 */
+  name: string;
+  /** 组织 ID */
+  organizationId: number;
+  /** 父设备 ID */
+  parentId: number;
+  /** PLC 检测类型 */
+  plcDetectType: number;
+  /** 带电类型 */
+  powerType: number;
+  /** 主设备唯一编码 */
+  primaryCode: string;
+  /** 主设备 ID */
+  primaryId: number;
+  /** 主设备名称 */
+  primaryName: string;
   /** 主设备工艺号 */
   primaryProcessNo: string;
   /** 设备工艺号 */

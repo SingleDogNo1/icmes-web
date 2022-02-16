@@ -363,8 +363,8 @@ export const useUserStore = defineStore({
               pageSize: 0,
             });
 
-            this.setDeviceList(deviceList);
-            this.setAllAccount(allAccount);
+            this.setDeviceList(deviceList || []);
+            this.setAllAccount(allAccount || []);
 
             const allAccountTree = listToTreeAsParentId(allAccount);
             this.setAllAccountTree(allAccountTree as unknown as OrganizationEmployeeModel);

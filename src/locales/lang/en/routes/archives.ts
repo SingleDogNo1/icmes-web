@@ -6,4 +6,5 @@ export default {
     title: 'Power Cut Config',
   },
   vendor: 'Vendor',
+  calendar: 'Calendar',
 };

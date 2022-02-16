@@ -13,7 +13,7 @@ enum Api {
 }
 
 /** 新增指派代理 */
-export function addProxyApi(params: addProxyParam, mode: ErrorMessageMode = 'modal') {
+export function addProxyApi(params: addProxyParam, mode: ErrorMessageMode = 'message') {
   return defHttp.post<EditProxyResultModel>(
     {
       url: Api.editProxies,
@@ -26,7 +26,7 @@ export function addProxyApi(params: addProxyParam, mode: ErrorMessageMode = 'mod
 }
 
 /** 查找指派代理 */
-export function getProxiesByIdApi(id: number | string, mode: ErrorMessageMode = 'modal') {
+export function getProxiesByIdApi(id: number | string, mode: ErrorMessageMode = 'message') {
   return defHttp.get<GetProxyResultModel>(
     {
       url: Api.editProxies + id,
@@ -41,7 +41,7 @@ export function getProxiesByIdApi(id: number | string, mode: ErrorMessageMode = 
 export function EditProxyByIdApi(
   id: number | string,
   params: EditProxyParam,
-  mode: ErrorMessageMode = 'modal',
+  mode: ErrorMessageMode = 'message',
 ) {
   return defHttp.put<EditProxyResultModel>(
     {
@@ -55,7 +55,7 @@ export function EditProxyByIdApi(
 }
 
 /** 删除指派代理 */
-export function delProxyByIdApi(id: number | string, mode: ErrorMessageMode = 'modal') {
+export function delProxyByIdApi(id: number | string, mode: ErrorMessageMode = 'message') {
   return defHttp.delete<EditProxyResultModel>(
     {
       url: Api.editProxies + id,

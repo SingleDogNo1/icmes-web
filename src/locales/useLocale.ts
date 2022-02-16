@@ -2,9 +2,6 @@
  * Multi-language related operations
  */
 import type { LocaleType } from '/#/config';
-
-import { dateUtil } from '/@/utils/dateUtil';
-
 import { i18n } from './setupI18n';
 import { useLocaleStoreWithOut } from '/@/store/modules/locale';
 import { unref, computed } from 'vue';
@@ -12,8 +9,8 @@ import { loadLocalePool, setHtmlPageLang } from './helper';
 
 interface LangModule {
   message: Recordable;
-  momentLocale: Recordable;
-  momentLocaleName: string;
+  dateLocale: Recordable;
+  dateLocaleName: string;
 }
 
 function setI18nLanguage(locale: LocaleType) {
@@ -53,10 +50,9 @@ export function useLocale() {
     const langModule = ((await import(`./lang/${locale}.ts`)) as any).default as LangModule;
     if (!langModule) return;
 
-    const { message, momentLocale, momentLocaleName } = langModule;
+    const { message } = langModule;
 
     globalI18n.setLocaleMessage(locale, message);
-    dateUtil.updateLocale(momentLocaleName, momentLocale);
     loadLocalePool.push(locale);
 
     setI18nLanguage(locale);

@@ -54,6 +54,15 @@ const demo: BackModeRouteRecordRaw = {
       },
     },
     {
+      path: 'calendar',
+      name: 'CalendarComponent',
+      component: '/demo/calendar/index',
+      meta: {
+        code: DEMO_CHILDREN_CODE,
+        title: 'routes.demo.calendar',
+      },
+    },
+    {
       path: 'grid-layout',
       name: 'GridLayout',
       component: 'LAYOUT',
@@ -448,6 +457,15 @@ const demo: BackModeRouteRecordRaw = {
               meta: {
                 code: DEMO_CHILDREN_CODE,
                 title: 'routes.demo.table.authColumn',
+              },
+            },
+            {
+              path: 'resizeParentHeightTable',
+              name: 'ResizeParentHeightTable',
+              component: '/demo/table/ResizeParentHeightTable',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.table.resizeParentHeightTable',
               },
             },
           ],

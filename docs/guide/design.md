@@ -2,6 +2,18 @@
 
 ## 介绍
 
+::: tip 全局 css 变量
+
+所有 `ant-design` 的 less 变量在项目中均可以直接使用,完整变量[看这里](https://github.com/vueComponent/ant-design-vue/blob/next/components/style/themes/default.less)。建议修改主题时以修改`ant-design`主题色为主, `tailwind`配置为辅, **尽量不要自定义类名覆盖样式,以方便维护**
+
+:::
+
+::: danger 修改项目主题 & 样式
+
+修改主题时应以修改`ant-design`主题色为主, `tailwind`配置为辅, **尽量不要自定义类名覆盖样式,以方便维护**。`ant-design`主题色修改方法[看这里](/guide/settings.html#ant-design-相关颜色配置)
+
+:::
+
 主要介绍如何在项目中使用和规划样式文件。
 
 默认使用 less 作为预处理语言，建议在使用前或者遇到疑问时学习一下 [Less](http://lesscss.org/) 的相关特性（如果想获取基础的 CSS 知识或查阅属性，请参考 [MDN 文档](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Reference)）。

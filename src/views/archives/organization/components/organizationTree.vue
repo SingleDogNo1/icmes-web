@@ -84,7 +84,7 @@
       await nextTick();
       // 展开第一层 & 选中根节点（id === 0）
       getTree()?.filterByLevel(1);
-      getTree()?.setSelectedKeys([0]);
+      getTree()?.setSelectedKeys([9]);
       emit('select', 0);
     } catch (error) {
       throw new Error(JSON.stringify(error));

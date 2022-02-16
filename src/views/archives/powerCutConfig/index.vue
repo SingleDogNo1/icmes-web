@@ -1,5 +1,5 @@
 <template>
-  <ScrollContainer>
+  <PageWrapper contentFullHeight fixedHeight dense>
     <div ref="wrapperRef" :class="prefixCls">
       <Tabs tab-position="left" :tabBarStyle="{ width: '150px' }">
         <template v-for="item in tabsList" :key="item.key">
@@ -9,12 +9,12 @@
         </template>
       </Tabs>
     </div>
-  </ScrollContainer>
+  </PageWrapper>
 </template>
 
 <script lang="ts" setup>
   import { Tabs } from 'ant-design-vue';
-  import { ScrollContainer } from '/@/components/Container';
+  import { PageWrapper } from '/@/components/Page';
   import PowerCutType from './powerCutType/index.vue';
   import DeviceChargedType from './deviceChargedType/index.vue';
   import PLCJudgmentRule from './plcJudgmentRule.vue';

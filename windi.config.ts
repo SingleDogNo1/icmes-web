@@ -20,6 +20,9 @@ export default defineConfig({
         '2xl': '1600px',
       },
     },
+    zIndex: {
+      '4': 4,
+    },
   },
 });
 

@@ -1,6 +1,7 @@
 export default {
   title: 'Demo',
   colorPicker: 'Color Picker',
+  calendar: 'Calendar',
   gridLayout: {
     title: 'Grid Layout',
     basic: 'Basic',
@@ -191,5 +192,6 @@ export default {
     editCellTable: 'Editable cell',
     editRowTable: 'Editable row',
     authColumn: 'Auth column',
+    resizeParentHeightTable: 'resizeParentHeightTable',
   },
 };

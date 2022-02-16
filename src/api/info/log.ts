@@ -8,7 +8,7 @@ enum Api {
 }
 
 /** 获取操作日志列表 */
-export function getLogListApi(params: GetLogListParam, mode: ErrorMessageMode = 'modal') {
+export function getLogListApi(params: GetLogListParam, mode: ErrorMessageMode = 'message') {
   return defHttp.post<GetLogListResultModel>(
     {
       url: Api.systemLog,
