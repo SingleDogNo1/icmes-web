@@ -12,8 +12,13 @@ export const basicCalendarProps = {
       return {};
     },
   },
-  lunar: {
+  customDays: {
     type: Object,
+    default: null,
+  },
+  lunar: {
+    type: Boolean,
+    default: true,
   },
   remarks: {
     type: Object,
@@ -23,7 +28,7 @@ export const basicCalendarProps = {
   },
   monthRange: {
     type: Array as PropType<string[]>,
-    default: () => [],
+    default: null,
   },
   tileContent: {
     type: Object,
@@ -33,7 +38,7 @@ export const basicCalendarProps = {
   },
   completion: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   useSwipe: {
     type: Boolean,
@@ -41,6 +46,7 @@ export const basicCalendarProps = {
   },
   backgroundText: {
     type: Boolean,
+    default: true,
   },
   monFirst: {
     type: Boolean,
@@ -133,7 +139,7 @@ export const basicTableProps = {
     type: [String, Number],
   },
   lunar: {
-    type: Object,
+    type: Boolean,
   },
   monFirst: {
     type: Boolean,
@@ -165,6 +171,10 @@ export const basicTableProps = {
     default() {
       return {};
     },
+  },
+  customDays: {
+    type: Object,
+    default: null,
   },
   tileContent: {
     type: Object,

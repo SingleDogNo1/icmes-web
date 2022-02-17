@@ -2,8 +2,10 @@
   <div :class="[prefixCls, `${prefixCls}-mode-${tableMode}`, className]">
     <Tools
       @on-month-change="onToolsMonthChange"
-      @next="nextChange"
-      @prev="prevChange"
+      @next-month="nextMonthChange"
+      @next-year="nextYearChange"
+      @prev-month="prevMonthChange"
+      @prev-year="prevYearChange"
       @select-month="selectMonth"
       @select-year="selectYear"
       :month="month"
@@ -37,6 +39,7 @@
             :day="item.day"
             :remarks="remarks"
             :holidays="holidays"
+            :customDays="customDays"
             :tileContent="tileContent"
             :disabled="disabled"
             :completion="completion"
@@ -47,7 +50,7 @@
             :begin="begin"
             :end="end"
             :format="format"
-            :lunar="lunar"
+            :lunar="lunar && lunarFun"
             :backgroundText="backgroundText"
             @on-select="onSelect"
             @on-month-change="monthChange"
@@ -82,16 +85,20 @@
     getMonths,
   } from './utils';
   import { basicCalendarProps } from './props';
+  import lunarFun from './utils/lunar';
 
   const props: CalendarInterface = defineProps(basicCalendarProps);
 
   const emit = defineEmits([
     'onSelect',
-    'next',
-    'prev',
+    'nextMonth',
+    'nextYear',
+    'prevMonth',
+    'prevYear',
     'selectMonth',
     'selectYear',
     'onMonthChange',
+    'onYearChange',
   ]);
 
   const {
@@ -254,7 +261,7 @@
     ];
   }
 
-  function nextChange(_currentYear: number | string, currentMonth: number | string) {
+  function nextMonthChange(_currentYear: number | string, currentMonth: number | string) {
     if (tableMode.value === 'week') {
       const nextDate = getDateByCount(`${year.value}-${month.value}-${day.value}`, 7);
       const [nextYear, nextMonth, nextDay] = date2ymd(nextDate);
@@ -262,18 +269,37 @@
       month.value = nextMonth;
       day.value = nextDay;
 
-      emit('next', nextYear, nextMonth, nextDay);
+      emit('nextMonth', nextYear, nextMonth, nextDay);
       return emit('onMonthChange', nextYear, nextMonth, nextDay);
     }
     const nextMonth = computedNextMonth(currentMonth);
     month.value = nextMonth;
     year.value = nextMonth === 1 ? Number(year.value) + 1 : year.value;
 
-    emit('next', year.value, month.value);
-    emit('onMonthChange', year.value, month.value);
+    emit('nextMonth', year.value, month.value, day.value);
+    emit('onMonthChange', year.value, month.value, day.value);
   }
 
-  function prevChange(_currentYear: number | string, currentMonth: number | string) {
+  function nextYearChange(_currentYear: number, currentMonth: number) {
+    if (tableMode.value === 'week') {
+      const nextDate = getDateByCount(`${year.value}-${month.value}-${day.value}`, 7);
+      const [prevYear, prevMonth, prevDay] = date2ymd(nextDate);
+      year.value = prevYear + 1;
+      month.value = prevMonth;
+      day.value = prevDay;
+
+      emit('nextYear', prevYear + 1, prevMonth, prevDay, day.value);
+      return emit('onYearChange', prevYear + 1, prevMonth, prevDay, day.value);
+    }
+
+    year.value = Number(year.value) + 1;
+    month.value = currentMonth;
+
+    emit('nextYear', year.value, currentMonth, day.value);
+    emit('onYearChange', year.value, currentMonth, day.value);
+  }
+
+  function prevMonthChange(_currentYear: number | string, currentMonth: number | string) {
     if (tableMode.value === 'week') {
       const nextDate = getDateByCount(`${year.value}-${month.value}-${day.value}`, -7);
       const [prevYear, prevMonth, prevDay] = date2ymd(nextDate);
@@ -281,15 +307,34 @@
       month.value = prevMonth;
       day.value = prevDay;
 
-      emit('prev', prevYear, prevMonth, prevDay);
+      emit('prevMonth', prevYear, prevMonth, prevDay);
       return emit('onMonthChange', prevYear, prevMonth, prevDay);
     }
     const prevMonth = computedPrevMonth(currentMonth);
     month.value = prevMonth;
     year.value = prevMonth === 12 ? Number(year.value) - 1 : year.value;
 
-    emit('prev', year.value, month.value);
-    emit('onMonthChange', year.value, month.value);
+    emit('prevMonth', year.value, month.value, day.value);
+    emit('onMonthChange', year.value, month.value, day.value);
+  }
+
+  function prevYearChange(_currentYear: number, currentMonth: number) {
+    if (tableMode.value === 'week') {
+      const nextDate = getDateByCount(`${year.value}-${month.value}-${day.value}`, -7);
+      const [prevYear, prevMonth, prevDay] = date2ymd(nextDate);
+      year.value = prevYear - 1;
+      month.value = prevMonth;
+      day.value = prevDay;
+
+      emit('prevYear', prevYear - 1, prevMonth, prevDay);
+      return emit('onYearChange', prevYear - 1, prevMonth, prevDay);
+    }
+
+    year.value = Number(year.value) - 1;
+    month.value = currentMonth;
+
+    emit('prevYear', year.value, currentMonth, day.value);
+    emit('onYearChange', year.value, currentMonth, day.value);
   }
 
   function selectMonth(selectedYear: number, selectedMonth: number) {
@@ -326,12 +371,12 @@
   function monthChange(param: any) {
     const { prevMonthDay, nextMonthDay } = param || {};
     if (nextMonthDay) {
-      nextChange(year.value, month.value);
-      return emit('next', year.value, month.value);
+      nextMonthChange(year.value, month.value);
+      return emit('nextMonth', year.value, month.value);
     }
     if (prevMonthDay) {
-      prevChange(year.value, month.value);
-      emit('prev', year.value, month.value);
+      prevMonthChange(year.value, month.value);
+      emit('prevMonth', year.value, month.value);
     }
   }
 
@@ -373,7 +418,15 @@
   });
 
   watch(
-    () => [props.begin, props.end, props.disabled, props.holidays, remarks, props.remarks],
+    () => [
+      props.begin,
+      props.end,
+      props.disabled,
+      props.holidays,
+      remarks,
+      props.remarks,
+      props.customDays,
+    ],
     () => {
       refreshRender();
     },

@@ -1,19 +1,21 @@
 <template>
   <div :class="prefixCls" ref="toolsRef" v-if="tableMode !== 'monthRange'">
     <div :class="`${prefixCls}-container`">
-      <div :class="`${prefixCls}-prev`" @click="prev">
-        <FastBackwardOutlined class="mr-2" />
-        <StepBackwardOutlined />
+      <div :class="`${prefixCls}-prev`">
+        <FastBackwardOutlined class="mr-2" @click="prevYear" />
+        <StepBackwardOutlined @click="prevMonth" />
       </div>
 
-      <div :class="`${prefixCls}-info`" @click.stop="switchDate">
-        <div>{{ formatText[0] }}</div>
-        <div>{{ formatText[1] }}</div>
+      <div :class="`${prefixCls}-info`">
+        <div class="cursor-pointer" @click.stop="switchDate">
+          <span>{{ formatText[0] }}</span>
+          <span>{{ formatText[1] }}</span>
+        </div>
       </div>
 
-      <div :class="`${prefixCls}-next`" @click="next">
-        <StepForwardOutlined class="mr-2" />
-        <FastForwardOutlined />
+      <div :class="`${prefixCls}-next`">
+        <StepForwardOutlined class="mr-2" @click="nextMonth" />
+        <FastForwardOutlined @click="nextYear" />
       </div>
     </div>
 
@@ -97,7 +99,15 @@
     },
   });
 
-  const emit = defineEmits(['next', 'prev', 'selectMonth', 'selectYear', 'onMonthChange']);
+  const emit = defineEmits([
+    'nextMonth',
+    'nextYear',
+    'prevMonth',
+    'prevYear',
+    'selectMonth',
+    'selectYear',
+    'onMonthChange',
+  ]);
   const { prefixCls } = useDesign('calendar-tools');
   const { prefixCls: timetableCls } = useDesign('calendar-timetable');
 
@@ -112,23 +122,36 @@
   const toolsRef = ref();
   const formatText = ref([] as string[]);
   const years = ref(createYears(year?.value as number));
+
   function selectMonth(selectedMonth: number) {
     pickerVisible.value = false;
     emit('selectMonth', year?.value, selectedMonth);
     emit('onMonthChange', year?.value, selectedMonth);
   }
+
   function selectYearHandle(selectedYear: number) {
     pickerVisible.value = false;
     years.value = createYears(selectedYear);
     emit('selectYear', selectedYear, month?.value);
     emit('onMonthChange', selectedYear, month?.value);
   }
-  function next() {
-    emit('next', year?.value, month?.value);
+
+  function nextMonth() {
+    emit('nextMonth', year?.value, month?.value);
   }
-  function prev() {
-    emit('prev', year?.value, month?.value);
+
+  function nextYear() {
+    emit('nextYear', year?.value, month?.value);
   }
+
+  function prevMonth() {
+    emit('prevMonth', year?.value, month?.value);
+  }
+
+  function prevYear() {
+    emit('prevYear', year?.value, month?.value);
+  }
+
   function switchDate() {
     if (tableMode.value === 'week') return;
 
@@ -143,6 +166,7 @@
     ).clientHeight;
     pickerVisible.value = !pickerVisible.value;
   }
+
   function formatYearAndMonth() {
     const { format } = props;
     if (format) {
@@ -150,10 +174,13 @@
     }
     formatText.value = [`${year?.value}-`, `${month?.value}`];
   }
+
   formatYearAndMonth();
+
   watch(year!, () => {
     formatYearAndMonth();
   });
+
   watch(month!, () => {
     formatYearAndMonth();
     if (pickerVisible.value) {
@@ -167,6 +194,7 @@
       years.value = createYears(year?.value as number);
     }
   });
+
   function createYears(creatorYear: number) {
     const yearRange: number[] = [];
     for (let i = creatorYear - 7; i < creatorYear + 8; i++) {
@@ -186,7 +214,7 @@
       @apply w-full h-10 flex bg-primary text-white relative px-3 z-10 text-xl leading-10 shadow-sm;
 
       .@{prefix-cls}-info {
-        @apply text-base h-full flex-1 flex justify-center items-center cursor-pointer;
+        @apply text-base h-full flex-1 flex justify-center items-center;
       }
 
       .@{prefix-cls}-next,

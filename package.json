@@ -32,7 +32,7 @@
     "prepare": "husky install",
     "commit": "git-cz",
     "gen:icon": "esno ./build/generate/icon/index.ts",
-    "docs:dev": "vitepress dev docs --port 4000"
+    "dev:doc": "vitepress dev docs --port 4000"
   },
   "config": {
     "commitizen": {

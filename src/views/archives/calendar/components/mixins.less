@@ -1,0 +1,34 @@
+.custom-calendar-date(@cls, @color) {
+  .@{cls} {
+    .calendar-date {
+      color: @white !important;
+    }
+    &:before {
+      background: @color;
+      overflow: hidden;
+      @apply rounded;
+    }
+  }
+}
+
+.custom-ctrl-btn(@cls, @color) {
+  .@{cls} {
+    color: @color;
+    :deep(.ant-radio-checked) {
+      &:after {
+        border: 1px solid @color;
+      }
+    }
+    :deep(.ant-radio-inner) {
+      border-color: @color;
+      &:after {
+        background-color: @color;
+      }
+    }
+    :deep(.ant-radio-input) {
+      &:focus + .ant-radio-inner {
+        box-shadow: 0 0 0 3px color(~`colorPalette('@{color}', 1) `);
+      }
+    }
+  }
+}

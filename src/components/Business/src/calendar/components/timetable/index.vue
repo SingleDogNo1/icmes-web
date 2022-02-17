@@ -39,6 +39,10 @@
                   'month-first-date': 1 === child.day,
                   'mc-last-month': child.lastMonth,
                   'mc-next-month': child.nextMonth,
+                  'calendar-holiday': child.holiday,
+                  'calendar-isTerm': child.isTerm,
+                  isLunarFestival: child.isAlmanac || child.isLunarFestival,
+                  isGregorianFestival: child.isGregorianFestival,
                 },
                 child.className,
                 child.selectedClassName,
@@ -76,7 +80,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, watch, toRefs } from 'vue';
+  import { ref, reactive, watch, toRefs, unref } from 'vue';
   import {
     disabledDate,
     computedPrevDay,
@@ -122,6 +126,7 @@
     disabled,
     remarks,
     holidays,
+    customDays,
     selectDate,
   } = toRefs(props);
 
@@ -213,8 +218,20 @@
     const modeOptions = {
       selectedClassName: selectComputed(date),
     };
+
+    const customDay = unref(customDays);
+
+    let customCls = '';
+    for (const key in customDay) {
+      const element = customDay[key];
+      if (element.includes(date)) {
+        customCls = key;
+      }
+    }
+
     const options = {
       day: i,
+      className: customCls,
       holiday: holidays?.value?.[`${month}-${i}`],
       ...getLunarInfo(year, month, i, props.lunar),
       ...setRemarkHandle.getRemark(date),
@@ -231,7 +248,6 @@
   });
 
   function render({ year, month, day }: any) {
-    // eslint-disable-line
     completion.value = propsTableMode.value === 'week' || propsCompletion.value;
     const firstDayOfMonth = new Date(year, month - 1, 1).getDay(); //what day is the first day of the month
     const lastDateOfCurrentMonth = new Date(year, month, 0).getDate(); //last date of current month

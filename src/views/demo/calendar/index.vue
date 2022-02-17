@@ -4,7 +4,7 @@
       <Calendar
         ref="CalendarRef"
         backgroundText
-        :lunar="lunar"
+        :lunar="false"
         :completion="completion"
         :disabled="disabled"
         :format="formatOfSelecteMode"
@@ -43,7 +43,7 @@
         monFirst
         backgroundText
         selectMode="range"
-        :lunar="lunar"
+        :lunar="true"
         :format="formatOfRangeMode"
         :select-date="rangeModeDate"
         @on-select="onSelect"
@@ -62,10 +62,10 @@
       />
     </Col>
     <Col :span="6">
-      <Calendar backgroundText :lunar="lunar" selectMode="range" mode="week" />
+      <Calendar backgroundText :lunar="true" selectMode="range" mode="week" />
     </Col>
     <Col :span="6">
-      <Calendar backgroundText selectMode="range" mode="monthRange" :monthRange="monthRange" />
+      <!-- <Calendar backgroundText selectMode="range" mode="monthRange" :monthRange="monthRange" /> -->
     </Col>
   </Row>
 </template>
@@ -74,7 +74,6 @@
   import { ref } from 'vue';
   import { Row, Col } from 'ant-design-vue';
   import { Calendar } from '/@/components/Business';
-  import lunar from '/@/components/Business/src/calendar/utils/lunar';
 
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
@@ -115,7 +114,7 @@
   const CalendarRef = ref(null);
   const begin = ref('2021-1-13');
   const end = ref('2025-2-13');
-  const monthRange = ref(['2021-1', '2021-6', '2021-12']);
+  // const monthRange = ref(['2021-1', '2021-6', '2021-12']);
   const disabled = ref(['2022-2-2', '2022-2-4', '2022-2-23']);
   const multiTileContent = ref({
     [`${currentYear}-${currentMonth}-${currentDay}`]: {

@@ -3,7 +3,7 @@
     <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
       <template #monthTitle>
         <Select
-          v-model:value="selectYear"
+          v-model:value="currentYear"
           :bordered="true"
           :style="{ width: '100%' }"
           @change="getCalendarsStatistics"
@@ -22,41 +22,33 @@
 </script>
 
 <script lang="ts" setup>
-  import { onMounted, ref } from 'vue';
+  import { onMounted, ref, unref } from 'vue';
   import { PageWrapper } from '/@/components/Page';
   import { BasicTable, useTable } from '/@/components/Table';
-
   import { Select } from 'ant-design-vue';
   import { getCalendarsStatisticsApi } from '/@/api/info/calendar';
   import { cloneDeep } from 'lodash-es';
   import dayjs from 'dayjs';
+  import mitt from '/@/utils/mitt';
 
+  const emit = defineEmits(['initTable']);
+
+  const emitter = mitt();
   const loading = ref<boolean>(false);
   const selectedRowIndex = ref<number>(-1);
   const selectedRow = ref({});
-  const selectYear = ref(dayjs().year());
-  const yearOptions = ref([
-    {
-      value: dayjs().year() - 2,
-      label: dayjs().year() - 2,
-    },
-    {
-      value: dayjs().year() - 1,
-      label: dayjs().year() - 1,
-    },
-    {
-      value: dayjs().year(),
-      label: dayjs().year(),
-    },
-    {
-      value: dayjs().year() + 1,
-      label: dayjs().year() + 1,
-    },
-    {
-      value: dayjs().year() + 1,
-      label: dayjs().year() + 1,
-    },
-  ]);
+  const currentYear = ref(dayjs().year());
+  const yearOptions = genYearsOptions();
+
+  // 生成年份下拉选项(最近15年, 保持与日历相同)
+  function genYearsOptions() {
+    const cur_year = unref(currentYear);
+    const options: any[] = [];
+    for (let index = cur_year - 7; index <= cur_year + 7; index++) {
+      options.push({ value: index, label: index });
+    }
+    return options;
+  }
 
   function handleSummary(tableData: Recordable[]) {
     const workDayTotal = tableData.reduce((res, pre) => res + pre.workDayTotal, 0);
@@ -85,12 +77,15 @@
 
   onMounted(() => {
     getCalendarsStatistics();
+    emitter.on('calendar-change', (val) => {
+      console.log('y,m, d, :>> ', val);
+    });
   });
 
   async function getCalendarsStatistics() {
     loading.value = true;
     try {
-      const { items } = await getCalendarsStatisticsApi({ year: selectYear.value });
+      const { items, year } = await getCalendarsStatisticsApi({ year: currentYear.value });
 
       const list: any[] = cloneDeep(items);
 
@@ -100,6 +95,7 @@
 
       setTableData(list);
       handleClickRow(list[0], 0);
+      emit('initTable', list, year);
     } catch (error) {
       throw new Error(JSON.stringify(error));
     } finally {
@@ -108,7 +104,6 @@
   }
 
   function handleClickRow(row, index?) {
-    console.log('row, index :>> ', row, index);
     if (selectedRowIndex.value === index) return;
     // emit('selectRow', row);
     selectedRowIndex.value = index;

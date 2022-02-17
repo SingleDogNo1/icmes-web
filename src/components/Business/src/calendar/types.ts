@@ -6,6 +6,7 @@ export interface CalendarInterface {
   className?: string;
   language?: 'en' | 'cn';
   holidays: { [key: string]: string };
+  customDays?: any;
   tileContent: { [key: string]: any };
   remarks: { [key: string]: any };
   disabled: string[];
@@ -60,6 +61,7 @@ export interface TimeTableInterface {
   end?: string;
   completion: boolean;
   holidays?: { [key: string]: string };
+  customDays?: any;
   // tileContent: { className?: string; tileContent?: string }[] | { [key: string]: any };
   tileContent?: any;
   remarks: { [key: string]: string };
