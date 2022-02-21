@@ -22,18 +22,24 @@
 </script>
 
 <script lang="ts" setup>
-  import { onMounted, ref, unref } from 'vue';
+  import { onMounted, ref, PropType, watch, toRefs } from 'vue';
   import { PageWrapper } from '/@/components/Page';
   import { BasicTable, useTable } from '/@/components/Table';
   import { Select } from 'ant-design-vue';
   import { getCalendarsStatisticsApi } from '/@/api/info/calendar';
   import { cloneDeep } from 'lodash-es';
   import dayjs from 'dayjs';
-  import mitt from '/@/utils/mitt';
+  import type { Date } from './types';
 
-  const emit = defineEmits(['initTable']);
+  const props = defineProps({
+    date: {
+      type: Object as PropType<Date>,
+      required: true,
+    },
+  });
+  const emit = defineEmits(['initTable', 'selectRow']);
 
-  const emitter = mitt();
+  const originData = ref();
   const loading = ref<boolean>(false);
   const selectedRowIndex = ref<number>(-1);
   const selectedRow = ref({});
@@ -42,7 +48,7 @@
 
   // 生成年份下拉选项(最近15年, 保持与日历相同)
   function genYearsOptions() {
-    const cur_year = unref(currentYear);
+    const cur_year = dayjs().year();
     const options: any[] = [];
     for (let index = cur_year - 7; index <= cur_year + 7; index++) {
       options.push({ value: index, label: index });
@@ -77,9 +83,6 @@
 
   onMounted(() => {
     getCalendarsStatistics();
-    emitter.on('calendar-change', (val) => {
-      console.log('y,m, d, :>> ', val);
-    });
   });
 
   async function getCalendarsStatistics() {
@@ -88,13 +91,15 @@
       const { items, year } = await getCalendarsStatisticsApi({ year: currentYear.value });
 
       const list: any[] = cloneDeep(items);
+      const { date } = toRefs(props);
 
       list.map((item) => {
         item.month = item.month + '月';
       });
 
+      originData.value = list; // 备份后台数据, 保证触发 handleClickRow 方法时可以找到源数据
       setTableData(list);
-      handleClickRow(list[0], 0);
+      handleClickRow(list[date.value.month - 1], date.value.month - 1);
       emit('initTable', list, year);
     } catch (error) {
       throw new Error(JSON.stringify(error));
@@ -105,8 +110,25 @@
 
   function handleClickRow(row, index?) {
     if (selectedRowIndex.value === index) return;
-    // emit('selectRow', row);
+    const { date } = toRefs(props);
+
+    emit('selectRow', index || date.value.month - 1);
     selectedRowIndex.value = index;
     selectedRow.value = row;
   }
+
+  watch(
+    () => props.date,
+    (val) => {
+      currentYear.value = val.year;
+      handleClickRow(originData.value[val.month - 1], val.month - 1);
+    },
+  );
+
+  watch(
+    () => currentYear.value,
+    () => {
+      getCalendarsStatistics();
+    },
+  );
 </script>

@@ -380,23 +380,31 @@
     }
   }
 
-  // function render(renderYear: number, renderMonth: number, renderDay?: number) {
-  //   if (renderYear && renderMonth) {
-  //     year.value = renderYear;
-  //     month.value = renderMonth;
-  //   }
+  function render(renderYear: number, renderMonth: number, renderDay?: number) {
+    if (renderYear && renderMonth) {
+      year.value = renderYear;
+      month.value = renderMonth;
+    }
 
-  //   if (renderDay) {
-  //     day.value = renderDay;
-  //   }
-  // }
+    if (renderDay) {
+      day.value = renderDay;
+    }
+  }
 
-  // function setToday() {
-  //   if (tableMode.value === 'monthRange') return;
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+  function setToday() {
+    if (tableMode.value === 'monthRange') return;
 
-  //   const [todayY, todayM, todaytD] = getToday(true) as number[];
-  //   render(todayY, todayM, todaytD);
-  // }
+    const [todayY, todayM, todaytD] = getToday(true) as number[];
+    render(todayY, todayM, todaytD);
+  }
+
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+  function setDay(year, month, day) {
+    if (tableMode.value === 'monthRange') return;
+
+    render(year, month + 1, day);
+  }
 
   watch([year, month, day], () => {
     timetableList.list = getTimetableList();

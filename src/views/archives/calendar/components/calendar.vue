@@ -4,6 +4,7 @@
       <Calendar
         class="w-2/3 -mt-10 shadow-md border"
         backgroundText
+        ref="weekModeRef"
         :format="format"
         :lunar="false"
         :customDays="customDays"
@@ -22,12 +23,12 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, PropType, watch } from 'vue';
+  import { ref, PropType, watch, toRefs, unref } from 'vue';
   import { PageWrapper } from '/@/components/Page';
   import { Calendar } from '/@/components/Business';
   import { Radio } from 'ant-design-vue';
   import { useUserStore } from '/@/store/modules/user';
-  import mitt from '/@/utils/mitt';
+  import type { Date } from './types';
 
   enum DayTypeEnum {
     /** 生产日 */
@@ -43,31 +44,34 @@
       type: Array as PropType<{ [index: string]: any }[]>,
       required: true,
     },
-    year: {
-      type: Number,
+    date: {
+      type: Object as PropType<Date>,
       required: true,
     },
   });
-  // const emit = defineEmits(['calendar-change']);
+  const emit = defineEmits(['calendar-change']);
 
-  const emitter = mitt();
   const edit_permission = useUserStore().getFeature[25300]?.CALENDAR_EDIT;
   const format = (year, month) => [`${year}年`, `${month}月`];
   const radio = ref(0);
   const customDays = ref();
+  const weekModeRef = ref();
+
+  console.log('aaaaa.value :>> ', unref(weekModeRef));
 
   watch(
     () => props.tableData,
     (tableData) => {
+      const { date } = toRefs(props);
       const list = tableData?.reduce(
         (res, pre, index) => {
           pre.dayDetails.map((val) => {
             if (val.dayType === DayTypeEnum.WORK) {
-              res.workDay.push(`${props.year}-${index + 1}-${val.day}`);
+              res.workDay.push(`${date.value.year}-${index + 1}-${val.day}`);
             } else if (val.dayType === DayTypeEnum.REPAIR) {
-              res.repairDay.push(`${props.year}-${index + 1}-${val.day}`);
+              res.repairDay.push(`${date.value.year}-${index + 1}-${val.day}`);
             } else if (val.dayType === DayTypeEnum.REST) {
-              res.restDay.push(`${props.year}-${index + 1}-${val.day}`);
+              res.restDay.push(`${date.value.year}-${index + 1}-${val.day}`);
             }
           });
           return res;
@@ -86,23 +90,27 @@
     },
   );
 
+  watch(
+    () => props.date,
+    (val) => {
+      console.log('val :>> ', val);
+    },
+  );
+
   function onSelect(selectDate) {
-    console.log(selectDate, 'selectDate');
+    console.log('selectDate :>> ', selectDate);
   }
 
   function yearChange(year, month, day) {
-    // emit('calendar-change', year, month, day);
-    emitter.emit('calendar-change', { year, month, day });
+    emit('calendar-change', year, month, day);
   }
 
   function monthChange(year, month, day) {
-    emitter.emit('calendar-change', { year, month, day });
-    // emit('calendar-change', year, month, day);
+    emit('calendar-change', year, month, day);
   }
 </script>
 
 <style lang="less" scoped>
-  @import '../../../../../node_modules/ant-design-vue/lib/style/color/colorPalette.less';
   @import './mixins.less';
 
   @prefix-cls: ~'@{namespace}-calendar-timetable';

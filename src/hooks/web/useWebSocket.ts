@@ -28,10 +28,10 @@ export function useWebSocket() {
         interval: 1000,
       },
       onConnected() {
-        console.log('websocket 连接成功: ' + new Date().toLocaleString());
+        // console.log('websocket 连接成功: ' + new Date().toLocaleString());
       },
       onDisconnected() {
-        console.log('websocket 断开连接: ' + new Date().toLocaleString());
+        // console.log('websocket 断开连接: ' + new Date().toLocaleString());
       },
       onMessage(_ws, { data }) {
         if (data.includes('broadcast')) {
