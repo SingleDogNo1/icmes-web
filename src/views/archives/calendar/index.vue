@@ -2,10 +2,20 @@
   <PageWrapper contentFullHeight fixedHeight dense>
     <Row :gutter="16" class="h-full pt-4">
       <Col :span="12">
-        <OverviewTable :date="date" @init-table="getTableData" @select-row="handleSelectRow" />
+        <OverviewTable
+          ref="overviewTableRef"
+          :date="date"
+          @init-table="getTableData"
+          @select-row="handleSelectRow"
+        />
       </Col>
       <Col :span="12" class="pr-4">
-        <Calendar :tableData="tableData" :date="date" @calendar-change="handleChangeCalendar" />
+        <Calendar
+          :tableData="tableData"
+          :date="date"
+          @calendar-change="handleChangeCalendar"
+          @data-updated="handleUpdateData"
+        />
       </Col>
     </Row>
   </PageWrapper>
@@ -18,7 +28,7 @@
 </script>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { ref, nextTick } from 'vue';
   import { PageWrapper } from '/@/components/Page';
   import { Row, Col } from 'ant-design-vue';
   import OverviewTable from './components/overview.vue';
@@ -31,6 +41,7 @@
     month: dayjs().month() + 1,
     day: dayjs().date(),
   });
+  const overviewTableRef = ref();
 
   function getTableData(data, y) {
     tableData.value = data;
@@ -42,6 +53,12 @@
   }
 
   function handleSelectRow(row) {
+    console.log('row :>> ', row);
     date.value = { ...date.value, ...{ month: row + 1 } };
+  }
+
+  async function handleUpdateData() {
+    await nextTick();
+    overviewTableRef.value.getCalendarsStatistics();
   }
 </script>

@@ -3,17 +3,23 @@
     <div class="absolute top-0 bottom-0 left-0 right-0 flex flex-col justify-center items-center">
       <Calendar
         class="w-2/3 -mt-10 shadow-md border"
+        ref="calendarRef"
         backgroundText
-        ref="weekModeRef"
         :format="format"
         :lunar="false"
+        :selectDate="selectedDate"
         :customDays="customDays"
-        @on-select="onSelect"
+        @on-select="handleSelect"
         @on-year-change="yearChange"
         @on-month-change="monthChange"
       />
 
-      <Radio.Group v-model:value="radio" class="ctrl-btn" :disabled="!edit_permission">
+      <Radio.Group
+        v-model:value="radio"
+        class="ctrl-btn"
+        :disabled="!edit_permission"
+        @change="handleChangeStatus"
+      >
         <Radio class="work-day" :value="0">生产日</Radio>
         <Radio class="repair-day" :value="1">检修日</Radio>
         <Radio class="rest-day" :value="2">休息日</Radio>
@@ -23,12 +29,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, PropType, watch, toRefs, unref } from 'vue';
+  import { ref, PropType, watch, toRefs, unref, nextTick } from 'vue';
   import { PageWrapper } from '/@/components/Page';
   import { Calendar } from '/@/components/Business';
   import { Radio } from 'ant-design-vue';
   import { useUserStore } from '/@/store/modules/user';
   import type { Date } from './types';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import { updateCalendarsStatisticsApi } from '/@/api/info/calendar';
 
   enum DayTypeEnum {
     /** 生产日 */
@@ -49,20 +57,70 @@
       required: true,
     },
   });
-  const emit = defineEmits(['calendar-change']);
+  const emit = defineEmits(['calendar-change', 'data-updated']);
 
+  const { createMessage } = useMessage();
+  const { date, tableData } = toRefs(props);
   const edit_permission = useUserStore().getFeature[25300]?.CALENDAR_EDIT;
   const format = (year, month) => [`${year}年`, `${month}月`];
   const radio = ref(0);
   const customDays = ref();
-  const weekModeRef = ref();
+  const calendarRef = ref();
 
-  console.log('aaaaa.value :>> ', unref(weekModeRef));
+  // 当前选中的日期, 格式 YYYY-M-D
+  const selectedDate = ref(`${date.value.year}-${date.value.month}-${date.value.day}`);
+
+  function handleSelect(date: string) {
+    selectedDate.value = date;
+
+    // 获取当前选择的日期, 和保存的 tableData 对应月的详细数据作比对. 如果查询有类型,显示类型, 没有类型默认为生产日
+    const [_year, month, day] = date.split('-');
+    const days = (
+      tableData.value[Number(month) - 1].dayDetails as { day: number; dayType: number }[]
+    ).reduce((res, pre) => {
+      res.push({ day: pre.day, dayType: pre.dayType });
+      return res;
+    }, [] as { day: number; dayType: number }[]);
+
+    days.map((value) => {
+      // 如果查询有类型,显示类型, 没有类型默认为生产日
+      if (value.day === Number(day)) {
+        radio.value = value.dayType;
+      } else {
+        radio.value = 0;
+      }
+    });
+  }
+
+  function yearChange(year, month, day) {
+    emit('calendar-change', year, month, day);
+  }
+
+  function monthChange(year, month, day) {
+    emit('calendar-change', year, month, day);
+  }
+
+  async function handleChangeStatus(e: Event) {
+    const dayType = (e.target as unknown as { [index: string]: number })?.value;
+    const [year, month, day] = unref(selectedDate).split('-');
+
+    try {
+      await updateCalendarsStatisticsApi(day, {
+        date: year + '_' + month,
+        dayType,
+        versionTag: '00000000-0000-0000-0000-000000000000',
+      });
+
+      emit('data-updated');
+      createMessage.success('修改成功');
+    } catch (error) {
+      throw new Error(JSON.stringify(error));
+    }
+  }
 
   watch(
     () => props.tableData,
     (tableData) => {
-      const { date } = toRefs(props);
       const list = tableData?.reduce(
         (res, pre, index) => {
           pre.dayDetails.map((val) => {
@@ -94,20 +152,11 @@
     () => props.date,
     (val) => {
       console.log('val :>> ', val);
+      nextTick(() => {
+        unref(calendarRef).setDay(val.year, val.month, val.day);
+      });
     },
   );
-
-  function onSelect(selectDate) {
-    console.log('selectDate :>> ', selectDate);
-  }
-
-  function yearChange(year, month, day) {
-    emit('calendar-change', year, month, day);
-  }
-
-  function monthChange(year, month, day) {
-    emit('calendar-change', year, month, day);
-  }
 </script>
 
 <style lang="less" scoped>

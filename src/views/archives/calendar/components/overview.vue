@@ -22,7 +22,7 @@
 </script>
 
 <script lang="ts" setup>
-  import { onMounted, ref, PropType, watch, toRefs } from 'vue';
+  import { ref, PropType, watch, toRefs } from 'vue';
   import { PageWrapper } from '/@/components/Page';
   import { BasicTable, useTable } from '/@/components/Table';
   import { Select } from 'ant-design-vue';
@@ -81,10 +81,6 @@
     summaryFunc: handleSummary,
   });
 
-  onMounted(() => {
-    getCalendarsStatistics();
-  });
-
   async function getCalendarsStatistics() {
     loading.value = true;
     try {
@@ -117,6 +113,8 @@
     selectedRow.value = row;
   }
 
+  getCalendarsStatistics();
+
   watch(
     () => props.date,
     (val) => {
@@ -131,4 +129,6 @@
       getCalendarsStatistics();
     },
   );
+
+  defineExpose({ getCalendarsStatistics });
 </script>

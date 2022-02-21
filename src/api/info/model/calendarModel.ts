@@ -23,3 +23,13 @@ export interface CalendarStatisticsItemModel {
   restDayTotal: number;
   workDayTotal: number;
 }
+
+export interface UpdateCalendarStatisticsParam {
+  date: string;
+  dayType: number;
+  versionTag: string;
+}
+
+export interface UpdateCalendarStatisticsResultModel {
+  code: number | string;
+}

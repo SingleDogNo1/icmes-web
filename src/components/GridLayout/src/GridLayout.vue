@@ -30,7 +30,7 @@
     nextTick,
     watch,
   } from 'vue';
-  import mitt from 'mitt';
+  import mitt from '/@/utils/mitt';
   import elementResizeDetectorMaker from 'element-resize-detector';
 
   import {

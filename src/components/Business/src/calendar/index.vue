@@ -391,7 +391,6 @@
     }
   }
 
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   function setToday() {
     if (tableMode.value === 'monthRange') return;
 
@@ -399,11 +398,10 @@
     render(todayY, todayM, todaytD);
   }
 
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   function setDay(year, month, day) {
     if (tableMode.value === 'monthRange') return;
 
-    render(year, month + 1, day);
+    render(year, month, day);
   }
 
   watch([year, month, day], () => {
@@ -453,6 +451,8 @@
   watch([weeks, monFirst], () => {
     weeksInner.value = computedWeek();
   });
+
+  defineExpose({ setToday, setDay });
 </script>
 
 <style lang="less">
