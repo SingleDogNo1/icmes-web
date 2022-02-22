@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper contentFullHeight fixedHeight dense>
+  <PageWrapper contentFullHeight dense>
     <Row :gutter="16" class="h-full pt-4">
       <Col :span="12">
         <OverviewTable

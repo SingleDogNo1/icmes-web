@@ -12,7 +12,7 @@
       <a-button class="mb-2.5" type="primary" @click="openModal(true, { type: 'createChildren' })">
         新建子集
       </a-button>
-      <PageWrapper contentFullHeight fixedHeight dense>
+      <PageWrapper contentFullHeight dense>
         <Spin :spinning="loading">
           <BasicTree
             :treeData="treeData"

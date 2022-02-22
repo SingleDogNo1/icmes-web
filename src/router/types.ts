@@ -2,7 +2,7 @@ import type { RouteRecordRaw, RouteMeta } from 'vue-router';
 import { RoleEnum } from '/@/enums/roleEnum';
 import { defineComponent } from 'vue';
 
-export type Component<T extends any = any> =
+export type Component<T = any> =
   | ReturnType<typeof defineComponent>
   | (() => Promise<typeof import('*.vue')>)
   | (() => Promise<T>);
@@ -100,6 +100,9 @@ export interface BackModeRouteRecordRaw {
     // 是否在子级菜单的完整path中忽略本级path。2.5.3以上版本有效
     hidePathForChildren?: boolean;
     single?: boolean;
+  };
+  props?: {
+    status: number | string;
   };
   children?: BackModeRouteRecordRaw[];
 }

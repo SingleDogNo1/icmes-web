@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper contentFullHeight fixedHeight dense>
+  <PageWrapper contentFullHeight dense>
     <div class="h-full p-4 mt-4 overflow-auto bg-white">
       <a-button class="mb-2.5" type="primary" @click="openModal(true, {})">新增字典</a-button>
       <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">

@@ -75,21 +75,23 @@
 
     // 获取当前选择的日期, 和保存的 tableData 对应月的详细数据作比对. 如果查询有类型,显示类型, 没有类型默认为生产日
     const [_year, month, day] = date.split('-');
-    const days = (
+    const daysMap = (
       tableData.value[Number(month) - 1].dayDetails as { day: number; dayType: number }[]
     ).reduce((res, pre) => {
-      res.push({ day: pre.day, dayType: pre.dayType });
+      res[pre.day] = pre.dayType;
       return res;
-    }, [] as { day: number; dayType: number }[]);
+    }, {} as { [index: string]: number });
 
-    days.map((value) => {
-      // 如果查询有类型,显示类型, 没有类型默认为生产日
-      if (value.day === Number(day)) {
-        radio.value = value.dayType;
+    for (const key in daysMap) {
+      const value = daysMap[key];
+
+      if (key === day) {
+        radio.value = value;
+        return;
       } else {
         radio.value = 0;
       }
-    });
+    }
   }
 
   function yearChange(year, month, day) {

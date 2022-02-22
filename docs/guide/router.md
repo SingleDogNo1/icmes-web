@@ -8,12 +8,6 @@
 
 ::: warning 注意事项
 
-当前项目重构未完成，路由配置在`src/router/FakeRoutes`下。重构完成还需要修改路由结构到`src/router/routes/modules`中
-
-:::
-
-::: warning 注意事项
-
 - 整个项目所有路由 `name` 不能重复
 - 所有的多级路由最终都会转成二级路由，所以不能内嵌子路由
 - 除了 layout 对应的 path 前面需要加 `/`，其余子路由都不要以`/`开头

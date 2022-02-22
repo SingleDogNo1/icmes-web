@@ -144,8 +144,7 @@ export const usePermissionStore = defineStore({
       let routeList: AppRouteRecordRaw[] | BackModeRouteRecordRaw[] = [];
       try {
         this.changePermissionCode();
-        // TODO 在这里调试，完成之后把路由替换到 modules 中
-        const ori_routes = import.meta.globEager('../../router/FakeRoutes/**/*.ts');
+        const ori_routes = import.meta.globEager('../../router/routes/modules/**/*.ts');
         const routes: any[] = [];
 
         const userStore = useUserStore();

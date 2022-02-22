@@ -16,6 +16,37 @@ const demo: BackModeRouteRecordRaw = {
   },
   children: [
     {
+      path: 'dashboard',
+      name: 'Dashboard',
+      component: 'LAYOUT',
+      redirect: '/dashboard/analysis',
+      meta: {
+        code: DEMO_CHILDREN_CODE,
+        icon: 'ion:grid-outline',
+        title: 'routes.dashboard.dashboard',
+      },
+      children: [
+        {
+          path: 'analysis',
+          name: 'Analysis',
+          component: '/dashboard/analysis/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.dashboard.analysis',
+          },
+        },
+        {
+          path: 'workbench',
+          name: 'Workbench',
+          component: '/dashboard/workbench/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.dashboard.workbench',
+          },
+        },
+      ],
+    },
+    {
       path: 'https://2x.antdv.com/components/icon-cn',
       name: 'DocExternal',
       component: 'IFRAME',
@@ -34,6 +65,252 @@ const demo: BackModeRouteRecordRaw = {
         title: 'routes.demo.iframe.doc',
       },
     },
+
+    {
+      path: 'page-demo',
+      name: 'PageDemo',
+      component: 'LAYOUT',
+      redirect: '/page-demo/form/basic',
+      meta: {
+        code: DEMO_CHILDREN_CODE,
+        icon: 'ion:aperture-outline',
+        title: 'routes.demo.page.page',
+      },
+      children: [
+        {
+          path: 'form',
+          name: 'FormPage',
+          redirect: '/page-demo/form/basic',
+          component: 'LAYOUT',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.page.form',
+          },
+          children: [
+            {
+              path: 'basic',
+              name: 'FormBasicPage',
+              component: '/demo/page/form/basic/index',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.page.formBasic',
+              },
+            },
+            {
+              path: 'step',
+              name: 'FormStepPage',
+              component: '/demo/page/form/step/index',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.page.formStep',
+              },
+            },
+            {
+              path: 'high',
+              name: 'FormHightPage',
+              component: '/demo/page/form/high/index',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.page.formHigh',
+              },
+            },
+          ],
+        },
+        {
+          path: 'desc',
+          name: 'DescPage',
+          component: 'LAYOUT',
+          redirect: '/page-demo/desc/basic',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.page.desc',
+          },
+          children: [
+            {
+              path: 'basic',
+              name: 'DescBasicPage',
+              component: '/demo/page/desc/basic/index',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.page.descBasic',
+              },
+            },
+            {
+              path: 'high',
+              name: 'DescHighPage',
+              component: '/demo/page/desc/high/index',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.page.descHigh',
+              },
+            },
+          ],
+        },
+        {
+          path: 'result',
+          name: 'ResultPage',
+          redirect: '/page-demo/result/success',
+          component: 'LAYOUT',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.page.result',
+          },
+          children: [
+            {
+              path: 'success',
+              name: 'ResultSuccessPage',
+              component: '/demo/page/result/success/index',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.page.resultSuccess',
+              },
+            },
+            {
+              path: 'fail',
+              name: 'ResultFailPage',
+              component: '/demo/page/result/fail/index',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.page.resultFail',
+              },
+            },
+          ],
+        },
+        {
+          path: 'account',
+          name: 'AccountPage',
+          component: 'LAYOUT',
+          redirect: '/page-demo/account/setting',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.page.account',
+          },
+          children: [
+            {
+              path: 'center',
+              name: 'AccountCenterPage',
+              component: '/demo/page/account/center/index',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.page.accountCenter',
+              },
+            },
+          ],
+        },
+        {
+          path: 'exception',
+          name: 'ExceptionPage',
+          component: 'LAYOUT',
+          redirect: '/page-demo/exception/404',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.page.exception',
+          },
+          children: [
+            {
+              path: '403',
+              name: 'PageNotAccess',
+              component: '/sys/exception/Exception',
+              props: {
+                status: 403,
+              },
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: '403',
+              },
+            },
+            {
+              path: '404',
+              name: 'PageNotFound',
+              component: '/sys/exception/Exception',
+              props: {
+                status: 404,
+              },
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: '404',
+              },
+            },
+            {
+              path: '500',
+              name: 'ServiceError',
+              component: '/sys/exception/Exception',
+              props: {
+                status: 500,
+              },
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: '500',
+              },
+            },
+            {
+              path: 'net-work-error',
+              name: 'NetWorkError',
+              component: '/sys/exception/Exception',
+              props: {
+                status: 50000,
+              },
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.page.netWorkError',
+              },
+            },
+            {
+              path: 'not-data',
+              name: 'NotData',
+              component: '/sys/exception/Exception',
+              props: {
+                status: 40400,
+              },
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.page.notData',
+              },
+            },
+          ],
+        },
+        {
+          path: 'list',
+          name: 'ListPage',
+          component: 'LAYOUT',
+          redirect: '/page-demo/list/card',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.page.list',
+          },
+          children: [
+            {
+              path: 'basic',
+              name: 'ListBasicPage',
+              component: '/demo/page/list/basic/index',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.page.listBasic',
+              },
+            },
+            {
+              path: 'card',
+              name: 'ListCardPage',
+              component: '/demo/page/list/card/index',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.page.listCard',
+              },
+            },
+            {
+              path: 'search',
+              name: 'ListSearchPage',
+              component: '/demo/page/list/search/index',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.page.listSearch',
+              },
+            },
+          ],
+        },
+      ],
+    },
+
     {
       path: 'setup',
       name: 'SetupDemoPage',
@@ -569,6 +846,348 @@ const demo: BackModeRouteRecordRaw = {
               },
             },
           ],
+        },
+      ],
+    },
+    {
+      path: 'feat',
+      name: 'FeatDemo',
+      component: 'LAYOUT',
+      redirect: '/feat/icon',
+      meta: {
+        code: DEMO_CHILDREN_CODE,
+        icon: 'ion:git-compare-outline',
+        title: 'routes.demo.feat.feat',
+      },
+      children: [
+        {
+          path: 'icon',
+          name: 'IconDemo',
+          component: '/demo/feat/icon/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.feat.icon',
+          },
+        },
+        {
+          path: 'ws',
+          name: 'WebSocket',
+          component: '/demo/feat/ws/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.feat.ws',
+          },
+        },
+        {
+          path: 'session-timeout',
+          name: 'SessionTimeout',
+          component: '/demo/feat/session-timeout/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.feat.sessionTimeout',
+          },
+        },
+        {
+          path: 'print',
+          name: 'Print',
+          component: '/demo/feat/print/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.feat.print',
+          },
+        },
+        {
+          path: 'tabs',
+          name: 'TabsDemo',
+          component: '/demo/feat/tabs/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.feat.tabs',
+          },
+        },
+        {
+          path: 'breadcrumb',
+          name: 'BreadcrumbDemo',
+          redirect: '/feat/breadcrumb/flat',
+          component: 'LAYOUT',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.feat.breadcrumb',
+          },
+          children: [
+            {
+              path: 'flat',
+              name: 'BreadcrumbFlatDemo',
+              component: '/demo/feat/breadcrumb/FlatList',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.feat.breadcrumbFlat',
+              },
+            },
+            {
+              path: 'flatDetail',
+              name: 'BreadcrumbFlatDetailDemo',
+              component: '/demo/feat/breadcrumb/FlatListDetail',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.feat.breadcrumbFlatDetail',
+                hideMenu: true,
+                hideTab: true,
+                currentActiveMenu: '/feat/breadcrumb/flat',
+              },
+            },
+            {
+              path: 'children',
+              name: 'BreadcrumbChildrenDemo',
+              component: '/demo/feat/breadcrumb/ChildrenList',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.feat.breadcrumbChildren',
+              },
+              children: [
+                {
+                  path: 'childrenDetail',
+                  name: 'BreadcrumbChildrenDetailDemo',
+                  component: '/demo/feat/breadcrumb/ChildrenListDetail',
+                  meta: {
+                    code: DEMO_CHILDREN_CODE,
+                    currentActiveMenu: '/feat/breadcrumb/children',
+                    title: 'routes.demo.feat.breadcrumbChildrenDetail',
+                  },
+                },
+              ],
+            },
+          ],
+        },
+
+        {
+          path: 'context-menu',
+          name: 'ContextMenuDemo',
+          component: '/demo/feat/context-menu/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.feat.contextMenu',
+          },
+        },
+        {
+          path: 'download',
+          name: 'DownLoadDemo',
+          component: '/demo/feat/download/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.feat.download',
+          },
+        },
+        {
+          path: 'click-out-side',
+          name: 'ClickOutSideDemo',
+          component: '/demo/feat/click-out-side/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.feat.clickOutSide',
+          },
+        },
+        {
+          path: 'img-preview',
+          name: 'ImgPreview',
+          component: '/demo/feat/img-preview/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.feat.imgPreview',
+          },
+        },
+        {
+          path: 'copy',
+          name: 'CopyDemo',
+          component: '/demo/feat/copy/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.feat.copy',
+          },
+        },
+        {
+          path: 'msg',
+          name: 'MsgDemo',
+          component: '/demo/feat/msg/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.feat.msg',
+          },
+        },
+        {
+          path: 'watermark',
+          name: 'WatermarkDemo',
+          component: '/demo/feat/watermark/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.feat.watermark',
+          },
+        },
+        {
+          path: 'ripple',
+          name: 'RippleDemo',
+          component: '/demo/feat/ripple/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.feat.ripple',
+          },
+        },
+        {
+          path: 'full-screen',
+          name: 'FullScreenDemo',
+          component: '/demo/feat/full-screen/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.feat.fullScreen',
+          },
+        },
+        {
+          path: 'error-log',
+          name: 'ErrorLog',
+          component: '/sys/error-log/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.feat.errorLog',
+          },
+        },
+        {
+          path: 'excel',
+          name: 'Excel',
+          redirect: '/feat/excel/customExport',
+          component: 'LAYOUT',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            icon: 'mdi:microsoft-excel',
+            title: 'routes.demo.excel.excel',
+          },
+
+          children: [
+            {
+              path: 'customExport',
+              name: 'CustomExport',
+              component: '/demo/excel/CustomExport',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.excel.customExport',
+              },
+            },
+            {
+              path: 'jsonExport',
+              name: 'JsonExport',
+              component: '/demo/excel/JsonExport',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.excel.jsonExport',
+              },
+            },
+            {
+              path: 'arrayExport',
+              name: 'ArrayExport',
+              component: '/demo/excel/ArrayExport',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.excel.arrayExport',
+              },
+            },
+            {
+              path: 'importExcel',
+              name: 'ImportExcel',
+              component: '/demo/excel/ImportExcel',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.excel.importExcel',
+              },
+            },
+          ],
+        },
+        {
+          path: 'testTab/:id',
+          name: 'TestTab',
+          component: '/demo/feat/tab-params/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.feat.tab',
+            carryParam: true,
+            hidePathForChildren: true,
+          },
+          children: [
+            {
+              path: 'testTab/id1',
+              name: 'TestTab1',
+              component: '/demo/feat/tab-params/index',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.feat.tab1',
+                carryParam: true,
+                ignoreRoute: true,
+              },
+            },
+            {
+              path: 'testTab/id2',
+              name: 'TestTab2',
+              component: '/demo/feat/tab-params/index',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.feat.tab2',
+                carryParam: true,
+                ignoreRoute: true,
+              },
+            },
+          ],
+        },
+        {
+          path: 'testParam/:id',
+          name: 'TestParam',
+          component: 'LAYOUT',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.feat.menu',
+            ignoreKeepAlive: true,
+          },
+          children: [
+            {
+              path: 'sub1',
+              name: 'TestParam_1',
+              component: '/demo/feat/menu-params/index',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.feat.menu1',
+                ignoreKeepAlive: true,
+              },
+            },
+            {
+              path: 'sub2',
+              name: 'TestParam_2',
+              component: '/demo/feat/menu-params/index',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.feat.menu2',
+                ignoreKeepAlive: true,
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      path: 'flow',
+      name: 'FlowDemo',
+      component: 'LAYOUT',
+      redirect: '/flow/flowChart',
+      meta: {
+        code: DEMO_CHILDREN_CODE,
+        icon: 'tabler:chart-dots',
+        title: 'routes.demo.flow.name',
+      },
+      children: [
+        {
+          path: 'flowChart',
+          name: 'flowChartDemo',
+          component: '/demo/comp/flow-chart/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: 'routes.demo.flow.flowChart',
+          },
         },
       ],
     },
