@@ -1,7 +1,9 @@
+import { hexToRGB, rgbToHsv } from '/@/utils/color';
+
 export function setColorValue(color: string) {
   let rgba: any = { r: 0, g: 0, b: 0, a: 1 };
   if (/#/.test(color)) {
-    rgba = hex2rgb(color);
+    rgba = hexToRGB(color);
   } else if (/rgb/.test(color)) {
     rgba = rgb2rgba(color);
   } else if (typeof color === 'string') {
@@ -10,7 +12,7 @@ export function setColorValue(color: string) {
     rgba = color;
   }
   const { r, g, b, a } = rgba;
-  const { h, s, v } = rgb2hsv(rgba);
+  const { h, s, v } = rgbToHsv(rgba);
   return { r, g, b, a: a === undefined ? 1 : a, h, s, v };
 }
 export function createAlphaSquare(size: number) {
@@ -43,20 +45,7 @@ export function createLinearGradient(
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, width, height);
 }
-export function rgb2hex({ r, g, b }: any, toUpper: boolean) {
-  const change = (val: any) => ('0' + Number(val).toString(16)).slice(-2);
-  const color = `#${change(r)}${change(g)}${change(b)}`;
-  return toUpper ? color.toUpperCase() : color;
-}
-export function hex2rgb(hex: any) {
-  hex = hex.slice(1);
-  const change = (val: any) => parseInt(val, 16) || 0; // Avoid NaN situations
-  return {
-    r: change(hex.slice(0, 2)),
-    g: change(hex.slice(2, 4)),
-    b: change(hex.slice(4, 6)),
-  };
-}
+
 export function rgb2rgba(rgba: any) {
   if (typeof rgba === 'string') {
     rgba = (/rgba?\((.*?)\)/.exec(rgba) || ['', '0,0,0,1'])[1].split(',');
@@ -69,30 +58,4 @@ export function rgb2rgba(rgba: any) {
   } else {
     return rgba;
   }
-}
-export function rgb2hsv({ r, g, b }: any) {
-  r = r / 255;
-  g = g / 255;
-  b = b / 255;
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  const delta = max - min;
-  let h = 0;
-  if (max === min) {
-    h = 0;
-  } else if (max === r) {
-    if (g >= b) {
-      h = (60 * (g - b)) / delta;
-    } else {
-      h = (60 * (g - b)) / delta + 360;
-    }
-  } else if (max === g) {
-    h = (60 * (b - r)) / delta + 120;
-  } else if (max === b) {
-    h = (60 * (r - g)) / delta + 240;
-  }
-  h = Math.floor(h);
-  const s = parseFloat((max === 0 ? 0 : 1 - min / max).toFixed(2));
-  const v = parseFloat(max.toFixed(2));
-  return { h, s, v };
 }

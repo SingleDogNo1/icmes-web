@@ -13,14 +13,14 @@
             :color="rgbString"
             :hsv="hsv"
             :size="data.hueHeight"
-            @selectSaturation="selectSaturation"
+            @select-saturation="selectSaturation"
           />
           <Hue
             ref="hue"
             :hsv="hsv"
             :width="data.hueWidth"
             :height="data.hueHeight"
-            @selectHue="selectHue"
+            @select-hue="selectHue"
           />
           <Alpha
             ref="alpha"
@@ -28,16 +28,16 @@
             :rgba="rgba"
             :width="data.hueWidth"
             :height="data.hueHeight"
-            @selectAlpha="selectAlpha"
+            @select-alpha="selectAlpha"
           />
         </div>
-        <Box name="HEX" :color="data.modelHex" @inputColor="inputHex" />
-        <Box name="RGBA" :color="data.modelRgba" @inputColor="inputRgba" />
+        <Box name="HEX" :color="data.modelHex" @input-color="inputHex" />
+        <Box name="RGBA" :color="data.modelRgba" @input-color="inputRgba" />
         <Colors
           :color="rgbaString"
           :colors-default="colorsDefault"
           :colors-history-key="colorsHistoryKey"
-          @selectColor="selectColor"
+          @select-color="selectColor"
         />
         <a-button class="mt-2" size="small" @click="chooseColor">确认</a-button>
       </div>
@@ -51,7 +51,8 @@
 <script lang="ts" setup>
   import { ref, computed, nextTick, watch, PropType } from 'vue';
   import { Popover } from 'ant-design-vue';
-  import { setColorValue, rgb2hex } from './helper';
+  import { setColorValue } from './helper';
+  import { rgbToHex } from '/@/utils/color';
   import Saturation from './Saturation.vue';
   import Hue from './Hue.vue';
   import Alpha from './Alpha.vue';
@@ -142,7 +143,7 @@
     () => `${data.value.r}, ${data.value.g}, ${data.value.b}, ${data.value.a}`,
   );
   const rgbaString = computed(() => `rgba(${rgbaStringShort.value})`);
-  const hexString = computed(() => rgb2hex(rgba.value, true));
+  const hexString = computed(() => rgbToHex(rgba.value));
 
   function selectSaturation(color: any) {
     const { r, g, b, h, s, v } = setColorValue(color);

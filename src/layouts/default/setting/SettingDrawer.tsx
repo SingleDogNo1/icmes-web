@@ -134,13 +134,14 @@ export default defineComponent({
       );
     }
 
+    // TODO 动态修改系统主题色功能暂无实现方案, 如何实现??
     function renderMainTheme() {
       return (
         <ColorPicker
           colorsDefault={APP_PRESET_COLOR_LIST}
           color={unref(getThemeColor)}
-          onChangeColor={(value) => {
-            console.log('value :>> ', value);
+          onChangeColor={({ hex, rgba }) => {
+            console.log('value :>> ', hex, rgba);
           }}
         />
       );
