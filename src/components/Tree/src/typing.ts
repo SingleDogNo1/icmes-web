@@ -1,4 +1,4 @@
-import type { TreeDataItem, CheckEvent as CheckEventOrigin } from 'ant-design-vue/es/tree/Tree';
+import type { TreeDataItem } from 'ant-design-vue/es/tree/Tree';
 
 import { ContextMenuItem } from '/@/hooks/web/useContextMenu';
 
@@ -11,7 +11,7 @@ export interface TreeItem extends TreeDataItem {
   icon?: any;
 }
 
-export interface ReplaceFields {
+export interface FieldNames {
   children?: string;
   title?: string;
   key?: string;
@@ -52,5 +52,3 @@ export interface ContextMenuOptions {
   styles?: any;
   items?: ContextMenuItem[];
 }
-
-export type CheckEvent = CheckEventOrigin;

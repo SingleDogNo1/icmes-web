@@ -81,8 +81,8 @@ export const editOrgSchemas: FormSchema[] = [
     componentProps: {
       showSearch: true,
       dropdownStyle: { maxHeight: '400px', overflow: 'auto' },
-      replaceFields: {
-        title: 'name',
+      fieldNames: {
+        label: 'name',
         key: 'id',
         value: 'fullName',
       },

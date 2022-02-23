@@ -121,8 +121,8 @@ export const editPowerCutConfigSchema: FormSchema[] = [
       treeCheckable: true,
       showCheckedStrategy: 'SHOW_ALL',
       dropdownStyle: { maxHeight: '400px', overflow: 'auto' },
-      replaceFields: {
-        title: 'name',
+      fieldNames: {
+        label: 'name',
         key: 'id',
         value: 'id',
       },

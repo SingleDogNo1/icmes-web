@@ -15,7 +15,7 @@ export const columns: BasicColumn[] = [
     title: '图标',
     dataIndex: 'icon',
     width: 50,
-    customRender: ({ record }) => {
+    customRender: ({ record }: { record: any }) => {
       return h(Icon, { icon: record.icon });
     },
   },
@@ -37,7 +37,7 @@ export const columns: BasicColumn[] = [
     title: '状态',
     dataIndex: 'status',
     width: 80,
-    customRender: ({ record }) => {
+    customRender: ({ record }: { record: any }) => {
       const status = record.status;
       const enable = ~~status === 0;
       const color = enable ? 'green' : 'red';
@@ -104,8 +104,8 @@ export const formSchema: FormSchema[] = [
     label: '上级菜单',
     component: 'TreeSelect',
     componentProps: {
-      replaceFields: {
-        title: 'menuName',
+      fieldNames: {
+        label: 'menuName',
         key: 'id',
         value: 'id',
       },

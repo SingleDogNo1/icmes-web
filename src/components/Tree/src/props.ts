@@ -1,6 +1,6 @@
 import type { PropType } from 'vue';
 import type {
-  ReplaceFields,
+  FieldNames,
   ActionItem,
   Keys,
   CheckKeys,
@@ -37,8 +37,8 @@ export const basicProps = {
   },
   defaultExpandAll: propTypes.bool.def(false),
 
-  replaceFields: {
-    type: Object as PropType<ReplaceFields>,
+  fieldNames: {
+    type: Object as PropType<FieldNames>,
   },
 
   treeData: {
@@ -76,7 +76,7 @@ export const basicProps = {
   // 自定义数据过滤判断方法(注: 不是整个过滤方法，而是内置过滤的判断方法，用于增强原本仅能通过title进行过滤的方式)
   filterFn: {
     type: Function as PropType<
-      (searchValue: any, node: TreeItem, replaceFields: ReplaceFields) => boolean
+      (searchValue: any, node: TreeItem, fieldNames: FieldNames) => boolean
     >,
     default: null,
   },
@@ -98,8 +98,8 @@ export const treeNodeProps = {
     type: Array as PropType<ActionItem[]>,
     default: () => [],
   },
-  replaceFields: {
-    type: Object as PropType<ReplaceFields>,
+  fieldNames: {
+    type: Object as PropType<FieldNames>,
   },
   treeData: {
     type: Array as PropType<TreeDataItem[]>,

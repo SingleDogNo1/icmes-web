@@ -104,8 +104,8 @@ export const schemas: FormSchema[] = [
       treeData: allAccountTree,
       dropdownStyle: { maxHeight: '400px', overflow: 'auto' },
       placeholder: t('common.chooseText'),
-      replaceFields: {
-        title: 'name',
+      fieldNames: {
+        label: 'name',
         key: 'id',
         value: 'name',
       },

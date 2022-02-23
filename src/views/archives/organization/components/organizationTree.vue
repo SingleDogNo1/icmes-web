@@ -16,7 +16,7 @@
         <Spin :spinning="loading">
           <BasicTree
             :treeData="treeData"
-            :replaceFields="{ key: 'id' }"
+            :fieldNames="{ key: 'id' }"
             ref="treeRef"
             @select="handleSelect"
           />

@@ -20,7 +20,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'status',
     width: 80,
     customRender: ({ record }) => {
-      const status = record.status;
+      const status = (record as any).status;
       const enable = ~~status === 0;
       const color = enable ? 'green' : 'red';
       const text = enable ? '启用' : '停用';
@@ -70,10 +70,9 @@ export const formSchema: FormSchema[] = [
     field: 'parentDept',
     label: '上级部门',
     component: 'TreeSelect',
-
     componentProps: {
-      replaceFields: {
-        title: 'deptName',
+      fieldNames: {
+        label: 'deptName',
         key: 'id',
         value: 'id',
       },

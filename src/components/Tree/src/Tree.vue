@@ -1,6 +1,5 @@
 <script lang="tsx">
-  import type { ReplaceFields, Keys, CheckKeys, TreeActionType, TreeItem } from './typing';
-  import type { CheckEvent } from './typing';
+  import type { FieldNames, Keys, CheckKeys, TreeActionType, TreeItem } from './typing';
 
   import {
     defineComponent,
@@ -65,13 +64,13 @@
       const [createContextMenu] = useContextMenu();
       const { prefixCls } = useDesign('basic-tree');
 
-      const getReplaceFields = computed((): Required<ReplaceFields> => {
-        const { replaceFields } = props;
+      const getReplaceFields = computed((): Required<FieldNames> => {
+        const { fieldNames } = props;
         return {
           children: 'children',
           title: 'title',
           key: 'key',
-          ...replaceFields,
+          ...fieldNames,
         };
       });
 
@@ -84,7 +83,7 @@
           selectedKeys: state.selectedKeys,
           checkedKeys: state.checkedKeys,
           checkStrictly: state.checkStrictly,
-          replaceFields: unref(getReplaceFields),
+          fieldNames: unref(getReplaceFields),
           'onUpdate:expandedKeys': (v: Keys) => {
             state.expandedKeys = v;
             emit('update:expandedKeys', v);
@@ -93,7 +92,7 @@
             state.selectedKeys = v;
             emit('update:selectedKeys', v);
           },
-          onCheck: (v: CheckKeys, e: CheckEvent) => {
+          onCheck: (v: CheckKeys, e: any) => {
             let currentValue = toRaw(state.checkedKeys) as Keys;
             if (isArray(currentValue) && searchState.startSearch) {
               const { key } = unref(getReplaceFields);

@@ -1,4 +1,4 @@
-import type { InsertNodeParams, Keys, ReplaceFields } from './typing';
+import type { InsertNodeParams, Keys, FieldNames } from './typing';
 import type { Ref, ComputedRef } from 'vue';
 import type { TreeDataItem } from 'ant-design-vue/es/tree/Tree';
 
@@ -8,7 +8,7 @@ import { forEach } from '/@/utils/helper/treeHelper';
 
 export function useTree(
   treeDataRef: Ref<TreeDataItem[]>,
-  getReplaceFields: ComputedRef<ReplaceFields>,
+  getReplaceFields: ComputedRef<FieldNames>,
 ) {
   function getAllKeys(list?: TreeDataItem[]) {
     const keys: string[] = [];

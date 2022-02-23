@@ -134,8 +134,8 @@
           treeData: allAccountTree,
           dropdownStyle: { maxHeight: '200px', overflow: 'auto' },
           placeholder: '请选择',
-          replaceFields: {
-            title: 'name',
+          fieldNames: {
+            label: 'name',
             key: 'id',
             value: 'userId',
           },
