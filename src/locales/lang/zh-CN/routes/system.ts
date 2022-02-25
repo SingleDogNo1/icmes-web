@@ -6,4 +6,5 @@ export default {
   user: '账号管理',
   notificationWay: '通知方式',
   workflow: '工作流',
+  strategyEngine: '策略引擎',
 };

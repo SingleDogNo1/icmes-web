@@ -26,7 +26,6 @@ export function useFormValues({
     for (const item of Object.entries(values)) {
       let [, value] = item;
       const [key] = item;
-      console.log(key, value);
 
       if (!key || isFunction(value)) {
         continue;

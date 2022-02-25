@@ -65,6 +65,15 @@ const systemManagement: BackModeRouteRecordRaw = {
         title: 'routes.system.workflow',
       },
     },
+    {
+      path: 'strategy-engine',
+      name: 'systemManagementStrategyEngine',
+      component: '/systemManagement/strategyEngine/index',
+      meta: {
+        code: 24900,
+        title: 'routes.system.strategyEngine',
+      },
+    },
   ],
 };
 

@@ -5,4 +5,5 @@ export default {
   role: 'Role',
   user: 'User',
   workflow: 'Workflow',
+  strategyEngine: 'Strategy Engine',
 };
