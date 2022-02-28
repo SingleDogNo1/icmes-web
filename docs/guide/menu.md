@@ -95,6 +95,21 @@ export default menu;
 
 不需要手动引入，放在`/@/router/routes/menus/modules` 内的文件会自动被加载。
 
+### 菜单项的图标
+
+老项目的目录图标使用的是 jpg|png 格式图标, 本项目统一采用 `svg / iconify` 作为图标管理, 方法就是将旧项目图标替换为 `svg` 图标. 最好的办法是找设计组重新要一份正式的 `svg` 文件,放在`src/assets/icons`文件夹下即可. 如果欣姐很忙, 可以尝试将 `png` 转成 `svg` 格式临时使用. 方法如下:
+
+- 控制台查看老项目目录图标,将 `base64 格式代码`拷贝
+- 在 `src/assets/icons` 新建对应的图标文件,结尾为 `.svg`
+- 粘贴 `src/assets/icons/powerFailure.svg` 内容,将 `image > href`中代码替换为拷贝的代码即可
+- 在路由文件中`meta.icon`指定为修改的图标名字, **切记后缀为 `图标名|svg`**,参考[Svg Sprite 图标规范](/dep/icon.html#svg-sprite-图标)
+
+::: warning 警告
+
+最终一定要替换成正式的 svg 文件, 因为临时生成的文件本质上不符合 svg 语法规范
+
+:::
+
 ## 菜单排序
 
 在菜单模块内，设置 `orderNo` 变量，数值越大，排序越靠后

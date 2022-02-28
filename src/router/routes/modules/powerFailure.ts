@@ -7,7 +7,7 @@ const powerFailure: BackModeRouteRecordRaw = {
   redirect: '/powerFailure/index',
   meta: {
     code: 10100,
-    icon: 'ion:grid-outline',
+    icon: 'powerFailure|svg',
     title: 'routes.powerFailure.title',
   },
   children: [
