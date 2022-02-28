@@ -59,16 +59,23 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       // Load proxy configuration from .env
       proxy: createProxy(VITE_PROXY),
     },
+    esbuild: {
+      pure: VITE_DROP_CONSOLE ? ['console.log', 'debugger'] : [],
+    },
     build: {
       target: 'es2015',
+      cssTarget: 'chrome80',
       outDir: OUTPUT_DIR,
-      terserOptions: {
-        compress: {
-          keep_infinity: true,
-          // Used to delete console in production environment
-          drop_console: VITE_DROP_CONSOLE,
-        },
-      },
+      // minify: 'terser',
+      /**
+       * 当 minify=“minify:'terser'” 解开注释
+       */
+      // terserOptions: {
+      //   compress: {
+      //     keep_infinity: true,
+      //     drop_console: VITE_DROP_CONSOLE,
+      //   },
+      // },
       // Turning off brotliSize display can slightly reduce packaging time
       brotliSize: false,
       chunkSizeWarningLimit: 2000,
@@ -95,11 +102,12 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     optimizeDeps: {
       // @iconify/iconify: The dependency is dynamically and virtually loaded by @purge-icons/generated, so it needs to be specified explicitly
       include: [
+        '@vue/runtime-core',
+        '@vue/shared',
         '@iconify/iconify',
         'ant-design-vue/es/locale/zh_CN',
         'ant-design-vue/es/locale/en_US',
       ],
-      exclude: ['vue-demi'],
     },
   };
 };

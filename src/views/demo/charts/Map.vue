@@ -9,6 +9,7 @@
   import { registerMap } from 'echarts';
 
   export default defineComponent({
+    name: 'DemoMap',
     props: {
       width: {
         type: String as PropType<string>,
@@ -16,7 +17,7 @@
       },
       height: {
         type: String as PropType<string>,
-        default: 'calc(100vh - 78px)',
+        default: 'calc(100vh - 88px)',
       },
     },
     setup() {

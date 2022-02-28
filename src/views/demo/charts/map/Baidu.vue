@@ -17,7 +17,7 @@
       },
       height: {
         type: String,
-        default: 'calc(100vh - 78px)',
+        default: 'calc(100vh - 88px)',
       },
     },
     setup() {
