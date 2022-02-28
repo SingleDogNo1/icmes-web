@@ -1,10 +1,18 @@
 <template>
-  <PageWrapper>
-    <div>hello, {{ msg }}</div>
-  </PageWrapper>
+  <PageWrapper dense contentFullHeight :class="prefixCls" />
 </template>
+
 <script lang="ts" setup>
-  import { ref } from 'vue';
   import { PageWrapper } from '/@/components/Page';
-  const msg = ref('homepage');
+  import { useDesign } from '/@/hooks/web/useDesign';
+
+  const { prefixCls } = useDesign('home');
 </script>
+
+<style lang="less" scoped>
+  @prefix-cls: ~'@{namespace}-home';
+
+  .@{prefix-cls} {
+    background: url('./welcome.png') center/cover no-repeat;
+  }
+</style>
