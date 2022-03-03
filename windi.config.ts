@@ -1,5 +1,5 @@
+import { successColor, primaryColor } from './src/settings/designSetting';
 import { defineConfig } from 'vite-plugin-windicss';
-import { primaryColor } from './build/config/themeConfig';
 
 export default defineConfig({
   darkMode: 'class',
@@ -11,6 +11,7 @@ export default defineConfig({
       },
       colors: {
         primary: primaryColor,
+        success: successColor,
       },
       screens: {
         sm: '576px',
@@ -22,6 +23,15 @@ export default defineConfig({
     },
     zIndex: {
       '4': 4,
+    },
+    borderRadius: {
+      none: '0',
+      sm: '0.125rem',
+      DEFAULT: '0.25rem',
+      md: '0.375rem',
+      lg: '0.5rem',
+      full: '9999px',
+      half: '50%',
     },
   },
 });

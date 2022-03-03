@@ -1,4 +1,4 @@
-import { DevicePowerTypes } from '/@/enums/powerCutEnum';
+import { DevicePowerTypesEnum } from '/@/enums/powerCutEnum';
 import { EmployeeResultModel } from '/@/api/sys/model/userModel';
 
 /** 设备查询接口请求数据 */
@@ -10,7 +10,7 @@ export interface GetDevicesListParam {
   /** 设别ID集合 */
   deviceIds?: string[];
   /** 停送电设备带电类型集合 */
-  devicePowerTypes?: DevicePowerTypes[];
+  devicePowerTypes?: DevicePowerTypesEnum[];
   /** 设备种类列表 */
   deviceTypeList?: string[];
   /** 模糊查询条件,传processNO,code,name,model,standard拼接的字符串 */
@@ -337,8 +337,6 @@ export interface DevicePowerModel {
   powerType?: number;
   /** 主设备唯一编码 */
   primaryCode?: string;
-  /** 主设备ID */
-  primaryId?: number;
   /** 主设备ID */
   primaryId?: number;
   /** 主设备名称 */

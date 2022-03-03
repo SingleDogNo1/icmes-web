@@ -134,7 +134,7 @@ const setting: ProjectConfig = {
   // Transition Setting
   transitionSetting: {
     //  Whether to open the page switching animation
-    // The disabled state will also disable pageLoadinng
+    // The disabled state will also disable page Loading
     enable: true,
 
     // Route basic switching animation
@@ -161,7 +161,7 @@ const setting: ProjectConfig = {
   showBreadCrumbIcon: false,
 
   // Use error-handler-plugin
-  useErrorHandle: true,
+  useErrorHandle: false,
 
   // Whether to open back to top
   useOpenBackTop: true,

@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper contentFullHeight :contentBackground="true">
+  <PageWrapper contentFullHeight contentBackground>
     <BasicForm @register="register" @submit="getLogList" />
     <BasicTable @register="registerTable" :loading="loading">
       <template #module="{ record }"> {{ moduleMap[record.module] }} </template>

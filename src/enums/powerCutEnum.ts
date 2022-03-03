@@ -1,5 +1,5 @@
 /* 停送电设备带电类型 */
-export enum DevicePowerTypes {
+export enum DevicePowerTypesEnum {
   /** 未知类型设备 */
   UNKNOWN = -1,
   /** 普通高压设备 */

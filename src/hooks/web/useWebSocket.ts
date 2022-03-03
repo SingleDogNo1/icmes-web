@@ -17,7 +17,15 @@ const userStore = useUserStoreWithOut();
 const permissionStore = usePermissionStoreWithOut();
 const employeeId = userStore.getUserInfo?.employeeId;
 
-export function useWebSocket() {
+/** websocket 任务触发的回调 */
+interface WSTaskCallbackModel {
+  /** 触发获取当日停送电单数量任务的回调 */
+  onPowerCutFormTodayCount?: (data: any) => void;
+  /** 触发设备报警任务的回调 */
+  onDeviceAlarmStatus?: (data: any) => void;
+}
+
+export function useWebSocket(callback: WSTaskCallbackModel) {
   if (!employeeId) return;
   const { send, data, status, open, close } = baseSocket(
     `${socketUrl}/?token=00000000-0000-0000-0000-000000000000&uid=${employeeId}_web&transport=websocket`,
@@ -122,13 +130,16 @@ export function useWebSocket() {
               });
               break;
             case 'LOGIN':
-              console.log('LOGIN :>> ', messageData.businessData);
+              console.log('LOGIN :>> ', businessData);
               break;
             case 'ETM_REAL_TIME':
-              console.log('ETM_REAL_TIME :>> ', messageData.businessData);
+              console.log('ETM_REAL_TIME :>> ', businessData);
               break;
             case 'POWER_CUT_FORM_TODAY_COUNT':
-              console.log('POWER_CUT_FORM_TODAY_COUNT :>> ', messageData.businessData);
+              callback?.onPowerCutFormTodayCount?.(businessData);
+              break;
+            case 'DEVICE_ALARM_STATUS':
+              callback?.onDeviceAlarmStatus?.(businessData);
               break;
           }
         }
