@@ -147,3 +147,7 @@ export interface PowerCutTodayCountModel {
   /** 待确认试车的停送电单数 */
   waitConfirmTestCount: number;
 }
+
+export interface UpdatePowerCutFormResultModel {
+  code: number | string;
+}

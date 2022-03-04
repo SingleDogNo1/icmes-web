@@ -29,7 +29,7 @@
       </div>
     </template>
     <Tag
-      style="margin-right: 4px"
+      style="margin-right: 4px; margin-bottom: 4px"
       v-for="item in devicesList"
       :key="item.deviceId"
       :color="primaryColor"
