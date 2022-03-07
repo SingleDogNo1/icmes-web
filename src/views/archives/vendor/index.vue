@@ -226,8 +226,8 @@
               type: record.type,
               versionTag: record.versionTag,
             });
-          } catch (error) {
-            throw new Error(JSON.stringify(error));
+          } catch (error: any) {
+            throw new Error(error);
           } finally {
             modalLoading.value = false;
           }
@@ -246,8 +246,8 @@
               await nextTick();
               const values = getSearchFieldsValue() as GetVendorsListParams;
               await getVendersList(values);
-            } catch (error) {
-              throw new Error(JSON.stringify(error));
+            } catch (error: any) {
+              throw new Error(error);
             } finally {
               loading.value = false;
             }
@@ -265,8 +265,8 @@
 
       setTableData(items || []);
       setPagination({ total: totalCount });
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }
@@ -294,8 +294,8 @@
         { field: 'interfaceCustomer', componentProps: { options } },
         { field: 'code', componentProps: { disabled: false } },
       ]);
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       modalLoading.value = false;
     }
@@ -319,8 +319,8 @@
       await nextTick();
       const searchForm = getSearchFieldsValue() as GetVendorsListParams;
       getVendersList(searchForm);
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       modalLoading.value = false;
     }

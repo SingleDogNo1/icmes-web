@@ -1,5 +1,4 @@
 import { defHttp } from '/@/utils/http/axios';
-import { ErrorMessageMode } from '/#/axios';
 import { PublicKeyModel, LoginParams, LoginResultModel, resetPwdParams } from './model/userModel';
 
 enum Api {
@@ -15,29 +14,19 @@ export function getPublicKeyApi() {
 }
 
 /** 系统登录 */
-export function loginApi(params: LoginParams, mode: ErrorMessageMode = 'message') {
-  return defHttp.post<LoginResultModel>(
-    {
-      url: Api.Login,
-      params,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function loginApi(params: LoginParams) {
+  return defHttp.post<LoginResultModel>({
+    url: Api.Login,
+    params,
+  });
 }
 
 /** 初始化密码--作者：徐宏亮 */
-export function resetPwdApi(params: resetPwdParams, mode: ErrorMessageMode = 'message') {
-  return defHttp.put(
-    {
-      url: Api.resetPwd,
-      params,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function resetPwdApi(params: resetPwdParams) {
+  return defHttp.put({
+    url: Api.resetPwd,
+    params,
+  });
 }
 
 /** 系统登出 */

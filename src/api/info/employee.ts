@@ -5,37 +5,21 @@ import {
   EditEmployeeInfoResultModel,
 } from './model/employeeModel';
 
-import { ErrorMessageMode } from '/#/axios';
-
 enum Api {
   employees = '/info/employees/',
 }
 
 /** 获取员工信息-作者：迟山 */
-export function getEmployeeInfoByIdApi(id: string | number, mode: ErrorMessageMode = 'message') {
-  return defHttp.get<EmployeeModel>(
-    {
-      url: Api.employees + id,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function getEmployeeInfoByIdApi(id: string | number) {
+  return defHttp.get<EmployeeModel>({
+    url: Api.employees + id,
+  });
 }
 
 /** 修改员工信息-作者：迟山 */
-export function editEmployeeInfoByIdApi(
-  id: string | number,
-  params: EditEmployeeInfoParam,
-  mode: ErrorMessageMode = 'message',
-) {
-  return defHttp.put<EditEmployeeInfoResultModel>(
-    {
-      url: Api.employees + id,
-      params,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function editEmployeeInfoByIdApi(id: string | number, params: EditEmployeeInfoParam) {
+  return defHttp.put<EditEmployeeInfoResultModel>({
+    url: Api.employees + id,
+    params,
+  });
 }

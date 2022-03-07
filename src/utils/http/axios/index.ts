@@ -1,6 +1,7 @@
 // axios配置  可自行根据项目进行更改，只需更改该文件即可，其他文件可以不动
 
 import type { AxiosResponse } from 'axios';
+import { clone } from 'lodash-es';
 import type { RequestOptions, Result } from '/#/axios';
 import type { AxiosTransform, CreateAxiosOptions } from './axiosTransform';
 import { VAxios } from './Axios';
@@ -137,7 +138,7 @@ const transform: AxiosTransform = {
    */
   requestInterceptors: (config) => {
     // 请求之前处理config
-    const token = getToken();
+    const token = getToken() as string;
     if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
       // jwt token
       config.headers!.Authorization = `Bearer ${token}`;
@@ -194,15 +195,12 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
   return new VAxios(
     deepMerge(
       {
-        // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
-        // authentication schemes，e.g: Bearer
-        // authenticationScheme: 'Bearer',
         authenticationScheme: '',
         timeout: 10 * 1000,
         headers: { 'Content-Type': ContentTypeEnum.JSON },
         // 如果是form-data格式
         // headers: { 'Content-Type': ContentTypeEnum.FORM_URLENCODED },
-        transform,
+        transform: clone(transform),
         // 配置项，下面的选项都可以在独立的接口请求中覆盖
         requestOptions: {
           // 默认将prefix 添加到url

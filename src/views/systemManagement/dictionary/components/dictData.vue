@@ -137,8 +137,8 @@
                 });
                 createMessage.success('禁用成功');
                 await getDictTypesList(props.selectRow);
-              } catch (error) {
-                throw new Error(JSON.stringify(error));
+              } catch (error: any) {
+                throw new Error(error);
               } finally {
                 loading.value = false;
               }
@@ -156,8 +156,8 @@
                 await deleteDictDataApi(record.typeCode, record.code);
                 createMessage.success('删除成功');
                 await getDictTypesList(props.selectRow);
-              } catch (error) {
-                throw new Error(JSON.stringify(error));
+              } catch (error: any) {
+                throw new Error(error);
               } finally {
                 loading.value = false;
               }
@@ -180,8 +180,8 @@
                 });
                 createMessage.success('启用成功');
                 await getDictTypesList(props.selectRow);
-              } catch (error) {
-                throw new Error(JSON.stringify(error));
+              } catch (error: any) {
+                throw new Error(error);
               } finally {
                 loading.value = false;
               }
@@ -204,8 +204,8 @@
         const tableData = getDataSource();
         handleClickRow(tableData[0], 0);
       }
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }

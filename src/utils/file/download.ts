@@ -27,11 +27,11 @@ export function downloadByBase64(buf: string, filename: string, mime?: string, b
 }
 
 /**
- * Download according to the background interface file stream
- * @param {*} data
- * @param {*} filename
- * @param {*} mime
- * @param {*} bom
+ * 根据后台接口下载文件流
+ * @param {BlobPart} data 流文件数据
+ * @param {string} filename 文件名
+ * @param {string} mime 流文件数据格式
+ * @param {BlobPart} bom
  */
 export function downloadByData(data: BlobPart, filename: string, mime?: string, bom?: BlobPart) {
   const blobData = typeof bom !== 'undefined' ? [bom, data] : [data];

@@ -53,8 +53,8 @@
     try {
       const data = await getAlarmsDetailApi(alarmData.id);
       descData.value = data;
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }

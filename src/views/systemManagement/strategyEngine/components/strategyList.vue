@@ -119,8 +119,8 @@
         const tableData = getDataSource();
         handleClickRow(tableData[0], 0);
       }
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }
@@ -138,8 +138,8 @@
       loading.value = true;
       await updateStrategyRuleUseableApi(row.id);
       checked ? createMessage.success('启用成功') : createMessage.success('停用成功');
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }

@@ -31,12 +31,38 @@
         >
           <!-- disable 状态的 button 不能作为子元素出现(https://next.antdv.com/components/tooltip-cn#注意) -->
           <div>
+            <!-- 选中多个,可选择导出格式 -->
+            <Popover
+              v-if="exportFormCodes.length > 1"
+              title="请选择导出格式"
+              placement="bottomRight"
+            >
+              <template #content>
+                <a-button block type="primary" @click="handleExportTicket('pdf')">
+                  导出为 PDF 文件(方便打印)
+                </a-button>
+                <Divider />
+                <a-button block type="primary" @click="handleExportTicket('zip')">
+                  导出为压缩包(方便存储)
+                </a-button>
+              </template>
+              <a-button
+                type="primary"
+                postIcon="ph:warning-circle-light"
+                :iconSize="16"
+                :disabled="exportTicketFlag"
+              >
+                导出高压工作票
+              </a-button>
+            </Popover>
+            <!-- 仅选中一行, 只能导出 pdf -->
             <a-button
+              v-else
               type="primary"
               postIcon="ph:warning-circle-light"
               :iconSize="16"
               :disabled="exportTicketFlag"
-              @click="handleExportTicket"
+              @click="handleExportTicket('pdf')"
             >
               导出高压工作票
             </a-button>
@@ -151,8 +177,8 @@
 </template>
 
 <script lang="ts" setup>
-  import { nextTick, onMounted, ref } from 'vue';
-  import { Tooltip, Tag } from 'ant-design-vue';
+  import { nextTick, onMounted, ref, unref } from 'vue';
+  import { Tooltip, Tag, Popover, Divider } from 'ant-design-vue';
   import { map } from 'lodash-es';
   import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
   import { BasicForm, useForm } from '/@/components/Form';
@@ -184,12 +210,14 @@
   import { useUserStore } from '/@/store/modules/user';
   import { useRoute } from 'vue-router';
   import { downloadByData } from '/@/utils/file/download';
+  import { useMessage } from '/@/hooks/web/useMessage';
 
   const { getDictMap } = useUserState();
   const powerCutStatusMap = getDictMap('BT_POWER_CUT_STATUS');
   const {
     meta: { code: routeCode },
   } = useRoute();
+  const { createMessage } = useMessage();
 
   const { prefixCls } = useDesign('power-failure');
   const powerFailureRef = ref<any>(null);
@@ -199,7 +227,7 @@
   const userId = getUserInfo.userId;
   const routePermission = getFeature[routeCode!];
   const dispatchFlag = ref(true); // 表格头部, 调度确认按钮是否可操作
-  const exportTicketFlag = ref(false); // 表格头部, 导出操作票按钮是否可操作
+  const exportTicketFlag = ref(true); // 表格头部, 导出操作票按钮是否可操作
   const waitConfirmList = ref<PowerCutFormFullModel[]>([]); // 待调度确认状态的停送电单
   const exportFormCodes = ref<string[]>([]); // 选中的导出高压操作票停送电单的 code 集合
 
@@ -273,8 +301,8 @@
 
       setTableData(list);
       setPagination({ total: totalCount });
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }
@@ -300,8 +328,8 @@
       todayPowerCutCount.value = data;
 
       await getTableData();
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     }
   });
 
@@ -335,8 +363,8 @@
               await withdrawPowerCutFormApi(record.code);
 
               await getTableData();
-            } catch (error) {
-              throw new Error(JSON.stringify(error));
+            } catch (error: any) {
+              throw new Error(error);
             }
           },
         },
@@ -501,6 +529,9 @@
       exportTicketFlag.value = true;
       waitConfirmList.value = [];
     } else {
+      const waitConfirmArr: PowerCutFormFullModel[] = [];
+      const exportCodesArr: string[] = [];
+
       // 选中的状态是且只是 待调度确认 相关状态
       const waitConfirmOnly = rows.every((item) =>
         [
@@ -519,7 +550,7 @@
             'POWER_CUT_WAIT_DISPATCH_TEST',
           ].includes(item.status)
         ) {
-          waitConfirmList.value.push(item);
+          waitConfirmArr.push(item);
         }
         // 获取所有高压设备code
         if (
@@ -528,7 +559,7 @@
           map(item.irregularDevices, 'powerType').includes(1) ||
           item.hvFlag === true
         ) {
-          exportFormCodes.value.push(item.code);
+          exportCodesArr.push(item.code);
         }
       });
 
@@ -544,6 +575,8 @@
           item.hvFlag === true,
       );
       exportTicketFlag.value = !highVoltageFlag;
+      waitConfirmList.value = waitConfirmArr;
+      exportFormCodes.value = exportCodesArr;
     }
   }
 
@@ -551,18 +584,33 @@
     console.log('批量操作调度确认 :>> ', waitConfirmList.value);
   }
 
-  async function handleExportTicket() {
-    console.log('导出高压操作票 :>> ', exportFormCodes.value);
-    // if (exportFormCodes.value.length === 1) {
+  async function handleExportTicket(type: 'pdf' | 'zip') {
+    const export_codes = unref(exportFormCodes);
+    console.log('导出高压操作票 :>> ', exportFormCodes);
+    const codes = export_codes.join(',');
+
     try {
-      // const data = await exportPowerCutTicketApi('pdf', exportFormCodes.value.join(','));
-      const data = await exportPowerCutTicketApi('pdf', 'PC20211122005');
-      console.log('data :>> ', data);
-      downloadByData(data, `${exportFormCodes.value[0]}.pdf`, 'application/pdf;charset=utf-8');
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+      const { data } = await exportPowerCutTicketApi(type, codes);
+      createMessage.success('导出成功, 详见浏览器下载附件');
+
+      const downloadType =
+        type === 'pdf' ? 'application/pdf;charset=utf-8' : 'application/zip;charset=utf-8';
+
+      const filename =
+        type === 'pdf'
+          ? export_codes.length === 1
+            ? '高压工作票' + export_codes[0] + '.pdf'
+            : '高压工作票' + export_codes[0] + '等.pdf'
+          : '高压工作票';
+
+      downloadByData(data, filename, downloadType);
+    } catch (error: any) {
+      throw new Error(error);
     }
-    // }
+
+    if (exportFormCodes.value.length === 1) {
+    } else {
+    }
   }
 
   function handleChooseNotice(item) {

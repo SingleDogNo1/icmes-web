@@ -61,8 +61,8 @@
       createMessage.success('密码修改成功', 2, () => {
         go(PageEnum.BASE_LOGIN);
       });
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     }
   }
 </script>

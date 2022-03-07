@@ -1,4 +1,5 @@
 import { PowerCutFormFullModel } from './basicModel';
+import { AxiosRequestConfig, AxiosResponseHeaders } from 'axios';
 
 export interface GetPowerCutFormListParams {
   /** 正序倒序 */
@@ -25,6 +26,15 @@ export interface GetPowerCutFormListParams {
   todayStatus?: string;
   /** 停送电类型 */
   type?: string;
+}
+
+export interface ExportPowerCutTicketResultModel {
+  config: AxiosRequestConfig<any>;
+  data: BlobPart;
+  headers: AxiosResponseHeaders;
+  request: XMLHttpRequest;
+  status: number;
+  statusText: string;
 }
 
 export interface GetPowerCutFormListResultModel {

@@ -109,8 +109,8 @@
               await deleteDictTypeApi(record.code);
               createMessage.success('删除成功');
               await getDictTypesList(props.searchData);
-            } catch (error) {
-              throw new Error(JSON.stringify(error));
+            } catch (error: any) {
+              throw new Error(error);
             } finally {
               loading.value = false;
             }
@@ -133,8 +133,8 @@
         const tableData = getDataSource();
         handleClickRow(tableData[0], 0);
       }
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }

@@ -1,6 +1,9 @@
 import { defHttp } from '/@/utils/http/axios';
-import { ErrorMessageMode } from '/#/axios';
-import { GetPowerCutFormListParams, GetPowerCutFormListResultModel } from './model/formModel';
+import {
+  GetPowerCutFormListParams,
+  GetPowerCutFormListResultModel,
+  ExportPowerCutTicketResultModel,
+} from './model/formModel';
 import { PowerCutTodayCountModel, UpdatePowerCutFormResultModel } from './model/basicModel';
 
 enum Api {
@@ -8,58 +11,39 @@ enum Api {
 }
 
 /** 查询停电申请单列表 */
-export function getPowerCutFormListApi(
-  params: GetPowerCutFormListParams,
-  mode: ErrorMessageMode = 'message',
-) {
-  return defHttp.post<GetPowerCutFormListResultModel>(
-    {
-      url: Api.baseUrl + 'list/web',
-      params,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function getPowerCutFormListApi(params: GetPowerCutFormListParams) {
+  return defHttp.post<GetPowerCutFormListResultModel>({
+    url: Api.baseUrl + 'list/web',
+    params,
+  });
 }
 
 /** 查询当天各种状态的停电申请单数 */
-export function getPowerCutTodayCountApi(mode: ErrorMessageMode = 'message') {
-  return defHttp.get<PowerCutTodayCountModel>(
-    {
-      url: Api.baseUrl + 'count/today',
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function getPowerCutTodayCountApi() {
+  return defHttp.get<PowerCutTodayCountModel>({
+    url: Api.baseUrl + 'count/today',
+  });
 }
 
 /** 新建人撤回 */
-export function withdrawPowerCutFormApi(code: string, mode: ErrorMessageMode = 'message') {
-  return defHttp.post<UpdatePowerCutFormResultModel>(
-    {
-      url: Api.baseUrl + 'cancel/' + code,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function withdrawPowerCutFormApi(code: string) {
+  return defHttp.post<UpdatePowerCutFormResultModel>({
+    url: Api.baseUrl + 'cancel/' + code,
+  });
 }
 
 /** 导出pdf */
-export function exportPowerCutTicketApi(
-  type: 'pdf' | 'zip',
-  codes: string,
-  mode: ErrorMessageMode = 'message',
-) {
-  return defHttp.get<BlobPart>(
+export function exportPowerCutTicketApi(type: 'pdf' | 'zip', codes: string) {
+  return defHttp.get<ExportPowerCutTicketResultModel>(
     {
-      url: `${Api.baseUrl}export/${type}/${codes}/`,
+      url: `${Api.baseUrl}export/${type}/${codes}`,
       responseType: 'arraybuffer',
     },
     {
-      errorMessageMode: mode,
+      isReturnNativeResponse: true,
+      isTransformResponse: false,
+      formatDate: false,
+      joinTime: false,
     },
   );
 }

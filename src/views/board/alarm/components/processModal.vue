@@ -81,12 +81,12 @@
       }
       emit('done');
       closeModal();
-    } catch (error) {
+    } catch (error: any) {
       // TODO 这段异常会不会自动捕捉？待运行的时候确认
       // if (error.errorCode === 2042) {
       //   createMessage.error('报警已被其他人处理，保存失败!');
       // }
-      throw new Error(JSON.stringify(error));
+      throw new Error(error);
     } finally {
       loading.value = false;
     }

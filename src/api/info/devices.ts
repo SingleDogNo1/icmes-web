@@ -15,31 +15,18 @@ enum Api {
 }
 
 /** 设备列表查询 */
-export function getDevicesListApi(params: GetDevicesListParam, mode: ErrorMessageMode = 'message') {
-  return defHttp.post<GetDevicesListResultModel>(
-    {
-      url: Api.baseApi + 'list/',
-      params,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function getDevicesListApi(params: GetDevicesListParam) {
+  return defHttp.post<GetDevicesListResultModel>({
+    url: Api.baseApi + 'list/',
+    params,
+  });
 }
 
-export function getPowerCutDevicesListApi(
-  params: GetPowerCutDevicesListParam,
-  mode: ErrorMessageMode = 'message',
-) {
-  return defHttp.post<GetPowerCutDevicesListResultModel>(
-    {
-      url: Api.baseApi + 'list/power',
-      params,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function getPowerCutDevicesListApi(params: GetPowerCutDevicesListParam) {
+  return defHttp.post<GetPowerCutDevicesListResultModel>({
+    url: Api.baseApi + 'list/power',
+    params,
+  });
 }
 
 /** 设备带电类型设备查询 */

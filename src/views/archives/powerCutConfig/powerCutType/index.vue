@@ -107,8 +107,8 @@
               await deletePowerCutConfigApi(record.configId);
               createMessage.success('删除成功');
               await getPowerCutConfigList(getPowerCutConfigParams);
-            } catch (error) {
-              throw new Error(JSON.stringify(error));
+            } catch (error: any) {
+              throw new Error(error);
             } finally {
               loading.value = false;
             }
@@ -124,8 +124,8 @@
       const { items, totalCount } = await getPowerCutConfigListApi(params);
       setTableData(items || []);
       setPagination({ total: totalCount });
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }
@@ -136,8 +136,8 @@
     try {
       await changePowerCutConfigUsefulApi(record.configId);
       createMessage.success(record.useful ? '启用成功' : '禁用成功');
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }

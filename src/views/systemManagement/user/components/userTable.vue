@@ -119,8 +119,8 @@
                 await unlockAccountByIdApi(record.employeeId);
                 createMessage.success('解除锁定成功！');
                 await getAccountList(props.searchData);
-              } catch (error) {
-                throw new Error(JSON.stringify(error));
+              } catch (error: any) {
+                throw new Error(error);
               } finally {
                 loading.value = false;
               }
@@ -147,8 +147,8 @@
                 await deleteAccountByIdApi(record.employeeId);
                 createMessage.success('删除成功！');
                 await getAccountList(props.searchData);
-              } catch (error) {
-                throw new Error(JSON.stringify(error));
+              } catch (error: any) {
+                throw new Error(error);
               } finally {
                 loading.value = false;
               }
@@ -165,8 +165,8 @@
                 await lockAccountByIdApi(record.employeeId);
                 createMessage.success('锁定成功！');
                 await getAccountList(props.searchData);
-              } catch (error) {
-                throw new Error(JSON.stringify(error));
+              } catch (error: any) {
+                throw new Error(error);
               } finally {
                 loading.value = false;
               }
@@ -190,8 +190,8 @@
               try {
                 await resetPasswordByIdApi(record.employeeId);
                 createMessage.success('密码初始化成功');
-              } catch (error) {
-                throw new Error(JSON.stringify(error));
+              } catch (error: any) {
+                throw new Error(error);
               } finally {
                 loading.value = false;
               }
@@ -207,8 +207,8 @@
               try {
                 await resetFaceByIdApi(record.employeeId);
                 createMessage.success('初始化人脸成功');
-              } catch (error) {
-                throw new Error(JSON.stringify(error));
+              } catch (error: any) {
+                throw new Error(error);
               } finally {
                 loading.value = false;
               }
@@ -231,8 +231,8 @@
         const tableData = getDataSource();
         handleClickRow(tableData[0], 0);
       }
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }

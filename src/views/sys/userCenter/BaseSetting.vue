@@ -114,8 +114,8 @@
       // 更新数据源，主要是更新 versionTag，上次的操作记录已经失效
       const data = await getEmployeeInfoByIdApi(employeeId);
       setFieldsValue(data);
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }

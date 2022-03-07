@@ -1,11 +1,11 @@
 import type { AxiosRequestConfig, AxiosInstance, AxiosResponse, AxiosError } from 'axios';
-import type { RequestOptions, Result, UploadFileParams } from '../../../../types/axios';
+import type { RequestOptions, Result, UploadFileParams } from '/#/axios';
 import type { CreateAxiosOptions } from './axiosTransform';
 import axios from 'axios';
 import qs from 'qs';
 import { AxiosCanceler } from './axiosCancel';
 import { isFunction } from '/@/utils/is';
-import { cloneDeep, omit } from 'lodash-es';
+import { cloneDeep } from 'lodash-es';
 import { ContentTypeEnum } from '/@/enums/httpEnum';
 import { RequestEnum } from '/@/enums/httpEnum';
 
@@ -80,10 +80,8 @@ export class VAxios {
     // Request interceptor configuration processing
     this.axiosInstance.interceptors.request.use((config: AxiosRequestConfig) => {
       // If cancel repeat request is turned on, then cancel repeat request is prohibited
-      const {
-        headers: { ignoreCancelToken },
-      } = config;
-
+      // @ts-ignore
+      const { ignoreCancelToken } = config.requestOptions;
       const ignoreCancel =
         ignoreCancelToken !== undefined
           ? ignoreCancelToken
@@ -121,11 +119,17 @@ export class VAxios {
    */
   uploadFile<T = any>(config: AxiosRequestConfig, params: UploadFileParams) {
     const formData = new window.FormData();
+    const customFilename = params.name || 'file';
+
+    if (params.filename) {
+      formData.append(customFilename, params.file, params.filename);
+    } else {
+      formData.append(customFilename, params.file);
+    }
 
     if (params.data) {
       Object.keys(params.data).forEach((key) => {
-        if (!params.data) return;
-        const value = params.data[key];
+        const value = params.data![key];
         if (Array.isArray(value)) {
           value.forEach((item) => {
             formData.append(`${key}[]`, item);
@@ -133,15 +137,9 @@ export class VAxios {
           return;
         }
 
-        formData.append(key, params.data[key]);
+        formData.append(key, params.data![key]);
       });
     }
-    formData.append(params.name || 'file', params.file, params.filename);
-    const customParams = omit(params, 'file', 'filename', 'file');
-
-    Object.keys(customParams).forEach((key) => {
-      formData.append(key, customParams[key]);
-    });
 
     return this.axiosInstance.request<T>({
       ...config,
@@ -149,6 +147,7 @@ export class VAxios {
       data: formData,
       headers: {
         'Content-type': ContentTypeEnum.FORM_DATA,
+        // @ts-ignore
         ignoreCancelToken: true,
       },
     });
@@ -195,7 +194,7 @@ export class VAxios {
 
     const { requestOptions } = this.options;
 
-    const opt: RequestOptions = { ...{}, ...requestOptions, ...options };
+    const opt: RequestOptions = Object.assign({}, requestOptions, options);
 
     const { beforeRequestHook, requestCatchHook, transformRequestHook } = transform || {};
     if (beforeRequestHook && isFunction(beforeRequestHook)) {
@@ -204,8 +203,6 @@ export class VAxios {
     conf.requestOptions = opt;
 
     conf = this.supportFormData(conf);
-
-    console.log('conf :>> ', conf);
 
     return new Promise((resolve, reject) => {
       this.axiosInstance

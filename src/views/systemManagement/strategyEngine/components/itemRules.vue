@@ -191,8 +191,8 @@
       await updateStrategyRulesApi(params);
       createMessage.success('策略保存成功');
       getStrategyRuleById(selectedRow.value);
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }
@@ -212,8 +212,8 @@
       const data = await getStrategyRuleByIdApi(record.id);
 
       setTableData(data);
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }

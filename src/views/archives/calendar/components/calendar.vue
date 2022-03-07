@@ -115,8 +115,8 @@
 
       emit('data-updated');
       createMessage.success('修改成功');
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     }
   }
 

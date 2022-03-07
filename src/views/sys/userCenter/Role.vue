@@ -5,12 +5,6 @@
   </CollapseContainer>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'Role',
-  };
-</script>
-
 <script lang="ts" setup>
   import { onMounted, nextTick, ref } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form';
@@ -51,8 +45,8 @@
       const { items, totalCount } = await getRolesListByIdApi(employeeId, params);
       setTableData(items || []);
       setPagination({ total: totalCount });
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }

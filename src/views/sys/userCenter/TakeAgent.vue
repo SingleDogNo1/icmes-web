@@ -55,8 +55,8 @@
       const { items, totalCount } = await getAssignmentProxiesListApi(employeeId, params);
       setTableData(items || []);
       setPagination({ total: totalCount });
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }

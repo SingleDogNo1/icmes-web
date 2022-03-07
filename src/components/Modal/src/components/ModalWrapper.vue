@@ -160,8 +160,8 @@
       await nextTick();
 
       spinEl.style.overflow = 'hidden';
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     }
   }
 </script>

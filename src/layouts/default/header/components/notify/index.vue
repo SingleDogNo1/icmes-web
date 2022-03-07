@@ -58,8 +58,8 @@
       });
       listData.value = items ?? [];
       total.value = totalCount;
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }
@@ -77,8 +77,8 @@
       const res = await readNoticeByIdApi(id);
       console.log('res :>> ', res);
       await getNoticeList();
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }

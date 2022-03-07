@@ -97,8 +97,8 @@
       setTableData(list);
       handleClickRow(list[date.value.month - 1], date.value.month - 1);
       emit('initTable', list, year);
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }

@@ -9,6 +9,7 @@
   "scripts": {
     "bootstrap": "pnpm install",
     "dev": "vite",
+    "docs:dev": "vitepress dev docs --host --port 4000",
     "build": "cross-env NODE_ENV=production vite build && esno ./build/script/postBuild.ts",
     "build:test": "cross-env vite build --mode test && esno ./build/script/postBuild.ts",
     "build:no-cache": "pnpm clean:cache && npm run build",
@@ -31,8 +32,7 @@
     "reinstall": "rimraf pnpm-lock.yaml && rimraf package.lock.json && rimraf node_modules && npm run bootstrap",
     "prepare": "husky install",
     "commit": "git-cz",
-    "gen:icon": "esno ./build/generate/icon/index.ts",
-    "dev:doc": "vitepress dev docs --host --port 4000"
+    "gen:icon": "esno ./build/generate/icon/index.ts"
   },
   "config": {
     "commitizen": {

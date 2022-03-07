@@ -102,8 +102,8 @@
             });
             break;
         }
-      } catch (error) {
-        throw new Error(JSON.stringify(error));
+      } catch (error: any) {
+        throw new Error(error);
       } finally {
         loading.value = false;
       }
@@ -125,8 +125,8 @@
       createMessage.success('保存成功');
       closeModal();
       emit('done');
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (error: any) {
+      throw new Error(error);
     } finally {
       loading.value = false;
     }

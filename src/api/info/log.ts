@@ -1,21 +1,14 @@
 import { defHttp } from '/@/utils/http/axios';
 import { GetLogListParam, GetLogListResultModel } from './model/logModel';
 
-import { ErrorMessageMode } from '/#/axios';
-
 enum Api {
-  systemLog = '/info/log/list/',
+  baseUrl = '/info/log/list/',
 }
 
 /** 获取操作日志列表 */
-export function getLogListApi(params: GetLogListParam, mode: ErrorMessageMode = 'message') {
-  return defHttp.post<GetLogListResultModel>(
-    {
-      url: Api.systemLog,
-      params,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function getLogListApi(params: GetLogListParam) {
+  return defHttp.post<GetLogListResultModel>({
+    url: Api.baseUrl,
+    params,
+  });
 }

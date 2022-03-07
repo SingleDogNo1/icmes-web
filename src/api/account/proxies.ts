@@ -6,62 +6,36 @@ import {
   EditProxyParam,
 } from './model/proxiesModel';
 
-import { ErrorMessageMode } from '/#/axios';
-
 enum Api {
   editProxies = '/account/proxies/',
 }
 
 /** 新增指派代理 */
-export function addProxyApi(params: addProxyParam, mode: ErrorMessageMode = 'message') {
-  return defHttp.post<EditProxyResultModel>(
-    {
-      url: Api.editProxies,
-      params,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function addProxyApi(params: addProxyParam) {
+  return defHttp.post<EditProxyResultModel>({
+    url: Api.editProxies,
+    params,
+  });
 }
 
 /** 查找指派代理 */
-export function getProxiesByIdApi(id: number | string, mode: ErrorMessageMode = 'message') {
-  return defHttp.get<GetProxyResultModel>(
-    {
-      url: Api.editProxies + id,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function getProxiesByIdApi(id: number | string) {
+  return defHttp.get<GetProxyResultModel>({
+    url: Api.editProxies + id,
+  });
 }
 
 /** 修改指派代理 */
-export function EditProxyByIdApi(
-  id: number | string,
-  params: EditProxyParam,
-  mode: ErrorMessageMode = 'message',
-) {
-  return defHttp.put<EditProxyResultModel>(
-    {
-      url: Api.editProxies + id,
-      params,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function EditProxyByIdApi(id: number | string, params: EditProxyParam) {
+  return defHttp.put<EditProxyResultModel>({
+    url: Api.editProxies + id,
+    params,
+  });
 }
 
 /** 删除指派代理 */
-export function delProxyByIdApi(id: number | string, mode: ErrorMessageMode = 'message') {
-  return defHttp.delete<EditProxyResultModel>(
-    {
-      url: Api.editProxies + id,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function delProxyByIdApi(id: number | string) {
+  return defHttp.delete<EditProxyResultModel>({
+    url: Api.editProxies + id,
+  });
 }

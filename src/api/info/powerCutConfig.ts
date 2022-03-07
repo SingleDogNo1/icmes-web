@@ -7,92 +7,51 @@ import {
   EditPowerCutConfigModel,
 } from './model/powerCutConfigModel';
 
-import { ErrorMessageMode } from '/#/axios';
-
 enum Api {
   baseUrl = '/info/powerCutConfig/',
 }
 
 /** 查询停送电类型配置 */
-export function getPowerCutConfigListApi(
-  params: GetPowerCutConfigParams,
-  mode: ErrorMessageMode = 'message',
-) {
-  return defHttp.post<PowerCutConfigResultModel>(
-    {
-      url: Api.baseUrl + 'list/',
-      params,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function getPowerCutConfigListApi(params: GetPowerCutConfigParams) {
+  return defHttp.post<PowerCutConfigResultModel>({
+    url: Api.baseUrl + 'list/',
+    params,
+  });
 }
 
 /** 设置停送电类型配置是否启用 */
-export function changePowerCutConfigUsefulApi(id: number, mode: ErrorMessageMode = 'message') {
-  return defHttp.put<PowerCutConfigResultModel>(
-    {
-      url: Api.baseUrl + 'isUse/' + id,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function changePowerCutConfigUsefulApi(id: number) {
+  return defHttp.put<PowerCutConfigResultModel>({
+    url: Api.baseUrl + 'isUse/' + id,
+  });
 }
 
 /** 删除停送电类型配置 */
-export function deletePowerCutConfigApi(id: number, mode: ErrorMessageMode = 'message') {
-  return defHttp.delete<EditPowerCutConfigResultModel>(
-    {
-      url: Api.baseUrl + id,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function deletePowerCutConfigApi(id: number) {
+  return defHttp.delete<EditPowerCutConfigResultModel>({
+    url: Api.baseUrl + id,
+  });
 }
 
 /** 查询停送电类型配置 */
-export function getPowerCutConfigApi(id: number, mode: ErrorMessageMode = 'message') {
-  return defHttp.get<PowerCutConfigModel>(
-    {
-      url: Api.baseUrl + id,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function getPowerCutConfigApi(id: number) {
+  return defHttp.get<PowerCutConfigModel>({
+    url: Api.baseUrl + id,
+  });
 }
 
 /** 新建停送电类型配置 */
-export function createPowerCutConfigApi(
-  params: EditPowerCutConfigModel,
-  mode: ErrorMessageMode = 'message',
-) {
-  return defHttp.post<EditPowerCutConfigResultModel>(
-    {
-      url: Api.baseUrl,
-      params,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function createPowerCutConfigApi(params: EditPowerCutConfigModel) {
+  return defHttp.post<EditPowerCutConfigResultModel>({
+    url: Api.baseUrl,
+    params,
+  });
 }
 
 /** 修改停送电类型配置 */
-export function editPowerCutConfigApi(
-  params: EditPowerCutConfigModel,
-  mode: ErrorMessageMode = 'message',
-) {
-  return defHttp.put<EditPowerCutConfigResultModel>(
-    {
-      url: Api.baseUrl,
-      params,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function editPowerCutConfigApi(params: EditPowerCutConfigModel) {
+  return defHttp.put<EditPowerCutConfigResultModel>({
+    url: Api.baseUrl,
+    params,
+  });
 }

@@ -88,8 +88,8 @@ export function useWebSocket(callback: WSTaskCallbackModel) {
                       }
                       push({ name: REDIRECT_NAME, params, query }).then(() => resolve(true));
                     });
-                  } catch (error) {
-                    throw new Error(JSON.stringify(error));
+                  } catch (error: any) {
+                    throw new Error(error);
                   }
                 },
               });

@@ -104,8 +104,8 @@
               await delOrganizationApi(record.id);
               createMessage.success('删除成功');
               emit('delRow', record);
-            } catch (error) {
-              throw new Error(JSON.stringify(error));
+            } catch (error: any) {
+              throw new Error(error);
             }
           },
         },

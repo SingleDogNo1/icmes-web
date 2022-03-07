@@ -83,7 +83,7 @@
       createMessage.success(`故障已报修，问题单号: ${data}`);
       emit('done');
       closeModal();
-    } catch (error) {
+    } catch (error: any) {
       // TODO 这段异常会不会自动捕捉？待运行的时候确认
       // if (error.errorCode === 2042) {
       //   createMessage.error('报警已被其他人处理，保存失败!');
@@ -91,7 +91,7 @@
       // if (error.errorCode === 2043) {
       //   createMessage.error('报警对象来自配点对象，不允许生成报修单!');
       // }
-      throw new Error(JSON.stringify(error));
+      throw new Error(error);
     } finally {
       loading.value = false;
     }

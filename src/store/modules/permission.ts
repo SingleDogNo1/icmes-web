@@ -174,8 +174,8 @@ export const usePermissionStore = defineStore({
         routeList = routes as AppRouteRecordRaw[];
 
         routeList.sort((a, b) => (a.meta.orderNo || 0) - (b.meta.orderNo || 0));
-      } catch (error) {
-        throw new Error(JSON.stringify(error));
+      } catch (error: any) {
+        throw new Error(error);
       }
 
       // Dynamically introduce components
