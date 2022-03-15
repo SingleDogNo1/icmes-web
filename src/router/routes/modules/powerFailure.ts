@@ -20,6 +20,18 @@ const powerFailure: BackModeRouteRecordRaw = {
         title: 'routes.powerFailure.powerFailure',
       },
     },
+    {
+      path: 'form',
+      name: 'editPowerFailureForm',
+      component: '/powerFailure/editPowerCutList',
+      meta: {
+        code: 25800,
+        title: 'routes.powerFailure.powerFailure',
+        hideMenu: true,
+        hideTab: true,
+        currentActiveMenu: '/powerFailure/index',
+      },
+    },
   ],
 };
 

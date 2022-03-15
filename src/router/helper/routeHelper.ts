@@ -20,19 +20,19 @@ let dynamicViewsModules: Record<string, () => Promise<Recordable>>;
 
 // Dynamic introduction
 function asyncImportRoute(routes: BackModeRouteRecordRaw[] | undefined) {
-  const permissionStore = usePermissionStore();
-  const permCodes = permissionStore.getPermCodeList;
+  // const permissionStore = usePermissionStore();
+  // const permCodes = permissionStore.getPermCodeList;
   dynamicViewsModules = dynamicViewsModules || import.meta.glob('../../views/**/*.{vue,tsx}');
   if (!routes) return;
   routes.forEach((item) => {
     if (!item.component && item.meta?.frameSrc) {
       item.component = 'IFRAME';
     }
-    const { component, name, meta } = item;
-    const hasPermission = permCodes.includes(meta.code?.toString() as never);
-    meta.hideMenu = !hasPermission;
-    meta.hideBreadcrumb = !hasPermission;
-    meta.hideTab = !hasPermission;
+    const { component, name /* meta */ } = item;
+    // const hasPermission = permCodes.includes(meta.code?.toString() as never);
+    // meta.hideMenu = !hasPermission;
+    // meta.hideBreadcrumb = !hasPermission;
+    // meta.hideTab = !hasPermission;
 
     const { children } = item;
 

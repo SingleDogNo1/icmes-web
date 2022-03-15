@@ -1,4 +1,4 @@
-import { successColor, primaryColor } from './src/settings/designSetting';
+import { successColor, primaryColor, disabledColor } from './src/settings/designSetting';
 import { defineConfig } from 'vite-plugin-windicss';
 
 export default defineConfig({
@@ -12,6 +12,7 @@ export default defineConfig({
       colors: {
         primary: primaryColor,
         success: successColor,
+        disabled: disabledColor,
       },
       screens: {
         sm: '576px',

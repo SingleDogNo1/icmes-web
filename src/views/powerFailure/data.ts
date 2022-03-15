@@ -10,12 +10,21 @@ import { useUserState } from '/@/hooks/web/useUserState';
 const { getOrganizationsList } = useUserStoreWithOut();
 const orgList = cloneDeep(getOrganizationsList);
 const org_tree = listToTreeAsParentId(orgList!);
-console.log('org_tree :>> ', org_tree);
 
 const { getDictOptions } = useUserState();
 const powerCutStatusOptions = getDictOptions('BT_POWER_CUT_STATUS');
 
 let powerCutTypeMap;
+
+const range = (start: number, end: number) => {
+  const result: number[] = [];
+
+  for (let i = start; i <= end; i++) {
+    result.push(i);
+  }
+
+  return result;
+};
 
 export const schemas: FormSchema[] = [
   {
@@ -201,5 +210,103 @@ export const columns: BasicColumn[] = [
     dataIndex: 'status',
     width: 160,
     slots: { customRender: 'status' },
+  },
+];
+
+export const editPowerCutSchemas: FormSchema[] = [
+  {
+    field: 'type',
+    component: 'ApiSelect',
+    required: true,
+    label: '停送电类型',
+    componentProps: {
+      api: getPowerCutConfigListApi,
+      params: {
+        ascending: false,
+        onlyNeedUse: false,
+        orderBy: '',
+        pageSize: 0,
+        pageNo: 1,
+      },
+      resultField: 'items',
+      labelField: 'name',
+      valueField: 'workFlowCode',
+      immediate: true,
+    },
+  },
+  {
+    field: 'contactUserId',
+    component: 'Select',
+    required: true,
+    label: '停送电联系人',
+    slot: 'contactUser',
+  },
+  {
+    field: 'scheduledTimeRange',
+    component: 'RangePicker',
+    label: '计划停送电时间',
+    componentProps: ({ formModel }) => {
+      return {
+        placeholder: ['请选择开始时间', '请选择结束时间'],
+        format: 'YYYY-MM-DD HH:mm',
+        showTime: {
+          format: 'HH:mm',
+          defaultValue: [dateUtil().startOf('minute'), dateUtil().startOf('minute')],
+        },
+        disabledDate: (current) => current && current < dateUtil().startOf('day'),
+        disabledTime: (_, type: 'start' | 'end') => {
+          const [currentHour, currentMinute] = [dateUtil().hour(), dateUtil().minute()];
+          if (type === 'start') {
+            return {
+              disabledHours: () => range(0, currentHour - 1),
+              disabledMinutes: () => range(0, currentMinute - 1),
+            };
+          } else {
+            return {
+              disabledHours: () => range(0, currentHour - 1),
+              disabledMinutes: () => range(0, currentMinute),
+            };
+          }
+        },
+        onOk: (value: any) => {
+          const duration = value[1].valueOf() - value[0].valueOf();
+          console.log('value, duration :>> ', value[1].valueOf(), value[0].valueOf(), duration);
+
+          if (duration === 0) return;
+
+          const hours = ~~(duration / 1000 / 60 / 60);
+
+          const minutes = ~~((duration - hours * 60 * 60 * 1000) / 1000 / 60);
+
+          formModel['scheduledDuration'] =
+            hours > 0 ? `${hours} 小时 ${minutes} 分钟` : `${minutes} 分钟`;
+        },
+      };
+    },
+    rules: [
+      {
+        required: true,
+        validator: (_rule, value) => {
+          const duration = value[1].valueOf() - value[0].valueOf();
+          if (!value) {
+            return Promise.reject('请输入计划停送电时间');
+          } else if (duration === 0) {
+            return Promise.reject('停送电时长不能为 0');
+          } else {
+            return Promise.resolve();
+          }
+        },
+      },
+    ],
+  },
+  {
+    field: 'scheduledDuration',
+    component: 'Input',
+    required: true,
+    label: '计划送电时长',
+    componentProps: {
+      placeholder: '',
+      disabled: true,
+    },
   },
 ];

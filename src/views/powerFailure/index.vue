@@ -13,7 +13,7 @@
       </template>
 
       <template #toolbar>
-        <a-button type="primary">新建</a-button>
+        <a-button type="primary" @click="createPowerCutForm">新建</a-button>
         <Tooltip
           :title="dispatchFlag ? '先勾选“待确认的”的停送电单，一次最多批量操作10单。' : null"
           placement="bottom"
@@ -211,6 +211,7 @@
   import { useRoute } from 'vue-router';
   import { downloadByData } from '/@/utils/file/download';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { useGo } from '/@/hooks/web/usePage';
 
   const { getDictMap } = useUserState();
   const powerCutStatusMap = getDictMap('BT_POWER_CUT_STATUS');
@@ -218,6 +219,7 @@
     meta: { code: routeCode },
   } = useRoute();
   const { createMessage } = useMessage();
+  const go = useGo();
 
   const { prefixCls } = useDesign('power-failure');
   const powerFailureRef = ref<any>(null);
@@ -522,6 +524,13 @@
     return actions;
   }
 
+  function createPowerCutForm() {
+    go({
+      name: 'editPowerFailureForm',
+      query: { type: 'create' },
+    });
+  }
+
   function handleSelectionChange({ rows }: { rows: PowerCutFormFullModel[] }) {
     console.log('val :>> ', rows);
     if (rows.length === 0) {
@@ -589,6 +598,8 @@
     console.log('导出高压操作票 :>> ', exportFormCodes);
     const codes = export_codes.join(',');
 
+    loading.value = true;
+
     try {
       const { data } = await exportPowerCutTicketApi(type, codes);
       createMessage.success('导出成功, 详见浏览器下载附件');
@@ -606,6 +617,8 @@
       downloadByData(data, filename, downloadType);
     } catch (error: any) {
       throw new Error(error);
+    } finally {
+      loading.value = false;
     }
 
     if (exportFormCodes.value.length === 1) {

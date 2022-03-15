@@ -266,6 +266,7 @@
         };
 
         const compAttr: Recordable = {
+          style: { width: isCheck ? '' : '100%' },
           ...propsData,
           ...on,
           ...bindValue,
