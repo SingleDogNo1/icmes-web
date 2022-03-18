@@ -5,6 +5,7 @@
     @change="handleChange"
     :options="getOptions"
     v-model:value="state"
+    :loading="loading"
   >
     <template #[item]="data" v-for="item in Object.keys($slots)">
       <slot :name="item" v-bind="data || {}"></slot>
@@ -58,7 +59,7 @@
       valueField: propTypes.string.def('value'),
       immediate: propTypes.bool.def(true),
     },
-    emits: ['options-change', 'change'],
+    emits: ['options-ready', 'options-change', 'change'],
     setup(props, { emit }) {
       const options = ref<OptionsItem[]>([]);
       const loading = ref(false);
@@ -106,11 +107,13 @@
           loading.value = true;
           const res = await api(props.params);
           if (Array.isArray(res)) {
+            emit('options-ready', res); // 请求到结果, 未赋值
             options.value = res;
             emitChange();
             return;
           }
           if (props.resultField) {
+            emit('options-ready', get(res, props.resultField) || []); // 请求到结果, 未赋值
             options.value = get(res, props.resultField) || [];
           }
           emitChange();

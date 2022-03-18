@@ -41,17 +41,20 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useUserStore } from '/@/store/modules/user';
   // import { getPowerCutConfigListApi } from '/@/api/info/powerCutConfig';
-  import { editPowerCutSchemas as schemas } from './data';
+  import { editPowerCutSchemas as schemas } from './editPowerCutData';
+  import { useGlobSetting } from '/@/hooks/setting';
 
+  const { projectName } = useGlobSetting();
+  console.log('productName :>> ', projectName);
   const { createMessage } = useMessage();
   const { getAllAccount } = useUserStore();
   const loading = ref(false);
 
   getAllAccount?.map((item) => {
     item.fullOrgName =
-      item.fullOrgName === '赵楼选煤厂'
+      item.fullOrgName === projectName
         ? item.fullOrgName
-        : item.fullOrgName?.replace('赵楼选煤厂/', '');
+        : item.fullOrgName?.replace(`${projectName}/`, '');
   });
 
   const [register, { validate, getFieldsValue }] = useForm({
@@ -68,14 +71,17 @@
 
   async function handleSubmit() {
     try {
+      const value = getFieldsValue();
+      console.log('value :>> ', value);
+
       await validate();
-      (loading.value = true),
-        setTimeout(() => {
-          loading.value = false;
-          const value = getFieldsValue();
-          createMessage.success('提交成功！');
-          console.log('value :>> ', value);
-        }, 2000);
+      loading.value = true;
+      setTimeout(() => {
+        loading.value = false;
+        const value = getFieldsValue();
+        createMessage.success('提交成功！');
+        console.log('value :>> ', value);
+      }, 2000);
     } catch (error: any) {
       throw new Error(error);
     }

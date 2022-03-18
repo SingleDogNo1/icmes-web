@@ -21,6 +21,7 @@ import {
   Divider,
 } from 'ant-design-vue';
 
+import PowerCutDevice from './components/PowerCutDeviceSelect.vue';
 import RadioButtonGroup from './components/RadioButtonGroup.vue';
 import ApiSelect from './components/ApiSelect.vue';
 import ApiTreeSelect from './components/ApiTreeSelect.vue';
@@ -63,6 +64,7 @@ componentMap.set('InputCountDown', CountdownInput);
 
 componentMap.set('Upload', BasicUpload);
 componentMap.set('Divider', Divider);
+componentMap.set('PowerCutDevice', PowerCutDevice);
 
 export function add(compName: ComponentType, component: Component) {
   componentMap.set(compName, component);
