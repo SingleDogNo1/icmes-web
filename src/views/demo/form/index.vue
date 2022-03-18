@@ -533,6 +533,7 @@
   ];
 
   export default defineComponent({
+    name: 'FormDemo',
     components: { BasicForm, CollapseContainer, PageWrapper, ApiSelect, ASelect: Select },
     setup() {
       const check = ref(null);

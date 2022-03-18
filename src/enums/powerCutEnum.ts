@@ -1,5 +1,5 @@
-/* 停送电设备带电类型 */
-export enum DevicePowerTypesEnum {
+/* 停送电设备编码 */
+export enum DevicePowerTypeCodesEnum {
   /** 未知类型设备 */
   UNKNOWN = -1,
   /** 普通高压设备 */
@@ -16,4 +16,14 @@ export enum DevicePowerTypesEnum {
   REMOTE_LOW_VOLTAGE = 6,
   /** 远程非常规设备 */
   REMOTE_UNCONVENTIONAL_DEVICE = 7,
+}
+
+/** 停送电带电类型 */
+export enum DevicePowerTypesEnum {
+  /** 高压停送电 */
+  HIGH_VOLTAGE = 1,
+  /** 低压停送电 */
+  LOW_VOLTAGE = 2,
+  /** 特殊停送电 */
+  SPECIAL_VOLTAGE = 3,
 }

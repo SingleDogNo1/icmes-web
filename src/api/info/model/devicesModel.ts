@@ -1,4 +1,4 @@
-import { DevicePowerTypesEnum } from '/@/enums/powerCutEnum';
+import { DevicePowerTypeCodesEnum } from '/@/enums/powerCutEnum';
 import { EmployeeResultModel } from '/@/api/sys/model/userModel';
 
 /** 设备查询接口请求数据 */
@@ -10,7 +10,7 @@ export interface GetDevicesListParam {
   /** 设别ID集合 */
   deviceIds?: string[];
   /** 停送电设备带电类型集合 */
-  devicePowerTypes?: DevicePowerTypesEnum[];
+  devicePowerTypes?: DevicePowerTypeCodesEnum[];
   /** 设备种类列表 */
   deviceTypeList?: string[];
   /** 模糊查询条件,传processNO,code,name,model,standard拼接的字符串 */
@@ -265,22 +265,22 @@ export interface GetDevicesPowerListParam {
 }
 export interface GetPowerCutDevicesListParam {
   /** 是否正序 */
-  ascending: boolean;
-  category: number[];
+  ascending?: boolean;
+  category?: number[];
   /** 全局搜索(设备类型名称、设备名称(包含附属设备、设备编号、工艺号) */
-  globalName: string;
+  globalName?: string;
   /** 是否按照设备类型分类返回一棵假树 */
-  needTree: boolean;
+  needTree?: boolean;
   /** 排序的字段名 */
-  orderBy: string;
+  orderBy?: string;
   /** 权限组织id集合 */
-  organizationIds: number[];
+  organizationIds?: number[];
   /** 当前页码 */
-  pageNo: number;
+  pageNo?: number;
   /** 一页多少条记录(0标识不分页全部显示) */
   pageSize: number;
   /** 所属父级设备标识符，为-1或者小于-1或者空时，为查询主设备 */
-  parentId: number;
+  parentId?: number;
   /** 优先排序所需的父级设备标识符(关联设备) */
   parentIdsOrderBy?: number[];
   /** PLC检测类型(单选) */

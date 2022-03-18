@@ -4,20 +4,20 @@
       <p>{{ desc }}</p>
       <div class="device-item" v-for="item in devicesList" :key="item.deviceId">
         <img
-          v-if="item.powerType === DevicePowerTypesEnum['HIGH_VOLTAGE']"
+          v-if="item.powerType === DevicePowerTypeCodesEnum['HIGH_VOLTAGE']"
           src="../images/isHv.png"
           alt=""
         />
         <img
-          v-else-if="item.powerType === DevicePowerTypesEnum['REMOTE_HIGH_VOLTAGE']"
+          v-else-if="item.powerType === DevicePowerTypeCodesEnum['REMOTE_HIGH_VOLTAGE']"
           src="../images/isHvRo.png"
           alt=""
         />
         <img
           v-else-if="
             [
-              DevicePowerTypesEnum['REMOTE_LOW_VOLTAGE'],
-              DevicePowerTypesEnum['REMOTE_UNCONVENTIONAL_DEVICE'],
+              DevicePowerTypeCodesEnum['REMOTE_LOW_VOLTAGE'],
+              DevicePowerTypeCodesEnum['REMOTE_UNCONVENTIONAL_DEVICE'],
             ].includes(item.powerType)
           "
           src="../images/isRo.png"
@@ -45,7 +45,7 @@
   import { Tooltip, Tag } from 'ant-design-vue';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { DeviceInfoModel } from '/@/api/power/model/basicModel';
-  import { DevicePowerTypesEnum } from '/@/enums/powerCutEnum';
+  import { DevicePowerTypeCodesEnum } from '/@/enums/powerCutEnum';
   import { primaryColor } from '/@/settings/designSetting';
 
   defineProps({

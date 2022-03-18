@@ -127,9 +127,9 @@
       <template #department="{ record }">
         <Tooltip placement="bottom" :title="record.contactOrgName">
           {{
-            record.contactOrgName === '赵楼选煤厂'
+            record.contactOrgName === projectName
               ? record.contactOrgName
-              : record.contactOrgName.replace('赵楼选煤厂/', '')
+              : record.contactOrgName.replace(`${projectName}/`, '')
           }}
         </Tooltip>
       </template>
@@ -204,6 +204,7 @@
   import { PowerCutFormFullModel, DeviceInfoModel } from '/@/api/power/model/basicModel';
   import { useWebSocket } from '/@/hooks/web/useWebSocket';
   import { formatDate, diffDateTime } from '/@/utils/dateUtil';
+  import { useGlobSetting } from '/@/hooks/setting';
   import { primaryColor, errorColor } from '/@/settings/designSetting';
   import { cloneDeep } from 'lodash-es';
   import { useUserState } from '/@/hooks/web/useUserState';
@@ -213,6 +214,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useGo } from '/@/hooks/web/usePage';
 
+  const { projectName } = useGlobSetting();
   const { getDictMap } = useUserState();
   const powerCutStatusMap = getDictMap('BT_POWER_CUT_STATUS');
   const {
