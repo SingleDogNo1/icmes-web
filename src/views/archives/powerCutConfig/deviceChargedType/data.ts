@@ -102,6 +102,22 @@ export const schemas: FormSchema[] = [
     show: false,
   },
   {
+    field: 'hierarchy',
+    label: '排序字段',
+    component: 'Input',
+    required: true,
+    defaultValue: 0,
+    show: false,
+  },
+  {
+    field: 'isCurrentOrganizationIds',
+    label: '是否按照设备类型分类返回一棵假树',
+    component: 'Checkbox',
+    required: true,
+    defaultValue: true,
+    show: false,
+  },
+  {
     field: 'needTree',
     label: '是否按照设备类型分类返回一棵假树',
     component: 'Checkbox',
@@ -130,7 +146,7 @@ export const schemas: FormSchema[] = [
     label: '当前页',
     component: 'InputNumber',
     required: true,
-    defaultValue: 1,
+    defaultValue: 0,
     show: false,
   },
   {
@@ -138,7 +154,7 @@ export const schemas: FormSchema[] = [
     label: '每页条数',
     component: 'InputNumber',
     required: true,
-    defaultValue: 10,
+    defaultValue: 0,
     show: false,
   },
   {
@@ -156,7 +172,6 @@ export const schemas: FormSchema[] = [
     componentProps: {
       style: { width: '200px' },
       options: powerTypeOptions,
-      getPopupContainer: () => document.body,
     },
   },
   {
@@ -166,7 +181,6 @@ export const schemas: FormSchema[] = [
     componentProps: {
       style: { width: '200px' },
       options: plcDetectTypeOptions,
-      getPopupContainer: () => document.body,
     },
   },
   {

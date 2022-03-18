@@ -5,7 +5,7 @@
         ref="treeRef"
         search
         :treeData="treeData"
-        :replace-fields="{ key: 'id' }"
+        :fieldNames="{ key: 'id' }"
         @select="handleSelect"
       />
     </div>
@@ -20,16 +20,18 @@
 
 <script lang="ts" setup>
   import { PageWrapper } from '/@/components/Page';
-  import { ref, unref, nextTick } from 'vue';
+  import { ref, unref, nextTick, Ref } from 'vue';
   import { BasicTree, TreeActionType } from '/@/components/Tree';
   import { listToTreeAsParentId } from '/@/utils/helper/treeHelper';
   import { getDevicesPowerListApi } from '/@/api/info/devices';
-  import { DevicePowerModel } from '/@/api/info/model/devicesModel';
+  import { GetDevicesPowerListParam, DevicePowerModel } from '/@/api/info/model/devicesModel';
   import { cloneDeep } from 'lodash-es';
 
   const loading = ref(false);
   const treeRef = ref<Nullable<TreeActionType>>(null);
   const treeData = ref<any[]>([]);
+
+  const getDeviceTreeParams = ref({}) as Ref<GetDevicesPowerListParam>;
 
   const emit = defineEmits(['select']);
 
@@ -50,6 +52,8 @@
       list.map((item) => {
         item.title = item.parentId === 0 ? item.name : `${item.code} ${item.name}`;
         item.label = '';
+        if (item.parentId !== 0 || item.id === 0) {
+        }
       });
       treeData.value = listToTreeAsParentId(list, {
         parentId: 'categoryTreeParentId',
@@ -62,7 +66,7 @@
     } catch (error) {}
   }
 
-  const params = {
+  getDeviceTreeParams.value = {
     ascending: true,
     category: [],
     globalName: '',
@@ -71,12 +75,26 @@
     organizationIds: [],
     pageNo: 0,
     pageSize: 0,
-    parentId: -1,
+    parentId: null,
   };
 
-  getDevicesPowerList(params);
+  getDevicesPowerList(getDeviceTreeParams.value);
 
-  function handleSelect(selecttsIds) {
-    emit('select', selecttsIds[0]);
+  function handleSelect(selecttsIds, { selectedNodes }) {
+    console.log(selecttsIds, selectedNodes);
+    const id = selecttsIds[0],
+      node = selectedNodes[0];
+    console.log(node);
+
+    getDeviceTreeParams.value.parentId = 111;
+
+    // if (node.parentId !== 0 || node.id === 0) {
+    //   getDeviceTreeParams.value.category = [];
+    //   getDeviceTreeParams.value.parentId = node.id === 0 ? null : node.id;
+    // } else {
+    //   getDeviceTreeParams.value.category = [node.id];
+    //   getDeviceTreeParams.value.parentId = null;
+    // }
+    emit('select', id);
   }
 </script>

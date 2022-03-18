@@ -42,6 +42,7 @@
       'update:selectedKeys',
       'update:value',
       'change',
+      'select',
       'check',
       'update:searchValue',
     ],
@@ -313,6 +314,7 @@
           const v = toRaw(state.checkedKeys);
           emit('update:value', v);
           emit('change', v);
+          emit('select', v);
         },
       );
 

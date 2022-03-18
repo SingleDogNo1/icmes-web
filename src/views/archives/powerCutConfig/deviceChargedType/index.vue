@@ -5,7 +5,7 @@
         <Col :span="8">
           <DeviceTree @select="handleSelect" />
         </Col>
-        <Col :span="16" class="bg-white">
+        <Col :span="16">
           <SettingTable :parent-id="parentId" />
         </Col>
       </Row>
@@ -36,3 +36,9 @@
     parentId.value = nodeId;
   }
 </script>
+
+<style lang="less" scoped>
+  .wrap {
+    background: #f0f2f5;
+  }
+</style>

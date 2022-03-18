@@ -237,7 +237,7 @@ export interface DeviceSpecDataModel {
 }
 
 /** 设备带电类型设备查询接口请求数据 */
-export interface getDevicesPowerListParam {
+export interface GetDevicesPowerListParam {
   /** 是否正序 */
   ascending?: boolean;
   /** 设别标识符集合 */
@@ -261,7 +261,7 @@ export interface getDevicesPowerListParam {
   /** 一页多少条记录 0表示不分页全部显示 */
   pageSize?: number;
   /** 所属父级设备标识符，为-1或者小于-1或者空时，为查询主设备 */
-  parentId?: number;
+  parentId?: Nullable<number>;
 }
 export interface GetPowerCutDevicesListParam {
   /** 是否正序 */
@@ -296,7 +296,7 @@ export interface GetPowerCutDevicesListParam {
 }
 
 /** 设备带电类型设备查询接口返回数据 */
-export interface getDevicesPowerListResultModel {
+export interface GetDevicesPowerListResultModel {
   /** 已关联设备 */
   associatedDevices: number[];
   items: DevicePowerModel[];
@@ -394,4 +394,13 @@ export interface PowerCutDeviceModel {
   processNo: string;
   /** 设备状态 */
   status: string;
+}
+
+export interface BatchUpdatePowerConfigParam {
+  /** 设备ids */
+  deviceIds?: number[];
+  /** PLC检测类型 */
+  plcDetectType?: number;
+  /** 带电类型 */
+  powerType?: number;
 }

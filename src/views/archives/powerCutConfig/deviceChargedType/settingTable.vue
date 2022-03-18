@@ -1,10 +1,18 @@
 <template>
-  <PageWrapper contentFullHeight fixedHeight dense>
+  <PageWrapper contentFullHeight dense>
     <div class="h-full p-4 overflow-auto bg-white">
-      <BasicForm :labelWidth="100" @register="register" @submit="handleSubmit" />
-      <a-button type="primary" class="mb-2 mr-2"> 批量配置</a-button>
-      <BasicTable @register="registerTable" />
+      <BasicForm :labelWidth="100" @register="registerForm" @submit="handleSubmit" />
+      <a-button
+        type="primary"
+        class="mb-2 mr-2"
+        @click="batchSetting"
+        :disabled="form.deviceIds.length === 0"
+      >
+        批量配置</a-button
+      >
+      <BasicTable @register="registerTable" @selection-change="handleSelectionChange" />
     </div>
+    <batchSettingModal @register="registerModal" @update:config="getDevicesPowerList(searchData)" />
   </PageWrapper>
 </template>
 
@@ -21,10 +29,12 @@
   import { BasicTable, useTable } from '/@/components/Table';
   import { getDevicesPowerListApi } from '/@/api/info/devices';
   import { onMounted, ref, Ref, nextTick, watch } from 'vue';
-  import { getDevicesPowerListParam } from '/@/api/info/model/devicesModel';
+  import { GetDevicesPowerListParam } from '/@/api/info/model/devicesModel';
+  import { useModal } from '/@/components/Modal';
+  import batchSettingModal from './batchSettingModal.vue';
+  import { map } from 'lodash-es';
 
-  const searchData = ref({}) as Ref<getDevicesPowerListParam>;
-  console.log(searchData.value);
+  const searchData = ref({}) as Ref<GetDevicesPowerListParam>;
 
   const props = defineProps({
     parentId: {
@@ -33,7 +43,17 @@
     },
   });
 
-  const [register, { getFieldsValue }] = useForm({
+  const form: Ref<{
+    deviceIds: (string | number)[];
+    powerType: string | null;
+    plcDetectType: string | null;
+  }> = ref({
+    deviceIds: [],
+    powerType: null,
+    plcDetectType: null,
+  });
+
+  const [registerForm, { getFieldsValue }] = useForm({
     layout: 'inline',
     schemas,
     autoSubmitOnEnter: true,
@@ -42,7 +62,13 @@
   const [registerTable, { setTableData }] = useTable({
     columns,
     ellipsis: false,
+    rowSelection: {
+      type: 'checkbox',
+    },
+    rowKey: 'id',
   });
+
+  const [registerModal, { openModal }] = useModal();
 
   onMounted(async () => {
     await nextTick();
@@ -70,5 +96,23 @@
     } catch (error) {}
   }
 
+  function handleSelectionChange({ rows }) {
+    console.log(rows);
+    if (rows.length > 0) {
+      form.value.deviceIds = map(rows, 'id');
+      if (rows.length == 1) {
+        form.value.powerType = rows[0].powerType;
+        form.value.plcDetectType = rows[0].plcDetectType;
+      } else {
+        form.value.powerType = form.value.plcDetectType = null;
+      }
+    } else {
+      form.value.deviceIds = [];
+    }
+  }
   function handleSubmit() {}
+
+  function batchSetting() {
+    openModal(true, form);
+  }
 </script>
