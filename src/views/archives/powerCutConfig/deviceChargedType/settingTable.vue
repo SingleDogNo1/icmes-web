@@ -28,7 +28,7 @@
   import { schemas, columns } from './data';
   import { BasicTable, useTable } from '/@/components/Table';
   import { getDevicesPowerListApi } from '/@/api/info/devices';
-  import { onMounted, ref, Ref, nextTick, watch } from 'vue';
+  import { onMounted, ref, Ref, nextTick, watch, PropType } from 'vue';
   import { GetDevicesPowerListParam } from '/@/api/info/model/devicesModel';
   import { useModal } from '/@/components/Modal';
   import batchSettingModal from './batchSettingModal.vue';
@@ -37,9 +37,17 @@
   const searchData = ref({}) as Ref<GetDevicesPowerListParam>;
 
   const props = defineProps({
+    id: {
+      type: Number,
+      require: true,
+    },
     parentId: {
       type: Number,
       require: true,
+    },
+    category: {
+      type: Array as PropType<string[]>,
+      default: () => [],
     },
   });
 
@@ -73,14 +81,17 @@
   onMounted(async () => {
     await nextTick();
     searchData.value = getFieldsValue();
+    getDevicesPowerList(searchData.value);
+    console.log(searchData.value);
   });
 
   watch(
-    () => props.parentId,
+    () => props.id,
     (value) => {
       console.log(searchData.value, value);
 
-      searchData.value.parentId = value;
+      searchData.value.parentId = props.parentId;
+      searchData.value.category = props.category;
       getDevicesPowerList(searchData.value);
     },
     {

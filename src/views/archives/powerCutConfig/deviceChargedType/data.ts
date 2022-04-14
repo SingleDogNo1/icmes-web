@@ -160,9 +160,9 @@ export const schemas: FormSchema[] = [
   {
     field: 'parentId',
     label: '所属父级设备标识符',
-    component: 'InputNumber',
+    component: 'Input',
     required: true,
-    defaultValue: 0,
+    defaultValue: null,
     show: false,
   },
   {
@@ -200,14 +200,14 @@ export const columns: BasicColumn[] = [
   {
     title: '设备',
     dataIndex: 'processNo',
-    customRender: ({ record }) => {
-      return `${record.processNo} ${record.name} ${record.code}`;
+    customRender: ({ record }: { record: any }) => {
+      return `${record.processNo || ''} ${record.name} ${record.code}?? `;
     },
   },
   {
     title: '带电类型',
     dataIndex: 'powerType',
-    customRender: ({ record }) => {
+    customRender: ({ record }: { record: any }) => {
       const item = powerTypeOptions.find((val) => val.value === record.powerType);
       return item?.label;
     },
@@ -215,7 +215,7 @@ export const columns: BasicColumn[] = [
   {
     title: 'PLC监测类型',
     dataIndex: 'plcDetectType',
-    customRender: ({ record }) => {
+    customRender: ({ record }: { record: any }) => {
       const item = plcDetectTypeOptions.find((val) => val.value === record.plcDetectType);
       return item?.label;
     },

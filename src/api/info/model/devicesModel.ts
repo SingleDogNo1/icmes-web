@@ -241,7 +241,7 @@ export interface GetDevicesPowerListParam {
   /** 是否正序 */
   ascending?: boolean;
   /** 设别标识符集合 */
-  category?: string[];
+  category?: Nullable<string[]>;
   /** 全局搜索（设备类型名称、设备名称（包含附属设备）、设备编号、工艺号）*/
   globalName?: string;
   /** 迭代层级数，全集为0 */

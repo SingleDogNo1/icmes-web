@@ -6,7 +6,7 @@
           <DeviceTree @select="handleSelect" />
         </Col>
         <Col :span="16">
-          <SettingTable :parent-id="parentId" />
+          <SettingTable :id="id" :parent-id="parentId" :category="category" />
         </Col>
       </Row>
     </div>
@@ -27,13 +27,17 @@
   import { ref } from 'vue';
 
   const searchData = ref({});
-  const parentId = ref(0);
+  const parentId = ref(null);
+  const id = ref(null);
+  const category = ref([]);
   console.log(searchData.value);
 
-  function handleSelect(nodeId) {
-    console.log(nodeId);
+  function handleSelect(node) {
+    console.log(node);
 
-    parentId.value = nodeId;
+    id.value = node.id;
+    parentId.value = node.parentId;
+    category.value = node.category;
   }
 </script>
 

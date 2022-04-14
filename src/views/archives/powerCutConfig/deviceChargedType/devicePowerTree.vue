@@ -52,8 +52,6 @@
       list.map((item) => {
         item.title = item.parentId === 0 ? item.name : `${item.code} ${item.name}`;
         item.label = '';
-        if (item.parentId !== 0 || item.id === 0) {
-        }
       });
       treeData.value = listToTreeAsParentId(list, {
         parentId: 'categoryTreeParentId',
@@ -80,21 +78,19 @@
 
   getDevicesPowerList(getDeviceTreeParams.value);
 
-  function handleSelect(selecttsIds, { selectedNodes }) {
-    console.log(selecttsIds, selectedNodes);
-    const id = selecttsIds[0],
+  function handleSelect(selectedIds, { selectedNodes }) {
+    console.log(selectedIds, selectedNodes);
+    const id = selectedIds[0],
       node = selectedNodes[0];
     console.log(node);
 
-    getDeviceTreeParams.value.parentId = 111;
-
-    // if (node.parentId !== 0 || node.id === 0) {
-    //   getDeviceTreeParams.value.category = [];
-    //   getDeviceTreeParams.value.parentId = node.id === 0 ? null : node.id;
-    // } else {
-    //   getDeviceTreeParams.value.category = [node.id];
-    //   getDeviceTreeParams.value.parentId = null;
-    // }
-    emit('select', id);
+    if (node.parentId !== 0 || node.id === 0) {
+      node.category = [];
+      node.parentId = node.id === 0 ? null : node.id;
+    } else {
+      node.category = [node.id];
+      node.parentId = null;
+    }
+    emit('select', node);
   }
 </script>

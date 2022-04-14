@@ -422,7 +422,6 @@ export const editPowerCutSchemas: FormSchema[] = [
             ].includes(item.powerType)
               ? '远程'
               : '';
-
             item.powerTypeText = text; // 停送电类型转换为汉字显示
           });
         },
