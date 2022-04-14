@@ -2,10 +2,11 @@ import { defHttp } from '/@/utils/http/axios';
 import {
   GetDevicesListParam,
   GetDevicesListResultModel,
-  getDevicesPowerListParam,
-  getDevicesPowerListResultModel,
+  GetDevicesPowerListParam,
+  GetDevicesPowerListResultModel,
   GetPowerCutDevicesListParam,
   GetPowerCutDevicesListResultModel,
+  BatchUpdatePowerConfigParam,
 } from './model/devicesModel';
 
 import { ErrorMessageMode } from '/#/axios';
@@ -31,12 +32,28 @@ export function getPowerCutDevicesListApi(params: GetPowerCutDevicesListParam) {
 
 /** 设备带电类型设备查询 */
 export function getDevicesPowerListApi(
-  params: getDevicesPowerListParam,
+  params: GetDevicesPowerListParam,
   mode: ErrorMessageMode = 'modal',
 ) {
-  return defHttp.post<getDevicesPowerListResultModel>(
+  return defHttp.post<GetDevicesPowerListResultModel>(
     {
       url: `${Api.baseUrl}list/power`,
+      params,
+    },
+    {
+      errorMessageMode: mode,
+    },
+  );
+}
+
+/** 批量更新设备停送电配置- */
+export function batchUpdatePowerConfigApi(
+  params: BatchUpdatePowerConfigParam,
+  mode: ErrorMessageMode = 'modal',
+) {
+  return defHttp.put<boolean>(
+    {
+      url: `${Api.baseApi}power/config`,
       params,
     },
     {
