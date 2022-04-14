@@ -6,4 +6,5 @@ export default {
   user: 'User',
   workflow: 'Workflow',
   strategyEngine: 'Strategy Engine',
+  configurableObjects: 'Configurable Objects',
 };

@@ -74,6 +74,40 @@ const systemManagement: BackModeRouteRecordRaw = {
         title: 'routes.system.strategyEngine',
       },
     },
+    {
+      path: 'configurable-objects',
+      name: 'systemManagementConfigurableObjectsLayout',
+      component: 'LAYOUT',
+      redirect: '/system/configurable-objects/index',
+      meta: {
+        code: 24700,
+        hideChildrenInMenu: true,
+        title: 'routes.system.configurableObjects',
+      },
+      children: [
+        {
+          path: 'index',
+          name: 'systemManagementConfigurableObjects',
+          component: '/systemManagement/configurableObjects/index',
+          meta: {
+            code: 24700,
+            title: 'routes.system.configurableObjects',
+          },
+        },
+        {
+          path: 'detail',
+          name: 'systemManagementConfigurableObjectsDetail',
+          component: '/systemManagement/configurableObjects/detail',
+          meta: {
+            code: 24700,
+            title: 'routes.system.configurableObjects',
+            hideMenu: true,
+            hideTab: true,
+            currentActiveMenu: '/system/configurable-objects/index',
+          },
+        },
+      ],
+    },
   ],
 };
 

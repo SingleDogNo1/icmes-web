@@ -7,4 +7,5 @@ export default {
   notificationWay: '通知方式',
   workflow: '工作流',
   strategyEngine: '策略引擎',
+  configurableObjects: '配点对象',
 };

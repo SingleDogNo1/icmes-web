@@ -256,8 +256,23 @@ export const editPowerCutSchemas: FormSchema[] = [
   {
     field: 'scheduledDuration',
     component: 'Input',
-    required: true,
     label: '计划送电时长',
+    rules: [
+      {
+        required: true,
+        validator: (_, value) => {
+          if (!value) {
+            return Promise.reject('请选择开始结束时间');
+          } else if (value === 0) {
+            return Promise.reject('停送电时长不能为 0');
+          } else if (value < 0) {
+            return Promise.reject('送电时间不能早于停电时间');
+          } else {
+            return Promise.resolve();
+          }
+        },
+      },
+    ],
     componentProps: {
       placeholder: '',
       disabled: true,

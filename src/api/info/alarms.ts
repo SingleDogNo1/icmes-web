@@ -8,15 +8,13 @@ import {
 } from './model/alarmModel';
 
 enum Api {
-  basicApi = '/info/alarms/',
-  alarmsList = '/info/alarms/list/',
-  alarmsOperations = '/info/alarms/alarmObjectOperations',
+  baseUrl = '/info/alarms/',
 }
 
 /** 报警看板列表查询 */
 export function getAlarmsListApi(params: GetAlarmsListParam) {
   return defHttp.post<GetAlarmsListResultModel>({
-    url: Api.alarmsList,
+    url: Api.baseUrl + 'list/',
     params,
   });
 }
@@ -24,7 +22,7 @@ export function getAlarmsListApi(params: GetAlarmsListParam) {
 /** 处理报警操作--作者：lrq */
 export function updateAlarmsOperationsApi(params: UpdateAlarmsOperationsParam) {
   return defHttp.post<UpdateAlarmsOperationsResultModel>({
-    url: Api.alarmsOperations,
+    url: Api.baseUrl + 'alarmObjectOperations',
     params,
   });
 }
@@ -32,6 +30,6 @@ export function updateAlarmsOperationsApi(params: UpdateAlarmsOperationsParam) {
 /** 报警对象查询详细--作者：zh xia */
 export function getAlarmsDetailApi(id: number) {
   return defHttp.get<AlarmsObjectAdvanceModel>({
-    url: Api.basicApi + id,
+    url: Api.baseUrl + id,
   });
 }

@@ -2,13 +2,13 @@ import { defHttp } from '/@/utils/http/axios';
 import { GetLogListParam, GetLogListResultModel } from './model/logModel';
 
 enum Api {
-  baseUrl = '/info/log/list/',
+  baseUrl = '/info/log/',
 }
 
 /** 获取操作日志列表 */
 export function getLogListApi(params: GetLogListParam) {
   return defHttp.post<GetLogListResultModel>({
-    url: Api.baseUrl,
+    url: Api.baseUrl + 'list/',
     params,
   });
 }

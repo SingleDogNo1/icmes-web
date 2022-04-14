@@ -12,20 +12,20 @@ import {
 import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
-  baseApi = '/info/devices/',
+  baseUrl = '/info/devices/',
 }
 
 /** 设备列表查询 */
 export function getDevicesListApi(params: GetDevicesListParam) {
   return defHttp.post<GetDevicesListResultModel>({
-    url: Api.baseApi + 'list/',
+    url: Api.baseUrl + 'list/',
     params,
   });
 }
 
 export function getPowerCutDevicesListApi(params: GetPowerCutDevicesListParam) {
   return defHttp.post<GetPowerCutDevicesListResultModel>({
-    url: Api.baseApi + 'list/power',
+    url: Api.baseUrl + 'list/power',
     params,
   });
 }
@@ -37,7 +37,7 @@ export function getDevicesPowerListApi(
 ) {
   return defHttp.post<GetDevicesPowerListResultModel>(
     {
-      url: `${Api.baseApi}list/power`,
+      url: `${Api.baseUrl}list/power`,
       params,
     },
     {
