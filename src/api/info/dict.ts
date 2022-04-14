@@ -15,16 +15,14 @@ import {
 } from './model/dictModel';
 
 enum Api {
-  getDictTypesList = '/info/dictTypes/list/',
-  editDictType = '/info/dictTypes/',
-  getDictDataList = '/info/dictDatas/list/',
-  editDictData = '/info/dictDatas/',
+  dictTypeUrl = '/info/dictTypes/',
+  dictDataUrl = '/info/dictDatas/',
 }
 
 /** 字典类型查询--作者：何秋菊 */
 export function getDictTypesListApi(params: GetDictTypesParam) {
   return defHttp.post<GetDictTypesResultModel>({
-    url: Api.getDictTypesList,
+    url: Api.dictTypeUrl + 'list/',
     params,
   });
 }
@@ -32,7 +30,7 @@ export function getDictTypesListApi(params: GetDictTypesParam) {
 /** 新增字典类型-作者：何秋菊 */
 export function addDictTypeApi(params: AddDictTypeParam) {
   return defHttp.post<AddDictTypeResultModel>({
-    url: Api.editDictType,
+    url: Api.dictTypeUrl,
     params,
   });
 }
@@ -40,7 +38,7 @@ export function addDictTypeApi(params: AddDictTypeParam) {
 /** 修改字典类型-作者：何秋菊 */
 export function editDictTypeApi(params: EditDictTypeParam) {
   return defHttp.put<EditDictTypeResultModel>({
-    url: Api.editDictType + params.code,
+    url: Api.dictTypeUrl + params.code,
     params,
   });
 }
@@ -48,14 +46,14 @@ export function editDictTypeApi(params: EditDictTypeParam) {
 /** 删除字典类型-作者：何秋菊 */
 export function deleteDictTypeApi(code: string) {
   return defHttp.delete<boolean>({
-    url: Api.editDictType + code,
+    url: Api.dictTypeUrl + code,
   });
 }
 
 /** 字典类型详情-作者：何秋菊 */
 export function getDictDataApi(params: GetDictDataParam) {
   return defHttp.post<GetDictDataResultModel>({
-    url: Api.getDictDataList,
+    url: Api.dictDataUrl + 'list/',
     params,
   });
 }
@@ -63,7 +61,7 @@ export function getDictDataApi(params: GetDictDataParam) {
 /** 新增字典数据-作者：何秋菊 */
 export function addDictDataApi(params: AddDictDataParam) {
   return defHttp.post<boolean>({
-    url: Api.editDictData,
+    url: Api.dictDataUrl,
     params,
   });
 }
@@ -71,7 +69,7 @@ export function addDictDataApi(params: AddDictDataParam) {
 /** 修改字典数据-作者：何秋菊 */
 export function updateDictDataApi(code: string, params: UpdateDictDataParam) {
   return defHttp.put<boolean>({
-    url: Api.editDictData + params.typeCode + '/' + code,
+    url: Api.dictDataUrl + params.typeCode + '/' + code,
     params,
   });
 }
@@ -79,7 +77,7 @@ export function updateDictDataApi(code: string, params: UpdateDictDataParam) {
 /** 禁用字典数据-作者：何秋菊 */
 export function disabledDictDataApi(typeCode: string, code: string, params: DisabledDictDataParam) {
   return defHttp.put<boolean>({
-    url: Api.editDictData + typeCode + '/' + code + '/disabled',
+    url: Api.dictDataUrl + typeCode + '/' + code + '/disabled',
     params,
   });
 }
@@ -87,7 +85,7 @@ export function disabledDictDataApi(typeCode: string, code: string, params: Disa
 /** 启用字典数据-作者：何秋菊 */
 export function enabledDictDataApi(typeCode: string, code: string, params: EnabledDictDataParam) {
   return defHttp.put<boolean>({
-    url: Api.editDictData + typeCode + '/' + code + '/enabled',
+    url: Api.dictDataUrl + typeCode + '/' + code + '/enabled',
     params,
   });
 }
@@ -95,6 +93,6 @@ export function enabledDictDataApi(typeCode: string, code: string, params: Enabl
 /** 字典数据删除-作者：何秋菊 */
 export function deleteDictDataApi(typeCode: string, code: string) {
   return defHttp.delete<boolean>({
-    url: Api.editDictData + typeCode + '/' + code,
+    url: Api.dictDataUrl + typeCode + '/' + code,
   });
 }

@@ -1,12 +1,5 @@
 <template>
-  <PageWrapper dense contentFullHeight contentBackground>
-    <template #headerContent>
-      <div class="flex">
-        <Icon icon="ep:back" :size="28" />
-        <p class="text-lg ml-2">新建停送电单</p>
-      </div>
-    </template>
-
+  <PageWrapper dense contentFullHeight contentBackground title="新建停送电单">
     <BasicForm @register="register">
       <!-- 停送电联系人 -->
       <template #contactUser="{ model, field }">
@@ -35,7 +28,6 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { PageWrapper } from '/@/components/Page';
-  import { Icon } from '/@/components/Icon';
   import { BasicForm, useForm } from '/@/components/Form';
   import { Select } from 'ant-design-vue';
   import { useMessage } from '/@/hooks/web/useMessage';

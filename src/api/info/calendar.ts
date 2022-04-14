@@ -7,13 +7,13 @@ import {
 } from './model/calendarModel';
 
 enum Api {
-  basicApi = '/info/calanders/',
+  baseUrl = '/info/calanders/',
 }
 
 /** 日历查询 */
 export function getCalendarsStatisticsApi(params: GetCalendarStatisticsParam) {
   return defHttp.post<GetCalendarStatisticsResultModel>({
-    url: Api.basicApi + 'statistics/',
+    url: Api.baseUrl + 'statistics/',
     params,
   });
 }
@@ -21,7 +21,7 @@ export function getCalendarsStatisticsApi(params: GetCalendarStatisticsParam) {
 /** 日历日期更新 */
 export function updateCalendarsStatisticsApi(day: string, params: UpdateCalendarStatisticsParam) {
   return defHttp.put<UpdateCalendarStatisticsResultModel>({
-    url: Api.basicApi + day,
+    url: Api.baseUrl + day,
     params,
   });
 }

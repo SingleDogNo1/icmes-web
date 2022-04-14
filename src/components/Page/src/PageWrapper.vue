@@ -5,8 +5,12 @@
       :title="title"
       v-bind="omit($attrs, 'class')"
       ref="headerRef"
+      @back="() => go(-1)"
       v-if="content || $slots.headerContent || title || getHeaderSlots.length"
     >
+      <template #backIcon>
+        <Icon icon="ep:back" :size="28" class="cursor-pointer" />
+      </template>
       <template #default>
         <template v-if="content">
           {{ content }}
@@ -34,20 +38,20 @@
 </template>
 <script lang="ts">
   import { CSSProperties, PropType, provide } from 'vue';
-
   import { defineComponent, computed, watch, ref, unref } from 'vue';
   import PageFooter from './PageFooter.vue';
-
+  import { Icon } from '/@/components/Icon';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { propTypes } from '/@/utils/propTypes';
   import { omit } from 'lodash-es';
   import { PageHeader } from 'ant-design-vue';
   import { useContentHeight } from '/@/hooks/web/useContentHeight';
   import { PageWrapperFixedHeightKey } from '..';
+  import { useRouter } from 'vue-router';
 
   export default defineComponent({
     name: 'PageWrapper',
-    components: { PageFooter, PageHeader },
+    components: { PageFooter, PageHeader, Icon },
     inheritAttrs: false,
     props: {
       title: propTypes.string,
@@ -69,6 +73,7 @@
       const contentRef = ref(null);
       const footerRef = ref(null);
       const { prefixCls } = useDesign('page-wrapper');
+      const { go } = useRouter();
 
       provide(
         PageWrapperFixedHeightKey,
@@ -153,6 +158,7 @@
         getShowFooter,
         omit,
         getContentClass,
+        go,
       };
     },
   });

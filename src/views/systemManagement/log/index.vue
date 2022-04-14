@@ -17,11 +17,10 @@
   import { formatDate } from '/@/utils/dateUtil';
   import { PageWrapper } from '/@/components/Page';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { BasicTable, useTable } from '/@/components/Table';
+  import { BasicTable, useTable, PaginationProps } from '/@/components/Table';
   import { useUserState } from '/@/hooks/web/useUserState';
   import { getLogListApi } from '/@/api/info/log';
   import { GetLogListParam } from '/@/api/info/model/logModel';
-  import { PaginationProps } from '/@/components/Table';
   import { schemas, columns } from './data';
 
   const { getDictMap } = useUserState();
