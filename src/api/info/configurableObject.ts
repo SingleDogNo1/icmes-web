@@ -40,3 +40,10 @@ export function editConfigurableObjectApi(id: number, params: ConfigurableObject
     params,
   });
 }
+
+/** 修改配点对象-作者：杨晓飞 */
+export function deleteConfigurableObjectApi(id: number) {
+  return defHttp.delete<EditConfigurableObjectResultModel>({
+    url: Api.baseUrl + id,
+  });
+}
