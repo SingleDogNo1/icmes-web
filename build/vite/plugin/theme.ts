@@ -20,39 +20,48 @@ export function configThemePlugin(isBuild: boolean): PluginOption[] {
     mixLighten,
     tinycolor,
   });
+
+  const vite_theme_plugin = viteThemePlugin({
+    resolveSelector: (s) => {
+      s = s.trim();
+      switch (s) {
+        case '.ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon':
+          return '.ant-steps-item-icon > .ant-steps-icon';
+        case '.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)':
+        case '.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover':
+        case '.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):active':
+          return s;
+        case '.ant-steps-item-icon > .ant-steps-icon':
+          return s;
+        case '.ant-select-item-option-selected:not(.ant-select-item-option-disabled)':
+          return s;
+        default:
+          if (s.includes('.ant-btn')) {
+            // 按钮被重新定制过，需要过滤掉class防止覆盖
+            return s;
+          }
+      }
+      return s.startsWith('[data-theme') ? s : `[data-theme] ${s}`;
+    },
+    colorVariables: [...getThemeColors(), ...colors],
+  });
+
+  vite_theme_plugin.forEach(function (item) {
+    if ('vite:theme' === item.name) {
+      if (isBuild) {
+        delete item.enforce;
+      }
+    }
+  });
+
   const plugin = [
-    viteThemePlugin({
-      resolveSelector: (s) => {
-        s = s.trim();
-        switch (s) {
-          case '.ant-steps-item-process .ant-steps-item-icon > .ant-steps-icon':
-            return '.ant-steps-item-icon > .ant-steps-icon';
-          case '.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)':
-          case '.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):hover':
-          case '.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):active':
-            return s;
-          case '.ant-steps-item-icon > .ant-steps-icon':
-            return s;
-          case '.ant-select-item-option-selected:not(.ant-select-item-option-disabled)':
-            return s;
-          default:
-            if (s.indexOf('.ant-btn') >= -1) {
-              // 按钮被重新定制过，需要过滤掉class防止覆盖
-              return s;
-            }
-        }
-        return s.startsWith('[data-theme') ? s : `[data-theme] ${s}`;
-      },
-      colorVariables: [...getThemeColors(), ...colors],
-    }),
+    vite_theme_plugin,
     antdDarkThemePlugin({
       preloadFiles: [
         path.resolve(process.cwd(), 'node_modules/ant-design-vue/dist/antd.less'),
-        //path.resolve(process.cwd(), 'node_modules/ant-design-vue/dist/antd.dark.less'),
         path.resolve(process.cwd(), 'src/design/index.less'),
       ],
       filter: (id) => (isBuild ? !id.endsWith('antd.less') : true),
-      // extractCss: false,
       darkModifyVars: {
         ...generateModifyVars(true),
         'text-color': '#c9d1d9',
@@ -60,11 +69,8 @@ export function configThemePlugin(isBuild: boolean): PluginOption[] {
         'text-color-base': '#c9d1d9',
         'component-background': '#151515',
         'heading-color': 'rgb(255 255 255 / 65%)',
-        // black: '#0e1117',
-        // #8b949e
         'text-color-secondary': '#8b949e',
         'border-color-base': '#303030',
-        // 'border-color-split': '#30363d',
         'item-active-bg': '#111b26',
         'app-content-background': '#1e1e1e',
         'tree-node-selected-bg': '#11263c',
