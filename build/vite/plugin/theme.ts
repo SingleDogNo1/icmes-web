@@ -20,7 +20,7 @@ export function configThemePlugin(isBuild: boolean): PluginOption[] {
     mixLighten,
     tinycolor,
   });
-
+  // 抽取出viteThemePlugin插件，下方会根据不同环境设置enforce
   const vite_theme_plugin = viteThemePlugin({
     resolveSelector: (s) => {
       s = s.trim();
@@ -48,6 +48,7 @@ export function configThemePlugin(isBuild: boolean): PluginOption[] {
 
   vite_theme_plugin.forEach(function (item) {
     if ('vite:theme' === item.name) {
+      // 打包时去除enforce: "post"，vite 2.6.x适配，否则生成app-theme-style为空，因为async transform(code, id) 的code没有正确获取
       if (isBuild) {
         delete item.enforce;
       }
