@@ -1,16 +1,17 @@
-// import { mount } from '@vue/test-utils';
-// import { Button } from '/@/components/Button';
+import { mount } from '@vue/test-utils';
+import HelloWorld from '../src/components/Button/src/BasicButton.vue';
+// import HelloWorld from '/@/components/HelloWorld.vue';
 
-test('if jest is normal.', async () => {
-  expect('jest').toEqual('jest');
+describe('HelloWorld', () => {
+  it('should display header text', () => {
+    const msg = 'Hello Vue 3';
+    const wrapper = mount(HelloWorld, { slots: { default: msg } });
+
+    expect(wrapper.text()).toContain(msg);
+
+    // const msg = 'Hello Vue 3';
+    // const wrapper = mount(HelloWorld, { props: { msg } });
+
+    // expect(wrapper.find('h1').text()).toEqual(msg);
+  });
 });
-
-// TODO Vue component testing is not supported temporarily
-// test('is a Vue instance.', async () => {
-//   const wrapper = mount(Button, {
-//     slots: {
-//       default: 'Button text',
-//     },
-//   });
-//   expect(wrapper.html()).toContain('Button text');
-// });

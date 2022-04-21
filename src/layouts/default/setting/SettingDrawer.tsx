@@ -1,5 +1,5 @@
 import { defineComponent, computed, unref } from 'vue';
-import { BasicDrawer } from '/@/components/Drawer';
+import { BasicDrawer } from '/@/components/Drawer/index';
 import { Divider } from 'ant-design-vue';
 import {
   TypePicker,
@@ -9,7 +9,6 @@ import {
   SelectItem,
   InputNumberItem,
 } from './components';
-import { ColorPicker } from '/@/components/ColorPicker';
 
 import { AppDarkModeToggle } from '/@/components/Application';
 
@@ -134,15 +133,12 @@ export default defineComponent({
       );
     }
 
-    // TODO 动态修改系统主题色功能暂无实现方案, 如何实现??
     function renderMainTheme() {
       return (
-        <ColorPicker
-          colorsDefault={APP_PRESET_COLOR_LIST}
-          color={unref(getThemeColor)}
-          onChangeColor={({ hex, rgba }) => {
-            console.log('value :>> ', hex, rgba);
-          }}
+        <ThemeColorPicker
+          colorList={APP_PRESET_COLOR_LIST}
+          def={unref(getThemeColor)}
+          event={HandlerEnum.CHANGE_THEME_COLOR}
         />
       );
     }

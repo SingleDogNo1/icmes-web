@@ -31,14 +31,19 @@
     ActionItem,
   } from '/@/components/Table';
   import { schemas, columns } from './data';
-  import { getConfigurableObjectsListApi } from '/@/api/info/configurableObject';
+  import {
+    getConfigurableObjectsListApi,
+    deleteConfigurableObjectApi,
+  } from '/@/api/info/configurableObject';
   import {
     GetConfigurableObjectsListParam,
     ConfigurableObjectFullModel,
   } from '/@/api/info/model/configurableObjectModel';
   import { useGo } from '/@/hooks/web/usePage';
+  import { useMessage } from '/@/hooks/web/useMessage';
 
   const go = useGo();
+  const { createMessage } = useMessage();
 
   const loading = ref(false);
 
@@ -90,9 +95,10 @@
           confirm: async () => {
             loading.value = false;
             try {
-              // await deleteRoleApi(record.id);
-              // createMessage.success('删除成功');
               console.log('record :>> ', record);
+              await deleteConfigurableObjectApi(record.id!);
+              createMessage.success('删除成功');
+              await getTableData();
             } catch (error: any) {
               throw new Error(error);
             } finally {

@@ -17,15 +17,15 @@ export interface GetConfigurableObjectsListResultModel {
   totalPages: number;
 }
 
-export interface ConfigurableObjectFullModel {
+export interface ConfigurableObjectModel {
   /** 编号 */
   code: string;
   /** 创建时间 */
-  createTime: number;
+  createTime?: number;
   /** 创建用户ID */
-  createUserId: number;
+  createUserId?: number;
   /** 标识符 */
-  id: number;
+  id?: number;
   /** 位置全称 */
   locationFullName: string;
   /** 位置id */
@@ -46,16 +46,19 @@ export interface ConfigurableObjectFullModel {
   processName: string;
   /** 工艺号 */
   processNo: string;
+  /** 最后修改时间 */
+  updateTime?: number;
+  /** 最后修改用户 */
+  updateUserId?: number;
+  /** 用于高并发的数据版本控制 */
+  versionTag?: string;
+}
+
+export interface ConfigurableObjectFullModel extends ConfigurableObjectModel {
   /** 数据类型 */
   type: TypeEnum;
   /** 伪唯一标识符(C+Id: 配点对象; D+Id: 设备) */
   unionId: string;
-  /** 最后修改时间 */
-  updateTime: number;
-  /** 最后修改用户 */
-  updateUserId: number;
-  /** 用于高并发的数据版本控制 */
-  versionTag: string;
 }
 
 export enum TypeEnum {
@@ -63,4 +66,8 @@ export enum TypeEnum {
   CONFIGURE_OBJECT = 1,
   /** 设备 */
   DEVICE = 2,
+}
+
+export interface EditConfigurableObjectResultModel {
+  code: number | string;
 }
