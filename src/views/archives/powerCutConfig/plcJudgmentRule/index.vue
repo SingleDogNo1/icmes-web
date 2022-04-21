@@ -11,7 +11,23 @@
 </script>
 
 <script lang="ts" setup>
-  import { BasicForm } from '/@/components/Form';
+  import { ref, Ref } from 'vue';
+  import { BasicForm, useForm } from '/@/components/Form';
+  import { schemas } from './data';
+  import { GetPowerJudgmentParams } from '/@/api/info/model/plcJudgmentModel';
+
+  const searchData = ref({}) as Ref<GetPowerJudgmentParams>;
+
+  const [register, { getFieldsValue }] = useForm({
+    layout: 'inline',
+    schemas,
+    autoSubmitOnEnter: true,
+  });
+
+  function handleSubmit() {
+    const value = getFieldsValue() as GetPowerJudgmentParams;
+    searchData.value = value;
+  }
 </script>
 
 <style lang="less" scoped>
