@@ -24,7 +24,7 @@ function trim(string: string) {
 /* istanbul ignore next */
 export function hasClass(el: Element, cls: string) {
   if (!el || !cls) return false;
-  if (cls.indexOf(' ') !== -1) throw new Error('className should not contain space.');
+  if (cls.includes(' ')) throw new Error('className should not contain space.');
   if (el.classList) {
     return el.classList.contains(cls);
   } else {

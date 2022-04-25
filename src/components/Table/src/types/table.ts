@@ -212,6 +212,8 @@ export interface BasicTableProps<T = any> {
   bordered?: boolean;
   // 分页配置
   pagination?: PaginationProps | boolean;
+  // 是否可以快速跳转至某页
+  showQuickJumper?: boolean;
   // loading加载
   loading?: boolean;
 
