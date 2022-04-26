@@ -53,7 +53,7 @@ export function batchUpdatePowerConfigApi(
 ) {
   return defHttp.put<boolean>(
     {
-      url: `${Api.baseApi}power/config`,
+      url: `${Api.baseUrl}power/config`,
       params,
     },
     {

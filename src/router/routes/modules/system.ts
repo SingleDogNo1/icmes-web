@@ -108,6 +108,40 @@ const systemManagement: BackModeRouteRecordRaw = {
         },
       ],
     },
+    {
+      path: 'plc',
+      name: 'PLCLayout',
+      component: 'LAYOUT',
+      redirect: '/system/plc/collocation',
+      meta: {
+        code: 24800,
+        hideChildrenInMenu: true,
+        title: 'routes.system.plc.collocation',
+      },
+      children: [
+        {
+          path: 'collocation',
+          name: 'PLCCollocation',
+          component: '/systemManagement/PLCCollocation/index',
+          meta: {
+            code: 24800,
+            title: 'routes.system.plc.collocation',
+          },
+        },
+        {
+          path: 'signalConfig',
+          name: 'PLCSignalConfig',
+          component: '/systemManagement/PLCCollocation/signalConfig',
+          meta: {
+            code: 24800,
+            title: 'routes.system.plc.signalConfig',
+            hideMenu: true,
+            hideTab: true,
+            currentActiveMenu: '/system/plc/collocation',
+          },
+        },
+      ],
+    },
   ],
 };
 

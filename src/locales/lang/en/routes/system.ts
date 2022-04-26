@@ -7,4 +7,8 @@ export default {
   workflow: 'Workflow',
   strategyEngine: 'Strategy Engine',
   configurableObjects: 'Configurable Objects',
+  plc: {
+    collocation: 'PLC Collocation',
+    signalConfig: 'PLC Signal Config',
+  },
 };

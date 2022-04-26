@@ -21,6 +21,7 @@
         toolbar
         checkable
         search
+        placeholder="撒大声地"
         :treeData="treeData"
         :beforeRightClick="getRightMenuList"
       />
@@ -29,7 +30,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, h } from 'vue';
-  import { BasicTree, ActionItem, ContextMenuItem } from '/@/components/Tree';
+  import { BasicTree, TreeActionItem, ContextMenuItem } from '/@/components/Tree';
   import { treeData } from './data';
   import { PlusOutlined, DeleteOutlined } from '@ant-design/icons-vue';
   import { PageWrapper } from '/@/components/Page';
@@ -59,7 +60,7 @@
           },
         ];
       }
-      const actionList: ActionItem[] = [
+      const actionList: TreeActionItem[] = [
         {
           // show:()=>boolean;
           render: (node) => {

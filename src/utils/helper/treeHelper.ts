@@ -1,3 +1,4 @@
+import { DeviceModel } from '/@/api/info/model/devicesModel';
 interface TreeHelperConfig {
   id: string;
   children: string;
@@ -277,4 +278,85 @@ export function treeMapEach(
       ...conversionData,
     };
   }
+}
+
+/**
+ * 递归遍历树结构
+ * @param treeDatas 树
+ * @param callBack 回调
+ * @param parentNode 父节点
+ */
+export function eachTree(treeDatas: any[], callBack: Fn, parentNode = {}) {
+  treeDatas.forEach((element) => {
+    const newNode = callBack(element, parentNode) || element;
+    if (element.children) {
+      eachTree(element.children, callBack, newNode);
+    }
+  });
+}
+
+/**
+ * 为树结构数据每一层添加当前层数信息
+ * @param array 需要添加层级的树
+ * @param levelName 添加标识层级的键值
+ * @param childrenName 树结构的子集标识
+ */
+export function addTreeLevel(array, levelName = 'folderLevel', childrenName = 'children') {
+  if (!Array.isArray(array)) return [];
+  const recursive = (array, level = 0) => {
+    level++;
+    return array.map((v) => {
+      v[levelName] = level;
+      const child = v[childrenName];
+      if (child && child.length) recursive(child, level);
+      return v;
+    });
+  };
+  return recursive(array);
+}
+
+/**
+ * 业务函数: 根据附属设备数量构建的设备类型树
+ * @param items 设备树列表
+ * @param id 根节点 ID
+ * @returns 按设备本体+设备类型构造的设备树
+ */
+export function formatDeviceTypeTree(items: DeviceModel[], id = '-1') {
+  const tree: any[] = [];
+  items.forEach((item) => {
+    const obj: DeviceModel & {
+      /** 当前层级是否为目录 */
+      isFolder?: boolean;
+      /** tree 组件显示的 title */
+      titleText?: string;
+      children?: any[];
+    } = { ...item };
+    if (item.categoryTreeParentId === id) {
+      obj.name = item.name || '未分配设备类型';
+      obj.categoryName = item.categoryName || '未分配设备类型';
+      obj.isFolder = item.appurtenanceCount > 0;
+      obj.titleText =
+        obj.code && obj.categoryTreeParentId === '-1'
+          ? obj.name
+          : obj.processNo &&
+            obj.code &&
+            obj.categoryTreeParentId !== '-1' &&
+            obj.categoryTreeParentId !== 'A'
+          ? `${obj.processNo} ${obj.name} ${obj.code}`
+          : !obj.processNo &&
+            obj.code &&
+            obj.categoryTreeParentId !== '-1' &&
+            obj.categoryTreeParentId !== 'A'
+          ? `${obj.name} ${obj.code}`
+          : obj.name;
+
+      if (item.appurtenanceCount > 0) {
+        obj.children = formatDeviceTypeTree(items, obj.categoryTreeId);
+      }
+      tree.push(obj);
+    }
+  });
+
+  addTreeLevel(tree);
+  return tree;
 }

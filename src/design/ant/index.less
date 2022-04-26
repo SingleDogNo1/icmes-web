@@ -1,7 +1,6 @@
 @import './pagination.less';
 @import './input.less';
 @import './btn.less';
-// @import './table.less';
 
 // TODO beta.11 fix
 .ant-col {
@@ -62,4 +61,9 @@ span.anticon:not(.app-iconify) {
 .ant-tree-checkbox-checked .ant-tree-checkbox-inner::after {
   border-top: 0 !important;
   border-left: 0 !important;
+}
+
+// 表格选中时添加高亮效果
+.ant-table-row-hover .ant-table-cell {
+  background-color: @table-row-hover-bg;
 }

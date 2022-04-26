@@ -1,5 +1,4 @@
 import type { UserInfo } from '/#/store';
-import type { ErrorMessageMode } from '/#/axios';
 import type { Menu, Dict } from '/@/api/info/model/configModel';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
@@ -232,29 +231,21 @@ export const useUserStore = defineStore({
       return getRemoteConfigApi();
     },
 
-    async login(
-      params: LoginParams & {
-        mode?: ErrorMessageMode;
-      },
-    ): Promise<GetUserInfoModel | null> {
+    async login(params: LoginParams): Promise<GetUserInfoModel | null> {
       try {
         const remoteConfig = await this.getRemoteConfig();
         const { key, codeList } = await getPublicKeyApi();
-        const { mode, ...loginParams } = params;
-        const encryptSaltPassword = encryptSalt(loginParams.password);
+        const encryptSaltPassword = encryptSalt(params.password);
         const aesKey = codeList.reduce((res, pre, index) => {
           res += pre[index];
           return res;
         }, '');
         const password = encryptPwd(encryptSaltPassword, aesKey) as unknown as string;
-        const userInfo = await loginApi(
-          {
-            employeeCode: loginParams.employeeCode,
-            password,
-            key,
-          },
-          mode,
-        );
+        const userInfo = await loginApi({
+          employeeCode: params.employeeCode,
+          password,
+          key,
+        });
 
         const { apiUrl } = useGlobSetting();
         this.setMenu(remoteConfig.menus);
@@ -401,19 +392,14 @@ export const useUserStore = defineStore({
       } = await axios.get(self.location.origin + '/dataRate.json');
       this.setDataRate(rate);
     },
-    async resetPassword(
-      params: resetPwdParams & {
-        mode?: ErrorMessageMode;
-      },
-    ) {
-      const { mode, ...resetPwdParams } = params;
+    async resetPassword(params: resetPwdParams) {
       const { key, codeList } = await getPublicKeyApi();
       const aesKey = codeList.reduce((res, pre, index) => {
         res += pre[index];
         return res;
       }, '');
-      const encryptSaltPassword = encryptSalt(resetPwdParams.password);
-      const encryptSaltConfirmPassword = encryptSalt(resetPwdParams.confirmPassword);
+      const encryptSaltPassword = encryptSalt(params.password);
+      const encryptSaltConfirmPassword = encryptSalt(params.confirmPassword);
       const pwdOptions = {
         password: encryptSaltPassword,
         confirmPassword: encryptSaltConfirmPassword,
@@ -421,7 +407,7 @@ export const useUserStore = defineStore({
       };
 
       const encryptOption = encryptPwd(pwdOptions, aesKey) as unknown as resetPwdParams;
-      const result = await resetPwdApi(encryptOption, mode);
+      const result = await resetPwdApi(encryptOption);
 
       if (!result) return;
 

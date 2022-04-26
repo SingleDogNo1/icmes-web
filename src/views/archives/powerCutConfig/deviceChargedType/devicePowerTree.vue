@@ -4,6 +4,7 @@
       <BasicTree
         ref="treeRef"
         search
+        autoExpandParent
         :treeData="treeData"
         :fieldNames="{ key: 'id' }"
         @select="handleSelect"
@@ -58,9 +59,16 @@
         id: 'categoryTreeId',
       });
       await nextTick();
+      // 展开并选中第一个节点;
+      console.log(treeData);
+
+      const firstTreeNode = treeData.value[0].children[0].children[0];
+      console.log(firstTreeNode.id);
+
       // 展开第一层 & 选中根节点(id === 0)
-      getTree()?.filterByLevel(1);
-      getTree()?.setSelectedKeys([0]);
+      // getTree()?.filterByLevel(1);
+      getTree()?.setExpandedKeys([firstTreeNode.id]);
+      getTree()?.setSelectedKeys([firstTreeNode.id]);
     } catch (error) {}
   }
 
