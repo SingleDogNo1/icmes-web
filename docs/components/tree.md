@@ -70,6 +70,7 @@
 
 | 属性 | 类型 | 默认值 | 可选值 | 说明 | 版本 |
 | --- | --- | --- | --- | --- | --- |
+| loading | `boolean` | - | - | 是否显示加载中状态 |  |
 | treeData | `TreeItem[]` | - | - | 树组件数据 |  |
 | rightMenuList | `ContextMenuItem[]` | - | - | 右键菜单列表 |  |
 | checkedKeys | `string[]` | - | - | 勾选的节点 |  |
@@ -78,6 +79,7 @@
 | actionList | `ActionItem[]` | - | - | 鼠标移动上去右边操作按钮列表 |  |
 | title | `string` | - | - | 定制标题字符串 |  |
 | toolbar | `boolean` | - | - | 是否显示工具栏 |  |
+| toolbarOptions | `{label: string; value: string}[]` | - | - | 工具栏扩展选项卡 |  |
 | search | `boolean` | - | - | 显示搜索框 |  |
 | clickRowToExpand | `boolean` | - | - | 是否在点击行时自动展开 |  |
 | beforeRightClick | `(node, event)=>ContextMenuItem[]` | - | - | 右键点击回调，可返回右键菜单列表数据来生成右键菜单 |  |
@@ -148,3 +150,13 @@
 | updateNodeByKey | `(key: string, node: Omit<TreeItem, 'key'>) => void` | 根据 key 更新节点 |
 | setSearchValue | `(value: string) => void` | 设置当前搜索词（v2.7.1） |
 | getSearchValue | `() => string` | 获取当前搜索词(v2.7.1) |
+
+## Event
+
+| 名称                | 回调参数          | 说明                 |
+| ------------------- | ----------------- | -------------------- |
+| update:expandedKeys | `(key) => void`   | 展开行发生变化       |
+| update:selectedKeys | `(key) => void`   | 选中行发生变化       |
+| change              | `(key) => void`   | 选中值发生变化       |
+| update:searchValue  | `(value) => void` | 搜索的值发生变化     |
+| click:extraTooltip  | `(key) => void`   | 点击扩展的工具栏选项 |

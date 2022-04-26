@@ -8,7 +8,7 @@
         <CollocationTree />
       </Col>
       <Col :span="9">
-        <SignalPoint />
+        <SignalPoint :selectRow="selectedRow!" />
       </Col>
     </Row>
   </PageWrapper>

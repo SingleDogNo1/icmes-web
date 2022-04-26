@@ -19,6 +19,7 @@ export const treeEmits = [
   'change',
   'check',
   'update:searchValue',
+  'click:extraTooltip',
 ];
 
 export interface TreeState {
@@ -59,6 +60,10 @@ export const treeProps = buildProps({
     default: '',
   },
   toolbar: Boolean,
+  toolbarOptions: {
+    type: Array as PropType<{ label: string; value: string }[]>,
+    default: () => [],
+  },
   search: Boolean,
   placeholder: String,
   searchValue: {
