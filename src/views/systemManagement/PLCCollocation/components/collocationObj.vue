@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full bg-white p-4">
+  <div class="w-full h-full bg-white px-4">
     <Tabs v-model:activeKey="activeKey" class="h-full" ref="deviceTabRef" @change="handleTabChange">
       <Tabs.TabPane key="device" tab="设备">
         <BasicTree
@@ -152,8 +152,6 @@
     treeHeight.value =
       contentWrapper.getBoundingClientRect().height -
       contentHeaderWrapper.getBoundingClientRect().height;
-
-    console.log('treeHeight :>> ', treeHeight.value);
   });
 
   function handleTabChange(activeKey: TabKeysEnum) {
@@ -177,7 +175,7 @@
       const firstTreeNode = treeData.value[0].children[0].children[0];
       getTree()?.setExpandedKeys([firstTreeNode.id]);
       getTree()?.setSelectedKeys([firstTreeNode.id]);
-      emit('select', firstTreeNode);
+      emit('select', { ...firstTreeNode, ...{ type: 2 } });
     } catch (error: any) {
       throw new Error(error);
     } finally {
@@ -218,12 +216,12 @@
   }
 
   function handleSelectNode(_key, { node }) {
-    emit('select', node);
+    emit('select', { ...node, ...{ type: 2 } });
   }
 
   function handleClickRow(row, index?) {
     if (selectedRowIndex.value === index) return;
     selectedRowIndex.value = index;
-    emit('select', row);
+    emit('select', { ...row, ...{ type: 2 } });
   }
 </script>

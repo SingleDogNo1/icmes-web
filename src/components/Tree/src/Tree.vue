@@ -176,12 +176,15 @@
       }
 
       function expandAll(expandAll: boolean) {
-        console.log('1111111 :>> ', getAllKeys());
         state.expandedKeys = expandAll ? getAllKeys() : ([] as KeyType[]);
       }
 
       function onStrictlyChange(strictly: boolean) {
         state.checkStrictly = strictly;
+      }
+
+      function onClickExtraTooltip(key: string) {
+        emit('click:extraTooltip', key);
       }
 
       watch(
@@ -406,7 +409,8 @@
       expose(instance);
 
       return () => {
-        const { title, helpMessage, toolbar, search, checkable, placeholder } = props;
+        const { title, helpMessage, toolbar, search, checkable, placeholder, toolbarOptions } =
+          props;
         const showTitle = title || toolbar || search || slots.headerTitle;
         const scrollStyle: CSSProperties = { height: 'calc(100% - 38px)' };
         return (
@@ -420,6 +424,8 @@
                 search={search}
                 placeholder={placeholder}
                 toolbar={toolbar}
+                toolbarOptions={toolbarOptions}
+                onClickExtraTooltip={onClickExtraTooltip}
                 helpMessage={helpMessage}
                 onStrictlyChange={onStrictlyChange}
                 onSearch={handleSearch}

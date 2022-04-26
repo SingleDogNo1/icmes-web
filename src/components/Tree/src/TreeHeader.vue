@@ -63,6 +63,10 @@
       type: Boolean,
       default: false,
     },
+    toolbarOptions: {
+      type: Array as PropType<{ label: string; value: string }[]>,
+      default: () => [],
+    },
     checkable: {
       type: Boolean,
       default: false,
@@ -88,7 +92,7 @@
       default: '搜索',
     },
   } as const);
-  const emit = defineEmits(['strictly-change', 'search']);
+  const emit = defineEmits(['strictly-change', 'search', 'clickExtraTooltip']);
 
   const getInputSearchCls = computed(() => {
     const titleExists = slots.headerTitle || props.title;
@@ -102,7 +106,7 @@
   });
 
   const toolbarList = computed(() => {
-    const { checkable } = props;
+    const { checkable, toolbarOptions } = props;
     const defaultToolbarList = [
       { label: t('component.tree.expandAll'), value: ToolbarEnum.EXPAND_ALL },
       {
@@ -121,8 +125,9 @@
             divider: checkable,
           },
           ...defaultToolbarList,
-          { label: t('component.tree.checkStrictly'), value: ToolbarEnum.CHECK_STRICTLY },
-          { label: t('component.tree.checkUnStrictly'), value: ToolbarEnum.CHECK_UN_STRICTLY },
+          // { label: t('component.tree.checkStrictly'), value: ToolbarEnum.CHECK_STRICTLY },
+          // { label: t('component.tree.checkUnStrictly'), value: ToolbarEnum.CHECK_UN_STRICTLY },
+          ...toolbarOptions,
         ]
       : defaultToolbarList;
   });
@@ -142,12 +147,14 @@
       case ToolbarEnum.UN_EXPAND_ALL:
         props.expandAll?.(false);
         break;
-      case ToolbarEnum.CHECK_STRICTLY:
-        emit('strictly-change', false);
-        break;
-      case ToolbarEnum.CHECK_UN_STRICTLY:
-        emit('strictly-change', true);
-        break;
+      // case ToolbarEnum.CHECK_STRICTLY:
+      //   emit('strictly-change', false);
+      //   break;
+      // case ToolbarEnum.CHECK_UN_STRICTLY:
+      //   emit('strictly-change', true);
+      //   break;
+      default:
+        emit('clickExtraTooltip', key);
     }
   }
 
