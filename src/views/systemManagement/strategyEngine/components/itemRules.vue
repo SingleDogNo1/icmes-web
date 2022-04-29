@@ -1,87 +1,82 @@
 <template>
-  <PageWrapper contentFullHeight dense>
-    <div class="h-full p-4 mt-4 overflow-auto bg-white">
-      <BasicTable
-        title="策略规则配置"
-        :titleHelpMessage="[
-          '一个策略可以有多个规则，多个规则之间为并集关系',
-          '',
-          '一个规则可以有多个判断公式，多个判断公式之间为交集关系',
-          '',
-          '点击“+”可增加判断公式',
-        ]"
-        :resizeHeightOffset="40"
-        :loading="loading"
-        @register="registerTable"
-      >
-        <template #toolbar>
-          <a-button type="primary" @click="addNewRule"> 添加输入行 </a-button>
-        </template>
-        <template #action="{ record }">
-          <TableAction :actions="createActions(record)" />
-        </template>
-        <template #rules="{ record }">
-          <Row
-            v-for="(item, i) in record"
-            :key="i"
-            :gutter="16"
-            type="flex"
-            align="middle"
-            justify="center"
-          >
-            <Col :span="8">
-              <Form.Item>
-                <Select v-model:value="item.operator">
-                  <Select.Option
-                    v-for="option in strategySymbolOptions"
-                    :key="option.value"
-                    :value="option.value"
-                  >
-                    {{ option.label }}
-                  </Select.Option>
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col :span="12">
-              <Form.Item
-                :validateStatus="getValidateStatus(item).status"
-                :help="getValidateStatus(item).message"
-              >
-                <Input
-                  v-if="['EQUAL', 'NOT_EQUAL'].includes(item.operator)"
-                  v-model:value="item.data"
-                  oninput="value=value.replace(/[^\d\,]/g,'')"
-                />
-                <Input
-                  v-else
-                  v-model:value="item.data"
-                  oninput="value=value.replace(/[^\d]/g,'')"
-                />
-              </Form.Item>
-            </Col>
-            <Col :span="3">
-              <Icon
-                v-if="i === record.length - 1"
-                icon="fluent:add-circle-20-regular"
-                :size="24"
-                :color="primaryColor"
-                class="cursor-pointer"
-                @click="addRecordRule(record)"
+  <PageWrapper contentFullHeight dense contentBackground>
+    <BasicTable
+      title="策略规则配置"
+      :titleHelpMessage="[
+        '一个策略可以有多个规则，多个规则之间为并集关系',
+        '',
+        '一个规则可以有多个判断公式，多个判断公式之间为交集关系',
+        '',
+        '点击“+”可增加判断公式',
+      ]"
+      :resizeHeightOffset="32"
+      :loading="loading"
+      @register="registerTable"
+    >
+      <template #toolbar>
+        <a-button type="primary" @click="addNewRule"> 添加输入行 </a-button>
+      </template>
+      <template #action="{ record }">
+        <TableAction :actions="createActions(record)" />
+      </template>
+      <template #rules="{ record }">
+        <Row
+          v-for="(item, i) in record"
+          :key="i"
+          :gutter="16"
+          type="flex"
+          align="middle"
+          justify="center"
+        >
+          <Col :span="8">
+            <Form.Item>
+              <Select v-model:value="item.operator">
+                <Select.Option
+                  v-for="option in strategySymbolOptions"
+                  :key="option.value"
+                  :value="option.value"
+                >
+                  {{ option.label }}
+                </Select.Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col :span="12">
+            <Form.Item
+              :validateStatus="getValidateStatus(item).status"
+              :help="getValidateStatus(item).message"
+            >
+              <Input
+                v-if="['EQUAL', 'NOT_EQUAL'].includes(item.operator)"
+                v-model:value="item.data"
+                oninput="value=value.replace(/[^\d\,]/g,'')"
               />
-              <Icon
-                v-else
-                icon="system-uicons:minus-circle"
-                :size="24"
-                :color="errorColor"
-                class="cursor-pointer"
-                @click="delRecordRule(record, i)"
-              />
-            </Col>
-          </Row>
-        </template>
-      </BasicTable>
-
-      <a-button block type="primary" style="height: 40px" @click="save">保存</a-button>
+              <Input v-else v-model:value="item.data" oninput="value=value.replace(/[^\d]/g,'')" />
+            </Form.Item>
+          </Col>
+          <Col :span="3">
+            <Icon
+              v-if="i === record.length - 1"
+              icon="fluent:add-circle-20-regular"
+              :size="24"
+              :color="primaryColor"
+              class="cursor-pointer"
+              @click="addRecordRule(record)"
+            />
+            <Icon
+              v-else
+              icon="system-uicons:minus-circle"
+              :size="24"
+              :color="errorColor"
+              class="cursor-pointer"
+              @click="delRecordRule(record, i)"
+            />
+          </Col>
+        </Row>
+      </template>
+    </BasicTable>
+    <div class="px-3.5 text-right">
+      <a-button type="primary" @click="save">保存</a-button>
     </div>
   </PageWrapper>
 </template>

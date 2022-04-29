@@ -1,28 +1,22 @@
 <template>
-  <div class="work-flow-table">
-    <PageWrapper>
-      <div class="h-full p-4 mt-4 overflow-auto bg-white"> </div>
-      <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
-        <template #businessType="{ record }">
-          {{ businessTypeMap[record.businessType] }}
-        </template>
-        <template #notificationType="{ record }">
-          {{ notificationTypeMap[record.notificationType] || '通知' }}
-        </template>
-        <template #mobilePush="{ record }">
-          <Switch v-model:checked="record.mobilePush" @change="handleChange(record, 0)" />
-        </template>
-        <template #webPush="{ record }">
-          <Switch v-model:checked="record.webPush" @change="handleChange(record, 1)" />
-        </template>
-      </BasicTable>
-    </PageWrapper>
-  </div>
+  <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
+    <template #businessType="{ record }">
+      {{ businessTypeMap[record.businessType] }}
+    </template>
+    <template #notificationType="{ record }">
+      {{ notificationTypeMap[record.notificationType] || '通知' }}
+    </template>
+    <template #mobilePush="{ record }">
+      <Switch v-model:checked="record.mobilePush" @change="handleChange(record, 0)" />
+    </template>
+    <template #webPush="{ record }">
+      <Switch v-model:checked="record.webPush" @change="handleChange(record, 1)" />
+    </template>
+  </BasicTable>
 </template>
 
 <script lang="ts" setup>
   import { ref, watch } from 'vue';
-  import { PageWrapper } from '/@/components/Page/index';
   import { BasicTable, useTable, PaginationProps } from '/@/components/Table';
   import { GetNoticeSettingConfigListParams } from '/@/api/notice/model/settingModel';
   import {

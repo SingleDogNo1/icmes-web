@@ -126,7 +126,6 @@ export const basicProps = {
     type: [Object, Boolean] as PropType<PaginationProps | boolean>,
     default: null,
   },
-  showQuickJumper: { type: Boolean, default: true },
   loading: propTypes.bool,
   rowClassName: {
     type: Function as PropType<(record: TableCustomRecord<any>, index: number) => string>,

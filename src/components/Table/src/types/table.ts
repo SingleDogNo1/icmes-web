@@ -212,8 +212,6 @@ export interface BasicTableProps<T = any> {
   bordered?: boolean;
   // 分页配置
   pagination?: PaginationProps | boolean;
-  // 是否可以快速跳转至某页
-  showQuickJumper?: boolean;
   // loading加载
   loading?: boolean;
 
@@ -355,7 +353,7 @@ export interface BasicTableProps<T = any> {
   tableLayout?: 'auto' | 'fixed' | string;
 
   /**
-   * the render container of dropdown in table
+   * the render container of dropdowns in table
    * @param triggerNode
    * @version 1.5.0
    */
@@ -397,7 +395,7 @@ export interface BasicTableProps<T = any> {
    * @param expanded
    * @param record
    */
-  onExpand?: (expanded: boolean, record: T) => void;
+  onExpand?: (expande: boolean, record: T) => void;
 
   /**
    * Callback executed when the expanded rows change
@@ -414,7 +412,7 @@ export type CellFormat =
   | Map<string | number, any>;
 
 // @ts-ignore
-export interface BasicColumn extends ColumnProps {
+export interface BasicColumn extends ColumnProps<Recordable> {
   children?: BasicColumn[];
   filters?: {
     text: string;
