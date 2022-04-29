@@ -750,7 +750,7 @@ const demo: BackModeRouteRecordRaw = {
         {
           path: 'tree',
           name: 'TreeDemo',
-          redirect: '/comp/tree/basic',
+          redirect: '/demo/comp/tree/basic',
           component: 'LAYOUT',
           meta: {
             code: DEMO_CHILDREN_CODE,

@@ -80,7 +80,7 @@ const setting: ProjectConfig = {
     showNotice: true,
 
     // 是否显示搜索按钮
-    showSearch: false,
+    showSearch: true,
   },
 
   // 目录配置项
