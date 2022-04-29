@@ -3,7 +3,7 @@
     <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
       <template #toolbar>
         <a-button type="danger" @click="batchDelete" :disabled="!selected">删除</a-button>
-        <a-button type="primary">配置属性</a-button>
+        <a-button type="primary" @click="go({ name: 'PLCSignalConfig' })">配置属性</a-button>
       </template>
       <template #action="{ record }">
         <TableAction :actions="createActions(record)" />
@@ -24,8 +24,10 @@
   import { getPlcPointsListApi, deletePlcPointsApi } from '/@/api/info/plcPoints';
   import { PLCPointFullModel } from '/@/api/info/model/plcPointsModel';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { useGo } from '/@/hooks/web/usePage';
 
   const { createMessage } = useMessage();
+  const go = useGo();
 
   const props = defineProps({
     selectRow: {

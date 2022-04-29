@@ -39,7 +39,6 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   // vite-plugin-windicss
   vitePlugins.push(windiCSS());
 
-  // TODO
   !isBuild && vitePlugins.push(configHmrPlugin());
 
   // @vitejs/plugin-legacy

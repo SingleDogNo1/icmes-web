@@ -15,24 +15,26 @@
 </script>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { ref, watchEffect } from 'vue';
   import { Tooltip } from 'ant-design-vue';
-  import { useMagicKeys, whenever } from '@vueuse/core';
+  import { useMagicKeys } from '@vueuse/core';
   import { SearchOutlined } from '@ant-design/icons-vue';
   import AppSearchModal from './AppSearchModal.vue';
   import { useI18n } from '/@/hooks/web/useI18n';
 
   const { t } = useI18n();
-  const keys = useMagicKeys();
 
   const showModal = ref(false);
-  const shift_Ctrl_F = keys['Shift+Ctrl+F'];
+
+  const { shift, ctrl, f } = useMagicKeys();
+
+  watchEffect(() => {
+    if (shift.value && ctrl.value && f.value) {
+      changeModal(true);
+    }
+  });
 
   function changeModal(show: boolean) {
     showModal.value = show;
   }
-
-  whenever(shift_Ctrl_F, () => {
-    changeModal(true);
-  });
 </script>
