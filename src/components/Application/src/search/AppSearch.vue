@@ -33,6 +33,8 @@
   }
 
   whenever(shift_Ctrl_F, () => {
+    console.log(11);
+
     changeModal(true);
   });
 </script>

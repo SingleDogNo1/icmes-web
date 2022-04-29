@@ -51,5 +51,5 @@ export interface EditPowerJudgmentParams {
   /** 业务节点 字典表-POWER_BUSINESS_NODE **/
   powerBusinessNode?: string;
   /** 策略ID **/
-  strategyId: number;
+  strategyId?: number;
 }
