@@ -26,10 +26,10 @@
 
   const showModal = ref(false);
 
-  const { shift, ctrl, l } = useMagicKeys();
+  const { shift, ctrl, f } = useMagicKeys();
 
   watchEffect(() => {
-    if (shift.value && ctrl.value && l.value) {
+    if (shift.value && ctrl.value && f.value) {
       changeModal(true);
     }
   });
