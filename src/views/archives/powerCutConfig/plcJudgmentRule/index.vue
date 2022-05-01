@@ -2,7 +2,7 @@
   <pageWrapper contentFullHeight fixedHeight dense>
     <div class="h-full p-4 mt-4 overflow-auto bg-white">
       <BasicForm class="bg-white" @register="registerForm" @submit="handleSubmit" />
-      <BasicTable @register="registerTable">
+      <BasicTable :loading="loading" @register="registerTable">
         <template #toolbar>
           <a-button type="primary" @click="openModal(true, {})">新建</a-button>
         </template>
@@ -25,7 +25,10 @@
           <TableAction :actions="createActions(record)" />
         </template>
       </BasicTable>
-      <editJudgmentModal @register="registerModal" />
+      <editJudgmentModal
+        @register="registerModal"
+        @update:judgment="getPLCJudgmentList(searchData)"
+      />
     </div>
   </pageWrapper>
 </template>
@@ -151,6 +154,7 @@
       {
         label: '编辑',
         onClick: () => {
+          console.log(record);
           openModal(true, record);
         },
       },

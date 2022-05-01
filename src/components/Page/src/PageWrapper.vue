@@ -9,7 +9,7 @@
       v-if="content || $slots.headerContent || title || getHeaderSlots.length"
     >
       <template #backIcon>
-        <Icon icon="ep:back" :size="28" class="cursor-pointer" />
+        <Icon v-if="needBack" icon="ep:back" :size="28" class="cursor-pointer" />
       </template>
       <template #default>
         <template v-if="content">
@@ -55,6 +55,7 @@
     inheritAttrs: false,
     props: {
       title: propTypes.string,
+      needBack: propTypes.bool.def(false),
       dense: propTypes.bool,
       ghost: propTypes.bool,
       content: propTypes.string,

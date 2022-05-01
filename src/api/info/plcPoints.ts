@@ -4,6 +4,8 @@ import {
   GetPlcPointsListParams,
   PLCPointLeavesCollection,
   PLCPointCollection,
+  UpdatePlcPointParams,
+  PLCPointBaseModel,
 } from './model/plcPointsModel';
 
 enum Api {
@@ -26,11 +28,27 @@ export function getPlcPointsListApi(params: GetPlcPointsListParams) {
   });
 }
 
+/** plc配点批量删除-作者：梁勇帅 */
 export function deletePlcPointsApi(ids: number[]) {
-  return defHttp.delete<{ code: string }>({
+  return defHttp.delete<{ code: number }>({
     url: Api.baseUrl + 'points',
     params: {
       ids,
     },
+  });
+}
+
+/** plc配点批量修改属性-作者：梁勇帅 */
+export function updatePlcPointsApi(params: UpdatePlcPointParams) {
+  return defHttp.put<{ code: number }>({
+    url: Api.baseUrl,
+    params,
+  });
+}
+
+/** plc配点详细-作者：梁勇帅 */
+export function getPlcPointInfoApi(id: number) {
+  return defHttp.get<PLCPointBaseModel>({
+    url: Api.baseUrl + id,
   });
 }

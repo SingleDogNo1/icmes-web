@@ -175,7 +175,7 @@
       instance && modalMethods.emitVisible?.(v, instance.uid);
       nextTick(() => {
         if (props.scrollTop && v && unref(modalWrapperRef)) {
-          (unref(modalWrapperRef) as any).scrollTop();
+          unref(modalWrapperRef).scrollTop();
         }
       });
     },

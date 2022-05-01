@@ -40,7 +40,7 @@ export function usePagination(refProps: ComputedRef<BasicTableProps>) {
   );
 
   const getPaginationInfo = computed((): PaginationProps | boolean => {
-    const { pagination, showQuickJumper } = unref(refProps);
+    const { pagination } = unref(refProps);
 
     if (!unref(show) || (isBoolean(pagination) && !pagination)) {
       return false;
@@ -55,7 +55,7 @@ export function usePagination(refProps: ComputedRef<BasicTableProps>) {
       showSizeChanger: true,
       pageSizeOptions: PAGE_SIZE_OPTIONS,
       itemRender: itemRender,
-      showQuickJumper: showQuickJumper,
+      showQuickJumper: true,
       ...(isBoolean(pagination) ? {} : pagination),
       ...unref(configRef),
     };

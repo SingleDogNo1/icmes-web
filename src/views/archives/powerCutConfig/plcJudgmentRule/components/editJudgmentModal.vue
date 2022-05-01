@@ -21,16 +21,19 @@
   import { Ref, ref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
-  // import { useMessage } from '/@/hooks/web/useMessage';
+  import { useMessage } from '/@/hooks/web/useMessage';
   import { useUserState } from '/@/hooks/web/useUserState';
   import { getStrategyListApi } from '/@/api/info/strategy';
   import { EditPowerJudgmentParams } from '/@/api/info/model/plcJudgmentModel';
+  import { createPLCJudgmentApi, updatePLCJudgmentApi } from '/@/api/info/plcJudgment';
 
-  // const { createMessage } = useMessage();
+  const { createMessage } = useMessage();
   const { getDictByType } = useUserState();
+  const emit = defineEmits(['update:judgment']);
 
   const model = ref({});
   const loading = ref(false);
+  const editId = ref<Number | undefined>(undefined);
 
   const powerBusinessNode = getDictByType('POWER_BUSINESS_NODE').options;
   const powerBusinessNodeOptions = [];
@@ -73,11 +76,11 @@
 
   const editType: Ref<'create' | 'edit' | ''> = ref('');
 
-  const [register, {}] = useModalInner((data) => {
+  const [register, { closeModal }] = useModalInner((data) => {
     data && onDataReceive(data);
   });
 
-  const [registerForm, { setFieldsValue, validate }] = useForm({
+  const [registerForm, { setFieldsValue, getFieldsValue }] = useForm({
     schemas: [
       {
         field: 'powerBusinessNode',
@@ -167,10 +170,28 @@
       powerBusinessNode: data.powerBusinessNode ?? '',
       strategyId: data.strategyId ?? '',
     });
+    // 如果data.id存在，是编辑，否则是新建
+    editType.value = data.id ? 'edit' : 'create';
+    editId.value = data.id;
   }
 
-  function handleSubmit() {
-    validate();
+  async function handleSubmit() {
+    loading.value = true;
+    try {
+      const values = getFieldsValue() as EditPowerJudgmentParams;
+      if (editType.value === 'create') {
+        await createPLCJudgmentApi(values as EditPowerJudgmentParams);
+      } else {
+        await updatePLCJudgmentApi(values as EditPowerJudgmentParams, editId.value as number);
+      }
+      createMessage.success('保存成功');
+      closeModal();
+      emit('update:judgment');
+    } catch (error: any) {
+      throw new Error(error);
+    } finally {
+      loading.value = false;
+    }
   }
 </script>
 
