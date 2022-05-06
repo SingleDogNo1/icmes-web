@@ -4,13 +4,8 @@ import { useUserState } from '/@/hooks/web/useUserState';
 // import { dateUtil } from '/@/utils/dateUtil';
 import type { BasicColumn } from '/@/components/Table';
 
-const { getDictByType } = useUserState();
-const workflowTypes = getDictByType('DT_POWER_CUT_TYPE').options;
-const workflowOptions: any[] = [];
-for (const key in workflowTypes) {
-  const obj = { value: key, label: key };
-  workflowOptions.push(obj);
-}
+const { getDictOptions } = useUserState();
+const workflowOptions = getDictOptions('DT_POWER_CUT_TYPE');
 
 export const tabsList = [
   {

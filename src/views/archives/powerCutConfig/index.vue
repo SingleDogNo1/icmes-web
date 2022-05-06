@@ -17,7 +17,7 @@
   import { PageWrapper } from '/@/components/Page';
   import PowerCutType from './powerCutType/index.vue';
   import DeviceChargedType from './deviceChargedType/index.vue';
-  import PLCJudgmentRule from './plcJudgmentRule.vue';
+  import PLCJudgmentRule from './plcJudgmentRule/index.vue';
   import SafetyTechnology from './safetyTechnology.vue';
   import OperationTicket from './operationTicket.vue';
   import PowerSystemList from './powerSystemList.vue';

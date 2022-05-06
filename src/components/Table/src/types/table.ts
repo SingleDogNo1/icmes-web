@@ -425,6 +425,7 @@ export interface BasicColumn extends ColumnProps<Recordable> {
   //
   flag?: 'INDEX' | 'DEFAULT' | 'CHECKBOX' | 'RADIO' | 'ACTION';
   customTitle?: VueNode;
+  customSlots?: BasicColumn;
 
   slots?: Recordable;
 

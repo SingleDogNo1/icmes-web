@@ -25,12 +25,27 @@
       <template #[item]="data" v-for="item in Object.keys($slots)" :key="item">
         <slot :name="item" v-bind="data || {}"></slot>
       </template>
-      <template #headerCell="{ column }">
-        <HeaderCell :column="column" />
+
+      <template #headerCell="data">
+        <template v-for="column in columns" :key="column.dataIndex">
+          <template v-if="data.column.dataIndex === column.dataIndex">
+            <template v-if="column.customSlots?.title">
+              <slot :name="column.customSlots?.title" v-bind="data || {}"></slot>
+            </template>
+            <HeaderCell v-else :column="data.column" />
+          </template>
+        </template>
       </template>
-      <!--      <template #[`header-${column.dataIndex}`] v-for="(column, index) in columns" :key="index">-->
-      <!--        <HeaderCell :column="column" />-->
-      <!--      </template>-->
+
+      <template #bodyCell="data">
+        <template v-for="column in columns" :key="column.dataIndex">
+          <template v-if="data.column.dataIndex === column.dataIndex">
+            <template v-if="column.customSlots?.customRender">
+              <slot :name="column.customSlots?.customRender" v-bind="data || {}"></slot>
+            </template>
+          </template>
+        </template>
+      </template>
     </Table>
   </div>
 </template>
@@ -115,7 +130,7 @@
         unref(isFixedHeightPage) &&
           props.canResize &&
           warn(
-            "'canResize' of BasicTable may not work in PageWrapper with 'fixedHeight' (especially in hot updates)",
+            '表格组件的canResize属性可能无法在具有fixedHeight的PageWrapper中工作(开发环境热更新)',
           );
       });
 

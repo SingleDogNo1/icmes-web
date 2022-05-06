@@ -1,4 +1,4 @@
-/* 停送电设备编码 */
+/** 停送电设备编码 */
 export enum DevicePowerTypeCodesEnum {
   /** 未知类型设备 */
   UNKNOWN = -1,

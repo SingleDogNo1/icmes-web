@@ -2,15 +2,14 @@
   <PageWrapper contentFullHeight dense>
     <div class="h-full p-4 overflow-auto bg-white">
       <BasicForm :labelWidth="100" @register="registerForm" @submit="handleSubmit" />
-      <a-button
-        type="primary"
-        class="mb-2 mr-2"
-        @click="batchSetting"
-        :disabled="form.deviceIds.length === 0"
-      >
-        批量配置</a-button
-      >
-      <BasicTable @register="registerTable" @selection-change="handleSelectionChange" />
+
+      <BasicTable @register="registerTable" @selection-change="handleSelectionChange">
+        <template #toolbar>
+          <a-button type="primary" :disabled="form.deviceIds.length === 0" @click="batchSetting">
+            批量配置
+          </a-button>
+        </template>
+      </BasicTable>
     </div>
     <batchSettingModal @register="registerModal" @update:config="getDevicesPowerList(searchData)" />
   </PageWrapper>

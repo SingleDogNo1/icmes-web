@@ -153,12 +153,15 @@ export function useColumns(
       })
       .map((column) => {
         const { slots, customRender, format, edit, editRow, flag } = column;
+        if (!column.customSlots) {
+          column.customSlots = slots; // 兼容旧版本写法， slots 配置同步到新字段
+        }
 
         if (!slots || !slots?.title) {
-          // column.slots = { title: `header-${dataIndex}`, ...(slots || {}) };
-          column.customTitle = column.title;
+          column.customTitle = column.title as VueNode;
           Reflect.deleteProperty(column, 'title');
         }
+        Reflect.deleteProperty(column, 'slots'); // antd-3.x 废弃 slots 配置，需要删除
         const isDefaultAction = [INDEX_COLUMN_FLAG, ACTION_COLUMN_FLAG].includes(flag!);
         if (!customRender && format && !edit && !isDefaultAction) {
           column.customRender = ({ text, record, index }) => {
