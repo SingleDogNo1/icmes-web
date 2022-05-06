@@ -1,24 +1,20 @@
 <template>
-  <PageWrapper contentFullHeight fixedHeight dense>
-    <div class="h-full p-4 mt-4 overflow-auto bg-white">
-      <BasicTable @register="registerTable" :loading="loading">
-        <template #toolbar>
-          <a-button type="primary" @click="openModal(true, {})">新建</a-button>
-        </template>
-        <template #type="{ record }">
-          {{ powerCutTypeMap[record.powerCutType] }}
-        </template>
-        <template #useful="{ record }">
-          <Switch v-model:checked="record.useful" @change="changePowerCutConfig(record)" />
-        </template>
-        <template #action="{ record }">
-          <TableAction :actions="createActions(record)" />
-        </template>
-      </BasicTable>
+  <BasicTable @register="registerTable" :loading="loading">
+    <template #toolbar>
+      <a-button type="primary" @click="openModal(true, {})">新建</a-button>
+    </template>
+    <template #type="{ record }">
+      {{ powerCutTypeMap[record.powerCutType] }}
+    </template>
+    <template #useful="{ record }">
+      <Switch v-model:checked="record.useful" @change="changePowerCutConfig(record)" />
+    </template>
+    <template #action="{ record }">
+      <TableAction :actions="createActions(record)" />
+    </template>
+  </BasicTable>
 
-      <EditModal @register="registerModal" @done="getPowerCutConfigList(getPowerCutConfigParams)" />
-    </div>
-  </PageWrapper>
+  <EditModal @register="registerModal" @done="getPowerCutConfigList(getPowerCutConfigParams)" />
 </template>
 
 <script lang="ts">
@@ -28,8 +24,7 @@
 </script>
 
 <script lang="ts" setup>
-  import { ref, readonly } from 'vue';
-  import { PageWrapper } from '/@/components/Page';
+  import { ref } from 'vue';
   import {
     BasicTable,
     useTable,
@@ -45,7 +40,7 @@
   } from '/@/api/info/powerCutConfig';
   import {
     GetPowerCutConfigParams,
-    PowerCutConfigModel,
+    PowerCutConfigExtendEntity,
   } from '/@/api/info/model/powerCutConfigModel';
   import { Switch } from 'ant-design-vue';
   import { useMessage } from '/@/hooks/web/useMessage';
@@ -59,7 +54,7 @@
     2: '低压停送电',
     3: '特殊停送电',
   };
-  const getPowerCutConfigParams = readonly({
+  const getPowerCutConfigParams = ref({
     ascending: false,
     onlyNeedUse: false,
     orderBy: '',
@@ -84,10 +79,16 @@
         current: page.current,
         pageSize: page.pageSize,
       });
+
+      const params = {
+        ...getPowerCutConfigParams.value,
+        ...{ pageNo: page.current!, pageSize: page.pageSize! },
+      };
+      getPowerCutConfigList(params);
     },
   });
 
-  function createActions(record: PowerCutConfigModel): ActionItem[] {
+  function createActions(record: PowerCutConfigExtendEntity): ActionItem[] {
     return [
       {
         label: '编辑',
@@ -106,7 +107,7 @@
             try {
               await deletePowerCutConfigApi(record.configId);
               createMessage.success('删除成功');
-              await getPowerCutConfigList(getPowerCutConfigParams);
+              await getPowerCutConfigList(getPowerCutConfigParams.value);
             } catch (error: any) {
               throw new Error(error);
             } finally {
@@ -131,7 +132,7 @@
     }
   }
 
-  async function changePowerCutConfig(record: PowerCutConfigModel) {
+  async function changePowerCutConfig(record: PowerCutConfigExtendEntity) {
     loading.value = true;
     try {
       await changePowerCutConfigUsefulApi(record.configId);
@@ -143,7 +144,7 @@
     }
   }
 
-  getPowerCutConfigList(getPowerCutConfigParams);
+  getPowerCutConfigList(getPowerCutConfigParams.value);
 </script>
 
 <style lang="less" scoped>

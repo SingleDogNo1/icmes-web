@@ -27,3 +27,30 @@ export enum DevicePowerTypesEnum {
   /** 特殊停送电 */
   SPECIAL_VOLTAGE = 3,
 }
+
+/** 申请停送电时二次确认方式 */
+export enum ApplyVerificationEnum {
+  /** 不需要验证 */
+  NO,
+  /** 人脸识别 */
+  FACE,
+  /** 二维码签批 */
+  QRCODE,
+}
+
+/** 监护人认证方式 */
+export enum GuardianVerificationEnum {
+  /** 二维码签批 */
+  QRCODE = 1,
+  /** 人脸识别 */
+  FACE = 2,
+}
+
+/** 设备分合闸状态指示灯颜色 */
+export enum DeviceStatusLightEnum {
+  RED = 1,
+  GREEN = 2,
+  PURPLE = 3,
+  GRAY = 4,
+  NONE = 5,
+}

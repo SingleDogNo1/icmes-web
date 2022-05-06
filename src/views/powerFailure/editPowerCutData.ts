@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { dateUtil } from '/@/utils/dateUtil';
 import type { FormSchema } from '/@/components/Form/index';
 import { getPowerCutConfigListApi } from '/@/api/info/powerCutConfig';
-import { PowerCutConfigModel } from '/@/api/info/model/powerCutConfigModel';
+import { PowerCutConfigExtendEntity } from '/@/api/info/model/powerCutConfigModel';
 import { DevicePowerTypesEnum, DevicePowerTypeCodesEnum } from '/@/enums/powerCutEnum';
 import { getPowerCutDevicesListApi } from '/@/api/info/devices';
 import { useMessage } from '/@/hooks/web/useMessage';
@@ -64,7 +64,7 @@ export const editPowerCutSchemas: FormSchema[] = [
             return res;
           }, {});
         },
-        onChange: async (data, option: PowerCutConfigModel) => {
+        onChange: async (data, option: PowerCutConfigExtendEntity) => {
           // 记录类型切换的数据监听
           typeWatcher.value.push(option);
           if (typeWatcher.value.length > 2) {

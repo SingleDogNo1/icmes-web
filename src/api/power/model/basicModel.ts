@@ -1,11 +1,4 @@
-/** 设备分合闸状态指示灯颜色 */
-export enum DeviceStatusLightEnum {
-  RED = 1,
-  GREEN = 2,
-  PURPLE = 3,
-  GRAY = 4,
-  NONE = 5,
-}
+import { DeviceStatusLightEnum } from '/@/enums/powerCutEnum';
 
 export interface PowerCutFormFullModel {
   /** 实际停电时间 */

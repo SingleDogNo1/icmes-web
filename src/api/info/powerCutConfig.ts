@@ -3,14 +3,13 @@ import {
   GetPowerCutConfigParams,
   PowerCutConfigResultModel,
   EditPowerCutConfigResultModel,
-  PowerCutConfigModel,
+  PowerCutConfigExtendEntity,
   EditPowerCutConfigModel,
 } from './model/powerCutConfigModel';
 
 enum Api {
   baseUrl = '/info/powerCutConfig/',
 }
-
 /** 查询停送电类型配置 */
 export function getPowerCutConfigListApi(params: GetPowerCutConfigParams) {
   return defHttp.post<PowerCutConfigResultModel>({
@@ -35,7 +34,7 @@ export function deletePowerCutConfigApi(id: number) {
 
 /** 查询停送电类型配置 */
 export function getPowerCutConfigApi(id: number) {
-  return defHttp.get<PowerCutConfigModel>({
+  return defHttp.get<PowerCutConfigExtendEntity>({
     url: Api.baseUrl + id,
   });
 }

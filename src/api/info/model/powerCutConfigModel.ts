@@ -14,13 +14,13 @@ export interface GetPowerCutConfigParams {
 }
 
 export interface PowerCutConfigResultModel {
-  items: Nullable<PowerCutConfigModel[]>;
+  items: Nullable<PowerCutConfigExtendEntity[]>;
   totalCount: number;
   totalPages: number;
   workFlowCodes: string[];
 }
 
-export interface PowerCutConfigModel {
+export interface PowerCutConfigExtendEntity {
   configId: number;
   name: string;
   organizationEntityList: PowerCutConfigOrganization[];

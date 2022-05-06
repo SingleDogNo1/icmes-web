@@ -1,54 +1,9 @@
 import { FormSchema } from '/@/components/Form';
 import { useUserState } from '/@/hooks/web/useUserState';
-// import { isIDCardNumber, isMobilePhone, isEmail } from '/@/utils/is';
-// import { dateUtil } from '/@/utils/dateUtil';
 import type { BasicColumn } from '/@/components/Table';
 
 const { getDictOptions } = useUserState();
 const workflowOptions = getDictOptions('DT_POWER_CUT_TYPE');
-
-export const tabsList = [
-  {
-    key: '1',
-    name: '停送电类型',
-    component: 'PowerCutType',
-  },
-  {
-    key: '2',
-    name: '设备带电类型',
-    component: 'DeviceChargedType',
-  },
-  {
-    key: '3',
-    name: 'PLC判断规则',
-    component: 'PLCJudgmentRule',
-  },
-  {
-    key: '4',
-    name: '安全技术措施',
-    component: 'SafetyTechnology',
-  },
-  {
-    key: '5',
-    name: '高压操作票',
-    component: 'OperationTicket',
-  },
-  {
-    key: '6',
-    name: '供电系统图',
-    component: 'PowerSystemList',
-  },
-  {
-    key: '7',
-    name: '验证配置',
-    component: 'ElectricianSetting',
-  },
-  {
-    key: '8',
-    name: '异常消息',
-    component: 'ErrorMessage',
-  },
-];
 
 export const powerCutTypeColumns: BasicColumn[] = [
   { title: '名称', dataIndex: 'name', fixed: 'left' },

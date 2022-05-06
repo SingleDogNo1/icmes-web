@@ -20,7 +20,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import {
     EditPowerCutConfigModel,
-    PowerCutConfigModel,
+    PowerCutConfigExtendEntity,
   } from '/@/api/info/model/powerCutConfigModel';
   import {
     createPowerCutConfigApi,
@@ -43,7 +43,7 @@
       showActionButtonGroup: false,
     });
 
-  const [register, { closeModal }] = useModalInner(async (config: PowerCutConfigModel) => {
+  const [register, { closeModal }] = useModalInner(async (config: PowerCutConfigExtendEntity) => {
     loading.value = true;
     editType.value = config.configId ? 'edit' : 'create';
     resetFields();

@@ -1,29 +1,25 @@
 <template>
-  <PageWrapper contentFullHeight contentBackground fixedHeight>
-    <div class="w-full h-full py-4">
-      <BasicForm @register="registerForm" @submit="searchTableData" />
+  <BasicForm :class="`${prefixCls}-form`" @register="registerForm" @submit="searchTableData" />
 
-      <BasicTable @register="registerTable" :loading="loading">
-        <template #toolbar>
-          <a-button type="primary" @click="openModal(true, {})">新建</a-button>
-        </template>
+  <BasicTable @register="registerTable" :loading="loading">
+    <template #toolbar>
+      <a-button type="primary" @click="openModal(true, {})">新建</a-button>
+    </template>
 
-        <template #unSupervisePlcTip="{ record }">
-          <Switch v-model:checked="record.isTips" @change="toggleSupervisePLCTip(record)" />
-        </template>
+    <template #unSupervisePlcTip="{ record }">
+      <Switch v-model:checked="record.isTips" @change="toggleSupervisePLCTip(record)" />
+    </template>
 
-        <template #inuse="{ record }">
-          <Switch v-model:checked="record.inuse" @change="toggleUse(record)" />
-        </template>
+    <template #inuse="{ record }">
+      <Switch v-model:checked="record.inuse" @change="toggleUse(record)" />
+    </template>
 
-        <template #action="{ record }">
-          <TableAction :actions="createActions(record)" />
-        </template>
-      </BasicTable>
+    <template #action="{ record }">
+      <TableAction :actions="createActions(record)" />
+    </template>
+  </BasicTable>
 
-      <EditModal @register="registerModal" @done="searchTableData" />
-    </div>
-  </PageWrapper>
+  <EditModal @register="registerModal" @done="searchTableData" />
 </template>
 
 <script lang="ts">
@@ -35,7 +31,6 @@
 <script lang="ts" setup>
   import { onMounted, ref, nextTick } from 'vue';
   import { Switch } from 'ant-design-vue';
-  import { PageWrapper } from '/@/components/Page';
   import { BasicForm, useForm } from '/@/components/Form';
   import {
     BasicTable,
@@ -57,8 +52,10 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import EditModal from './editModal.vue';
   import { useModal } from '/@/components/Modal';
+  import { useDesign } from '/@/hooks/web/useDesign';
 
   const { createMessage } = useMessage();
+  const { prefixCls } = useDesign('plc-judgment-rule');
 
   const loading = ref(false);
   const [registerForm, { getFieldsValue }] = useForm({
@@ -159,7 +156,10 @@
 </script>
 
 <style lang="less" scoped>
-  .plcJudgmentRule {
-    color: red;
+  @prefix-cls: ~'@{namespace}-plc-judgment-rule';
+  @form-prefix-cls: ~'@{prefix-cls}-form';
+
+  .@{form-prefix-cls} {
+    @apply pt-4;
   }
 </style>
