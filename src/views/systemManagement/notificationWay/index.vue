@@ -18,6 +18,12 @@
   </PageWrapper>
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'NotificationWay',
+  };
+</script>
+
 <script lang="ts" setup>
   import { ref, watch } from 'vue';
   import { Radio, Select } from 'ant-design-vue';

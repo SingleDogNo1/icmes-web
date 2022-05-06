@@ -97,7 +97,7 @@
     // 默认的结果为数组结构，但是项目中为单选，所以直接取出来即可
     console.log('selectedIds :>> ', selectedIds, selectedNodes);
     const id = selectedIds[0],
-      node = selectedNodes[0];
+      node = selectedNodes[0].node;
 
     selectedNode.value = node;
     isRoot.value = id === 0; // 选中的是根目录(id === 0)，不允许新建同级目录
