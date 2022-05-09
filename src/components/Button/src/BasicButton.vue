@@ -1,9 +1,13 @@
 <template>
   <Button v-bind="getBindValue" :class="getButtonClass" @click="onClick">
-    <template #default="data">
-      <Icon :icon="preIcon" v-if="preIcon" :size="iconSize" class="mr-1.5" />
-      <slot v-bind="data || {}"></slot>
-      <Icon :icon="postIcon" v-if="postIcon" :size="iconSize" class="ml-1.5" />
+    <template #[item]="data" v-for="item in Object.keys($slots)" :key="item">
+      <template v-if="item === 'default'">
+        <Icon :icon="preIcon" v-if="preIcon" :size="iconSize" class="mr-1.5" />
+        <slot v-bind="data || {}"></slot>
+        <Icon :icon="postIcon" v-if="postIcon" :size="iconSize" class="ml-1.5" />
+      </template>
+
+      <slot v-else :name="item" v-bind="data || {}"></slot>
     </template>
   </Button>
 </template>

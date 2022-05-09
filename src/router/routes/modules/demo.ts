@@ -188,7 +188,7 @@ const demo: BackModeRouteRecordRaw = {
           children: [
             {
               path: 'center',
-              name: 'AccountCenterPage',
+              name: 'DemoAccountCenter',
               component: '/demo/page/account/center/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,

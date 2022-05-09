@@ -20,6 +20,7 @@ import {
   MENU_KEY,
   DICTS_KEY,
   PWD_VALIDATE_KEY,
+  NEED_FACE_RECOGNITION,
   USER_DATA_RATE_KEY,
   DEVICE_LIST_KEY,
   ACCOUNT_KEY,
@@ -50,6 +51,7 @@ interface BasicStore {
   [MENU_KEY]: string[];
   [DICTS_KEY]: Dict;
   [PWD_VALIDATE_KEY]: string;
+  [NEED_FACE_RECOGNITION]: boolean;
   [USER_DATA_RATE_KEY]: number;
   [DEVICE_LIST_KEY]: DeviceModel[];
   [ACCOUNT_KEY]: OrganizationEmployeeModel;

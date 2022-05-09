@@ -1,0 +1,96 @@
+import { FormSchema } from '/@/components/Form';
+
+export const schemas: FormSchema[] = [
+  {
+    field: 'divider',
+    component: 'Divider',
+    label: '配电操作',
+  },
+  {
+    field: 'needGuardian',
+    label: '监护人',
+    component: 'Switch',
+    slot: 'needGuardian',
+    helpMessage: ['开启后，电工配电操作时必须选择监护人'],
+  },
+  {
+    field: 'needTicket',
+    label: '高压操作票',
+    component: 'Switch',
+    slot: 'needTicket',
+    helpMessage: ['开启后，电工配电操作时必须选择操作票'],
+  },
+  {
+    field: 'guardianVerification',
+    label: 'App认证监护人方式',
+    component: 'Input',
+    slot: 'guardianVerification',
+    helpMessage: ['APP配电操作时选则监护人的认证方式'],
+  },
+  {
+    field: 'guardianExpiration',
+    label: 'App监护人时效',
+    component: 'Input',
+    slot: 'guardianExpiration',
+    helpMessage: ['APP端选择监护人生效时间'],
+  },
+  {
+    field: 'logoutCountdown',
+    label: '大屏登录倒计时',
+    component: 'Input',
+    slot: 'logoutCountdown',
+    helpMessage: ['大屏不操作后倒计时退出时间'],
+  },
+  {
+    field: 'taskFreshInterval',
+    label: '大屏刷新时间',
+    component: 'Input',
+    slot: 'taskFreshInterval',
+    helpMessage: ['大屏在不登录时的自动刷新时间'],
+  },
+  {
+    field: 'divider',
+    component: 'Divider',
+    label: '停电联系人',
+  },
+  {
+    field: 'applyVerification',
+    label: '申请停送电时扫脸',
+    component: 'Switch',
+    slot: 'applyVerification',
+    helpMessage: ['开启后，申请停送电时需要联系人扫脸二次确认'],
+  },
+  {
+    field: 'autoCloseForm',
+    label: '作废未开始停送电',
+    component: 'Switch',
+    slot: 'autoCloseForm',
+    helpMessage: ['开启后，每天24:00作废审批通过但未开始停电的停送电单'],
+  },
+  {
+    field: 'divider',
+    component: 'Divider',
+    label: '远程停送电',
+  },
+  {
+    field: 'remoteCutInterval',
+    label: '停电间隔限制',
+    component: 'Input',
+    slot: 'remoteCutInterval',
+    helpMessage: ['同时停电排队间隔时间'],
+  },
+  {
+    field: 'remoteSupplyInterval',
+    label: '送电间隔限制',
+    component: 'Input',
+    slot: 'remoteSupplyInterval',
+    helpMessage: ['同时送电排队间隔时间'],
+  },
+  {
+    field: 'remoteNeedGuardian',
+    label: '送电监护人',
+    component: 'Switch',
+    slot: 'remoteNeedGuardian',
+    helpMessage: ['开启后，远程高低压设备申请送电时必须选择监护人'],
+  },
+];

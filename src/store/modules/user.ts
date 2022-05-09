@@ -13,6 +13,7 @@ import {
   ROLES_KEY,
   TOKEN_KEY,
   PWD_VALIDATE_KEY,
+  NEED_FACE_RECOGNITION,
   USER_DATA_RATE_KEY,
   DEVICE_LIST_KEY,
   ACCOUNT_KEY,
@@ -74,6 +75,7 @@ interface UserState {
   menu: Nullable<Menu>;
   dicts: Nullable<Dict>;
   passwordValidation: Nullable<PasswordValidationModel>;
+  needFaceRecognition: Nullable<boolean>;
   sessionTimeout?: boolean;
   lastUpdateTime: number;
   dataRate: number;
@@ -98,6 +100,7 @@ export const useUserStore = defineStore({
     menu: null,
     dicts: null,
     passwordValidation: null,
+    needFaceRecognition: null,
     // Whether the login expired
     sessionTimeout: false,
     // Last fetch time
@@ -134,6 +137,11 @@ export const useUserStore = defineStore({
     },
     getPasswordValidation(): PasswordValidationModel {
       return this.passwordValidation || getAuthCache<PasswordValidationModel>(PWD_VALIDATE_KEY);
+    },
+    getNeedFaceRecognition(): boolean {
+      return this.needFaceRecognition === null
+        ? getAuthCache<boolean>(NEED_FACE_RECOGNITION)
+        : this.needFaceRecognition;
     },
     getDataRate(): number {
       return this.dataRate || getAuthCache<number>(USER_DATA_RATE_KEY);
@@ -185,6 +193,10 @@ export const useUserStore = defineStore({
     setPasswordValidation(valid: PasswordValidationModel | null) {
       this.passwordValidation = valid ?? null;
       setAuthCache(PWD_VALIDATE_KEY, valid);
+    },
+    setNeedFaceRecognition(val: boolean | null) {
+      this.needFaceRecognition = val;
+      setAuthCache(NEED_FACE_RECOGNITION, val);
     },
     setRoleList(roleList: string[]) {
       this.roleList = roleList;
@@ -248,10 +260,11 @@ export const useUserStore = defineStore({
         });
 
         const { apiUrl } = useGlobSetting();
-        this.setMenu(remoteConfig.menus);
-        this.setDicts(remoteConfig.dicts);
-        this.setFeaturesTree(remoteConfig.features);
-        this.setPasswordValidation(JSON.parse(remoteConfig.passwordValidation));
+        this.setMenu(remoteConfig.menus); // 保存菜单
+        this.setDicts(remoteConfig.dicts); // 保存数据字典
+        this.setFeaturesTree(remoteConfig.features); // 保存系统功能列表
+        this.setPasswordValidation(JSON.parse(remoteConfig.passwordValidation)); // 保存密码校验提示
+        this.setNeedFaceRecognition(remoteConfig.needFaceRecognition); // 保存是否开启人脸验证
         userInfo.accessToken && this.setToken(userInfo.accessToken);
 
         userInfo.accessToken &&
@@ -443,6 +456,7 @@ export const useUserStore = defineStore({
       this.setFeature({});
       this.setMenu(null);
       this.setPasswordValidation(null);
+      this.setNeedFaceRecognition(null);
       this.setRoleList([]);
       this.setDataRate(1);
       this.setDeviceList(null);

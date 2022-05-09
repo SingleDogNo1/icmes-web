@@ -1,11 +1,13 @@
 <template>
   <div class="pt-4">
-    <BasicForm @register="registerForm" @submit="save" />
-    <Row>
-      <Col :offset="6" :span="10" class="text-right mt-4">
-        <a-button type="primary" @click="save" :loading="loading">保存</a-button>
-      </Col>
-    </Row>
+    <Spin :spinning="pageLoading">
+      <BasicForm @register="registerForm" @submit="save" />
+      <Row>
+        <Col :offset="6" :span="10" class="text-right mt-4">
+          <a-button type="primary" @click="save" :loading="loading">保存</a-button>
+        </Col>
+      </Row>
+    </Spin>
   </div>
 </template>
 
@@ -16,17 +18,34 @@
 </script>
 
 <script lang="ts" setup>
-  import { onMounted, useAttrs, nextTick, ref } from 'vue';
+  import { onMounted, nextTick, ref, watchEffect, PropType } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { Row, Col } from 'ant-design-vue';
+  import { Row, Col, Spin } from 'ant-design-vue';
   import { PowerCutConfigModel } from '/@/api/power/model/configModel';
   import { updatePowerCutConfigApi } from '/@/api/power/config';
   import { useMessage } from '/@/hooks/web/useMessage';
 
+  const props = defineProps({
+    form: {
+      type: Object as PropType<PowerCutConfigModel>,
+      required: true,
+    },
+  });
+
   const { createMessage } = useMessage();
 
   const loading = ref(false);
-  const { form } = useAttrs() as { form: PowerCutConfigModel };
+  const pageLoading = ref(false);
+  const powerCutConfigForm = ref<Nullable<PowerCutConfigModel>>(null);
+
+  watchEffect(() => {
+    pageLoading.value = true;
+    if (props.form) {
+      powerCutConfigForm.value = props.form;
+      pageLoading.value = false;
+    }
+  });
+
   const [registerForm, { getFieldsValue, setFieldsValue }] = useForm({
     showActionButtonGroup: false,
     labelWidth: '100px',
@@ -50,7 +69,8 @@
   });
 
   onMounted(() => {
-    setFieldsValue({ safePatchMeasure: form.safePatchMeasure });
+    powerCutConfigForm.value &&
+      setFieldsValue({ safePatchMeasure: powerCutConfigForm.value.safePatchMeasure });
   });
 
   async function save() {

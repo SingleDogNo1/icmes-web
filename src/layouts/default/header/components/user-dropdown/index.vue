@@ -96,7 +96,7 @@
         openModal(true);
         break;
       case 'user':
-        go({ name: 'AccountCenterPage' });
+        go({ name: 'AccountCenter' });
         break;
     }
   }

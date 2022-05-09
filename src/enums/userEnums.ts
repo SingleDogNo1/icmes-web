@@ -7,6 +7,7 @@ export const FEATURE_TREE_KEY = 'USER__FEATURES__TREE';
 export const MENU_KEY = 'USER__MENU__';
 export const DICTS_KEY = 'USER__DICT__';
 export const PWD_VALIDATE_KEY = 'USER__PWD__VALIDATE';
+export const NEED_FACE_RECOGNITION = 'NEED_FACE_RECOGNITION';
 // role info key
 export const ROLES_KEY = 'ROLES__KEY__';
 
