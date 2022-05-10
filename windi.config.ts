@@ -15,7 +15,6 @@ export default defineConfig({
         disabled: disabledColor,
       },
       screens: {
-        xs: '480px',
         sm: '576px',
         md: '768px',
         lg: '992px',

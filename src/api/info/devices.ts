@@ -7,9 +7,9 @@ import {
   GetPowerCutDevicesListParam,
   GetPowerCutDevicesListResultModel,
   BatchUpdatePowerConfigParam,
+  GetMoreCriterionDevicesParams,
+  DeviceCollection,
 } from './model/devicesModel';
-
-import { ErrorMessageMode } from '/#/axios';
 
 enum Api {
   baseUrl = '/info/devices/',
@@ -31,33 +31,25 @@ export function getPowerCutDevicesListApi(params: GetPowerCutDevicesListParam) {
 }
 
 /** 设备带电类型设备查询 */
-export function getDevicesPowerListApi(
-  params: GetDevicesPowerListParam,
-  mode: ErrorMessageMode = 'modal',
-) {
-  return defHttp.post<GetDevicesPowerListResultModel>(
-    {
-      url: `${Api.baseUrl}list/power`,
-      params,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function getDevicesPowerListApi(params: GetDevicesPowerListParam) {
+  return defHttp.post<GetDevicesPowerListResultModel>({
+    url: `${Api.baseUrl}list/power`,
+    params,
+  });
 }
 
 /** 批量更新设备停送电配置- */
-export function batchUpdatePowerConfigApi(
-  params: BatchUpdatePowerConfigParam,
-  mode: ErrorMessageMode = 'modal',
-) {
-  return defHttp.put<boolean>(
-    {
-      url: `${Api.baseUrl}power/config`,
-      params,
-    },
-    {
-      errorMessageMode: mode,
-    },
-  );
+export function batchUpdatePowerConfigApi(params: BatchUpdatePowerConfigParam) {
+  return defHttp.put<boolean>({
+    url: `${Api.baseUrl}power/config`,
+    params,
+  });
+}
+
+/** 设备台帐---更多查询--作者：cxlu */
+export function getMoreCriterionDevicesListApi(params: GetMoreCriterionDevicesParams) {
+  return defHttp.post<DeviceCollection>({
+    url: Api.baseUrl + 'moreCriterion/list/',
+    params,
+  });
 }

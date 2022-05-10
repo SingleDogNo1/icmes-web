@@ -54,3 +54,9 @@ export enum DeviceStatusLightEnum {
   GRAY = 4,
   NONE = 5,
 }
+
+/** 高压停送电操作票操作类型 */
+export enum HvOperationTemplateTypeEnum {
+  CUT,
+  SUPPLY,
+}

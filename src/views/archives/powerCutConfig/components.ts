@@ -3,7 +3,7 @@ import PowerCutType from './powerCutType/index.vue';
 import DeviceChargedType from './deviceChargedType/index.vue';
 import PLCJudgmentRule from './plcJudgmentRule/index.vue';
 import SafetyTechnology from './safetyTechnology/index.vue';
-import OperationTicket from './operationTicket.vue';
+import OperationTicket from './operationTicket/index.vue';
 import PowerSystemList from './powerSystemList.vue';
 import ElectricianSetting from './electricianSetting/index.vue';
 import ErrorMessage from './errorMessage.vue';

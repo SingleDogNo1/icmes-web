@@ -151,7 +151,6 @@
         const defaultMsg = createPlaceholderMessage(component) + `${joinLabel ? label : ''}`;
 
         function validator(rule: any, value: any) {
-          console.log('value', value);
           const msg = rule.message || defaultMsg;
           if (value === undefined || isNull(value)) {
             // 空值
@@ -174,7 +173,6 @@
             // 非关联选择的tree组件
             return Promise.reject(msg);
           }
-          console.log('success');
           return Promise.resolve();
         }
 

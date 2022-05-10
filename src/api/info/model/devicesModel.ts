@@ -228,11 +228,16 @@ export interface DeviceCameraModel {
 }
 
 export interface DeviceSpecDataModel {
+  /** 设备 ID */
   deviceId: number;
   extraDisplayMode: boolean;
+  /** 规格名 */
   name: string;
+  /** 设备规格数据 ID */
   specDataId: number;
+  /** 单位 */
   unit: string;
+  /** 值 */
   value: string;
 }
 
@@ -403,4 +408,45 @@ export interface BatchUpdatePowerConfigParam {
   plcDetectType?: number;
   /** 带电类型 */
   powerType?: number;
+}
+
+export interface GetMoreCriterionDevicesParams {
+  /** 设备种类列表 */
+  deviceTypeList?: string[];
+  /** 模糊查询条件,传processNO,code,name,model,standard拼接的字符串 */
+  globalCondition?: string;
+  /** 全局搜索字符 */
+  globalName?: string;
+  /** 位置标识符列表 */
+  location?: number[];
+  /** 位置标识符列表 */
+  manufacturerIds?: number[];
+  /** 出厂结束日期 */
+  manufacturingDateEnd?: number;
+  /** 出厂开始日期 */
+  manufacturingDateStart?: number;
+  /** 权限部门标识符集合 */
+  organizationIds?: number[];
+  /** 当前页码 */
+  pageNo?: number;
+  /** 一页多少条记录 0标识不分页全部显示 */
+  pageSize?: number;
+  /** 主设备标识 */
+  primaryFlag?: boolean;
+  /** 工艺系统标识 */
+  processIds?: number[];
+  /** 投运结束日期 */
+  setupDateEnd?: number;
+  /** 投运开始日期 */
+  setupDateStart?: number;
+  /** 设备状态 */
+  status?: string[];
+}
+
+export interface DeviceCollection {
+  items: Nullable<DeviceModel[]>;
+  /** 设备规格列表 */
+  specModList: Nullable<DeviceSpecDataModel[]>;
+  totalCount: number;
+  totalPages: number;
 }
