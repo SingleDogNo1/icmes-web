@@ -22,7 +22,7 @@
   import { Descriptions } from 'ant-design-vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { editRangeSchemas as schemas } from './data';
+  import { editRangeSchemas as schemas } from '../data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { UpdateHvOperationDevicesApi } from '/@/api/power/hvOperation';
   import {

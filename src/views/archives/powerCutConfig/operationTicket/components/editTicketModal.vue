@@ -15,7 +15,7 @@
   import { ref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { editTicketSchemas as schemas } from './data';
+  import { editTicketSchemas as schemas } from '../data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { createHvOperationApi, updateHvOperationApi } from '/@/api/power/hvOperation';
   import {

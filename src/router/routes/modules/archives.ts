@@ -53,8 +53,23 @@ const archives: BackModeRouteRecordRaw = {
       component: '/archives/powerCutConfig/index',
       meta: {
         code: 21600,
+        hideChildrenInMenu: true,
         title: 'routes.archives.powerCutConfig.title',
       },
+      children: [
+        {
+          path: 'form',
+          name: 'ArchivesPowerCutConfigTicketConfig',
+          component: '/archives/powerCutConfig/operationTicket/configStep',
+          meta: {
+            code: 21600,
+            title: 'routes.archives.powerCutConfig.title',
+            hideMenu: true,
+            hideTab: true,
+            currentActiveMenu: '/archives/power-cut-config',
+          },
+        },
+      ],
     },
     {
       path: 'staff-info',

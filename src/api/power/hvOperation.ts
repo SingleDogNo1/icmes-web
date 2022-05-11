@@ -5,6 +5,8 @@ import {
   ToggleHvOperationTemplateParams,
   UpdateHvOperationParams,
   UpdateHvOperationDevicesParams,
+  HvOperateTemplateAdvanceModel,
+  UpdateHvOperationTemplateStepParams,
 } from './model/hvOperationModel';
 
 enum Api {
@@ -35,6 +37,13 @@ export function createHvOperationApi(params: UpdateHvOperationParams) {
   });
 }
 
+/** 根据设备ID查询高压操作票列表--作者：lih */
+export function getHvOperationApi(id: string) {
+  return defHttp.get<HvOperateTemplateAdvanceModel>({
+    url: Api.baseUrl + id,
+  });
+}
+
 /** 修改高压操作票模板--作者：lih */
 export function updateHvOperationApi(id: number, params: UpdateHvOperationParams) {
   return defHttp.put<{ code: number }>({
@@ -54,6 +63,17 @@ export function deleteHvOperationApi(id: number) {
 export function UpdateHvOperationDevicesApi(id: number, params: UpdateHvOperationDevicesParams) {
   return defHttp.put<{ code: number }>({
     url: Api.baseUrl + id,
+    params,
+  });
+}
+
+/** 高压票模板配置步骤--作者：lih */
+export function UpdateHvOperationTicketStepApi(
+  id: string,
+  params: UpdateHvOperationTemplateStepParams,
+) {
+  return defHttp.put<{ code: number }>({
+    url: `${Api.baseUrl}step/${id}`,
     params,
   });
 }

@@ -67,8 +67,9 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useUserStore } from '/@/store/modules/user';
   import { useRoute } from 'vue-router';
-  import EditTicketModal from './editTicketModal.vue';
-  import EditRangeModal from './editRangeModal.vue';
+  import EditTicketModal from './components/editTicketModal.vue';
+  import EditRangeModal from './components/editRangeModal.vue';
+  import { useGo } from '/@/hooks/web/usePage';
 
   const { prefixCls } = useDesign('operation-ticket');
   const { createMessage, createConfirm } = useMessage();
@@ -76,6 +77,7 @@
     meta: { code },
   } = useRoute();
   const { getFeature } = useUserStore();
+  const go = useGo();
 
   const hasEditPermission = getFeature[code!].POWER_CUT_CONFIG;
   const loading = ref(false);
@@ -127,7 +129,10 @@
         {
           label: '配置步骤',
           onClick: () => {
-            console.log('record :>> ', record);
+            go({
+              name: 'ArchivesPowerCutConfigTicketConfig',
+              query: { id: record.id },
+            });
           },
         },
         {
