@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper :content-full-height="true" :dense="true" title="1313" needBack>
+  <PageWrapper :content-full-height="true" :dense="true" :title="title" needBack>
     <Spin :spinning="loading">
       <Row class="p-4" :gutter="12">
         <Col :span="12">
@@ -49,6 +49,7 @@
   const { createMessage } = useMessage();
 
   const routeId = route.query.id as string;
+  const title = ref('配置步骤');
   const loading = ref(false);
   const cutTickets = ref<Nullable<HvOperationTemplateStepModel[]>>(null);
   const supplyTickets = ref<Nullable<HvOperationTemplateStepModel[]>>(null);
@@ -58,7 +59,9 @@
   onMounted(async () => {
     try {
       loading.value = true;
-      const { steps } = await getHvOperationApi(routeId);
+      const { steps, name, number } = await getHvOperationApi(routeId);
+
+      title.value = `${number} ${name}`;
 
       const cut_tickets = steps.reduce((res, pre) => {
         if (pre.type === HvOperationTemplateTypeEnum.CUT) res.push(pre);
