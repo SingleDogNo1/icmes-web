@@ -31,6 +31,7 @@
 
   <EditTicketModal @register="registerTicketModal" @done="searchTableData" />
   <EditRangeModal @register="registerRangeModal" @done="searchTableData" />
+  <TicketInfoDrawer @register="registerDrawer" />
 </template>
 
 <script lang="ts">
@@ -70,6 +71,8 @@
   import EditTicketModal from './components/editTicketModal.vue';
   import EditRangeModal from './components/editRangeModal.vue';
   import { useGo } from '/@/hooks/web/usePage';
+  import { useDrawer } from '/@/components/Drawer';
+  import TicketInfoDrawer from './components/ticketInfoDrawer.vue';
 
   const { prefixCls } = useDesign('operation-ticket');
   const { createMessage, createConfirm } = useMessage();
@@ -108,6 +111,7 @@
   });
   const [registerTicketModal, { openModal: openEditTicketModal }] = useModal();
   const [registerRangeModal, { openModal: openEditRangeModal }] = useModal();
+  const [registerDrawer, { openDrawer }] = useDrawer();
 
   function createDropDownActions(record: HvOperateTemplateAdvanceModel): ActionItem[] {
     if (!hasEditPermission) {
@@ -182,10 +186,7 @@
   }
 
   function toggleUse(row: HvOperateTemplateAdvanceModel) {
-    toggleHvOperationTicketTemplateApi({
-      flag: row.flag,
-      id: row.id,
-    })
+    toggleHvOperationTicketTemplateApi({ flag: row.flag, id: row.id })
       .then(() => {
         createMessage.success(`${row.flag ? '启' : '禁'}用成功`);
       })
@@ -196,7 +197,7 @@
   }
 
   function handleView(record) {
-    console.log('record :>> ', record);
+    openDrawer(true, record);
   }
 </script>
 

@@ -202,8 +202,6 @@
           try {
             const data = cloneDeep(record.editValueRefs);
             console.log(data);
-            //TODO 此处将数据提交给服务器保存
-            // ...
             // 保存之后提交编辑状态
             const pass = await record.onEdit?.(false, true);
             if (pass) {

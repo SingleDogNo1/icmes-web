@@ -97,8 +97,7 @@
           opt.class = wrapClassName ? `${wrapClassName} ${detailCls}` : detailCls;
 
           if (!getContainer) {
-            // TODO type error?
-            opt.getContainer = `.${prefixVar}-layout-content` as any;
+            opt.getContainer = `.${prefixVar}-layout-content` as unknown as () => string;
           }
         }
         return opt as DrawerProps;

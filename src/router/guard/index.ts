@@ -68,8 +68,7 @@ function createPageLoadingGuard(router: Router) {
   });
   router.afterEach(async () => {
     if (unref(getOpenPageLoading)) {
-      // TODO Looking for a better way
-      // The timer simulates the loading time to prevent flashing too fast,
+      // TODO 模拟延时加载，避免闪烁过快。有没有更合理的方法？
       setTimeout(() => {
         appStore.setPageLoading(false);
       }, 220);

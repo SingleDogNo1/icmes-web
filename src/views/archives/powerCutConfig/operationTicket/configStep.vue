@@ -63,18 +63,18 @@
 
       title.value = `${number} ${name}`;
 
-      const cut_tickets = steps.reduce((res, pre) => {
+      const cut_tickets = steps?.reduce((res, pre) => {
         if (pre.type === HvOperationTemplateTypeEnum.CUT) res.push(pre);
         return res;
       }, [] as HvOperationTemplateStepModel[]);
 
-      const supply_tickets = steps.reduce((res, pre) => {
+      const supply_tickets = steps?.reduce((res, pre) => {
         if (pre.type === HvOperationTemplateTypeEnum.SUPPLY) res.push(pre);
         return res;
       }, [] as HvOperationTemplateStepModel[]);
 
-      cutTickets.value = cut_tickets;
-      supplyTickets.value = supply_tickets;
+      cutTickets.value = cut_tickets || [];
+      supplyTickets.value = supply_tickets || [];
     } catch (error: any) {
       throw new Error(error);
     } finally {
@@ -99,13 +99,13 @@
 
       const { steps } = await getHvOperationApi(routeId);
 
-      const cut_tickets = steps.reduce((res, pre) => {
+      const cut_tickets = steps?.reduce((res, pre) => {
         if (pre.type === HvOperationTemplateTypeEnum.CUT) res.push(pre);
         return res;
       }, [] as HvOperationTemplateStepModel[]);
 
       // TODO 重新请求列表，为表格赋值。为什么子组件中监听不到 props.ticket的变化
-      cutTickets.value = cut_tickets;
+      cutTickets.value = cut_tickets || [];
 
       createMessage.success('保存成功');
     } catch (error: any) {
@@ -131,13 +131,13 @@
 
       const { steps } = await getHvOperationApi(routeId);
 
-      const supply_tickets = steps.reduce((res, pre) => {
+      const supply_tickets = steps?.reduce((res, pre) => {
         if (pre.type === HvOperationTemplateTypeEnum.SUPPLY) res.push(pre);
         return res;
       }, [] as HvOperationTemplateStepModel[]);
 
       // TODO 重新请求列表，为表格赋值。为什么子组件中监听不到 props.ticket的变化
-      supplyTickets.value = supply_tickets;
+      supplyTickets.value = supply_tickets || [];
 
       createMessage.success('保存成功');
     } catch (error: any) {
@@ -147,9 +147,3 @@
     }
   }
 </script>
-
-<style lang="less" scoped>
-  .configStep {
-    color: red;
-  }
-</style>

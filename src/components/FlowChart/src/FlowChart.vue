@@ -82,14 +82,6 @@
         },
       );
 
-      // TODO
-      // watch(
-      //   () => appStore.getDarkMode,
-      //   () => {
-      //     init();
-      //   }
-      // );
-
       watch(
         () => unref(getFlowOptions),
         (options) => {

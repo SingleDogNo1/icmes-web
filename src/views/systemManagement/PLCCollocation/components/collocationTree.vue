@@ -50,16 +50,15 @@
   ]);
 
   onMounted(async () => {
-    // TODO 如何做到自动请求加载树节点？
     const data = await getPlcPointsList({ uniPath: '0' });
     treeData.value = data;
 
     await nextTick();
     /*
-        https://www.antdv.com/components/tree-cn#components-tree-demo-virtual-scroll
-        考虑到性能，使用虚拟滚动，前提是提供 tree 组件的高度
-        TODO: 当前获取组件 dom 的高度进行计算得到，如何更好的获取 tree 组件的高度？？？
-       */
+      // TODO
+      https://www.antdv.com/components/tree-cn#components-tree-demo-virtual-scroll考虑到性能，使用虚拟滚动，前提是提供 tree 组件的高度
+      当前获取组件 dom 的高度进行计算得到，如何更好的获取 tree 组件的高度？？？
+    */
     const contentWrapper = collocationTreeWrapperRef.value!;
     const contentHeaderWrapper = contentWrapper.querySelector('.icmes-tree-header')!;
 

@@ -107,3 +107,25 @@ export const editRangeSchemas: FormSchema[] = [
     },
   },
 ];
+
+export const hvTicketStepColumns: BasicColumn[] = [
+  {
+    title: '序号',
+    dataIndex: 'order',
+  },
+  {
+    title: '步骤',
+    dataIndex: 'step',
+  },
+];
+
+export const hvTicketRangeColumns: BasicColumn[] = [
+  {
+    title: '工艺号',
+    dataIndex: 'processNo',
+  },
+  {
+    title: '设备名称',
+    dataIndex: 'deviceName',
+  },
+];

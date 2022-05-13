@@ -29,7 +29,7 @@ export interface HvOperateTemplateAdvanceModel {
   /** 操作票编号 */
   number: string;
   /** 高压模板步骤 */
-  steps: HvOperationTemplateStepModel[];
+  steps: Nullable<HvOperationTemplateStepModel[]>;
 }
 
 export interface HvOperationTemplateDeviceModel {
