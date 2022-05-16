@@ -7,11 +7,7 @@ import { useUserStoreWithOut } from '/@/store/modules/user';
 
 import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
 
-import { RootRoute } from '/@/router/routes';
-
 const LOGIN_PATH = PageEnum.BASE_LOGIN;
-
-const ROOT_PATH = RootRoute.path;
 
 const whitePathList: PageEnum[] = [LOGIN_PATH];
 
@@ -19,24 +15,14 @@ export function createPermissionGuard(router: Router) {
   const userStore = useUserStoreWithOut();
   const permissionStore = usePermissionStoreWithOut();
   router.beforeEach(async (to, from, next) => {
-    if (
-      from.path === ROOT_PATH &&
-      to.path === PageEnum.BASE_HOME &&
-      userStore?.getUserInfo?.homePath &&
-      userStore?.getUserInfo?.homePath !== PageEnum.BASE_HOME
-    ) {
-      next(userStore.getUserInfo.homePath);
-      return;
-    }
-
     const token = userStore.getToken;
+    const userInfo = userStore.getUserInfo!;
 
-    // Whitelist can be directly entered
     if (whitePathList.includes(to.path as PageEnum)) {
       if (to.path === LOGIN_PATH && token) {
         const isSessionTimeout = userStore.getSessionTimeout;
         try {
-          await userStore.afterLoginAction();
+          await userStore.afterLoginAction(userInfo);
           if (!isSessionTimeout) {
             next((to.query?.redirect as string) || '/');
             return;
@@ -80,7 +66,7 @@ export function createPermissionGuard(router: Router) {
       return;
     }
 
-    // get userinfo while last fetch time is empty
+    // get userInfo while last fetch time is empty
     if (userStore.getLastUpdateTime === 0) {
       try {
         await userStore.getUserInfoAction();

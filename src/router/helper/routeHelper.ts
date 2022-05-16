@@ -37,7 +37,8 @@ function asyncImportRoute(routes: BackModeRouteRecordRaw[] | undefined) {
     const { children } = item;
 
     /*
-     * FIXME 在登录 => 退出 => 再次登录时，读取到的 component 不是一个字符串而是一个解析完成的 import 函数
+     * // TODO
+     * 在登录 => 退出 => 再次登录时，读取到的 component 不是一个字符串而是一个解析完成的 import 函数
      * 是我写的有问题还是 Vite 本身存在 bug？如何处理？
      * 暂定以下解决方案，待修复：如果判断到 component 类型为函数，直接使用
      */
@@ -77,9 +78,7 @@ function dynamicImport(
     const matchKey = matchKeys[0];
     return dynamicViewsModules[matchKey];
   } else if (matchKeys?.length > 1) {
-    warn(
-      'Please do not create `.vue` and `.TSX` files with the same file name in the same hierarchical directory under the views folder. This will cause dynamic introduction failure',
-    );
+    warn('请不要在 views 文件夹下同一层级同时创建`.vue`和`.tsx`文件，这会导致动态引入失败');
     return;
   } else {
     warn('在src/views/下找不到`' + component + '.vue` 或 `' + component + '.tsx`, 请自行创建!');

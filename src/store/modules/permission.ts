@@ -166,8 +166,8 @@ export const usePermissionStore = defineStore({
           routes.push(...modList);
         });
 
-        if (!import.meta.env.DEV) {
-          // 非开发环境，删除 demo 路由
+        if (import.meta.env.Mode === 'production') {
+          // 正式线上环境，删除 demo 路由
           remove(routes, (item) => item.name === 'Demo');
         }
 

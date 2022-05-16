@@ -1,4 +1,3 @@
-import type { UserInfo } from '/#/store';
 import type { Menu, Dict } from '/@/api/info/model/configModel';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
@@ -70,7 +69,7 @@ interface UserState {
   featureScopes?: { [index: string]: number[] };
   feature?: Feature;
   featuresTree: FeaturesTreeModel[];
-  userInfo: Nullable<UserInfo>;
+  userInfo: Nullable<LoginResultModel>;
   roleList: string[];
   menu: Nullable<Menu>;
   dicts: Nullable<Dict>;
@@ -112,8 +111,8 @@ export const useUserStore = defineStore({
     organizations: null,
   }),
   getters: {
-    getUserInfo(): UserInfo {
-      return this.userInfo || getAuthCache<UserInfo>(USER_INFO_KEY) || null;
+    getUserInfo(): LoginResultModel | null {
+      return this.userInfo || getAuthCache<LoginResultModel>(USER_INFO_KEY) || null;
     },
     getToken(): string {
       return this.token || getAuthCache<string>(TOKEN_KEY);
@@ -202,7 +201,7 @@ export const useUserStore = defineStore({
       this.roleList = roleList;
       setAuthCache(ROLES_KEY, roleList);
     },
-    setUserInfo(info: UserInfo | null) {
+    setUserInfo(info: LoginResultModel | null) {
       this.userInfo = info;
       this.lastUpdateTime = new Date().getTime();
       setAuthCache(USER_INFO_KEY, info);
@@ -267,16 +266,16 @@ export const useUserStore = defineStore({
         this.setNeedFaceRecognition(remoteConfig.needFaceRecognition); // 保存是否开启人脸验证
         userInfo.accessToken && this.setToken(userInfo.accessToken);
 
-        userInfo.accessToken &&
+        if (userInfo.accessToken) {
           this.setUserInfo({
-            userId: userInfo.userId,
-            name: userInfo.name,
-            employeeId: userInfo.employeeId,
-            organizationId: userInfo.organizationId,
-            avatar: userInfo.avatar
-              ? `${apiUrl}/info/files/image/${userInfo.avatar}?access_token=${this.getToken}`
-              : '',
+            ...userInfo,
+            ...{
+              avatar: userInfo.avatar
+                ? `${apiUrl}/info/files/image/${userInfo.avatar}?access_token=${this.getToken}`
+                : '',
+            },
           });
+        }
 
         userInfo.featureScopes && this.setAuthFeatures(userInfo.featureScopes);
         if (userInfo.features) {
@@ -383,7 +382,7 @@ export const useUserStore = defineStore({
     },
     async getUserInfoAction() {
       if (!this.getToken) return null;
-      const userInfo = this.getUserInfo;
+      const userInfo = this.getUserInfo!;
       this.setUserInfo(userInfo);
       const { items: rolesList } = await getRolesListByIdApi(userInfo.employeeId, {
         ascending: true,
