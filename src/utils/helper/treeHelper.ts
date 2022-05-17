@@ -338,15 +338,9 @@ export function formatDeviceTypeTree(items: DeviceModel[], id = '-1') {
       obj.titleText =
         obj.code && obj.categoryTreeParentId === '-1'
           ? obj.name
-          : obj.processNo &&
-            obj.code &&
-            obj.categoryTreeParentId !== '-1' &&
-            obj.categoryTreeParentId !== 'A'
+          : obj.processNo && obj.code && !['-1', 'A'].includes(obj.categoryTreeParentId)
           ? `${obj.processNo} ${obj.name} ${obj.code}`
-          : !obj.processNo &&
-            obj.code &&
-            obj.categoryTreeParentId !== '-1' &&
-            obj.categoryTreeParentId !== 'A'
+          : !obj.processNo && obj.code && !['-1', 'A'].includes(obj.categoryTreeParentId)
           ? `${obj.name} ${obj.code}`
           : obj.name;
 

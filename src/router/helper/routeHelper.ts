@@ -20,8 +20,6 @@ let dynamicViewsModules: Record<string, () => Promise<Recordable>>;
 
 // Dynamic introduction
 function asyncImportRoute(routes: BackModeRouteRecordRaw[] | undefined) {
-  // const permissionStore = usePermissionStore();
-  // const permCodes = permissionStore.getPermCodeList;
   dynamicViewsModules = dynamicViewsModules || import.meta.glob('../../views/**/*.{vue,tsx}');
   if (!routes) return;
   routes.forEach((item) => {

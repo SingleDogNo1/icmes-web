@@ -1,15 +1,12 @@
-<!--
- Access control component for fine-grained access control.
--->
+<!-- Access control component for fine-grained access control. -->
 <script lang="ts">
   import type { PropType } from 'vue';
   import { defineComponent } from 'vue';
   import { RoleEnum } from '/@/enums/roleEnum';
-  import { usePermission } from '/@/hooks/web/usePermission';
   import { getSlot } from '/@/utils/helper/tsxHelper';
 
   export default defineComponent({
-    name: 'Authority',
+    name: 'AuthorityPermission',
     props: {
       /**
        * Specified role is visible
@@ -22,18 +19,12 @@
         default: '',
       },
     },
-    setup(props, { slots }) {
-      const { hasPermission } = usePermission();
-
+    setup(_props, { slots }) {
       /**
        * Render role button
        */
       function renderAuth() {
-        const { value } = props;
-        if (!value) {
-          return getSlot(slots);
-        }
-        return hasPermission(value) ? getSlot(slots) : null;
+        return getSlot(slots);
       }
 
       return () => {

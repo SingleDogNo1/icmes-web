@@ -246,7 +246,7 @@
         const { autoSetPlaceHolder, size } = props.formProps;
         const propsData: Recordable = {
           allowClear: true,
-          getPopupContainer: (trigger: Element) => trigger.parentNode,
+          getPopupContainer: () => document.body,
           size,
           ...unref(getComponentsProps),
           disabled: unref(getDisable),

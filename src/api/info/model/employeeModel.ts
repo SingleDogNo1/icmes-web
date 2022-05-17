@@ -1,8 +1,10 @@
-export interface BaseModel {
+export interface CreateEmployeeParams {
   /** 员工出生日期 */
   birthDate: number;
   /** 员工类型 */
   category: string;
+  /** 员工工号 */
+  code: string;
   /** 员工电子邮件地址 */
   email: string;
   /** 员工性别 */
@@ -41,11 +43,9 @@ export interface BaseModel {
   workType: string;
 }
 
-export interface EmployeeModel extends BaseModel {
+export interface EmployeeModel extends CreateEmployeeParams {
   /** 员工头像路径 */
   avatar: string;
-  /** 员工工号 */
-  code: string;
   /** 员工信息创建时间 */
   createTime: number;
   /** 组织机构全名 */
@@ -66,10 +66,63 @@ export interface EmployeeModel extends BaseModel {
   versionTag: string;
 }
 
-export interface EditEmployeeInfoParam extends BaseModel {
+export interface EditEmployeeInfoParam extends CreateEmployeeParams {
   /** 用于高并发的数据版本控制 */
   versionTag: string;
 }
 export interface EditEmployeeInfoResultModel {
   code: number;
+}
+
+export interface GetEmployeesListParams {
+  /** 是否正序 */
+  ascending: boolean;
+  /** 员工类型 */
+  category?: string;
+  /** 员工工号 */
+  code?: string;
+  /** 模糊查询 */
+  globalName?: string;
+  /** 入职结束时间 */
+  joinDateEnd?: number;
+  /** 入职开始时间 */
+  joinDateStart?: number;
+  /** 员工名称 */
+  name?: string;
+  /** 员工工号 */
+  orderBy?: string;
+  /** 组织机构 */
+  organizationId?: number;
+  /** 当前页码数 */
+  pageNo: number;
+  /** 一页多少条记录 0标识不分页全部显示 */
+  pageSize: number;
+  /** 专用设备号 */
+  specialDevice?: string;
+  /** 工种 */
+  workType?: string;
+}
+
+export interface GetEmployeesListResultModel {
+  items: Nullable<EmployeeFullNameModel[]>;
+  totalCount: number;
+  totalPages: number;
+}
+
+export interface EmployeeFullNameModel {
+  avatar: string;
+  category: string;
+  code: string;
+  fullName: string;
+  id: number;
+  isDeleted: boolean;
+  joinDate: number;
+  locked: boolean;
+  mobilePhone: string;
+  name: string;
+  officePhone: string;
+  officePhoneArea: string;
+  officePhoneExt: string;
+  specialDevice: string;
+  workType: string;
 }

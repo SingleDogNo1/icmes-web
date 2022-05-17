@@ -16,6 +16,8 @@
   import { get } from 'lodash-es';
   import { propTypes } from '/@/utils/propTypes';
   import { LoadingOutlined } from '@ant-design/icons-vue';
+  import { listToTreeAsParentId } from '/@/utils/helper/treeHelper';
+
   export default defineComponent({
     name: 'ApiTreeSelect',
     components: { ATreeSelect: TreeSelect, LoadingOutlined },
@@ -76,7 +78,19 @@
         if (!isArray(result)) {
           result = get(result, props.resultField);
         }
-        treeData.value = (result as Recordable[]) || [];
+
+        const tree_data = (result as Recordable[]) || [];
+
+        // TODO
+        // 当前读取数据length，如果树结构则至多只会有一个根子节点
+        // 如何更优雅的判断请求的数据本身是否树格式？如果是直接返回否则需要处理为树
+        if (tree_data.length > 1) {
+          // 是扁平结构
+          treeData.value = listToTreeAsParentId(tree_data);
+        } else {
+          treeData.value = tree_data;
+        }
+
         isFirstLoaded.value = true;
         emit('options-change', treeData.value);
       }

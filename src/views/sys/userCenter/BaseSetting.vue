@@ -9,29 +9,35 @@
                 <Col :span="16">
                   <Row :gutter="6" align="middle">
                     <Col :span="6">
-                      <Input
-                        v-model:value="model['officePhoneArea']"
-                        :maxlength="4"
-                        @change="typeIsNumber($event, model, 'officePhoneArea')"
-                      />
+                      <Form.ItemRest>
+                        <Input
+                          v-model:value="model['officePhoneArea']"
+                          :maxlength="4"
+                          @change="typeIsNumber($event, model, 'officePhoneArea')"
+                        />
+                      </Form.ItemRest>
                     </Col>
                     <Col :span="3" class="text-center"> - </Col>
                     <Col :span="15">
-                      <Input
-                        v-model:value="model['officePhone']"
-                        :maxlength="11"
-                        @change="typeIsNumber($event, model, 'officePhone')"
-                      />
+                      <Form.ItemRest>
+                        <Input
+                          v-model:value="model['officePhone']"
+                          :maxlength="11"
+                          @change="typeIsNumber($event, model, 'officePhone')"
+                        />
+                      </Form.ItemRest>
                     </Col>
                   </Row>
                 </Col>
                 <Col :span="8">
-                  <Input
-                    addon-before="分机号"
-                    v-model:value="model['officePhoneExt']"
-                    :maxlength="4"
-                    @change="typeIsNumber($event, model, 'officePhoneExt')"
-                  />
+                  <Form.ItemRest>
+                    <Input
+                      addon-before="分机号"
+                      v-model:value="model['officePhoneExt']"
+                      :maxlength="4"
+                      @change="typeIsNumber($event, model, 'officePhoneExt')"
+                    />
+                  </Form.ItemRest>
                 </Col>
               </Row>
             </InputGroup>
@@ -59,7 +65,7 @@
   </CollapseContainer>
 </template>
 <script lang="ts" setup>
-  import { Button, Row, Col, Input } from 'ant-design-vue';
+  import { Button, Row, Col, Input, Form } from 'ant-design-vue';
   import { computed, onMounted, ref } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form';
   import { CollapseContainer } from '/@/components/Container';
@@ -84,7 +90,7 @@
   const categoryMap = getDictMap('DT_CATEGORY');
 
   const avatar = computed(() => {
-    const { avatar } = userStore.getUserInfo;
+    const { avatar } = userStore.getUserInfo!;
     return avatar || headerImg;
   });
 
@@ -97,7 +103,7 @@
   });
 
   function updateAvatar(src) {
-    const userInfo = userStore.getUserInfo;
+    const userInfo = userStore.getUserInfo!;
     userInfo.avatar = src as string;
     userStore.setUserInfo(userInfo);
   }
@@ -105,7 +111,7 @@
   async function handleSubmit() {
     await validate();
     const value = getFieldsValue() as EditEmployeeInfoParam;
-    const { employeeId } = userStore.getUserInfo;
+    const { employeeId } = userStore.getUserInfo!;
     loading.value = true;
 
     try {
@@ -129,7 +135,7 @@
 
   onMounted(async () => {
     loading.value = true;
-    const { employeeId } = userStore.getUserInfo;
+    const { employeeId } = userStore.getUserInfo!;
     const data = await getEmployeeInfoByIdApi(employeeId);
     // setFieldsValue(data);
     // TODO antd-vue datePicker 组件，值的格式是 number 时报错，必须转成 string 才行，怎么解决？？？

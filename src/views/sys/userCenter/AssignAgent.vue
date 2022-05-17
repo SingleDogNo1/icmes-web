@@ -43,7 +43,7 @@
 
   const userStore = useUserStore();
 
-  const { employeeId } = userStore.getUserInfo;
+  const { employeeId } = userStore.getUserInfo!;
 
   const { createMessage } = useMessage();
 
