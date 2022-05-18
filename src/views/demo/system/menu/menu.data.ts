@@ -109,7 +109,6 @@ export const formSchema: FormSchema[] = [
         key: 'id',
         value: 'id',
       },
-      getPopupContainer: () => document.body,
     },
   },
 

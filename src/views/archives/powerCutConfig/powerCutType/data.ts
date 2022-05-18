@@ -59,7 +59,6 @@ export const editPowerCutConfigSchema: FormSchema[] = [
     required: true,
     componentProps: {
       options: workflowOptions,
-      getPopupContainer: () => document.body,
     },
   },
   {
@@ -76,7 +75,6 @@ export const editPowerCutConfigSchema: FormSchema[] = [
         key: 'id',
         value: 'id',
       },
-      getPopupContainer: () => document.body,
     },
   },
   {

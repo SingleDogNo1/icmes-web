@@ -86,7 +86,6 @@ export const editOrgSchemas: FormSchema[] = [
         key: 'id',
         value: 'fullName',
       },
-      getPopupContainer: () => document.body,
     },
   },
   {

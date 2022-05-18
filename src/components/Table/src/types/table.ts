@@ -353,7 +353,7 @@ export interface BasicTableProps<T = any> {
   tableLayout?: 'auto' | 'fixed' | string;
 
   /**
-   * the render container of dropdowns in table
+   * the render container of dropDowns in table
    * @param triggerNode
    * @version 1.5.0
    */
@@ -395,7 +395,7 @@ export interface BasicTableProps<T = any> {
    * @param expanded
    * @param record
    */
-  onExpand?: (expande: boolean, record: T) => void;
+  onExpand?: (expanded: boolean, record: T) => void;
 
   /**
    * Callback executed when the expanded rows change

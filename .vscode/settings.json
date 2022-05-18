@@ -108,6 +108,7 @@
     "ELEC",
     "esnext",
     "esno",
+    "FAILTIP",
     "icmes",
     "iconify",
     "Inited",
@@ -136,11 +137,5 @@
     "windi",
     "zeropadding",
     "zxcvbn"
-  ],
-  "[dotenv]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format"
-  },
-  "[ignore]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format"
-  }
+  ]
 }

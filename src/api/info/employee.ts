@@ -35,6 +35,13 @@ export function editEmployeeInfoByIdApi(id: string | number, params: EditEmploye
   });
 }
 
+/** 删除员工信息-作者：迟山 */
+export function deleteEmployeeInfoByIdApi(id: string | number) {
+  return defHttp.delete<{ code: number }>({
+    url: Api.baseUrl + id,
+  });
+}
+
 /** 获取员工列表-作者：迟山 */
 export function getEmployeeListApi(params: GetEmployeesListParams) {
   return defHttp.post<GetEmployeesListResultModel>({

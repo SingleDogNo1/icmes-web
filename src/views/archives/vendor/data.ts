@@ -157,9 +157,6 @@ export const editVendorSchemas: FormSchema[] = [
     field: 'interfaceCustomer',
     component: 'Select',
     label: '接口设置',
-    componentProps: {
-      getPopupContainer: () => document.body,
-    },
   },
   {
     field: 'versionTag',

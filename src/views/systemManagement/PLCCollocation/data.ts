@@ -99,7 +99,6 @@ export const UpdateSignalAttrSchemas: FormSchema[] = [
     required: true,
     component: 'Select',
     componentProps: {
-      getPopupContainer: () => document.body,
       options: [
         { value: '系统状态监测', label: '（调度日志）' },
         { value: '流量计', label: '（能耗记录-水）' },
@@ -128,7 +127,6 @@ export const UpdateSignalAttrSchemas: FormSchema[] = [
     label: '业务类型',
     component: 'Select',
     componentProps: {
-      getPopupContainer: () => document.body,
       options: businessTypeOptions,
     },
   },
@@ -166,7 +164,6 @@ export const UpdateSignalAttrSchemas: FormSchema[] = [
     component: 'Select',
     componentProps: ({ formModel }) => {
       return {
-        getPopupContainer: () => document.body,
         options: pointTypeOptions,
         onChange: (val: PointTypeEnum) => {
           if (val !== PointTypeEnum['NUMBER']) {
@@ -227,7 +224,6 @@ export const UpdateSignalAttrSchemas: FormSchema[] = [
         : [];
     },
     componentProps: {
-      getPopupContainer: () => document.body,
       options: unitOptions,
     },
   },

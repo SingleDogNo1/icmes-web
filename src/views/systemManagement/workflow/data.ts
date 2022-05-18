@@ -113,7 +113,6 @@ export const editWorkflowSchemas: FormSchema[] = [
     componentProps: {
       options: businessTypeOptions,
       placeholder: '请选择',
-      getPopupContainer: () => document.body,
     },
   },
   {

@@ -36,11 +36,13 @@
   import StaffInfoDrawer from './staffInfoDrawer.vue';
   import { PageWrapper } from '/@/components/Page';
   import { getEmployeesListSchemas as schemas, getEmployeesListColumns as columns } from './data';
-  import { getEmployeeListApi } from '/@/api/info/employee';
+  import { getEmployeeListApi, deleteEmployeeInfoByIdApi } from '/@/api/info/employee';
   import { GetEmployeesListParams, EmployeeFullNameModel } from '/@/api/info/model/employeeModel';
   import { usePermission } from '/@/hooks/web/usePermission';
+  import { useMessage } from '/@/hooks/web/useMessage';
 
   const { getPermissionList } = usePermission();
+  const { createMessage } = useMessage();
 
   const loading = ref(false);
   const has_edit_permission = getPermissionList()?.EMPLOYEE_EDIT;
@@ -89,7 +91,7 @@
     return [
       {
         label: '编辑',
-        onClick: async () => {
+        onClick: () => {
           openDrawer(true, record);
         },
       },
@@ -99,7 +101,13 @@
         popConfirm: {
           title: '数据删除后将无法恢复，确认删除数据？',
           confirm: async () => {
-            console.log('record :>> ', record);
+            try {
+              await deleteEmployeeInfoByIdApi(record.id);
+              createMessage.success('删除成功');
+              await getInitData();
+            } catch (error: any) {
+              throw new Error(error);
+            }
           },
         },
       },

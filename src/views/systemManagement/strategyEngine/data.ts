@@ -128,7 +128,6 @@ export const editStrategyEngineSchemas: FormSchema[] = [
     componentProps: {
       options: businessTypeOptions,
       placeholder: '请选择',
-      getPopupContainer: () => document.body,
     },
   },
   {

@@ -144,7 +144,6 @@ export const editPLCJudgmentRulesSchema: FormSchema[] = [
     component: 'Select',
     required: true,
     componentProps: {
-      getPopupContainer: () => document.body,
       options: powerBusinessNodeOptions,
     },
   },
@@ -154,7 +153,6 @@ export const editPLCJudgmentRulesSchema: FormSchema[] = [
     component: 'Select',
     required: true,
     componentProps: {
-      getPopupContainer: () => document.body,
       options: plcDetectTypeOptions,
     },
   },
@@ -164,7 +162,6 @@ export const editPLCJudgmentRulesSchema: FormSchema[] = [
     component: 'ApiSelect',
     required: true,
     componentProps: {
-      getPopupContainer: () => document.body,
       api: getStrategyListApi,
       params: {
         ascending: false,
@@ -189,7 +186,6 @@ export const editPLCJudgmentRulesSchema: FormSchema[] = [
     component: 'Select',
     required: true,
     componentProps: {
-      getPopupContainer: () => document.body,
       options: powerCutFailTipOptions,
     },
   },

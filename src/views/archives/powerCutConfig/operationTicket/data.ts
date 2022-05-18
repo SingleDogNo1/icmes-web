@@ -86,7 +86,6 @@ export const editRangeSchemas: FormSchema[] = [
     component: 'ApiSelect',
     required: true,
     componentProps: {
-      getPopupContainer: () => document.body,
       mode: 'multiple',
       optionFilterProp: 'label',
       showSearch: true,

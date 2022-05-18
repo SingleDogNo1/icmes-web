@@ -84,6 +84,7 @@ const plcDetectTypeOptions = [
     label: '未知',
   },
 ];
+
 export const schemas: FormSchema[] = [
   {
     field: 'ascending',
@@ -218,6 +219,25 @@ export const columns: BasicColumn[] = [
     customRender: ({ record }: { record: any }) => {
       const item = plcDetectTypeOptions.find((val) => val.value === record.plcDetectType);
       return item?.label;
+    },
+  },
+];
+
+export const batchSettingSchemas: FormSchema[] = [
+  {
+    field: 'powerType',
+    label: '带电类型',
+    component: 'Select',
+    componentProps: {
+      options: powerTypeOptions,
+    },
+  },
+  {
+    field: 'plcDetectType',
+    label: 'PLC监测类型',
+    component: 'Select',
+    componentProps: {
+      options: plcDetectTypeOptions,
     },
   },
 ];
