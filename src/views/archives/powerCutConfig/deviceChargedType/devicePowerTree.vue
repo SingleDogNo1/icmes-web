@@ -1,16 +1,14 @@
 <template>
-  <PageWrapper contentFullHeight fixedHeight dense>
-    <div class="h-full p-4 overflow-auto bg-white">
-      <BasicTree
-        ref="treeRef"
-        search
-        autoExpandParent
-        :treeData="treeData"
-        :fieldNames="{ key: 'id' }"
-        @select="handleSelect"
-      />
-    </div>
-  </PageWrapper>
+  <BasicTree
+    v-loading="loading"
+    ref="treeRef"
+    search
+    autoExpandParent
+    :height="treeHeight"
+    :treeData="treeData"
+    :fieldNames="{ key: 'id' }"
+    @select="handleSelect"
+  />
 </template>
 
 <script lang="ts">
@@ -20,21 +18,57 @@
 </script>
 
 <script lang="ts" setup>
-  import { PageWrapper } from '/@/components/Page';
-  import { ref, unref, nextTick, Ref } from 'vue';
+  import { ref, unref, /*nextTick,*/ Ref, watch, toRefs } from 'vue';
   import { BasicTree, TreeActionType } from '/@/components/Tree';
   import { listToTreeAsParentId } from '/@/utils/helper/treeHelper';
   import { getDevicesPowerListApi } from '/@/api/info/devices';
   import { GetDevicesPowerListParam, DevicePowerModel } from '/@/api/info/model/devicesModel';
   import { cloneDeep } from 'lodash-es';
 
+  const props = defineProps({
+    tableDataLoaded: {
+      type: Boolean,
+      required: true,
+    },
+  });
+
   const loading = ref(false);
   const treeRef = ref<Nullable<TreeActionType>>(null);
   const treeData = ref<any[]>([]);
+  const treeHeight = ref<number>();
+  const { tableDataLoaded } = toRefs(props);
 
   const getDeviceTreeParams = ref({}) as Ref<GetDevicesPowerListParam>;
 
   const emit = defineEmits(['select']);
+
+  watch(
+    () => tableDataLoaded.value,
+    (value) => {
+      // tableDataLoaded 表示右侧表格数据已经加载完成，此时应重新计算树组件高度，并展开树形组件
+      if (value) {
+        // TODO
+        // nextTick 不触发？？？？
+        // nextTick(() => {
+        setTimeout(() => {
+          loading.value = false;
+          const tree = getTree() as unknown as any;
+          const treeWrapper = tree.$el as HTMLElement;
+          const { height } = treeWrapper.getBoundingClientRect();
+          treeHeight.value = height - 37; // 37px 为搜索框的高度
+
+          console.log('treeData.value :>> ', treeData.value);
+          const firstTreeNode = treeData.value[0].children[0].children[0];
+          console.log(firstTreeNode);
+
+          // 展开第一层 & 选中根节点(id === 0)
+          getTree()?.setExpandedKeys([firstTreeNode.id]);
+          getTree()?.setSelectedKeys([firstTreeNode.id]);
+        }, 200);
+        // });
+      }
+    },
+  );
 
   function getTree() {
     const tree = unref(treeRef);
@@ -43,7 +77,6 @@
   }
 
   async function getDevicesPowerList(params) {
-    loading.value = true;
     try {
       const { items } = await getDevicesPowerListApi(params);
       console.log(items);
@@ -58,18 +91,9 @@
         parentId: 'categoryTreeParentId',
         id: 'categoryTreeId',
       });
-      await nextTick();
-      // 展开并选中第一个节点;
-      console.log(treeData);
-
-      const firstTreeNode = treeData.value[0].children[0].children[0];
-      console.log(firstTreeNode.id);
-
-      // 展开第一层 & 选中根节点(id === 0)
-      // getTree()?.filterByLevel(1);
-      getTree()?.setExpandedKeys([firstTreeNode.id]);
-      getTree()?.setSelectedKeys([firstTreeNode.id]);
-    } catch (error) {}
+    } catch (error: any) {
+      throw new Error(error);
+    }
   }
 
   getDeviceTreeParams.value = {
@@ -88,8 +112,7 @@
 
   function handleSelect(selectedIds, { selectedNodes }) {
     console.log(selectedIds, selectedNodes);
-    const id = selectedIds[0],
-      node = selectedNodes[0];
+    const node = selectedNodes[0];
     console.log(node);
 
     if (node.parentId !== 0 || node.id === 0) {

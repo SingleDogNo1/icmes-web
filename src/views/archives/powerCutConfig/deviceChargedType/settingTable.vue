@@ -1,18 +1,14 @@
 <template>
-  <PageWrapper contentFullHeight dense>
-    <div class="h-full p-4 overflow-auto bg-white">
-      <BasicForm :labelWidth="100" @register="registerForm" @submit="handleSubmit" />
+  <BasicForm :labelWidth="100" @register="registerForm" @submit="handleSubmit" />
 
-      <BasicTable @register="registerTable" @selection-change="handleSelectionChange">
-        <template #toolbar>
-          <a-button type="primary" :disabled="form.deviceIds.length === 0" @click="batchSetting">
-            批量配置
-          </a-button>
-        </template>
-      </BasicTable>
-    </div>
-    <batchSettingModal @register="registerModal" @update:config="getDevicesPowerList(searchData)" />
-  </PageWrapper>
+  <BasicTable @register="registerTable" @selection-change="handleSelectionChange">
+    <template #toolbar>
+      <a-button type="primary" :disabled="form.deviceIds.length === 0" @click="batchSetting">
+        批量配置
+      </a-button>
+    </template>
+  </BasicTable>
+  <batchSettingModal @register="registerModal" @update:config="getDevicesPowerList(searchData)" />
 </template>
 
 <script lang="ts">
@@ -22,7 +18,6 @@
 </script>
 
 <script lang="ts" setup>
-  import { PageWrapper } from '/@/components/Page';
   import { BasicForm, useForm } from '/@/components/Form';
   import { schemas, columns } from './data';
   import { BasicTable, useTable } from '/@/components/Table';
@@ -49,6 +44,7 @@
       default: () => [],
     },
   });
+  const emit = defineEmits(['fetch-end']);
 
   const form: Ref<{
     deviceIds: (string | number)[];
@@ -103,6 +99,8 @@
       const { items } = await getDevicesPowerListApi(params);
       console.log(items);
       setTableData(items || []);
+      await nextTick();
+      emit('fetch-end'); // 请求数据结束触发，作为重新计算 tree 组件高度的钩子函数
     } catch (error) {}
   }
 
