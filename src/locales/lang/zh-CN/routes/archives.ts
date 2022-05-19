@@ -3,7 +3,7 @@ export default {
   organization: '机构部门',
   location: '位置信息',
   powerCutConfig: {
-    title: '停送电配置',
+    title: '设备配置知识库',
   },
   vendor: '厂商资料',
   staffInfo: '员工信息',

@@ -27,7 +27,7 @@
       immediate: { type: Boolean, default: true },
       resultField: propTypes.string.def(''),
     },
-    emits: ['options-change', 'change'],
+    emits: ['options-ready', 'options-change', 'change'],
     setup(props, { attrs, emit }) {
       const treeData = ref<Recordable[]>([]);
       const isFirstLoaded = ref<Boolean>(false);
@@ -90,7 +90,9 @@
         } else {
           treeData.value = tree_data;
         }
+        emit('options-ready', treeData.value);
 
+        console.log('treeData :>> ', treeData);
         isFirstLoaded.value = true;
         emit('options-change', treeData.value);
       }

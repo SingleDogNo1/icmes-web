@@ -58,7 +58,6 @@
 
 <script lang="ts" setup>
   import type { ModalProps, ModalMethods } from './typing';
-
   import {
     computed,
     ref,

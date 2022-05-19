@@ -6,7 +6,7 @@ import SafetyTechnology from './safetyTechnology/index.vue';
 import OperationTicket from './operationTicket/index.vue';
 import PowerSystemList from './powerSystemList.vue';
 import ElectricianSetting from './electricianSetting/index.vue';
-import ErrorMessage from './errorMessage.vue';
+import ErrorMessage from './errorMessage/index.vue';
 
 export const tabsList = readonly([
   { key: '1', name: '停送电类型', component: shallowRef(PowerCutType) },

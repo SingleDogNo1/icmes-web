@@ -202,7 +202,7 @@ export const columns: BasicColumn[] = [
     title: '设备',
     dataIndex: 'processNo',
     customRender: ({ record }: { record: any }) => {
-      return `${record.processNo || ''} ${record.name} ${record.code}?? `;
+      return `${record.processNo || ''} ${record.name} ${record.code}`;
     },
   },
   {

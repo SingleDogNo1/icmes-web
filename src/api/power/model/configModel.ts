@@ -1,4 +1,9 @@
-import { ApplyVerificationEnum, GuardianVerificationEnum } from '/@/enums/powerCutEnum';
+import {
+  ApplyVerificationEnum,
+  GuardianVerificationEnum,
+  ConfigNoticeObjTypeEnum,
+  ConfigErrorNoticeTypeEnum,
+} from '/@/enums/powerCutEnum';
 
 export interface PowerCutConfigModel {
   /** 申请停送电时二次确认方式 */
@@ -32,4 +37,26 @@ export interface UpdatePowerCutConfigParams {
   name: keyof PowerCutConfigModel;
   /** 修改的结果 */
   value: any;
+}
+
+export interface ConfigReminderModel {
+  /** 标识 */
+  id: number;
+  /** 通知对象 */
+  noticeObject: string;
+  /** 通知对象类型 */
+  noticeObjectType: ConfigNoticeObjTypeEnum;
+  /** 通知类型 */
+  type: ConfigErrorNoticeTypeEnum;
+  /** 是否按班次通知 */
+  workingShift: boolean;
+}
+
+export interface ConfigReminderParams {
+  /** 通知对象 */
+  noticeObject: string;
+  /** 通知对象类型 */
+  noticeObjectType: ConfigNoticeObjTypeEnum;
+  /** 是否按班次通知 */
+  workingShift: boolean;
 }

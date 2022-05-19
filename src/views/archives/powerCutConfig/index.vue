@@ -12,6 +12,12 @@
   </PageWrapper>
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'PowerCutConfig',
+  };
+</script>
+
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { Tabs } from 'ant-design-vue';

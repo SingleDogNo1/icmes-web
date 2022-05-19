@@ -60,3 +60,25 @@ export enum HvOperationTemplateTypeEnum {
   CUT,
   SUPPLY,
 }
+
+/** 异常消息通知对象类型 */
+export enum ConfigNoticeObjTypeEnum {
+  /** 用户 */
+  USER = 0,
+  /** 角色 */
+  ROLE = 1,
+  /** 组织结构 */
+  ORGANIZATION = 2,
+  /** 组织结构 + 角色 */
+  ORGANIZATION_AND_ROLE = 3,
+  /** 停送电联系人 */
+  CONTAINER = 6,
+}
+
+/** 异常消息通知类型 */
+export enum ConfigErrorNoticeTypeEnum {
+  /** 远操异常 */
+  REMOTE = 1,
+  /** 设备异常 */
+  DEVICE = 2,
+}
