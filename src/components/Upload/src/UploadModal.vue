@@ -31,6 +31,7 @@
         :accept="getStringAccept"
         :multiple="multiple"
         :before-upload="beforeUpload"
+        action="/api/info/devices/photo"
         class="upload-modal-toolbar__btn"
       >
         <a-button type="primary">
