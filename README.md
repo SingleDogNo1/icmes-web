@@ -11,3 +11,15 @@
 
    原因同上，添加`treeNodeFilterProp: 'label'`按照 label 查找，如果重定向了 `label`注意替换为重定向的字段
    </details>
+
+3. <details>
+   <summary> 表格嵌套表单提交 </summary>
+
+   参考[停送电配置 >> 高压操作票 >> 配置步骤](/src/views/archives/powerCutConfig/operationTicket/index.vue)
+   </details>
+
+4. <details>
+   <summary>  上传图片 </summary>
+
+   参考[停送电配置 >> 供电系统图 >> 新建编辑](/src/views/archives/powerCutConfig/powerSystemList/editModal.vue)
+   </details>

@@ -1,5 +1,6 @@
 import type { PropType } from 'vue';
 import { FileBasicColumn } from './typing';
+import type { BasicColumn } from '/@/components/Table';
 
 export const basicProps = {
   helpText: {
@@ -34,11 +35,19 @@ export const basicProps = {
     default: null,
     required: true,
   },
+  name: {
+    type: String as PropType<string>,
+    default: 'file',
+  },
+  filename: {
+    type: String as PropType<string>,
+    default: null,
+  },
 };
 
 export const uploadContainerProps = {
   value: {
-    type: Array as PropType<string[]>,
+    type: Array as PropType<Record<string, any>[]>,
     default: () => [],
   },
   ...basicProps,
@@ -50,12 +59,20 @@ export const uploadContainerProps = {
     type: Boolean as PropType<boolean>,
     default: false,
   },
+  previewTableColumns: {
+    type: Array as PropType<BasicColumn[] | null>,
+    default: null,
+  },
 };
 
 export const previewProps = {
   value: {
-    type: Array as PropType<string[]>,
+    type: Array as PropType<Record<string, any>[]>,
     default: () => [],
+  },
+  previewTableColumns: {
+    type: Array as PropType<BasicColumn[] | null>,
+    default: null,
   },
 };
 

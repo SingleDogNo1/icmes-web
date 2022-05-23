@@ -39,6 +39,7 @@
     },
   ];
   export default defineComponent({
+    name: 'UploadCompDemo',
     components: { BasicUpload, BasicForm, PageWrapper, [Alert.name]: Alert },
     setup() {
       const { createMessage } = useMessage();

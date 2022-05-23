@@ -1,13 +1,21 @@
 <template>
+  <!-- 预览图片 -->
+  <Image
+    :width="200"
+    :style="{ display: 'none' }"
+    :preview="{ visible, onVisibleChange: toggleVisible }"
+    :src="imageSrc"
+  />
+
   <BasicForm :class="`${prefixCls}-form`" @register="registerForm" @submit="searchTableData" />
 
   <BasicTable @register="registerTable" :loading="loading">
     <template #toolbar>
-      <a-button type="primary" @click="openModal(true, {})">新建</a-button>
+      <a-button type="primary" @click="openModal(true, { deviceIds: deviceIds })">新建</a-button>
     </template>
 
     <template #images="{ record }">
-      <a-button type="primary" size="small" @click="() => setVisible(record, true)">
+      <a-button type="primary" size="small" @click="setVisible(record)">
         {{ record.photoName }}
       </a-button>
     </template>
@@ -16,13 +24,6 @@
       <TableAction :actions="createActions(record)" />
     </template>
   </BasicTable>
-
-  <Image
-    :width="200"
-    :style="{ display: 'none' }"
-    :preview="{ visible, onVisibleChange: setVisible }"
-    :src="imageSrc"
-  />
 
   <EditModal @register="registerModal" @done="searchTableData" />
 </template>
@@ -46,18 +47,25 @@
   } from '/@/components/Table';
   import { schemas, columns } from './data';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import { getDevicePowerSupplyPhotoListApi } from '/@/api/info/devicePowerSupplyPhoto';
+  import {
+    getDevicePowerSupplyPhotoListApi,
+    deleteDevicePowerSupplyPhotoApi,
+  } from '/@/api/info/devicePowerSupplyPhoto';
+  import { DevicePowerSupplyPhotoExtendModel } from '/@/api/info/model/devicePowerSupplyPhotoModel';
   import { useGlobSetting } from '/@/hooks/setting';
   import { useUserStore } from '/@/store/modules/user';
   import { useModal } from '/@/components/Modal';
   import EditModal from './editModal.vue';
+  import { useMessage } from '/@/hooks/web/useMessage';
 
   const { prefixCls } = useDesign('power-system-list');
+  const { createMessage } = useMessage();
   const { apiUrl } = useGlobSetting();
   const { getToken: token } = useUserStore();
   const loading = ref(false);
   const visible = ref(false);
   const imageSrc = ref('');
+  const deviceIds = ref<number[]>([]);
   const [registerForm, { getFieldsValue }] = useForm({
     layout: 'inline',
     schemas,
@@ -90,21 +98,21 @@
     searchTableData();
   });
 
-  function setVisible(record, value?) {
-    if (record && value) {
-      imageSrc.value = `${apiUrl}/info/files/image/${record.photo}?access_token=${token}`;
-      visible.value = value;
-    } else {
-      imageSrc.value = '';
-    }
+  function setVisible(record) {
+    visible.value = true;
+    imageSrc.value = `${apiUrl}/info/files/image/${record.photo}?access_token=${token}`;
   }
 
-  function createActions(record): ActionItem[] {
+  function toggleVisible(value) {
+    visible.value = value;
+  }
+
+  function createActions(record: DevicePowerSupplyPhotoExtendModel): ActionItem[] {
     return [
       {
         label: '编辑',
         onClick: () => {
-          openModal(true, record);
+          openModal(true, { record: record, deviceIds: deviceIds.value });
         },
       },
       {
@@ -113,7 +121,14 @@
         popConfirm: {
           title: '数据删除后将无法恢复，确认删除数据？',
           confirm: () => {
-            console.log('record :>> ', record);
+            deleteDevicePowerSupplyPhotoApi(record.id)
+              .then(() => {
+                createMessage.success('删除成功');
+                searchTableData();
+              })
+              .catch((error) => {
+                throw new Error(error);
+              });
           },
         },
       },
@@ -123,9 +138,10 @@
   async function getDevicePowerSupplyPhotoList(params) {
     loading.value = true;
     try {
-      const { items, totalCount } = await getDevicePowerSupplyPhotoListApi(params);
+      const { deviceIds: ids, items, totalCount } = await getDevicePowerSupplyPhotoListApi(params);
       setTableData(items || []);
       setPagination({ total: totalCount });
+      deviceIds.value = ids || [];
     } catch (error: any) {
       throw new Error(error);
     } finally {
@@ -136,16 +152,6 @@
   async function searchTableData() {
     await nextTick();
     const params = getFieldsValue();
-    console.log('params :>> ', params);
     getDevicePowerSupplyPhotoList(params);
   }
 </script>
-
-<style lang="less" scoped>
-  @prefix-cls: ~'@{namespace}-power-system-list';
-  @form-prefix-cls: ~'@{prefix-cls}-form';
-
-  .@{form-prefix-cls} {
-    @apply pt-4;
-  }
-</style>

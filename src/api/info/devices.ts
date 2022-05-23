@@ -53,3 +53,11 @@ export function getMoreCriterionDevicesListApi(params: GetMoreCriterionDevicesPa
     params,
   });
 }
+
+/** 上传设备照片-作者： */
+export function uploadDevicesPhotoApi(params) {
+  return defHttp.post<{ fileId: string }>({
+    url: Api.baseUrl + 'photo',
+    params,
+  });
+}

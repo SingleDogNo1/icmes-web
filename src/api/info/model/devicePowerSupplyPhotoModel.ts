@@ -1,11 +1,11 @@
 /** 获取系统配置接口返回数据 */
 export interface GetDevicePowerSupplyPhotoListParams {
   /** 模糊查询参数 */
-  globalName: string;
+  globalName?: string;
   /** 当前页码数 */
-  pageNo: number;
+  pageNo?: number;
   /** 一页多少条记录 0标识不分页全部显示 */
-  pageSize: number;
+  pageSize?: number;
 }
 
 export interface DevicePowerSupplyPhotoCollection {
@@ -24,6 +24,17 @@ export interface DevicePowerSupplyPhotoExtendModel {
   deviceName: string;
   /** 设备工艺号 */
   deviceProcessNo: string;
+  /** id */
+  id: number;
+  /** 照片标示码 */
+  photo: string;
+  /** 照片名称 */
+  photoName: string;
+}
+
+export interface DevicePowerSupplyPhotoBaseModel {
+  /** 设备id */
+  deviceId: number;
   /** id */
   id: number;
   /** 照片标示码 */

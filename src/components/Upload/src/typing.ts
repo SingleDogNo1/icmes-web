@@ -12,11 +12,7 @@ export interface FileItem {
   percent: number;
   file: File;
   status?: UploadResultStatus;
-  responseData?: {
-    message: string;
-    code: number;
-    url: string;
-  };
+  responseData?: Record<string, any>;
   uuid: string;
 }
 

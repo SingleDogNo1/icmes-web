@@ -1,6 +1,20 @@
+import { createVNode } from 'vue';
+import { cloneDeep } from 'lodash-es';
 import type { FormSchema } from '/@/components/Form';
 import type { BasicColumn } from '/@/components/Table';
-// import { getStrategyListApi } from '/@/api/info/strategy';
+import { uploadDevicesPhotoApi } from '/@/api/info/devices';
+import { useI18n } from '/@/hooks/web/useI18n';
+import { useUserStoreWithOut } from '/@/store/modules/user';
+import { useGlobSetting } from '/@/hooks/setting';
+
+const { t } = useI18n();
+const { getToken: token, getDevicesList } = useUserStoreWithOut();
+const { apiUrl } = useGlobSetting();
+const devicesOptions = cloneDeep(getDevicesList);
+
+devicesOptions?.forEach((v) => {
+  v.name = (v.processNo || '') + v.name;
+});
 
 export const schemas: FormSchema[] = [
   {
@@ -44,17 +58,60 @@ export const columns: BasicColumn[] = [
 
 export const editSchemas: FormSchema[] = [
   {
-    field: 'field1',
+    field: 'id',
+    component: 'Input',
+    label: 'ID',
+    defaultValue: '',
+    show: false,
+  },
+  {
+    field: 'photoName',
+    component: 'Input',
+    label: '显示名称',
+    required: true,
+  },
+  {
+    field: 'deviceId',
+    component: 'Select',
+    label: '设备',
+    required: true,
+    componentProps: {
+      options: devicesOptions || [],
+      fieldNames: {
+        label: 'name',
+        value: 'id',
+      },
+    },
+  },
+  {
+    field: 'photo',
     component: 'Upload',
-    label: '字段1',
+    label: '上传图片',
     colProps: {
       span: 8,
     },
     rules: [{ required: true, message: '请选择上传文件' }],
     componentProps: {
-      api: '/api/info/devices/photo',
+      api: uploadDevicesPhotoApi,
       maxNumber: 1,
+      maxSize: 10,
       accept: ['images/*'],
+      previewTableColumns: [
+        {
+          dataIndex: 'url',
+          title: t('component.upload.legend'),
+          width: 100,
+          customRender: ({ record }) => {
+            return createVNode('img', {
+              src: `${apiUrl}/info/files/image/${record.fileId}?access_token=${token}`,
+            });
+          },
+        },
+        {
+          dataIndex: 'name',
+          title: t('component.upload.fileName'),
+        },
+      ],
     },
   },
 ];

@@ -31,7 +31,8 @@
         :accept="getStringAccept"
         :multiple="multiple"
         :before-upload="beforeUpload"
-        action="/api/info/devices/photo"
+        :show-upload-list="false"
+        name="files"
         class="upload-modal-toolbar__btn"
       >
         <a-button type="primary">
@@ -55,7 +56,7 @@
   import { basicProps } from './props';
   import { createTableColumns, createActionColumn } from './data';
   // utils
-  import { checkFileType, checkImgType, getBase64WithFile } from './helper';
+  import { checkImgType, getBase64WithFile } from './helper';
   import { buildUUID } from '/@/utils/uuid';
   import { isFunction } from '/@/utils/is';
   import { warn } from '/@/utils/log';
@@ -67,7 +68,7 @@
     props: {
       ...basicProps,
       previewFileList: {
-        type: Array as PropType<string[]>,
+        type: Array as PropType<Record<string, any>[]>,
         default: () => [],
       },
     },
@@ -85,7 +86,7 @@
       const { t } = useI18n();
       const [register, { closeModal }] = useModalInner();
 
-      const { getAccept, getStringAccept, getHelpText } = useUploadType({
+      const { getStringAccept, getHelpText } = useUploadType({
         acceptRef: accept,
         helpTextRef: helpText,
         maxNumberRef: maxNumber,
@@ -125,18 +126,12 @@
       function beforeUpload(file: File) {
         const { size, name } = file;
         const { maxSize } = props;
-        const accept = unref(getAccept);
         // 设置最大值，则判断
         if (maxSize && file.size / 1024 / 1024 >= maxSize) {
           createMessage.error(t('component.upload.maxSizeMultiple', [maxSize]));
           return false;
         }
 
-        // 设置类型,则判断
-        if (accept.length > 0 && !checkFileType(file, accept)) {
-          createMessage.error!(t('component.upload.acceptUpload', [accept.join(',')]));
-          return false;
-        }
         const commonItem = {
           uuid: buildUUID(),
           file,
@@ -171,33 +166,24 @@
         emit('delete', record);
       }
 
-      // 预览
-      // function handlePreview(record: FileItem) {
-      //   const { thumbUrl = '' } = record;
-      //   createImgPreview({
-      //     imageList: [thumbUrl],
-      //   });
-      // }
-
       async function uploadApiByItem(item: FileItem) {
         const { api } = props;
         if (!api || !isFunction(api)) {
           return warn('upload api must exist and be a function');
         }
         try {
+          const formData = new FormData();
+          formData.append('files', item.file);
           item.status = UploadResultStatus.UPLOADING;
-          const { data } = await props.api?.(
-            {
-              ...(props.uploadParams || {}),
-              file: item.file,
-            },
+          const data = await props.api?.(
+            formData,
             function onUploadProgress(progressEvent: ProgressEvent) {
               const complete = ((progressEvent.loaded / progressEvent.total) * 100) | 0;
               item.percent = complete;
             },
           );
           item.status = UploadResultStatus.SUCCESS;
-          item.responseData = data;
+          item.responseData = { ...data, ...item };
           return {
             success: true,
             error: null,
@@ -218,6 +204,8 @@
         if ((fileListRef.value.length + props.previewFileList?.length ?? 0) > maxNumber) {
           return createMessage.warning(t('component.upload.maxNumber', [maxNumber]));
         }
+
+        console.log('fileListRef :>> ', fileListRef.value);
         try {
           isUploadingRef.value = true;
           // 只上传不是成功状态的
@@ -228,7 +216,13 @@
               return uploadApiByItem(item);
             }),
           );
+
+          // fileListRef.value = data.reduce((res, pre) => {
+          //   res.push(pre.file);
+          //   return res;
+          // }, []);
           isUploadingRef.value = false;
+
           // 生产环境:抛出错误
           const errorList = data.filter((item: any) => !item.success);
           if (errorList.length > 0) throw errorList;
@@ -248,18 +242,21 @@
         if (isUploadingRef.value) {
           return createMessage.warning(t('component.upload.saveWarn'));
         }
-        const fileList: string[] = [];
+        const fileList: Record<string, any>[] = [];
 
+        console.log('fileListRef :>> ', fileListRef.value);
         for (const item of fileListRef.value) {
           const { status, responseData } = item;
           if (status === UploadResultStatus.SUCCESS && responseData) {
-            fileList.push(responseData.url);
+            fileList.push(responseData);
           }
         }
         // 存在一个上传成功的即可保存
         if (fileList.length <= 0) {
           return createMessage.warning(t('component.upload.saveError'));
         }
+
+        console.log('fileList :>> ', fileList);
         fileListRef.value = [];
         closeModal();
         emit('change', fileList);

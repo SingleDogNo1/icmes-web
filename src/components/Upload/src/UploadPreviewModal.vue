@@ -30,20 +30,13 @@
       const [register, { closeModal }] = useModalInner();
       const { t } = useI18n();
 
-      const fileListRef = ref<PreviewFileItem[]>([]);
+      const fileListRef = ref<Record<string, any>[]>([]);
       watch(
         () => props.value,
         (value) => {
+          console.log('value :>> ', value);
           if (!isArray(value)) value = [];
-          fileListRef.value = value
-            .filter((item) => !!item)
-            .map((item) => {
-              return {
-                url: item,
-                type: item.split('.').pop() || '',
-                name: item.split('/').pop() || '',
-              };
-            });
+          fileListRef.value = value.filter((item) => !!item).map((item) => item);
         },
         { immediate: true },
       );
@@ -61,14 +54,6 @@
         }
       }
 
-      // // 预览
-      // function handlePreview(record: PreviewFileItem) {
-      //   const { url = '' } = record;
-      //   createImgPreview({
-      //     imageList: [url],
-      //   });
-      // }
-
       // 下载
       function handleDownload(record: PreviewFileItem) {
         const { url = '' } = record;
@@ -80,7 +65,9 @@
         register,
         closeModal,
         fileListRef,
-        columns: createPreviewColumns() as any[],
+        columns: props.previewTableColumns
+          ? props.previewTableColumns
+          : (createPreviewColumns() as any[]),
         actionColumn: createPreviewActionColumn({ handleRemove, handleDownload }) as any,
       };
     },
