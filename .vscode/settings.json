@@ -92,6 +92,7 @@
   "i18n-ally.enabledFrameworks": ["vue", "react"],
   "cSpell.words": [
     "Antd",
+    "anticon",
     "antv",
     "brotli",
     "browserslist",
@@ -121,6 +122,7 @@
     "nprogress",
     "pinia",
     "Pointlist",
+    "Popconfirm",
     "qrcode",
     "resizer",
     "SAFTY",

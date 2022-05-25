@@ -35,6 +35,12 @@
   </a-dropdown>
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'PopconfirmComp',
+  };
+</script>
+
 <script lang="ts" setup>
   import { computed, PropType } from 'vue';
   import type { DropMenu } from './typing';

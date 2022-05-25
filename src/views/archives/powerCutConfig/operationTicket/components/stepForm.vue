@@ -7,13 +7,8 @@
     </BasicTable>
 
     <Row class="bg-white h-10 px-2">
-      <Col class="text-right">
-        <a-button @click="handleAddRow">
-          <template #icon>
-            <PlusOutlined />
-          </template>
-          添加输入行
-        </a-button>
+      <Col :span="24" class="text-right">
+        <a-button @click="handleAddRow" preIcon="ant-design:plus-outlined"> 添加输入行 </a-button>
         <a-button class="ml-3" type="primary" :loading="loading" @click="handleSave">保存</a-button>
       </Col>
     </Row>
@@ -22,7 +17,6 @@
 <script lang="ts" setup>
   import { onMounted, nextTick, toRefs, unref, watch } from 'vue';
   import { Row, Col } from 'ant-design-vue';
-  import { PlusOutlined } from '@ant-design/icons-vue';
   import { cloneDeep } from 'lodash-es';
   import { BasicTable, useTable, TableAction, BasicColumn, ActionItem } from '/@/components/Table';
   import { HvOperationTemplateStepModel } from '/@/api/power/model/hvOperationModel';

@@ -23,3 +23,9 @@
 
    参考[停送电配置 >> 供电系统图 >> 新建编辑](/src/views/archives/powerCutConfig/powerSystemList/editModal.vue)
    </details>
+
+5. <details>
+   <summary> 自定义`button`组件前置后置按钮 </summary>
+
+   使用 `iconify` 图标，格式为 `ant-design:` + 图标名。参考 [组件](/src/views/archives/powerCutConfig/operationTicket/components/stepForm.vue)
+   </details>
