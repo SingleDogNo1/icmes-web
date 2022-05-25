@@ -41,10 +41,10 @@
     setup() {
       const { t } = useI18n();
       const { prefixCls } = useDesign('header-lock-modal');
-      const userStore = useUserStore();
+      const { getUserInfo } = useUserStore();
       const lockStore = useLockStore();
 
-      const getRealName = computed(() => userStore.getUserInfo?.name);
+      const getRealName = computed(() => getUserInfo?.name);
       const [register, { closeModal }] = useModalInner();
 
       const [registerForm, { validateFields, resetFields }] = useForm({
@@ -72,7 +72,7 @@
       }
 
       const avatar = computed(() => {
-        const { avatar } = userStore.getUserInfo;
+        const { avatar } = getUserInfo!;
         return avatar || headerImg;
       });
 

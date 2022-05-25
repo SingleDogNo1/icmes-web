@@ -15,7 +15,7 @@
   import { PermissionModeEnum } from '/@/enums/appEnum';
 
   const { prefixCls } = useDesign('st-login');
-  const userStore = useUserStore();
+  const { getUserInfo } = useUserStore();
   const permissionStore = usePermissionStore();
   const appStore = useAppStore();
   const userId = ref<Nullable<number | string>>(0);
@@ -26,12 +26,11 @@
 
   onMounted(() => {
     // 记录当前的UserId
-    userId.value = userStore.getUserInfo?.userId;
-    console.log('Mounted', userStore.getUserInfo);
+    userId.value = getUserInfo?.userId || '';
   });
 
   onBeforeUnmount(() => {
-    if (userId.value && userId.value !== userStore.getUserInfo.userId) {
+    if (userId.value && userId.value !== getUserInfo?.userId) {
       // 登录的不是同一个用户，刷新整个页面以便丢弃之前用户的页面状态
       document.location.reload();
     } else if (isBackMode() && permissionStore.getLastBuildMenuTime === 0) {

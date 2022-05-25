@@ -41,9 +41,9 @@
   import { useUserStore } from '/@/store/modules/user';
   import { agentTableColumns } from './data';
 
-  const userStore = useUserStore();
+  const { getUserInfo } = useUserStore();
 
-  const { employeeId } = userStore.getUserInfo!;
+  const { employeeId } = getUserInfo!;
 
   const { createMessage } = useMessage();
 

@@ -10,7 +10,7 @@ import { useRootSetting } from '../setting/useRootSetting';
 export function useLockPage() {
   const { getLockTime } = useRootSetting();
   const lockStore = useLockStore();
-  const userStore = useUserStore();
+  const { getToken } = useUserStore();
   const appStore = useAppStore();
 
   let timeId: TimeoutHandle;
@@ -21,7 +21,7 @@ export function useLockPage() {
 
   function resetCalcLockTimeout(): void {
     // not login
-    if (!userStore.getToken) {
+    if (!getToken) {
       clear();
       return;
     }
@@ -45,7 +45,7 @@ export function useLockPage() {
   }
 
   watchEffect((onClean) => {
-    if (userStore.getToken) {
+    if (getToken) {
       resetCalcLockTimeout();
     } else {
       clear();

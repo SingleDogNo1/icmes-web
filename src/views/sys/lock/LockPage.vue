@@ -5,23 +5,7 @@
   >
     <div
       :class="`${prefixCls}__unlock`"
-      class="
-        absolute
-        top-0
-        left-1/2
-        flex
-        pt-5
-        h-16
-        items-center
-        justify-center
-        sm:text-md
-        xl:text-xl
-        text-white
-        flex-col
-        cursor-pointer
-        transform
-        translate-x-1/2
-      "
+      class="absolute top-0 left-1/2 flex pt-5 h-16 items-center justify-center sm:text-md xl:text-xl text-white flex-col cursor-pointer transform translate-x-1/2"
       @click="handleShowForm(false)"
       v-show="showDate"
     >
@@ -44,9 +28,12 @@
       <div :class="`${prefixCls}-entry`" v-show="!showDate">
         <div :class="`${prefixCls}-entry-content`">
           <div :class="`${prefixCls}-entry__header enter-x`">
-            <img :src="userinfo.avatar || headerImg" :class="`${prefixCls}-entry__header-img`" />
+            <img
+              :src="(userInfo as any).avatar || headerImg"
+              :class="`${prefixCls}-entry__header-img`"
+            />
             <p :class="`${prefixCls}-entry__header-name`">
-              {{ userinfo.realName }}
+              {{ (userInfo as any).name }}
             </p>
           </div>
           <InputPassword
@@ -112,14 +99,14 @@
 
   const { prefixCls } = useDesign('lock-page');
   const lockStore = useLockStore();
-  const userStore = useUserStore();
+  const { getUserInfo, logout } = useUserStore();
 
   const { hour, month, minute, meridiem, year, day, week } = useNow(true);
 
   const { t } = useI18n();
 
-  const userinfo = computed(() => {
-    return userStore.getUserInfo || {};
+  const userInfo = computed(() => {
+    return getUserInfo || {};
   });
 
   /**
@@ -140,7 +127,7 @@
   }
 
   function goLogin() {
-    userStore.logout(true);
+    logout(true);
     lockStore.resetLockInfo();
   }
 

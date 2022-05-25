@@ -1,7 +1,7 @@
 <template>
   <template v-if="getShow">
     <LoginFormTitle class="enter-x" />
-    <Form class="p-4 enter-x" :model="formData" :rules="formRules" ref="formRef">
+    <Form class="p-4 enter-x" :model="formData" :rules="(formRules as any)" ref="formRef">
       <FormItem name="password" class="enter-x">
         <InputPassword
           size="large"
@@ -43,7 +43,7 @@
   const InputPassword = Input.Password;
   const { t } = useI18n();
   const { getLoginState } = useLoginState();
-  const userStore = useUserStore();
+  const { resetPassword } = useUserStore();
 
   const getShow = computed(() => unref(getLoginState) === LoginStateEnum.RESET_PASSWORD);
 
@@ -86,7 +86,7 @@
     if (!validate) return;
     try {
       loading.value = true;
-      const userInfo = await userStore.resetPassword(
+      const userInfo = await resetPassword(
         toRaw({
           password: formData.password,
           confirmPassword: formData.confirmPassword,

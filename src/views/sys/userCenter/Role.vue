@@ -5,18 +5,23 @@
   </CollapseContainer>
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'UserRole',
+  };
+</script>
+
 <script lang="ts" setup>
   import { onMounted, nextTick, ref } from 'vue';
   import { BasicForm, useForm } from '/@/components/Form';
   import { BasicTable, useTable, PaginationProps } from '/@/components/Table';
-  // import { PageWrapper } from '/@/components/Page';
   import { CollapseContainer } from '/@/components/Container';
   import { RoleSearchSchemas, RoleTableColumns } from './data';
   import { getRolesListByIdApi } from '/@/api/account/basic';
   import { GetRoleListByIdParams } from '/@/api/account/model/rolesModel';
   import { useUserStore } from '/@/store/modules/user';
 
-  const userStore = useUserStore();
+  const { getUserInfo: userInfo } = useUserStore();
 
   const loading = ref<boolean>(false);
 
@@ -39,7 +44,7 @@
   });
 
   async function getRolesListById(params: GetRoleListByIdParams) {
-    const { employeeId } = userStore.getUserInfo;
+    const { employeeId } = userInfo!;
     loading.value = true;
     try {
       const { items, totalCount } = await getRolesListByIdApi(employeeId, params);

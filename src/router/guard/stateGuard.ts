@@ -10,14 +10,14 @@ export function createStateGuard(router: Router) {
   router.afterEach((to) => {
     // Just enter the login page and clear the authentication information
     if (to.path === PageEnum.BASE_LOGIN) {
-      const tabStore = useMultipleTabStore();
-      const userStore = useUserStore();
-      const appStore = useAppStore();
-      const permissionStore = usePermissionStore();
-      appStore.resetAllState();
-      permissionStore.resetState();
-      tabStore.resetState();
-      userStore.resetState();
+      const { resetState: resetTabState } = useMultipleTabStore();
+      const { resetState: resetUserStoreState } = useUserStore();
+      const { resetAllState } = useAppStore();
+      const { resetPermissionStoreState } = usePermissionStore();
+      resetAllState();
+      resetPermissionStoreState();
+      resetTabState();
+      resetUserStoreState();
       removeTabChangeListener();
     }
   });

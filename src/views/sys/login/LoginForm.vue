@@ -3,7 +3,7 @@
   <Form
     class="p-4 enter-x"
     :model="formData"
-    :rules="formRules"
+    :rules="(formRules as any)"
     ref="formRef"
     v-show="getShow"
     @keypress.enter="handleLogin"
@@ -64,7 +64,7 @@
 
   const { t } = useI18n();
 
-  const userStore = useUserStore();
+  const { login } = useUserStore();
 
   const { getLoginState } = useLoginState();
 
@@ -102,7 +102,7 @@
     if (!validate) return;
     try {
       loading.value = true;
-      const userInfo = await userStore.login(
+      const userInfo = await login(
         toRaw({
           password: formData.password,
           employeeCode: formData.employeeCode,

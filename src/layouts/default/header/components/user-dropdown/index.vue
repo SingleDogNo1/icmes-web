@@ -10,7 +10,7 @@
     </span>
 
     <template #overlay>
-      <Menu @click="handleMenuClick">
+      <Menu @click="(handleMenuClick as any)">
         <MenuItem
           key="doc"
           :text="t('layout.header.dropdownItemDoc')"
@@ -75,10 +75,10 @@
   const { prefixCls } = useDesign('header-user-dropdown');
   const { t } = useI18n();
   const { getShowDoc, getUseLockPage } = useHeaderSetting();
-  const userStore = useUserStore();
+  const { getUserInfo: userInfo, confirmLoginOut } = useUserStore();
 
   const getUserInfo = computed(() => {
-    const { name = '', avatar } = userStore.getUserInfo || {};
+    const { name = '', avatar } = userInfo || {};
     return { name, avatar: avatar || headerImg };
   });
 
@@ -87,7 +87,7 @@
   function handleMenuClick(e: { key: MenuEvent }) {
     switch (e.key) {
       case 'logout':
-        userStore.confirmLoginOut();
+        confirmLoginOut();
         break;
       case 'doc':
         openWindow(DOC_URL);

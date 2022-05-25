@@ -87,8 +87,8 @@ export const usePermissionStore = defineStore({
       this.lastBuildMenuTime = 0;
     },
     async changePermissionCode() {
-      const userStore = useUserStore();
-      const feature = toRaw(userStore.getFeature) || [];
+      const { getFeature } = useUserStore();
+      const feature = toRaw(getFeature) || [];
       const codeList = Object.keys(feature);
 
       this.setPermCodeList(codeList);
@@ -147,8 +147,7 @@ export const usePermissionStore = defineStore({
         const ori_routes = import.meta.globEager('../../router/routes/modules/**/*.ts');
         const routes: any[] = [];
 
-        const userStore = useUserStore();
-        const menu = userStore.getMenu;
+        const { getMenu: menu } = useUserStore();
         const menuList: any[] = [];
         for (const code in menu) {
           const item = menu[code];

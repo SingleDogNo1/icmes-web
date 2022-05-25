@@ -18,7 +18,7 @@
         v-model:value="radio"
         class="ctrl-btn"
         :disabled="!edit_permission"
-        @change="handleChangeStatus"
+        @change="(handleChangeStatus as any)"
       >
         <Radio class="work-day" :value="0">生产日</Radio>
         <Radio class="repair-day" :value="1">检修日</Radio>
@@ -27,6 +27,12 @@
     </div>
   </PageWrapper>
 </template>
+
+<script lang="ts">
+  export default {
+    name: 'WorkCalendar',
+  };
+</script>
 
 <script lang="ts" setup>
   import { ref, PropType, watch, toRefs, unref, nextTick } from 'vue';

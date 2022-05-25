@@ -56,7 +56,6 @@
   import { defineComponent, computed } from 'vue';
   import { CollapseContainer } from '/@/components/Container';
   import Icon from '/@/components/Icon';
-  import Article from './Article.vue';
   import Application from './Application.vue';
   import Project from './Project.vue';
 
@@ -65,21 +64,21 @@
   import { useUserStore } from '/@/store/modules/user';
 
   export default defineComponent({
+    name: 'UserCenterDemo',
     components: {
       CollapseContainer,
       Icon,
       Tag,
       Tabs,
       TabPane: Tabs.TabPane,
-      Article,
       Application,
       Project,
       [Row.name]: Row,
       [Col.name]: Col,
     },
     setup() {
-      const userStore = useUserStore();
-      const avatar = computed(() => userStore.getUserInfo.avatar || headerImg);
+      const { getUserInfo } = useUserStore();
+      const avatar = computed(() => getUserInfo?.avatar || headerImg);
       return {
         prefixCls: 'account-center',
         avatar,

@@ -31,15 +31,15 @@ export const useLockStore = defineStore({
     },
     // Unlock
     async unLock(password?: string) {
-      const userStore = useUserStore();
+      const { getUserInfo, login } = useUserStore();
       if (this.lockInfo?.pwd === password) {
         this.resetLockInfo();
         return true;
       }
       const tryLogin = async () => {
         try {
-          const name = userStore.getUserInfo?.name;
-          const res = await userStore.login({
+          const name = getUserInfo?.name;
+          const res = await login({
             name,
             password: password!,
             goHome: false,

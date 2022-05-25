@@ -93,8 +93,7 @@ export function transformObjToRoute<T = BackModeRouteRecordRaw>(
     if (component) {
       // 查询对应的路由权限码，如果当前主菜单权限下没有任何子菜单，隐藏该主菜单
       route.meta.hideMenu = false;
-      const userStore = useUserStore();
-      const menus = userStore.getMenu;
+      const { getMenu: menus } = useUserStore();
       const permissionStore = usePermissionStore();
       const permCodes = permissionStore.getPermCodeList;
       const menuItem = menus[route.meta.code];

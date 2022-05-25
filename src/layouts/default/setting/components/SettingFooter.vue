@@ -39,17 +39,17 @@
     name: 'SettingFooter',
     components: { CopyOutlined, RedoOutlined },
     setup() {
-      const permissionStore = usePermissionStore();
+      const { resetState: resetPermissionState } = usePermissionStore();
       const { prefixCls } = useDesign('setting-footer');
       const { t } = useI18n();
       const { createSuccessModal, createMessage } = useMessage();
-      const tabStore = useMultipleTabStore();
-      const userStore = useUserStore();
-      const appStore = useAppStore();
+      const { resetState: resetTabState } = useMultipleTabStore();
+      const { resetState: resetUserState } = useUserStore();
+      const { getProjectConfig, setProjectConfig, resetAllState } = useAppStore();
 
       function handleCopy() {
         const { isSuccessRef } = useCopyToClipboard(
-          JSON.stringify(unref(appStore.getProjectConfig), null, 2),
+          JSON.stringify(unref(getProjectConfig), null, 2),
         );
         unref(isSuccessRef) &&
           createSuccessModal({
@@ -59,7 +59,7 @@
       }
       function handleResetSetting() {
         try {
-          appStore.setProjectConfig(defaultSetting);
+          setProjectConfig(defaultSetting);
           const { colorWeak, grayMode } = defaultSetting;
           // updateTheme(themeColor);
           updateColorWeak(colorWeak);
@@ -72,10 +72,10 @@
 
       function handleClearAndRedo() {
         localStorage.clear();
-        appStore.resetAllState();
-        permissionStore.resetState();
-        tabStore.resetState();
-        userStore.resetState();
+        resetAllState();
+        resetPermissionState();
+        resetTabState();
+        resetUserState();
         location.reload();
       }
       return {

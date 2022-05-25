@@ -18,7 +18,7 @@
   import { useUserStore } from '/@/store/modules/user';
   import { useMessage } from '/@/hooks/web/useMessage';
 
-  const userStore = useUserStore();
+  const { getDicts: dicts } = useUserStore();
   const { createMessage } = useMessage();
 
   defineProps({
@@ -33,7 +33,6 @@
   const loading = ref(false);
   // 编辑的类型，通过参数中是否存在versionTag，判断是新建还是编辑
   const editType: Ref<'create' | 'edit' | ''> = ref('');
-  const dicts = userStore.getDicts;
 
   const [registerForm, { getFieldsValue, setFieldsValue, updateSchema, validate }] = useForm({
     schemas: [

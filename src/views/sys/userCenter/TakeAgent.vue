@@ -22,7 +22,7 @@
   import { useUserStore } from '/@/store/modules/user';
   import { agentTableColumns } from './data';
 
-  const userStore = useUserStore();
+  const { getUserInfo: userInfo } = useUserStore();
 
   const loading = ref<boolean>(false);
   const getProxyForm = ref({
@@ -51,7 +51,7 @@
     loading.value = true;
 
     try {
-      const { employeeId } = userStore.getUserInfo;
+      const { employeeId } = userInfo!;
       const { items, totalCount } = await getAssignmentProxiesListApi(employeeId, params);
       setTableData(items || []);
       setPagination({ total: totalCount });

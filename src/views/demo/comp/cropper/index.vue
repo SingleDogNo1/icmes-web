@@ -7,7 +7,7 @@
     <CollapseContainer title="矩形裁剪" class="my-4">
       <div class="container p-4">
         <div class="cropper-container mr-10">
-          <CropperImage ref="refCropper" :src="img" @cropend="handleCropend" style="width: 40vw" />
+          <CropperImage ref="refCropper" :src="img" @cropend="handleCropEnd" style="width: 40vw" />
         </div>
         <img :src="cropperImg" class="croppered" v-if="cropperImg" alt="" />
       </div>
@@ -20,7 +20,7 @@
           <CropperImage
             ref="refCropper"
             :src="img"
-            @cropend="handleCircleCropend"
+            @cropend="handleCircleCropEnd"
             style="width: 40vw"
             circled
           />
@@ -41,6 +41,7 @@
   import { useUserStore } from '/@/store/modules/user';
 
   export default defineComponent({
+    name: 'CropperDemo',
     components: {
       PageWrapper,
       CropperImage,
@@ -52,14 +53,14 @@
       const cropperImg = ref('');
       const circleInfo = ref('');
       const circleImg = ref('');
-      const userStore = useUserStore();
-      const avatar = ref(userStore.getUserInfo?.avatar || '');
-      function handleCropend({ imgBase64, imgInfo }) {
+      const { getUserInfo } = useUserStore();
+      const avatar = ref(getUserInfo?.avatar || '');
+      function handleCropEnd({ imgBase64, imgInfo }) {
         info.value = imgInfo;
         cropperImg.value = imgBase64;
       }
 
-      function handleCircleCropend({ imgBase64, imgInfo }) {
+      function handleCircleCropEnd({ imgBase64, imgInfo }) {
         circleInfo.value = imgInfo;
         circleImg.value = imgBase64;
       }
@@ -70,8 +71,8 @@
         circleInfo,
         cropperImg,
         circleImg,
-        handleCropend,
-        handleCircleCropend,
+        handleCropEnd,
+        handleCircleCropEnd,
         avatar,
         uploadApi: uploadApi as any,
       };

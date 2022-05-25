@@ -1,8 +1,7 @@
 import { ContainStatus } from '/@/api/sys/model/userModel';
 import { useUserStoreWithOut } from '/@/store/modules/user';
 
-const userStore = useUserStoreWithOut();
-const passwordValidation = userStore.getPasswordValidation;
+const { getPasswordValidation: passwordValidation } = useUserStoreWithOut();
 /**
  * @description 校验密码框输入
  * @param {string} inputVal 输入框中的值

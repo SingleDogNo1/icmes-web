@@ -1,6 +1,6 @@
 <template>
   <BasicTree
-    :treeData="treeData"
+    :treeData="(treeData as any)"
     ref="treeRef"
     :checkable="true"
     :replace-fields="{ title: 'label', key: 'id' }"
@@ -14,9 +14,7 @@
   import { BasicTree, TreeActionType } from '/@/components/Tree';
   import { useUserStore, FeaturesTreeModel } from '/@/store/modules/user';
 
-  const userStore = useUserStore();
-
-  const features = userStore.getFeaturesTree;
+  const { getFeaturesTree: features } = useUserStore();
 
   const treeData: FeaturesTreeModel[] = [
     {

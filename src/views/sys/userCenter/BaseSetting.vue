@@ -84,13 +84,13 @@
 
   const { createMessage } = useMessage();
   const { getDictMap } = useUserState();
-  const userStore = useUserStore();
+  const { getUserInfo: userInfo, setUserInfo } = useUserStore();
 
   // 员工类型映射
   const categoryMap = getDictMap('DT_CATEGORY');
 
   const avatar = computed(() => {
-    const { avatar } = userStore.getUserInfo!;
+    const { avatar } = userInfo!;
     return avatar || headerImg;
   });
 
@@ -103,15 +103,14 @@
   });
 
   function updateAvatar(src) {
-    const userInfo = userStore.getUserInfo!;
-    userInfo.avatar = src as string;
-    userStore.setUserInfo(userInfo);
+    userInfo && (userInfo.avatar = src as string);
+    setUserInfo(userInfo);
   }
 
   async function handleSubmit() {
     await validate();
     const value = getFieldsValue() as EditEmployeeInfoParam;
-    const { employeeId } = userStore.getUserInfo!;
+    const { employeeId } = userInfo!;
     loading.value = true;
 
     try {
@@ -135,7 +134,7 @@
 
   onMounted(async () => {
     loading.value = true;
-    const { employeeId } = userStore.getUserInfo!;
+    const { employeeId } = userInfo!;
     const data = await getEmployeeInfoByIdApi(employeeId);
     // setFieldsValue(data);
     // TODO antd-vue datePicker 组件，值的格式是 number 时报错，必须转成 string 才行，怎么解决？？？

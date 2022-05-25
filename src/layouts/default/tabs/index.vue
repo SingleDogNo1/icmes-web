@@ -54,7 +54,7 @@
   const activeKeyRef = ref('');
   useTabsDrag(affixTextList);
   const tabStore = useMultipleTabStore();
-  const userStore = useUserStore();
+  const { getToken } = useUserStore();
   const router = useRouter();
   const { prefixCls } = useDesign('multiple-tabs');
   const go = useGo();
@@ -73,7 +73,7 @@
   });
   listenerRouteChange((route) => {
     const { name } = route;
-    if (name === REDIRECT_NAME || !route || !userStore.getToken) {
+    if (name === REDIRECT_NAME || !route || !getToken) {
       return;
     }
     const { path, fullPath, meta = {} } = route;

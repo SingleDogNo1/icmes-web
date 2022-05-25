@@ -12,6 +12,12 @@
   </ScrollContainer>
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'UserCenter',
+  };
+</script>
+
 <script lang="ts" setup>
   import { Tabs } from 'ant-design-vue';
   import { ScrollContainer } from '/@/components/Container';
