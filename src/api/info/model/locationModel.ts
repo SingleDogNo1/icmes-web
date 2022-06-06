@@ -1,3 +1,17 @@
+export interface GetLocationListParams {
+  /** 递归的层级次数0标识全部子孙 **/
+  hierarchy?: number;
+  /** 位置的上层位置标示 **/
+  parentId?: number;
+  /** 排序的字段名 **/
+  orderBy?: string;
+  /** 是否正序 **/
+  ascending?: boolean;
+  /** 一页多少条记录 0标识不分页全部显示 **/
+  pageSize?: number;
+  /** 当前页码数 **/
+  pageNo?: number;
+}
 export interface GetLocationListResultModel {
   items: Nullable<LocationFullNameModel[]>;
   totalCount: number;
@@ -7,22 +21,14 @@ export interface GetLocationListResultModel {
 export interface LocationModel {
   /** 位置编码 */
   code: string;
-  /** 创建时间 */
-  createTime: number;
-  /** 创建账号标识符 */
-  createUserId: number;
   /** 工艺标识符 */
-  id: number;
+  id?: number;
   /** 位置名称 */
   name: string;
-  /** 父级全称 */
-  parentFullName: string;
   /** 父项标识符 */
   parentId: number;
   /** 更新时间 */
   updateTime: number;
-  /** 更新账号标识符 */
-  updateUserId: number;
   /** 用于高并发的数据版本控制 */
   versionTag: string;
 }
