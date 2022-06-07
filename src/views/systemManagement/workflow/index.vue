@@ -32,6 +32,12 @@
   </PageWrapper>
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'WorkflowIndex',
+  };
+</script>
+
 <script lang="ts" setup>
   import { ref, Ref, nextTick } from 'vue';
   import { PageWrapper } from '/@/components/Page';

@@ -31,8 +31,10 @@ export enum reminderTypeEnum {
 }
 
 export enum nodeTypeEnum {
-  'type0' = 0,
-  'type1' = 1,
+  /** 操作 */
+  OPERATION,
+  /** 审批 */
+  APPROVE,
 }
 
 export enum reportingObjectTypeEnum {
