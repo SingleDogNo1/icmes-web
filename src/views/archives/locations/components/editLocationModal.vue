@@ -1,39 +1,42 @@
 <template>
-  <BasicModal
-    :loading="loading"
-    v-bind="$attrs"
-    :title="`${editType === 'create' ? '新建' : '编辑'}组织机构`"
-    :height="400"
-    @register="register"
-    @ok="handleSubmit"
-  >
-    <BasicForm @register="registerForm" />
-  </BasicModal>
+  <div class="editLocationModal">
+    <BasicModal
+      :loading="loading"
+      v-bind="$attrs"
+      :title="`${editType === 'create' ? '新建' : '编辑'}位置信息`"
+      :height="400"
+      @register="register"
+      @ok="handleSubmit"
+    >
+      <BasicForm @register="registerForm" />
+    </BasicModal>
+  </div>
 </template>
+
+<script lang="ts">
+  export default {
+    name: 'EditLocationModal',
+  };
+</script>
 
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
-  import {
-    getOrganizationsListApi,
-    createOrganizationApi,
-    editOrganizationApi,
-  } from '/@/api/info/organizations';
-  import {
-    OrganizationsFullNameModel,
-    OrganizationParams,
-  } from '/@/api/info/model/organizationsModel';
+  import { schemas } from '../data';
+  import { LocationFullNameModel, LocationModel } from '/@/api/info/model/locationModel';
+  import { createLocationApi, getLocationTreeApi } from '/@/api/info/location';
   import { listToTreeAsParentId } from '/@/utils/helper/treeHelper';
-  import { editOrgSchemas as schemas } from '../data';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { editLocationApi } from '../../../../api/info/location';
 
-  const { createMessage } = useMessage();
+  const loading = ref(false);
+  const editType = ref<'create' | 'edit' | ''>('');
+  const editId = ref<number>();
 
   const emit = defineEmits(['done']);
 
-  const loading = ref<boolean>(false);
-  const editType = ref<'create' | 'edit' | ''>('');
+  const { createMessage } = useMessage();
 
   const [registerForm, { getFieldsValue, setFieldsValue, updateSchema, validate }] = useForm({
     schemas,
@@ -42,25 +45,22 @@
   });
 
   const [register, { closeModal }] = useModalInner(
-    async (data: OrganizationsFullNameModel & { type: string }) => {
-      console.log('type', data.type);
+    async (data: LocationFullNameModel & { type: string }) => {
+      console.log('data', data);
       loading.value = true;
       editType.value = data.type === 'edit' ? 'edit' : 'create';
 
       try {
-        const { items } = await getOrganizationsListApi({
-          ascending: true,
-          orderBy: 'Code',
+        const { items } = await getLocationTreeApi({
           parentId: 0,
+          orderBy: 'Code',
+          ascending: true,
         });
-        const list: (OrganizationsFullNameModel & { disabled?: boolean })[] = items || [];
-
-        // 添加参数 disabled, 因为点击的当前节点的上级机构不可选择当前机构和当前机构的子集机构
-        list.map((item) => {
-          item.disabled = [item.id, item.parentId].includes(data.id);
-        });
+        const list: LocationFullNameModel[] = items || [];
 
         const treeData = listToTreeAsParentId(list);
+        console.log('treeData', treeData);
+
         updateSchema([
           { field: 'code', componentProps: { disabled: data.type === 'edit' } },
           {
@@ -76,35 +76,34 @@
             },
           },
         ]);
+        console.log('data', data);
 
         switch (data.type) {
           case 'createSiblings': // 新建同级
             setFieldsValue({
               parentId: data.parentId,
-              parentFullName: data.parentFullName,
+              parentOrganization: data.fullName,
             });
             break;
           case 'createChildren': // 新建子级
             setFieldsValue({
               parentId: data.id,
-              parentFullName: data.fullName,
+              parentOrganization: data.fullName,
             });
             break;
           case 'edit': // 编辑
+            editId.value = data.id;
             setFieldsValue({
               id: data.id,
-              phone: data.phone,
               code: data.code,
               name: data.name,
               parentId: data.parentId,
-              parentFullName: data.parentFullName,
               versionTag: data.versionTag,
               parentOrganization: data.fullName,
             });
             break;
         }
-      } catch (error: any) {
-        throw new Error(error);
+      } catch (error) {
       } finally {
         loading.value = false;
       }
@@ -114,22 +113,24 @@
   async function handleSubmit() {
     loading.value = true;
     await validate();
-    const values = getFieldsValue() as OrganizationParams;
-    console.log('values :>> ', values);
+    const values = getFieldsValue() as LocationModel;
+    console.log('values', values);
     try {
       if (editType.value === 'create') {
-        await createOrganizationApi(values);
+        await createLocationApi(values);
       } else if (editType.value === 'edit') {
-        await editOrganizationApi(values.id!, values);
+        await editLocationApi(editId.value!, values);
       }
-
       createMessage.success('保存成功');
       closeModal();
       emit('done');
     } catch (error: any) {
+      loading.value = false;
       throw new Error(error);
     } finally {
       loading.value = false;
     }
   }
 </script>
+
+<style lang="less" scoped></style>

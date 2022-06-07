@@ -1,40 +1,41 @@
 <template>
-  <PageWrapper contentFullHeight fixedHeight dense>
-    <div class="h-full p-4 mt-4 overflow-auto bg-white">
-      <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
-        <template #action="{ record }">
-          <TableAction :actions="createActions(record)" />
-        </template>
-      </BasicTable>
-    </div>
+  <div class="h-full p-4 mt-4 overflow-auto bg-white">
+    <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
+      <template #action="{ record }">
+        <TableAction :actions="createActions(record)" />
+      </template>
+    </BasicTable>
+  </div>
 
-    <EditOrganizationModal @register="registerModal" @done="handleEditOrgSuccess" />
-  </PageWrapper>
+  <EditLocationModal @register="register" @done="handleEditLocationSuccess" />
 </template>
 
 <script lang="ts">
   export default {
-    name: 'OrganizationTableTable',
+    name: 'LocationTable',
   };
 </script>
 
 <script lang="ts" setup>
   import { ref, watch } from 'vue';
-  import { PageWrapper } from '/@/components/Page';
   import {
+    ActionItem,
     BasicTable,
     useTable,
     TableAction,
     PaginationProps,
-    ActionItem,
   } from '/@/components/Table';
   import { columns } from '../data';
-  import { delOrganizationApi } from '/@/api/info/organizations';
-  import EditOrganizationModal from './editOrganizationModal.vue';
+  import EditLocationModal from './editLocationModal.vue';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { delLocationApi } from '/@/api/info/location';
+
+  const emit = defineEmits(['changePage', 'delRow']);
 
   const { createMessage } = useMessage();
+
+  const selectedRowIndex = ref<number>(-1);
 
   const props = defineProps({
     data: {
@@ -53,11 +54,7 @@
     },
   });
 
-  const emit = defineEmits(['changePage', 'delRow']);
-
-  const selectedRowIndex = ref<number>(-1);
-
-  const [registerModal, { openModal }] = useModal();
+  const [register, { openModal }] = useModal();
 
   const [registerTable, { setTableData, getPaginationRef, setPagination }] = useTable({
     columns,
@@ -86,8 +83,6 @@
       {
         label: '编辑',
         onClick: () => {
-          console.log(record);
-
           openModal(true, { ...record, ...{ type: 'edit' } });
         },
       },
@@ -103,9 +98,9 @@
               return;
             }
             try {
-              await delOrganizationApi(record.id);
+              await delLocationApi(record.id);
               createMessage.success('删除成功');
-              emit('delRow', record);
+              emit('delRow');
             } catch (error: any) {
               throw new Error(error);
             }
@@ -120,15 +115,16 @@
     selectedRowIndex.value = index;
   }
 
-  function handleEditOrgSuccess() {
-    // 编辑组织机构成功, 刷新数据
+  function handleEditLocationSuccess() {
+    // 编辑位置信息成功, 刷新数据
     setTableData(props.data);
   }
 
   watch(
     () => props.data,
-    (value) => {
-      setTableData(value);
+    (data) => {
+      console.log('data', data);
+      setTableData(data);
       setPagination({ total: props.totalCount });
     },
   );
