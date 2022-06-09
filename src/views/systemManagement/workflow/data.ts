@@ -146,3 +146,51 @@ export const workflowNodeTableColumns: BasicColumn[] = [
     slots: { customRender: 'nodeState' },
   },
 ];
+
+export const reminderTableColumns: BasicColumn[] = [
+  {
+    title: '通知时间节点',
+    dataIndex: 'notificationPhase',
+    slots: { customRender: 'notificationPhase' },
+  },
+  {
+    title: '通知类型',
+    dataIndex: 'type',
+    slots: { customRender: 'type' },
+  },
+  {
+    title: '通知对象类型',
+    dataIndex: 'notificationObjectType',
+    slots: { customRender: 'notificationObjectType' },
+  },
+  {
+    title: '通知对象',
+    dataIndex: 'jsonParseObjectInfo',
+  },
+  {
+    title: '按班次通知',
+    dataIndex: 'isWorkingShiftNoticeOn',
+    slots: { customRender: 'isWorkingShiftNoticeOn' },
+  },
+];
+
+export const reportTableColumns: BasicColumn[] = [
+  {
+    title: '超时时长/分钟',
+    dataIndex: 'timeoutPeriod',
+  },
+  {
+    title: '上报对象类型',
+    dataIndex: 'reportingObjectType',
+    slots: { customRender: 'type' },
+  },
+  {
+    title: '上报对象',
+    dataIndex: 'jsonParseObjectInfo',
+  },
+  {
+    title: '按班次通知',
+    dataIndex: 'isWorkingShiftNoticeOn',
+    slots: { customRender: 'isWorkingShiftNoticeOn' },
+  },
+];

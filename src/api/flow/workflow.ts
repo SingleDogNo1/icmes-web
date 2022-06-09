@@ -7,6 +7,7 @@ import {
   EditWorkflowResultModel,
   getWorkflowNodesListByIdParams,
   getWorkflowNodesListByIdResultModel,
+  WorkflowNodeModel,
 } from './model/workflowModel';
 
 enum Api {
@@ -72,5 +73,12 @@ export function enableWorkflowNodeApi(id, nodeId, params: { versionTag: string }
   return defHttp.put<{ code: string }>({
     url: `${Api.baseUrl}${id}/nodes/${nodeId}/enabled`,
     params,
+  });
+}
+
+/** 获取工作流所属节点详细信息-作者：王宇清 */
+export function getWorkflowNodeInfoApi(workflowId: number, nodeId: number) {
+  return defHttp.get<WorkflowNodeModel>({
+    url: `${Api.baseUrl}${workflowId}/nodes/${nodeId}`,
   });
 }

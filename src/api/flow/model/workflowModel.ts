@@ -4,7 +4,7 @@ import {
   reminderTypeEnum,
   notificationPhaseEnum,
   nodeTypeEnum,
-  notificationObjectTypeEnum,
+  workflowObjectTypeEnum,
 } from '/@/enums/workflowEnum';
 
 export interface GetWorkflowsListParam {
@@ -105,7 +105,7 @@ export interface ReminderModel {
   isWorkingShiftNoticeOn: boolean;
   jsonParseObjectInfo: string;
   notificationObject: string;
-  notificationObjectType: notificationObjectTypeEnum;
+  notificationObjectType: workflowObjectTypeEnum;
   notificationPhase: notificationPhaseEnum;
   type: reminderTypeEnum;
   verification: string;
@@ -127,4 +127,28 @@ export interface ReportingModel {
   verification: string;
   versionTag: string;
   workflowNodeId: number;
+}
+
+export interface WorkflowNodeModel {
+  code: string;
+  formKey: string;
+  id: number;
+  isDisabled: boolean;
+  isImmediatelyExecute: boolean;
+  isReminderOn: boolean;
+  isReportOn: boolean;
+  isSystemAutoExec: boolean;
+  method: workflowNodeTypeEnum;
+  name: string;
+  nodeReminderList: Nullable<ReminderModel[]>;
+  nodeReportingList: Nullable<ReportingModel[]>;
+  numberOfSigned: number;
+  operateFailureStatus: string;
+  operateSuccessStatus: string;
+  order: number;
+  redirectToNodeId: number;
+  reminderInterval: number;
+  reminderMaxNum: number;
+  type: nodeTypeEnum;
+  versionTag: string;
 }

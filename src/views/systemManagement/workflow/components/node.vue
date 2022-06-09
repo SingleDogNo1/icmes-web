@@ -1,43 +1,43 @@
 <template>
-  <PageWrapper contentFullHeight fixedHeight dense>
-    <div class="h-full p-4 mt-4 overflow-auto bg-white">
-      <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
-        <template #toolbar>
-          <!-- <a-button type="primary" @click="openModal(true, {})">新增节点</a-button> -->
-          <a-button type="primary">新增节点</a-button>
-        </template>
+  <div class="h-full p-4 mt-4 overflow-auto bg-white">
+    <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
+      <template #toolbar>
+        <!-- <a-button type="primary" @click="openModal(true, {})">新增节点</a-button> -->
+        <a-button type="primary">新增节点</a-button>
+      </template>
 
-        <template #workType="{ record }">
-          <template v-if="record.type === nodeTypeEnum.OPERATION">
-            <Icon icon="bi:hand-index-fill" :color="primaryColor" />
-            <span class="ml-2">操作</span>
-          </template>
-          <template v-if="record.type === nodeTypeEnum.APPROVE">
-            <Icon icon="fa-solid:stamp" :color="errorColor" />
-            <span class="ml-2">审批</span>
-          </template>
+      <template #workType="{ record }">
+        <template v-if="record.type === nodeTypeEnum.OPERATION">
+          <Icon icon="bi:hand-index-fill" :color="primaryColor" />
+          <span class="ml-2">操作</span>
         </template>
+        <template v-if="record.type === nodeTypeEnum.APPROVE">
+          <Icon icon="fa-solid:stamp" :color="errorColor" />
+          <span class="ml-2">审批</span>
+        </template>
+      </template>
 
-        <template #nodeState="{ record, index }">
-          <!-- 开关显示逻辑刚好与 disabled 逻辑相反，所以需要把显示的值颠倒过来 -->
-          <Switch
-            v-model:checked="record.isDisabled"
-            :checkedValue="false"
-            :uncheckedValue="true"
-            :loading="switchLoading[index]"
-            @change="toggleDisableRow(record, index)"
-          />
-        </template>
+      <template #nodeState="{ record, index }">
+        <!-- 开关显示逻辑刚好与 disabled 逻辑相反，所以需要把显示的值颠倒过来 -->
+        <Switch
+          v-model:checked="record.isDisabled"
+          :checkedValue="false"
+          :uncheckedValue="true"
+          :loading="switchLoading[index]"
+          @change="toggleDisableRow(record, index)"
+        />
+      </template>
 
-        <template #action="{ record }">
-          <TableAction
-            :actions="createActions(record)"
-            :dropDownActions="createDropDownActions(record)"
-          />
-        </template>
-      </BasicTable>
-    </div>
-  </PageWrapper>
+      <template #action="{ record }">
+        <TableAction
+          :actions="createActions(record)"
+          :dropDownActions="createDropDownActions(record)"
+        />
+      </template>
+    </BasicTable>
+
+    <ViewWorkflowNodeDrawer @register="registerViewDrawer" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -48,7 +48,6 @@
 
 <script lang="ts" setup>
   import { ref, unref, watch } from 'vue';
-  import { PageWrapper } from '/@/components/Page';
   import { Switch } from 'ant-design-vue';
   import { workflowNodeTableColumns } from '../data';
   import {
@@ -58,6 +57,8 @@
     PaginationProps,
     ActionItem,
   } from '/@/components/Table';
+  import { useModal } from '/@/components/Modal';
+  import { useDrawer } from '/@/components/Drawer';
   import { Icon } from '/@/components/Icon';
   import {
     getWorkflowNodesListByIdApi,
@@ -68,6 +69,7 @@
   import { primaryColor, errorColor } from '/@/settings/designSetting';
   import { nodeTypeEnum } from '/@/enums/workflowEnum';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import ViewWorkflowNodeDrawer from './viewWorkflowNodeDrawer.vue';
 
   const props = defineProps({
     selectedRow: {
@@ -111,14 +113,19 @@
       });
     },
   });
+  const [registerViewDrawer, { openDrawer: openWorkflowNodeDrawer }] = useDrawer();
+  const [registerViewModal, { openModal: openWorkflowNodeModal }] = useModal();
 
   function createActions(record: WorkflowNodeModel): ActionItem[] {
     return [
       {
         label: '查看',
         onClick: () => {
-          console.log('record :>> ', record);
-          // openModal(true, record);
+          openWorkflowNodeDrawer(true, {
+            workflowId: props.selectedRow.id,
+            businessType: props.selectedRow.businessType,
+            nodeId: record.id,
+          });
         },
       },
     ];
