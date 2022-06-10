@@ -2,8 +2,7 @@
   <div class="h-full p-4 mt-4 overflow-auto bg-white">
     <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
       <template #toolbar>
-        <!-- <a-button type="primary" @click="openModal(true, {})">新增节点</a-button> -->
-        <a-button type="primary">新增节点</a-button>
+        <a-button type="primary" @click="createNode">新增节点</a-button>
       </template>
 
       <template #workType="{ record }">
@@ -37,6 +36,11 @@
     </BasicTable>
 
     <ViewWorkflowNodeDrawer @register="registerViewDrawer" />
+
+    <EditNodeModal
+      @register="registerNodeModal"
+      @done="getWorkflowNodesListById(props.selectedRow.id, searchNodeForm)"
+    />
   </div>
 </template>
 
@@ -64,12 +68,14 @@
     getWorkflowNodesListByIdApi,
     disableWorkflowNodeApi,
     enableWorkflowNodeApi,
+    deleteWorkflowNodeApi,
   } from '/@/api/flow/workflow';
   import { WorkFlowModel, WorkflowNodeModel } from '/@/api/flow/model/workflowModel';
   import { primaryColor, errorColor } from '/@/settings/designSetting';
   import { nodeTypeEnum } from '/@/enums/workflowEnum';
   import { useMessage } from '/@/hooks/web/useMessage';
   import ViewWorkflowNodeDrawer from './viewWorkflowNodeDrawer.vue';
+  import EditNodeModal from './editNodeModal.vue';
 
   const props = defineProps({
     selectedRow: {
@@ -86,6 +92,7 @@
     pageNo: 1,
     pageSize: 10,
   });
+  const tableList = ref<WorkflowNodeModel[]>([]);
 
   const [registerTable, { setTableData, getPaginationRef, setPagination }] = useTable({
     columns: workflowNodeTableColumns,
@@ -114,7 +121,7 @@
     },
   });
   const [registerViewDrawer, { openDrawer: openWorkflowNodeDrawer }] = useDrawer();
-  const [registerViewModal, { openModal: openWorkflowNodeModal }] = useModal();
+  const [registerNodeModal, { openModal: openWorkflowNodeModal }] = useModal();
 
   function createActions(record: WorkflowNodeModel): ActionItem[] {
     return [
@@ -145,8 +152,15 @@
         {
           label: '编辑',
           onClick: () => {
-            // openModal(true, record);
             console.log('record :>> ', record);
+            openWorkflowNodeModal(true, {
+              ...{
+                workflowId: props.selectedRow.id,
+                businessType: props.selectedRow.businessType,
+                tableList: tableList.value,
+              },
+              ...record,
+            });
           },
         },
         {
@@ -156,6 +170,13 @@
             title: '数据删除后将无法恢复，确认删除数据？',
             confirm: async () => {
               console.log('record :>> ', record);
+              try {
+                await deleteWorkflowNodeApi(props.selectedRow.id, record.id);
+                createMessage.success('删除成功');
+                await getWorkflowNodesListById(props.selectedRow.id, unref(searchNodeForm));
+              } catch (error: any) {
+                throw new Error(error);
+              }
             },
           },
         },
@@ -181,7 +202,7 @@
     loading.value = true;
     try {
       const { items, totalCount } = await getWorkflowNodesListByIdApi(id, form);
-
+      tableList.value = items || [];
       setTableData(items || []);
       setPagination({
         total: totalCount,
@@ -218,5 +239,13 @@
     } finally {
       switchLoading.value[i] = false;
     }
+  }
+
+  function createNode() {
+    openWorkflowNodeModal(true, {
+      workflowId: props.selectedRow.id,
+      businessType: props.selectedRow.businessType,
+      tableList: tableList.value,
+    });
   }
 </script>

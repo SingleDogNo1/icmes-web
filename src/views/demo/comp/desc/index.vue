@@ -24,12 +24,6 @@
 </template>
 
 <script lang="ts">
-  export default {
-    name: 'DescDemo',
-  };
-</script>
-
-<script lang="ts">
   import { defineComponent } from 'vue';
   import { Description, DescItem, useDescription } from '/@/components/Description';
   import { PageWrapper } from '/@/components/Page';
@@ -71,6 +65,7 @@
     },
   ];
   export default defineComponent({
+    name: 'DescDemo',
     components: { Description, PageWrapper },
     setup() {
       const [register] = useDescription({

@@ -152,3 +152,35 @@ export interface WorkflowNodeModel {
   type: nodeTypeEnum;
   versionTag: string;
 }
+
+export interface CreateWorkflowNodeParam {
+  /** 节点编码 */
+  code: string;
+  /** 调用页面 */
+  formKey: string;
+  /** 是否节点延迟执行 */
+  isImmediatelyExecute: boolean;
+  /** 是否系统自动执行 */
+  isSystemAutoExec: boolean;
+  /** 操作方式 */
+  method: workflowNodeTypeEnum;
+  /** 节点名称 */
+  name: string;
+  /** 或签人数 */
+  numberOfSigned: number;
+  /** 驳回审批状态 */
+  operateFailureStatus: string;
+  /** 操作成功状态/通过审批状态 */
+  operateSuccessStatus: string;
+  /** 步骤序号 */
+  order: number;
+  /** 驳回跳转步骤编号 */
+  redirectToNodeId: number;
+  /** 工作类型 */
+  type: nodeTypeEnum;
+}
+
+export interface EditWorkflowNodeParam extends CreateWorkflowNodeParam {
+  /** 用于版本控制 */
+  versionTag: string;
+}

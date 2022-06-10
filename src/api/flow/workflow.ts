@@ -8,6 +8,8 @@ import {
   getWorkflowNodesListByIdParams,
   getWorkflowNodesListByIdResultModel,
   WorkflowNodeModel,
+  CreateWorkflowNodeParam,
+  EditWorkflowNodeParam,
 } from './model/workflowModel';
 
 enum Api {
@@ -80,5 +82,28 @@ export function enableWorkflowNodeApi(id, nodeId, params: { versionTag: string }
 export function getWorkflowNodeInfoApi(workflowId: number, nodeId: number) {
   return defHttp.get<WorkflowNodeModel>({
     url: `${Api.baseUrl}${workflowId}/nodes/${nodeId}`,
+  });
+}
+
+/** 删除工作流所属节点信息-作者：梁勇帅 */
+export function deleteWorkflowNodeApi(workflowId: number, nodeId: number) {
+  return defHttp.delete<{ code: string }>({
+    url: `${Api.baseUrl}${workflowId}/nodes/${nodeId}`,
+  });
+}
+
+/** 创建工作流所属节点信息 */
+export function createWorkflowNodeApi(id: number, params: CreateWorkflowNodeParam) {
+  return defHttp.post<{ code: string }>({
+    url: `${Api.baseUrl}${id}/nodes/`,
+    params,
+  });
+}
+
+/** 修改工作流所属节点信息 */
+export function editWorkflowNodeApi(id: number, nodeId: number, params: EditWorkflowNodeParam) {
+  return defHttp.put<{ code: string }>({
+    url: `${Api.baseUrl}${id}/nodes/${nodeId}`,
+    params,
   });
 }

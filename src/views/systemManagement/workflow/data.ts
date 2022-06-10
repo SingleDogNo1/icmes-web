@@ -1,7 +1,8 @@
 import type { FormSchema } from '/@/components/Form';
 import type { BasicColumn } from '/@/components/Table';
-
+import { workflowNodeTypeEnum, nodeTypeEnum } from '/@/enums/workflowEnum';
 import { useUserState } from '/@/hooks/web/useUserState';
+import { nextTick } from 'vue';
 
 const { getDictOptions } = useUserState();
 
@@ -194,3 +195,133 @@ export const reportTableColumns: BasicColumn[] = [
     slots: { customRender: 'isWorkingShiftNoticeOn' },
   },
 ];
+
+export const editWorkflowNodeSchemas = (editType): FormSchema[] => {
+  return [
+    {
+      field: 'order',
+      label: '步骤序号',
+      component: 'InputNumber',
+      required: true,
+      componentProps: {
+        max: 99,
+      },
+    },
+    {
+      field: 'isSystemAutoExec',
+      label: '系统自动执行',
+      component: 'Checkbox',
+      defaultValue: false,
+      colProps: { span: 12 },
+    },
+    {
+      field: 'isImmediatelyExecute',
+      label: '即时业务流转',
+      component: 'Checkbox',
+      defaultValue: true,
+      colProps: { span: 12 },
+    },
+    {
+      field: 'code',
+      label: '节点编码',
+      component: 'Input',
+      required: true,
+      componentProps: {
+        max: 30,
+      },
+    },
+    {
+      field: 'name',
+      label: '节点名称',
+      component: 'Input',
+      required: true,
+      componentProps: {
+        max: 20,
+      },
+    },
+    {
+      field: 'method',
+      label: '操作方式',
+      component: 'Select',
+      required: true,
+      componentProps: {
+        options: [
+          { label: '会签', value: workflowNodeTypeEnum.ADD },
+          { label: '或签', value: workflowNodeTypeEnum.OR },
+        ],
+      },
+    },
+    {
+      field: 'numberOfSigned',
+      label: '或签人数',
+      component: 'InputNumber',
+      // 操作方式为或签 & 工作类型不为审批， 才显示出来
+      show: ({ values }) =>
+        values.method === workflowNodeTypeEnum.OR && values.type !== nodeTypeEnum.APPROVE,
+      required: ({ values }) =>
+        values.method === workflowNodeTypeEnum.OR && values.type !== nodeTypeEnum.APPROVE,
+      defaultValue: 1,
+      componentProps: {
+        maxlength: 30,
+      },
+    },
+    {
+      field: 'type',
+      label: '工作类型',
+      component: 'Select',
+      required: true,
+      componentProps: ({ formActionType, formModel }) => {
+        return {
+          disabled: editType.value === 'edit',
+          options: [
+            { label: '操作', value: nodeTypeEnum.OPERATION },
+            { label: '审批', value: nodeTypeEnum.APPROVE },
+          ],
+          onChange: async () => {
+            await nextTick();
+            const { updateSchema } = formActionType;
+            updateSchema([
+              {
+                field: 'operateSuccessStatus',
+                label: formModel.type === nodeTypeEnum.APPROVE ? '审批通过状态' : '操作完成状态',
+              },
+            ]);
+          },
+        };
+      },
+    },
+    {
+      field: 'operateSuccessStatus',
+      label: '操作完成状态',
+      component: 'Select',
+      required: true,
+      componentProps: {
+        options: [],
+      },
+    },
+    {
+      field: 'operateFailureStatus',
+      label: '审批驳回状态',
+      component: 'Select',
+      show: ({ values }) => values.type === nodeTypeEnum.APPROVE,
+      required: ({ values }) => values.type === nodeTypeEnum.APPROVE,
+      componentProps: {
+        options: [],
+      },
+    },
+    {
+      field: 'redirectToNodeId',
+      label: '驳回后返回节点',
+      component: 'Select',
+      show: ({ values }) => values.type === nodeTypeEnum.APPROVE,
+      required: ({ values }) => values.type === nodeTypeEnum.APPROVE,
+      componentProps: {
+        options: [],
+        fieldNames: {
+          label: 'name',
+          value: 'id',
+        },
+      },
+    },
+  ];
+};
