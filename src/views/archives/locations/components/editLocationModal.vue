@@ -28,7 +28,7 @@
   import { createLocationApi, getLocationTreeApi } from '/@/api/info/location';
   import { listToTreeAsParentId } from '/@/utils/helper/treeHelper';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { editLocationApi } from '../../../../api/info/location';
+  import { editLocationApi } from '/@/api/info/location';
 
   const loading = ref(false);
   const editType = ref<'create' | 'edit' | ''>('');
@@ -46,7 +46,6 @@
 
   const [register, { closeModal }] = useModalInner(
     async (data: LocationFullNameModel & { type: string }) => {
-      console.log('data', data);
       loading.value = true;
       editType.value = data.type === 'edit' ? 'edit' : 'create';
 
@@ -59,7 +58,6 @@
         const list: LocationFullNameModel[] = items || [];
 
         const treeData = listToTreeAsParentId(list);
-        console.log('treeData', treeData);
 
         updateSchema([
           { field: 'code', componentProps: { disabled: data.type === 'edit' } },
@@ -76,7 +74,6 @@
             },
           },
         ]);
-        console.log('data', data);
 
         switch (data.type) {
           case 'createSiblings': // 新建同级
@@ -114,7 +111,6 @@
     loading.value = true;
     await validate();
     const values = getFieldsValue() as LocationModel;
-    console.log('values', values);
     try {
       if (editType.value === 'create') {
         await createLocationApi(values);

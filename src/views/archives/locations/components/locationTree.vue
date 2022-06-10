@@ -80,7 +80,6 @@
       const { items } = await getLocationTreeApi(params);
       const list: (LocationFullNameModel & { title?: string; label?: string })[] =
         cloneDeep(items) || [];
-      console.log(list);
 
       // 给列表赋值 title 用于显示标题。除根节点（parentId === -1）外，子目录和部门均显示为 code + name
       list.map((item) => {
@@ -109,7 +108,6 @@
   function handleSelect(selectedIds, { selectedNodes }) {
     const node = selectedNodes[0],
       id = selectedIds[0];
-    console.log(node);
 
     // 选中的是根目录(id === 0)，不允许新建同级目录
     isRoot.value = id === 0;
