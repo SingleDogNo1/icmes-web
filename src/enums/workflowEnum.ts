@@ -5,42 +5,48 @@ export enum workflowNodeTypeEnum {
   OR = 1,
 }
 
-// TODO 这些值前端没有用过，应该是什么值
-export enum notificationObjectTypeEnum {
-  'type0' = 0,
-  'type1' = 1,
-  'type2' = 2,
-  'type3' = 3,
-  'type4' = 4,
-  'type5' = 5,
-  'type6' = 6,
+export enum workflowObjectTypeEnum {
+  /** 用户 */
+  USER,
+  /** 角色 */
+  ROLE,
+  /** 组织机构 */
+  ORGANIZATION,
+  /** 组织机构+角色 */
+  ORG_USER,
+  /** 发起人 */
+  LAUNCHER,
+  /** 上一步执行人 */
+  PREVIOUS_STEP,
+  /** 停送电联系人 */
+  POWER_CUT_CONTACT_PERSON,
 }
 
 export enum notificationPhaseEnum {
-  'type0' = 0,
-  'type1' = 1,
-  'type2' = 2,
-  'type3' = 3,
+  /** 任务执行前 */
+  BEFORE_OPERATION,
+  /** 任务完成后 */
+  OPERATION_COMPLETE,
+  /** 审批通过后 */
+  APPROVE_PASS,
+  /** 审批驳回后 */
+  APPROVE_REJECT,
 }
 
 export enum reminderTypeEnum {
-  'type0' = 0,
-  'type1' = 1,
-  'type2' = 2,
-  'type3' = 3,
+  /** 任务 */
+  TASK,
+  /** 审批 */
+  APPROVE,
+  /** 抄送 */
+  COPY,
+  /** 通知 */
+  NOTIFICATION,
 }
 
 export enum nodeTypeEnum {
-  'type0' = 0,
-  'type1' = 1,
-}
-
-export enum reportingObjectTypeEnum {
-  'type0' = 0,
-  'type1' = 1,
-  'type2' = 2,
-  'type3' = 3,
-  'type4' = 4,
-  'type5' = 5,
-  'type6' = 6,
+  /** 操作 */
+  OPERATION,
+  /** 审批 */
+  APPROVE,
 }

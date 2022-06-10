@@ -5,6 +5,13 @@
     <Description @register="registerDev" class="enter-y" />
   </PageWrapper>
 </template>
+
+<script lang="ts">
+  export default {
+    name: 'ProjectAbout',
+  };
+</script>
+
 <script lang="ts" setup>
   import { h } from 'vue';
   import { Tag } from 'ant-design-vue';

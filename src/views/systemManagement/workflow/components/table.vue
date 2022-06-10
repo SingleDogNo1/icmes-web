@@ -1,41 +1,44 @@
 <template>
-  <PageWrapper contentFullHeight fixedHeight dense>
-    <div class="h-full p-4 mt-4 overflow-auto bg-white">
-      <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
-        <template #toolbar>
-          <a-button type="primary" @click="openModal(true, {})">新增账号</a-button>
-        </template>
+  <div class="h-full p-4 mt-4 overflow-auto bg-white">
+    <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
+      <template #toolbar>
+        <a-button type="primary" @click="openModal(true, {})">新增账号</a-button>
+      </template>
 
-        <template #businessType="{ record }">
-          <span>{{ businessTypeMap[record.businessType] }}</span>
-        </template>
+      <template #businessType="{ record }">
+        <span>{{ businessTypeMap[record.businessType] }}</span>
+      </template>
 
-        <template #isDeploy="{ record }">
-          <div v-if="record.isDeploy">
-            <AlertTwoTone :two-tone-color="successColor" />
-            <span class="ml-2.5">已发布</span>
-          </div>
-          <div v-else>
-            <AlertTwoTone :two-tone-color="primaryColor" />
-            <span class="ml-2.5">未发布</span>
-          </div>
-        </template>
+      <template #isDeploy="{ record }">
+        <div v-if="record.isDeploy">
+          <AlertTwoTone :two-tone-color="successColor" />
+          <span class="ml-2.5">已发布</span>
+        </div>
+        <div v-else>
+          <AlertTwoTone :two-tone-color="primaryColor" />
+          <span class="ml-2.5">未发布</span>
+        </div>
+      </template>
 
-        <template #action="{ record }">
-          <TableAction
-            :actions="createActions(record)"
-            :dropDownActions="createDropDownActions(record)"
-          />
-        </template>
-      </BasicTable>
-    </div>
-    <EditWorkflowModal @register="registerModal" @done="getWorkflowsList(props.searchData)" />
-  </PageWrapper>
+      <template #action="{ record }">
+        <TableAction
+          :actions="createActions(record)"
+          :dropDownActions="createDropDownActions(record)"
+        />
+      </template>
+    </BasicTable>
+  </div>
+  <EditWorkflowModal @register="registerModal" @done="getWorkflowsList(props.searchData)" />
 </template>
+
+<script lang="ts">
+  export default {
+    name: 'WorkflowTable',
+  };
+</script>
 
 <script lang="ts" setup>
   import { ref, PropType, watch } from 'vue';
-  import { PageWrapper } from '/@/components/Page';
   // TODO 咱们这个灯能不能导出成 SVG 格式，可以省很多事
   import { AlertTwoTone } from '@ant-design/icons-vue';
   import {

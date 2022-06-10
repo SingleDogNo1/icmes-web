@@ -22,6 +22,13 @@
     <Description @register="register1" class="mt-4" />
   </PageWrapper>
 </template>
+
+<script lang="ts">
+  export default {
+    name: 'DescDemo',
+  };
+</script>
+
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { Description, DescItem, useDescription } from '/@/components/Description';

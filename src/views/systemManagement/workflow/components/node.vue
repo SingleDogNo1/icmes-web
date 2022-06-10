@@ -1,26 +1,54 @@
 <template>
-  <PageWrapper contentFullHeight fixedHeight dense>
-    <div class="h-full p-4 mt-4 overflow-auto bg-white">
-      <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
-        <template #toolbar>
-          <!-- <a-button type="primary" @click="openModal(true, {})">新增节点</a-button> -->
-          <a-button type="primary">新增节点</a-button>
-        </template>
+  <div class="h-full p-4 mt-4 overflow-auto bg-white">
+    <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
+      <template #toolbar>
+        <!-- <a-button type="primary" @click="openModal(true, {})">新增节点</a-button> -->
+        <a-button type="primary">新增节点</a-button>
+      </template>
 
-        <template #action="{ record }">
-          <TableAction
-            :actions="createActions(record)"
-            :dropDownActions="createDropDownActions(record)"
-          />
+      <template #workType="{ record }">
+        <template v-if="record.type === nodeTypeEnum.OPERATION">
+          <Icon icon="bi:hand-index-fill" :color="primaryColor" />
+          <span class="ml-2">操作</span>
         </template>
-      </BasicTable>
-    </div>
-  </PageWrapper>
+        <template v-if="record.type === nodeTypeEnum.APPROVE">
+          <Icon icon="fa-solid:stamp" :color="errorColor" />
+          <span class="ml-2">审批</span>
+        </template>
+      </template>
+
+      <template #nodeState="{ record, index }">
+        <!-- 开关显示逻辑刚好与 disabled 逻辑相反，所以需要把显示的值颠倒过来 -->
+        <Switch
+          v-model:checked="record.isDisabled"
+          :checkedValue="false"
+          :uncheckedValue="true"
+          :loading="switchLoading[index]"
+          @change="toggleDisableRow(record, index)"
+        />
+      </template>
+
+      <template #action="{ record }">
+        <TableAction
+          :actions="createActions(record)"
+          :dropDownActions="createDropDownActions(record)"
+        />
+      </template>
+    </BasicTable>
+
+    <ViewWorkflowNodeDrawer @register="registerViewDrawer" />
+  </div>
 </template>
+
+<script lang="ts">
+  export default {
+    name: 'WorkflowNode',
+  };
+</script>
 
 <script lang="ts" setup>
   import { ref, unref, watch } from 'vue';
-  import { PageWrapper } from '/@/components/Page';
+  import { Switch } from 'ant-design-vue';
   import { workflowNodeTableColumns } from '../data';
   import {
     BasicTable,
@@ -29,8 +57,19 @@
     PaginationProps,
     ActionItem,
   } from '/@/components/Table';
-  import { WorkFlowModel } from '/@/api/flow/model/workflowModel';
-  import { getWorkflowNodesListByIdApi } from '/@/api/flow/workflow';
+  import { useModal } from '/@/components/Modal';
+  import { useDrawer } from '/@/components/Drawer';
+  import { Icon } from '/@/components/Icon';
+  import {
+    getWorkflowNodesListByIdApi,
+    disableWorkflowNodeApi,
+    enableWorkflowNodeApi,
+  } from '/@/api/flow/workflow';
+  import { WorkFlowModel, WorkflowNodeModel } from '/@/api/flow/model/workflowModel';
+  import { primaryColor, errorColor } from '/@/settings/designSetting';
+  import { nodeTypeEnum } from '/@/enums/workflowEnum';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import ViewWorkflowNodeDrawer from './viewWorkflowNodeDrawer.vue';
 
   const props = defineProps({
     selectedRow: {
@@ -40,6 +79,8 @@
   });
 
   const loading = ref<boolean>(false);
+  const switchLoading = ref<boolean[]>([]);
+  const { createMessage } = useMessage();
   const selectedRowIndex = ref<number>(-1);
   const searchNodeForm = ref({
     pageNo: 1,
@@ -72,46 +113,64 @@
       });
     },
   });
+  const [registerViewDrawer, { openDrawer: openWorkflowNodeDrawer }] = useDrawer();
+  const [registerViewModal, { openModal: openWorkflowNodeModal }] = useModal();
 
-  function createActions(record): ActionItem[] {
+  function createActions(record: WorkflowNodeModel): ActionItem[] {
     return [
       {
         label: '查看',
         onClick: () => {
-          console.log('record :>> ', record);
-          // openModal(true, record);
+          openWorkflowNodeDrawer(true, {
+            workflowId: props.selectedRow.id,
+            businessType: props.selectedRow.businessType,
+            nodeId: record.id,
+          });
         },
       },
     ];
   }
 
-  function createDropDownActions(record): ActionItem[] {
-    return [
-      {
-        label: '配置通知',
-        onClick: () => {
-          console.log('record :>> ', record);
-        },
-      },
-      {
-        label: '编辑',
-        onClick: () => {
-          // openModal(true, record);
-          console.log('record :>> ', record);
-        },
-      },
-      {
-        label: '删除',
-        color: 'error',
-        popConfirm: {
-          title: '数据删除后将无法恢复，确认删除数据？',
-          confirm: async () => {
+  function createDropDownActions(record: WorkflowNodeModel): ActionItem[] {
+    if (record.isDisabled) {
+      return [];
+    } else {
+      return [
+        {
+          label: '配置通知',
+          onClick: () => {
             console.log('record :>> ', record);
           },
         },
-      },
-    ];
+        {
+          label: '编辑',
+          onClick: () => {
+            // openModal(true, record);
+            console.log('record :>> ', record);
+          },
+        },
+        {
+          label: '删除',
+          color: 'error',
+          popConfirm: {
+            title: '数据删除后将无法恢复，确认删除数据？',
+            confirm: async () => {
+              console.log('record :>> ', record);
+            },
+          },
+        },
+      ];
+    }
   }
+  watch(
+    () => props.selectedRow,
+    (val) => {
+      getWorkflowNodesListById(val.id, unref(searchNodeForm));
+    },
+    {
+      deep: true,
+    },
+  );
 
   function handleClickRow(_row, index?) {
     if (selectedRowIndex.value === index) return;
@@ -122,10 +181,13 @@
     loading.value = true;
     try {
       const { items, totalCount } = await getWorkflowNodesListByIdApi(id, form);
+
       setTableData(items || []);
       setPagination({
         total: totalCount,
       });
+      // 生成与表格数据等量的集合用来表示每一行数据的 loading 状态
+      switchLoading.value = Array(items?.length || 0).fill(false);
     } catch (error: any) {
       throw new Error(error);
     } finally {
@@ -133,13 +195,28 @@
     }
   }
 
-  watch(
-    () => props.selectedRow,
-    (val) => {
-      getWorkflowNodesListById(val.id, unref(searchNodeForm));
-    },
-    {
-      deep: true,
-    },
-  );
+  async function toggleDisableRow(row: WorkflowNodeModel, i: number) {
+    const workflowId = props.selectedRow.id;
+    const nodeId = row.id;
+    const params = {
+      versionTag: row.versionTag,
+    };
+
+    try {
+      switchLoading.value[i] = true;
+      if (row.isDisabled) {
+        await disableWorkflowNodeApi(workflowId, nodeId, params);
+      } else {
+        await enableWorkflowNodeApi(workflowId, nodeId, params);
+      }
+
+      createMessage.success(`${row.isDisabled ? '停用' : '启用'}成功`);
+      await getWorkflowNodesListById(props.selectedRow.id, unref(searchNodeForm));
+    } catch (error: any) {
+      row.isDisabled = !row.isDisabled;
+      throw new Error(error);
+    } finally {
+      switchLoading.value[i] = false;
+    }
+  }
 </script>
