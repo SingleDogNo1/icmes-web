@@ -450,3 +450,39 @@ export interface DeviceCollection {
   totalCount: number;
   totalPages: number;
 }
+
+export interface GetCamerasListParam {
+  /** 是否正序 */
+  ascending: boolean;
+  /** 排序的字段名 */
+  orderBy: string;
+  /** 当前页码数 */
+  pageNo: number;
+  /** 一页多少条记录 0标识不分页全部显示 */
+  pageSize: number;
+}
+
+export interface GetCamerasListResultModel {
+  items: Nullable<CameraModel[]>;
+  totalCount: number;
+  totalPages: number;
+}
+
+export interface CameraModel {
+  /** PC端的主摄像头流地址 */
+  addrMainPc: string;
+  /** 手机端的主摄像头流地址 */
+  addrMainPhone: string;
+  /** PC端的子摄像头流地址 */
+  addrSubPc: string;
+  /** 手机端的子摄像头流地址 */
+  addrSubPhone: string;
+  /** 摄像头名称 */
+  cameraName: string;
+  /** 摄像头编码 */
+  code: string;
+  /** 标识符 */
+  id: number;
+  /** 摄像头位置 */
+  location: string;
+}

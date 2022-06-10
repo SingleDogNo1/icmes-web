@@ -9,6 +9,8 @@ import {
   BatchUpdatePowerConfigParam,
   GetMoreCriterionDevicesParams,
   DeviceCollection,
+  GetCamerasListParam,
+  GetCamerasListResultModel,
 } from './model/devicesModel';
 
 enum Api {
@@ -58,6 +60,14 @@ export function getMoreCriterionDevicesListApi(params: GetMoreCriterionDevicesPa
 export function uploadDevicesPhotoApi(params) {
   return defHttp.post<{ fileId: string }>({
     url: Api.baseUrl + 'photo',
+    params,
+  });
+}
+
+/** 摄像头列表查询并同步-作者：张瑞晗 */
+export function getCamerasListApi(params: GetCamerasListParam) {
+  return defHttp.post<GetCamerasListResultModel>({
+    url: Api.baseUrl + 'cameras/list/',
     params,
   });
 }

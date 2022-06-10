@@ -68,8 +68,6 @@
   }
 
   function handleSelect(node) {
-    console.log(node);
-
     if (node.parentId === -1) {
       getLocationTable({ ...getLocationTableParams, ...{ hierarchy: 0, parentId: node.parentId } });
     } else {

@@ -8,4 +8,5 @@ export default {
   vendor: '厂商资料',
   staffInfo: '员工信息',
   calendar: '工作日历',
+  switchRoom: '配电室',
 };

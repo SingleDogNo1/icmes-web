@@ -48,6 +48,15 @@ const archives: BackModeRouteRecordRaw = {
       },
     },
     {
+      path: 'switch-room',
+      name: 'SwitchRoom',
+      component: '/archives/switchRoom/index',
+      meta: {
+        code: 21400,
+        title: 'routes.archives.switchRoom',
+      },
+    },
+    {
       path: 'power-cut-config',
       name: 'ArchivesPowerCutConfig',
       component: '/archives/powerCutConfig/index',

@@ -92,7 +92,6 @@
         popConfirm: {
           title: '数据删除后将无法恢复，确认删除数据？',
           confirm: async () => {
-            console.log('record :>> ', record);
             if (record.id === 0) {
               createMessage.error('根节点不能删除');
               return;
@@ -123,7 +122,6 @@
   watch(
     () => props.data,
     (data) => {
-      console.log('data', data);
       setTableData(data);
       setPagination({ total: props.totalCount });
     },
