@@ -1,25 +1,23 @@
 <template>
   <BasicModal
     v-bind="$attrs"
-    :title="`${editType === 'create' ? '新建' : '编辑'}工作流节点`"
+    :title="title"
     width="400"
     :min-height="80"
     @register="register"
     :loading="loading"
     destroy-on-close
     @ok="handleSubmit"
+    :close-func="handleCancel"
   >
-    <PageWrapper dense fixedHeight>
-      <BasicForm @register="registerForm" :show-action-button-group="false" />
-    </PageWrapper>
+    <BasicForm @register="registerForm" :show-action-button-group="false" />
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { ref, computed } from 'vue';
   import { cloneDeep } from 'lodash-es';
   import { BasicForm, useForm } from '/@/components/Form';
   import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { PageWrapper } from '/@/components/Page';
   import {
     WorkflowNodeModel,
     CreateWorkflowNodeParam,
@@ -29,7 +27,9 @@
   import { editWorkflowNodeSchemas } from '../data';
   import { createWorkflowNodeApi, editWorkflowNodeApi } from '/@/api/flow/workflow';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { useFormInPopup } from '/@/hooks/component/useFormModal';
 
+  const { saveInitData, validCloseable } = useFormInPopup();
   const { createMessage } = useMessage();
   const emit = defineEmits(['done']);
   const { getDictOptions } = useUserState();
@@ -38,6 +38,7 @@
   const editType = ref<'create' | 'edit' | ''>('');
   const editWorkflowId = ref<Nullable<number>>(null);
   const editWorkflowNodeId = ref<Nullable<number>>(null);
+  const title = computed(() => (editType.value === 'create' ? '新建工作流节点' : '编辑工作流节点'));
 
   const [registerForm, { getFieldsValue, setFieldsValue, validate, updateSchema }] = useForm({
     schemas: editWorkflowNodeSchemas(editType),
@@ -54,7 +55,6 @@
   } & Nullable<WorkflowNodeModel>;
 
   const [register, { closeModal }] = useModalInner(async (data: Data) => {
-    console.log('data :>> ', data);
     const businessOptions = getDictOptions(data.businessType + '_STATUS');
     // 如果存在versionTag 字段，是编辑，否则是新建
     // 且编辑操作时，系统自动执行、节点编码、工作类型 选项不可操作
@@ -78,6 +78,7 @@
       delete formData.workflowId;
       delete formData.businessType;
       setFieldsValue(formData);
+      saveInitData(data);
     }
   });
 
@@ -85,7 +86,6 @@
     await validate();
     const value = getFieldsValue() as CreateWorkflowNodeParam | EditWorkflowNodeParam;
     loading.value = true;
-    console.log('workflowId, nodeId :>> ', editWorkflowId.value, editWorkflowNodeId.value);
     try {
       if (editType.value === 'create') {
         await createWorkflowNodeApi(editWorkflowId.value!, value as CreateWorkflowNodeParam);
@@ -104,5 +104,10 @@
     } finally {
       loading.value = false;
     }
+  }
+
+  function handleCancel() {
+    const values = getFieldsValue();
+    return validCloseable(title.value, values, closeModal);
   }
 </script>

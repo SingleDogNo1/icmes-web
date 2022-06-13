@@ -323,5 +323,19 @@ export const editWorkflowNodeSchemas = (editType): FormSchema[] => {
         },
       },
     },
+    // --------- hidden fields ---------
+    {
+      field: 'formKey',
+      label: '',
+      component: 'Input',
+      show: false,
+      defaultValue: '',
+    },
+    {
+      field: 'versionTag',
+      label: '',
+      component: 'Input',
+      show: false,
+    },
   ];
 };

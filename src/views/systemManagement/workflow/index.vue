@@ -69,8 +69,6 @@
 
   async function handleSubmit() {
     const value = getFieldsValue() as GetWorkflowsListParam;
-    console.log('values :>> ', value);
-
     searchData.value = value;
   }
 

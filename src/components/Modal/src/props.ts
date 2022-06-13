@@ -16,7 +16,7 @@ export const modalProps = {
   cancelText: { type: String, default: t('common.cancelText') },
   okText: { type: String, default: t('common.okText') },
 
-  closeFunc: Function as PropType<() => Promise<boolean>>,
+  closeFunc: Function as PropType<() => Promise<boolean>> | undefined,
 };
 
 export const basicProps = Object.assign({}, modalProps, {
