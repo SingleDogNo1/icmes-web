@@ -243,3 +243,25 @@ changeLoading(true);
 | insertFooter | 关闭按钮的左边(不使用 footer 插槽时有效)           |
 | centerFooter | 关闭按钮和确认按钮的中间(不使用 footer 插槽时有效) |
 | appendFooter | 确认按钮的右边(不使用 footer 插槽时有效)           |
+
+## extends
+
+如果弹窗组件使用了表单组件，且表单在关闭前发生了变化，并且你认为有必要在弹窗关闭前发出提示，可以使用`/@/hooks/component/useFormInPopup`。
+
+::: tip
+
+drawer 组件的使用方法类似，只要修改为其对应的钩子函数即可
+
+:::
+
+使用方法:
+
+- 引入 hooks 方法
+
+  ```js
+  import { useFormInPopup } from '/@/hooks/component/useFormInPopup';
+  const { saveInitData, validCloseable } = useFormInPopup();
+  ```
+
+- 在合适的时机调用`saveInitData`函数，备份弹窗打开时，表单的初始值
+- 在弹窗关闭时，调用`validCloseable`函数，完成校验弹窗是否可以关闭

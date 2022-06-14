@@ -195,3 +195,13 @@ changeLoading(true);
 | close          | `(e)=>void`               | 点击关闭回调       |
 | visible-change | `(visible:boolean)=>void` | 弹窗打开关闭时触发 |
 | ok             | `(e)=>void`               | 点击确定回调       |
+
+## extends
+
+如果抽屉组件使用了表单组件，且表单在关闭前发生了变化，并且你认为有必要在抽屉关闭前发出提示，可以使用`/@/hooks/component/useFormInPopup`。
+
+::: tip
+
+使用方法参考[Modal 组件](/components/modal.html#extends)
+
+:::

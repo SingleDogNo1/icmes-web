@@ -27,7 +27,7 @@
   import { editWorkflowNodeSchemas } from '../data';
   import { createWorkflowNodeApi, editWorkflowNodeApi } from '/@/api/flow/workflow';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { useFormInPopup } from '/@/hooks/component/useFormModal';
+  import { useFormInPopup } from '/@/hooks/component/useFormInPopup';
 
   const { saveInitData, validCloseable } = useFormInPopup();
   const { createMessage } = useMessage();
