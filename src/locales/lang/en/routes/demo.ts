@@ -191,6 +191,7 @@ export default {
     footerTable: 'Footer',
     editCellTable: 'Editable cell',
     editRowTable: 'Editable row',
+    formInTable: 'Form In Table',
     authColumn: 'Auth column',
     resizeParentHeightTable: 'resizeParentHeightTable',
   },

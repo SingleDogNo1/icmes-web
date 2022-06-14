@@ -728,6 +728,15 @@ const demo: BackModeRouteRecordRaw = {
               },
             },
             {
+              path: 'formInTable',
+              name: 'FormInTableDemo',
+              component: '/demo/table/formInTable',
+              meta: {
+                code: DEMO_CHILDREN_CODE,
+                title: 'routes.demo.table.formInTable',
+              },
+            },
+            {
               path: 'authColumn',
               name: 'AuthColumnDemo',
               component: '/demo/table/AuthColumn',
