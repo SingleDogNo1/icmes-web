@@ -16,6 +16,10 @@ function createNav() {
       link: '/guide/',
       items: [
         {
+          text: '指南',
+          link: '/guide/',
+        },
+        {
           text: '深入',
           link: '/dep/icon',
         },
@@ -236,6 +240,15 @@ function createSidebar() {
       },
     ],
     '/': [
+      {
+        text: '写在前面',
+        children: [
+          {
+            text: '为什么是 hooks',
+            link: '/introduction/',
+          },
+        ],
+      },
       {
         text: '指南',
         children: [

@@ -6,7 +6,7 @@
 
 ::: warning 注意
 
-- 推荐使用[Yarn1.x](https://yarnpkg.com/)，否则依赖可能安装不上。
+- 推荐使用[pnpm](https://www.pnpm.cn/)，否则依赖可能安装不上。
 - [Node.js](http://nodejs.org/) 要求`16.x` 及以上。
 
 :::

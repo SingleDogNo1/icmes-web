@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BasicTable @register="registerTable" @edit-change="onEditChange" title="表格中嵌套表单操作">
+    <BasicTable @register="registerTable" @edit-change="onEditChange">
       <template #action="{ record }">
         <TableAction :actions="createActions(record)" />
       </template>
@@ -36,6 +36,7 @@
     {
       title: '姓名1',
       dataIndex: 'name1',
+      helpMessage: '添加测试规则，不可以为三个字',
       width: 150,
       editRow: true,
       editRule: async (text) => {
@@ -82,9 +83,14 @@
   ];
 
   const [registerTable, { setTableData, getDataSource, updateTableDataRecord }] = useTable({
+    title: '表格中嵌套表单操作',
+    titleHelpMessage: [
+      '新增一行数据时必须添加数据中的标识唯一值字段（示例中为 id）以保证数据唯一性',
+      '控制行数据变化的方法也是通过唯一标识字段（示例中为 id）来修改的',
+    ],
     columns,
-    pagination: false,
     resizeHeightOffset: 40,
+    pagination: false,
     actionColumn: {
       width: 100,
       title: '操作',
@@ -94,7 +100,7 @@
   });
 
   onMounted(async () => {
-    demoListApi({ page: 1, pageSize: 20 }).then(({ items }) => {
+    demoListApi({ page: 1, pageSize: 10 }).then(({ items }) => {
       reloadTable(items);
     });
   });
@@ -108,7 +114,7 @@
           title: '数据删除后将无法恢复，请问确认删除数据？',
           confirm: () => {
             const data = getDataSource();
-            const index = data.findIndex((v) => v.key === record.key);
+            const index = data.findIndex((v) => v.id === record.id);
             data.splice(index, 1);
             reloadTable(data);
           },
@@ -131,6 +137,7 @@
       name4: null,
       name5: null,
       address: null,
+      id: new Date().getTime(), // 新增的数据, 添加时间戳作为唯一值，在操作行数据时使用
     });
 
     reloadTable(data);
@@ -163,7 +170,12 @@
         setTimeout(() => {
           loading.value = false;
           createMessage.success('保存成功, 打开控制台查看提交结果');
-          console.log('res :>> ', getDataSource());
+          const data = getDataSource().reduce((res, pre) => {
+            res.push(cloneDeep(pre.editValueRefs));
+            return res;
+          }, [] as Recordable<any>[]);
+
+          console.log('data :>> ', data);
         }, 2000);
       }
     });
@@ -173,7 +185,7 @@
     const valid = await record.onValid?.();
     if (valid) {
       const data = cloneDeep(record.editValueRefs);
-      updateTableDataRecord(record.key, data);
+      updateTableDataRecord(record.id, data);
       return new Promise((resolve) => resolve(true));
     } else {
       return new Promise((resolve) => resolve(false));
