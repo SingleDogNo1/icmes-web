@@ -1,25 +1,18 @@
-import { DevicePowerTypesEnum, DevicePowerTypeCodesEnum } from '/@/enums/powerCutEnum';
+import { DevicePowerTypesEnum } from '/@/enums/powerCutEnum';
 import { getPowerCutDevicesListApi } from '/@/api/info/devices';
 import { PowerCutDeviceModel } from '/@/api/info/model/devicesModel';
 import { cloneDeep } from 'lodash-es';
+import { lowVoltageDeviceTypes, highVoltageDeviceTypes } from '/@/utils/powerCut';
 
 export async function getDevicesList(option) {
-  let powerTypes;
+  let powerTypes: number[];
 
   switch (option.powerCutType) {
     case DevicePowerTypesEnum['HIGH_VOLTAGE']:
-      powerTypes = [
-        DevicePowerTypeCodesEnum['HIGH_VOLTAGE'],
-        DevicePowerTypeCodesEnum['LOW_VOLTAGE'],
-        DevicePowerTypeCodesEnum['REMOTE_HIGH_VOLTAGE'],
-        DevicePowerTypeCodesEnum['REMOTE_LOW_VOLTAGE'],
-      ];
+      powerTypes = [...highVoltageDeviceTypes, ...lowVoltageDeviceTypes];
       break;
     case DevicePowerTypesEnum['LOW_VOLTAGE']:
-      powerTypes = [
-        DevicePowerTypeCodesEnum['LOW_VOLTAGE'],
-        DevicePowerTypeCodesEnum['REMOTE_LOW_VOLTAGE'],
-      ];
+      powerTypes = lowVoltageDeviceTypes;
       break;
   }
 

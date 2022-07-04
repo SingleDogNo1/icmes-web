@@ -76,15 +76,9 @@ registry = https://registry.npm.taobao.org
 
 然后重新执行`yarn run reinstall`等待安装完成即可
 
-## 为什么是 moment.js
+## 为什么是 day.js
 
-`moment` 是 [Ant-Design-Vue](https://2x.antdv.com/docs/vue/introduce-cn/) 内部自带的。
-
-## 为什么单独把 moment 放到 dataUtil 内
-
-在 `src/utils/dataUtil` 内，使用的是 moment，其次在页面中对时间的操作也是使用 dateUtil，而不是直接 `import moment from 'moment'`。
-
-这样做主要是方便后续切换到 `dayjs`，因为 api 一样，所以在后续切换中，只需更改 dataUtil 内的 import 即可，而不用全部更改。
+`day.js` 是 [Ant-Design-Vue](https://www.antdv.com/docs/vue/replace-date-cn) 内部自带的。
 
 ## 控制台路由警告问题
 

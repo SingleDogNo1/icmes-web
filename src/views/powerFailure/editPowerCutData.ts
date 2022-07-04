@@ -4,6 +4,12 @@ import type { FormSchema } from '/@/components/Form/index';
 import { getPowerCutConfigListApi } from '/@/api/info/powerCutConfig';
 import { PowerCutConfigExtendEntity } from '/@/api/info/model/powerCutConfigModel';
 import { DevicePowerTypesEnum, DevicePowerTypeCodesEnum } from '/@/enums/powerCutEnum';
+import {
+  lowVoltageDeviceTypes,
+  highVoltageDeviceTypes,
+  specialDeviceTypes,
+  remoteDeviceTypes,
+} from '/@/utils/powerCut';
 import { getPowerCutDevicesListApi } from '/@/api/info/devices';
 import { useMessage } from '/@/hooks/web/useMessage';
 
@@ -77,24 +83,13 @@ export const editPowerCutSchemas: FormSchema[] = [
 
           switch (option.powerCutType) {
             case DevicePowerTypesEnum['HIGH_VOLTAGE']:
-              powerTypes = [
-                DevicePowerTypeCodesEnum['HIGH_VOLTAGE'],
-                DevicePowerTypeCodesEnum['LOW_VOLTAGE'],
-                DevicePowerTypeCodesEnum['REMOTE_HIGH_VOLTAGE'],
-                DevicePowerTypeCodesEnum['REMOTE_LOW_VOLTAGE'],
-              ];
+              powerTypes = [...highVoltageDeviceTypes, ...lowVoltageDeviceTypes];
               break;
             case DevicePowerTypesEnum['LOW_VOLTAGE']:
-              powerTypes = [
-                DevicePowerTypeCodesEnum['LOW_VOLTAGE'],
-                DevicePowerTypeCodesEnum['REMOTE_LOW_VOLTAGE'],
-              ];
+              powerTypes = lowVoltageDeviceTypes;
               break;
             case DevicePowerTypesEnum['SPECIAL_VOLTAGE']:
-              powerTypes = [
-                DevicePowerTypeCodesEnum['UNCONVENTIONAL_DEVICE'],
-                DevicePowerTypeCodesEnum['REMOTE_UNCONVENTIONAL_DEVICE'],
-              ];
+              powerTypes = specialDeviceTypes;
               break;
           }
 
@@ -294,12 +289,7 @@ export const editPowerCutSchemas: FormSchema[] = [
         needTree: false,
         orderBy: 'processNo',
         pageSize: 0,
-        powerTypes: [
-          DevicePowerTypeCodesEnum['HIGH_VOLTAGE'],
-          DevicePowerTypeCodesEnum['LOW_VOLTAGE'],
-          DevicePowerTypeCodesEnum['REMOTE_HIGH_VOLTAGE'],
-          DevicePowerTypeCodesEnum['REMOTE_LOW_VOLTAGE'],
-        ],
+        powerTypes: [...highVoltageDeviceTypes, ...lowVoltageDeviceTypes],
       },
       resultField: 'items',
       optionLabelProp: 'label',
@@ -314,16 +304,16 @@ export const editPowerCutSchemas: FormSchema[] = [
           let text = '';
 
           switch (item.powerType) {
-            case DevicePowerTypeCodesEnum['HIGH_VOLTAGE']:
+            case DevicePowerTypeCodesEnum.HIGH_VOLTAGE:
               text = '高压';
               break;
 
-            case DevicePowerTypeCodesEnum['REMOTE_HIGH_VOLTAGE']:
+            case DevicePowerTypeCodesEnum.REMOTE_HIGH_VOLTAGE:
               text = '高压,远程';
               break;
 
-            case DevicePowerTypeCodesEnum['REMOTE_LOW_VOLTAGE']:
-            case DevicePowerTypeCodesEnum['REMOTE_UNCONVENTIONAL_DEVICE']:
+            case DevicePowerTypeCodesEnum.REMOTE_LOW_VOLTAGE:
+            case DevicePowerTypeCodesEnum.REMOTE_UNCONVENTIONAL_DEVICE:
               text = '远程';
               break;
           }
@@ -333,10 +323,7 @@ export const editPowerCutSchemas: FormSchema[] = [
       },
       onChange: (_data, options) => {
         highVoltageDevices.value = options.filter((option) =>
-          [
-            DevicePowerTypeCodesEnum['HIGH_VOLTAGE'],
-            DevicePowerTypeCodesEnum['REMOTE_HIGH_VOLTAGE'],
-          ].includes(option.powerType),
+          highVoltageDeviceTypes.includes(option.powerType),
         );
       },
     },
@@ -358,12 +345,7 @@ export const editPowerCutSchemas: FormSchema[] = [
           needTree: false,
           orderBy: 'processNo',
           pageSize: 0,
-          powerTypes: [
-            DevicePowerTypeCodesEnum['HIGH_VOLTAGE'],
-            DevicePowerTypeCodesEnum['LOW_VOLTAGE'],
-            DevicePowerTypeCodesEnum['REMOTE_HIGH_VOLTAGE'],
-            DevicePowerTypeCodesEnum['REMOTE_LOW_VOLTAGE'],
-          ],
+          powerTypes: [...highVoltageDeviceTypes, ...lowVoltageDeviceTypes],
         },
         resultField: 'items',
         optionLabelProp: 'label',
@@ -378,16 +360,16 @@ export const editPowerCutSchemas: FormSchema[] = [
             let text = '';
 
             switch (item.powerType) {
-              case DevicePowerTypeCodesEnum['HIGH_VOLTAGE']:
+              case DevicePowerTypeCodesEnum.HIGH_VOLTAGE:
                 text = '高压';
                 break;
 
-              case DevicePowerTypeCodesEnum['REMOTE_HIGH_VOLTAGE']:
+              case DevicePowerTypeCodesEnum.REMOTE_HIGH_VOLTAGE:
                 text = '高压,远程';
                 break;
 
-              case DevicePowerTypeCodesEnum['REMOTE_LOW_VOLTAGE']:
-              case DevicePowerTypeCodesEnum['REMOTE_UNCONVENTIONAL_DEVICE']:
+              case DevicePowerTypeCodesEnum.REMOTE_LOW_VOLTAGE:
+              case DevicePowerTypeCodesEnum.REMOTE_UNCONVENTIONAL_DEVICE:
                 text = '远程';
                 break;
             }
@@ -415,10 +397,7 @@ export const editPowerCutSchemas: FormSchema[] = [
           needTree: false,
           orderBy: 'processNo',
           pageSize: 0,
-          powerTypes: [
-            DevicePowerTypeCodesEnum['UNCONVENTIONAL_DEVICE'],
-            DevicePowerTypeCodesEnum['REMOTE_UNCONVENTIONAL_DEVICE'],
-          ],
+          powerTypes: specialDeviceTypes,
         },
         resultField: 'items',
         optionLabelProp: 'label',
@@ -430,13 +409,7 @@ export const editPowerCutSchemas: FormSchema[] = [
             item.subtitle = !item.isPrimary ? `${item.primaryName}/` : ''; // option 显示的标题说明
             item.value = item.id; // select 绑定值
 
-            const text = [
-              DevicePowerTypeCodesEnum['REMOTE_HIGH_VOLTAGE'],
-              DevicePowerTypeCodesEnum['REMOTE_LOW_VOLTAGE'],
-              DevicePowerTypeCodesEnum['REMOTE_UNCONVENTIONAL_DEVICE'],
-            ].includes(item.powerType)
-              ? '远程'
-              : '';
+            const text = remoteDeviceTypes.includes(item.powerType) ? '远程' : '';
             item.powerTypeText = text; // 停送电类型转换为汉字显示
           });
         },

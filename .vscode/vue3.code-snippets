@@ -10,7 +10,7 @@
       "",
       "<script lang=\"ts\">",
       "  export default {",
-      "    name: '$1',",
+      "    name: '${TM_FILENAME/(.*)\\.[a-z]+/${1:/capitalize}/i}',",
       "  };",
       "</script>",
       "",
