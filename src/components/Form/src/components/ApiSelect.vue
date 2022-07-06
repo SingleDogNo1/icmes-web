@@ -1,11 +1,10 @@
 <template>
-  <Select
+  <ASelect
     @dropdown-visible-change="handleFetch"
     v-bind="$attrs"
     @change="handleChange"
     :options="getOptions"
     v-model:value="state"
-    :loading="loading"
   >
     <template #[item]="data" v-for="item in Object.keys($slots)">
       <slot :name="item" v-bind="data || {}"></slot>
@@ -19,11 +18,11 @@
         {{ t('component.form.apiSelectNotFound') }}
       </span>
     </template>
-  </Select>
+  </ASelect>
 </template>
 <script lang="ts">
   import { defineComponent, PropType, ref, watchEffect, computed, unref, watch } from 'vue';
-  import { Select } from 'ant-design-vue';
+  import { Select as ASelect } from 'ant-design-vue';
   import { isFunction } from '/@/utils/is';
   import { useRuleFormItem } from '/@/hooks/component/useFormItem';
   import { useAttrs } from '/@/hooks/core/useAttrs';
@@ -37,7 +36,7 @@
   export default defineComponent({
     name: 'ApiSelect',
     components: {
-      Select,
+      ASelect,
       LoadingOutlined,
     },
     inheritAttrs: false,

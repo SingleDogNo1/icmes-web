@@ -33,7 +33,7 @@
       v-for="item in devicesList"
       :key="item.deviceId"
       :color="primaryColor"
-      @click="chooseItem(item)"
+      @click.stop="chooseItem(item)"
     >
       {{ item.processNo ? item.processNo : item.deviceCode ? item.deviceCode : item.deviceName }}
     </Tag>

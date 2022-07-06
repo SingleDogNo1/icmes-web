@@ -74,7 +74,7 @@
 
   const formData = reactive<LoginParams>({
     employeeCode: 'TJDT1993',
-    password: 'Z930327',
+    password: '123456',
   });
 
   const formRules = {

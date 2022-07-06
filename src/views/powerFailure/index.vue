@@ -116,7 +116,7 @@
               <p>检修单号: {{ record.outerAssModel.code || '' }}</p>
               <p>检修项目名称: {{ record.outerAssModel.name || '' }}</p>
             </template>
-            <span class="text-primary" @click="toMaintenanceDetail(record)">
+            <span class="text-primary" @click.stop="toMaintenanceDetail(record)">
               {{ record.outerAssModel.name }}
             </span>
           </Tooltip>
@@ -176,6 +176,12 @@
   </PageWrapper>
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'PowerFailureIndex',
+  };
+</script>
+
 <script lang="ts" setup>
   import { nextTick, onMounted, ref, unref } from 'vue';
   import { Tooltip, Tag, Popover, Divider } from 'ant-design-vue';
@@ -228,7 +234,7 @@
   const loading = ref(false);
   const todayPowerCutCount = ref(); // 当日各停送电单数量
   const { getUserInfo, getFeature } = useUserStore();
-  const userId = getUserInfo.userId;
+  const userId = getUserInfo?.userId;
   const routePermission = getFeature[routeCode!];
   const dispatchFlag = ref(true); // 表格头部, 调度确认按钮是否可操作
   const exportTicketFlag = ref(true); // 表格头部, 导出操作票按钮是否可操作

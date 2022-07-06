@@ -432,4 +432,28 @@ export const editPowerCutSchemas: FormSchema[] = [
       return values.type.includes('ELEC_SP');
     },
   },
+  {
+    field: 'hvFlag',
+    component: 'Switch',
+    label: '填写操作票',
+    componentProps: {
+      checkedChildren: '是',
+      unCheckedChildren: '否',
+    },
+    show: ({ values }) => {
+      if (!values.type) return false;
+      return values.type.includes('ELEC_SP');
+    },
+  },
+  {
+    field: 'remark',
+    component: 'InputTextArea',
+    label: '备注内容',
+    componentProps: {
+      rows: 4,
+      placeholder: '请输入备注内容',
+      maxlength: 100,
+      showCount: true,
+    },
+  },
 ];

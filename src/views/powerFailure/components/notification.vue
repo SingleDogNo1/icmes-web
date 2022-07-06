@@ -24,6 +24,12 @@
   </ul>
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'PowerFailureNotificationComp',
+  };
+</script>
+
 <script lang="ts" setup>
   import { ref, unref, PropType, watch } from 'vue';
   import { useDraggable, useWindowSize } from '@vueuse/core';
