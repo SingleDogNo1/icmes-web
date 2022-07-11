@@ -8,7 +8,7 @@
     @ok="handleSubmit"
   >
     <BasicForm @register="registerForm">
-      <template #menu="{ model, field }">
+      <template #menu="{ model, field }: any">
         <BasicTree
           v-model:value="model[field]"
           :treeData="treeData"

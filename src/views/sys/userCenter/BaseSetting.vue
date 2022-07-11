@@ -3,7 +3,7 @@
     <Row :gutter="24">
       <Col :span="14">
         <BasicForm @register="register" :loading="true">
-          <template #officePhoneField="{ model }">
+          <template #officePhoneField="{ model }: any">
             <InputGroup>
               <Row :gutter="10">
                 <Col :span="16">
@@ -43,7 +43,7 @@
             </InputGroup>
           </template>
 
-          <template #category="{ model, field }">
+          <template #category="{ model, field }: any">
             <Input v-model:value="categoryMap[model[field]]" disabled />
           </template>
         </BasicForm>

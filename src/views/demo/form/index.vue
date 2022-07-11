@@ -9,7 +9,7 @@
         @submit="handleSubmit"
         @reset="handleReset"
       >
-        <template #selectA="{ model, field }">
+        <template #selectA="{ model, field }: any">
           <a-select
             :options="optionsA"
             mode="multiple"
@@ -18,7 +18,7 @@
             allowClear
           />
         </template>
-        <template #selectB="{ model, field }">
+        <template #selectB="{ model, field }: any">
           <a-select
             :options="optionsB"
             mode="multiple"
@@ -27,7 +27,7 @@
             allowClear
           />
         </template>
-        <template #localSearch="{ model, field }">
+        <template #localSearch="{ model, field }: any">
           <ApiSelect
             :api="optionsListApi"
             showSearch
@@ -38,7 +38,7 @@
             valueField="id"
           />
         </template>
-        <template #remoteSearch="{ model, field }">
+        <template #remoteSearch="{ model, field }: any">
           <ApiSelect
             :api="optionsListApi"
             showSearch

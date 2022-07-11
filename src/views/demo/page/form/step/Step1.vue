@@ -2,7 +2,7 @@
   <div class="step1">
     <div class="step1-form">
       <BasicForm @register="register">
-        <template #fac="{ model, field }">
+        <template #fac="{ model, field }: any">
           <a-input-group compact>
             <a-select v-model:value="model['pay']" class="pay-select">
               <a-select-option value="zfb"> 支付宝 </a-select-option>
@@ -33,6 +33,7 @@
 
   import { Select, Input, Divider } from 'ant-design-vue';
   export default defineComponent({
+    name: 'StepDemo1',
     components: {
       BasicForm,
       [Select.name]: Select,

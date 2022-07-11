@@ -2,7 +2,7 @@
   <div class="p-4 pl-0">
     <Spin :spinning="pageLoading">
       <BasicForm @register="register">
-        <template #needGuardian="{ model, field }">
+        <template #needGuardian="{ model, field }: any">
           <Switch
             v-model:checked="model[field]"
             :loading="needGuardianLoading"
@@ -10,7 +10,7 @@
           />
         </template>
 
-        <template #needTicket="{ model, field }">
+        <template #needTicket="{ model, field }: any">
           <Switch
             v-model:checked="model[field]"
             :loading="needTicketLoading"
@@ -18,7 +18,7 @@
           />
         </template>
 
-        <template #guardianVerification="{ model, field }">
+        <template #guardianVerification="{ model, field }: any">
           <Select
             v-model:value="model[field]"
             :disabled="!getNeedFaceRecognition"
@@ -31,7 +31,7 @@
           </Select>
         </template>
 
-        <template #guardianExpiration="{ model, field }">
+        <template #guardianExpiration="{ model, field }: any">
           <InputField
             :value="model[field]"
             :min="1"
@@ -42,7 +42,7 @@
           />
         </template>
 
-        <template #logoutCountdown="{ model, field }">
+        <template #logoutCountdown="{ model, field }: any">
           <InputField
             :value="model[field]"
             :min="5"
@@ -53,7 +53,7 @@
           />
         </template>
 
-        <template #taskFreshInterval="{ model, field }">
+        <template #taskFreshInterval="{ model, field }: any">
           <InputField
             :value="model[field]"
             :min="1"
@@ -64,7 +64,7 @@
           />
         </template>
 
-        <template #applyVerification="{ model, field }">
+        <template #applyVerification="{ model, field }: any">
           <Switch
             v-model:checked="model[field]"
             :loading="applyVerificationLoading"
@@ -72,7 +72,7 @@
           />
         </template>
 
-        <template #autoCloseForm="{ model, field }">
+        <template #autoCloseForm="{ model, field }: any">
           <Switch
             v-model:checked="model[field]"
             :loading="autoCloseFormLoading"
@@ -80,7 +80,7 @@
           />
         </template>
 
-        <template #remoteCutInterval="{ model, field }">
+        <template #remoteCutInterval="{ model, field }: any">
           <InputField
             :value="model[field]"
             :min="0"
@@ -91,7 +91,7 @@
           />
         </template>
 
-        <template #remoteSupplyInterval="{ model, field }">
+        <template #remoteSupplyInterval="{ model, field }: any">
           <InputField
             :value="model[field]"
             :min="0"
@@ -102,7 +102,7 @@
           />
         </template>
 
-        <template #remoteNeedGuardian="{ model, field }">
+        <template #remoteNeedGuardian="{ model, field }: any">
           <Switch
             v-model:checked="model[field]"
             :loading="remoteNeedGuardianLoading"

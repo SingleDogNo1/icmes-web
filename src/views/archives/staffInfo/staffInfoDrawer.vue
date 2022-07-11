@@ -9,7 +9,7 @@
     @visible-change="toggleShow"
   >
     <BasicForm @register="registerForm">
-      <template #officePhoneField="{ model }">
+      <template #officePhoneField="{ model }: any">
         <Input.Group>
           <Row :gutter="10">
             <Col :span="16">
@@ -49,7 +49,7 @@
         </Input.Group>
       </template>
 
-      <template #category="{ model, field }">
+      <template #category="{ model, field }: any">
         <Input v-model:value="categoryMap[model[field]]" disabled />
       </template>
     </BasicForm>

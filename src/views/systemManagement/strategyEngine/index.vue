@@ -7,7 +7,7 @@
       @submit="handleSubmit"
     >
       <!-- 业务类型 -->
-      <template #businessType="{ model, field }">
+      <template #businessType="{ model, field }: any">
         <Select
           v-model:value="model[field]"
           :options="strategyTypeOptions"

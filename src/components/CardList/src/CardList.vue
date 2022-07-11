@@ -1,10 +1,9 @@
 <template>
   <div class="p-2">
-    <div class="bg-white mb-2 p-4">
+    <div class="p-4 mb-2 bg-white">
       <BasicForm @register="registerForm" />
     </div>
-    {{ sliderProp.width }}
-    <div class="bg-white p-2">
+    <div class="p-2 bg-white">
       <List
         :grid="{ gutter: 5, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: grid }"
         :data-source="data"
@@ -39,7 +38,7 @@
                   <Image :src="item.imgs[0]" />
                 </div>
               </template>
-              <template class="ant-card-actions" #actions>
+              <template #actions>
                 <!--              <SettingOutlined key="setting" />-->
                 <EditOutlined key="edit" />
                 <Dropdown
@@ -110,7 +109,6 @@
   // 切换每行个数
   // cover图片自适应高度
   //修改pageSize并重新请求数据
-
   const height = computed(() => {
     return `h-${120 - grid.value * 6}`;
   });
@@ -132,13 +130,11 @@
     pageSize.value = n * 4;
     fetch();
   }
-
   // 自动请求并暴露内部方法
   onMounted(() => {
     fetch();
     emit('getMethod', fetch);
   });
-
   async function fetch(p = {}) {
     const { api, params } = props;
     if (api && isFunction(api)) {
@@ -161,17 +157,15 @@
     onChange: pageChange,
     onShowSizeChange: pageSizeChange,
   });
-
   function pageChange(p, pz) {
     page.value = p;
     pageSize.value = pz;
     fetch();
   }
-  function pageSizeChange(current, size) {
+  function pageSizeChange(_current, size) {
     pageSize.value = size;
     fetch();
   }
-
   async function handleDelete(id) {
     emit('delete', id);
   }

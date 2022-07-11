@@ -2,7 +2,7 @@
   <PageWrapper dense contentFullHeight contentBackground title="新建停送电单">
     <BasicForm @register="register">
       <!-- 停送电联系人 -->
-      <template #contactUser="{ model, field }">
+      <template #contactUser="{ model, field }: any">
         <ASelect v-model:value="model[field]" allowClear show-search optionFilterProp="title">
           <ASelect.Option
             v-for="item in contactUserOptions"

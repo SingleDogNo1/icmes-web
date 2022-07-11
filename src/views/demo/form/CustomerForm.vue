@@ -2,7 +2,7 @@
   <PageWrapper title="自定义组件示例">
     <CollapseContainer title="自定义表单">
       <BasicForm @register="register" @submit="handleSubmit">
-        <template #f3="{ model, field }">
+        <template #f3="{ model, field }: any">
           <a-input v-model:value="model[field]" placeholder="自定义slot" />
         </template>
       </BasicForm>
