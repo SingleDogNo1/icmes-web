@@ -237,13 +237,13 @@
     }
 
     .close {
-      @apply shadow bg-white absolute rounded-bl-half text-success;
       width: 60px;
       height: 60px;
       line-height: 94px;
       padding-left: 10px;
       top: -30px;
       right: -30px;
+      @apply shadow bg-white absolute rounded-bl-full text-success;
     }
   }
 </style>

@@ -15,7 +15,7 @@
       </template>
     </BasicForm>
 
-    <Table
+    <ATable
       ref="tableElRef"
       v-bind="getBindValues"
       :rowClassName="getRowClassName"
@@ -46,7 +46,7 @@
           </template>
         </template>
       </template>
-    </Table>
+    </ATable>
   </div>
 </template>
 <script lang="ts">
@@ -87,7 +87,7 @@
 
   export default defineComponent({
     components: {
-      Table,
+      ATable: Table,
       BasicForm,
       HeaderCell,
     },

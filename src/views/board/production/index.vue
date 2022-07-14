@@ -38,6 +38,12 @@
   </PageWrapper>
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'ProductionBoard',
+  };
+</script>
+
 <script lang="ts" setup>
   import { PageWrapper } from '/@/components/Page';
   import ProductionOutputCard from './components/productionOutputCard.vue';
