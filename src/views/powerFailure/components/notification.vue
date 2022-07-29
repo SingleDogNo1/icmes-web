@@ -16,11 +16,18 @@
         <Tooltip :title="item.subTooltip" placement="bottom">
           <footer> {{ item.subtitle }}{{ item.subCount }}</footer>
         </Tooltip>
+        <svg width="300" height="300" viewBox="0, 0, 300, 300">
+          <circle cx="150" cy="150" r="150" class="item-bg" />
+        </svg>
       </template>
     </li>
     <li class="close" @click="visible = false">
       <Icon icon="ei:close" :size="18" />
     </li>
+
+    <!-- <svg width="300" height="300">
+      <circle cx="150" cy="150" r="150" />
+    </svg> -->
   </ul>
 </template>
 
@@ -168,24 +175,30 @@
   @prefix-cls: ~'@{namespace}-power-failure-notification';
 
   .bgImage(@color) {
-    background-image: radial-gradient(
-      circle at 47px -80px,
-      fade(@color, 100%) 0%,
-      fade(@color, 100%) 50%,
-      transparent 50%,
-      transparent
-    );
+    .item-bg {
+      fill: @color;
+    }
   }
 
   .@{prefix-cls} {
     @apply shadow-md rounded-lg overflow-hidden fixed z-99 cursor-pointer flex bg-white;
 
     .card-item {
+      width: 100px;
       height: 100px;
       padding: 10px 16px;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      background-size: 300px;
+      background-image: url('./bg.svg');
+      position: relative;
+
+      svg {
+        position: absolute;
+        z-index: -1;
+        bottom: 28px;
+        left: -100px;
+      }
 
       &.wait-confirm {
         .bgImage(@warning-color);
@@ -237,13 +250,15 @@
     }
 
     .close {
-      width: 60px;
-      height: 60px;
-      line-height: 94px;
-      padding-left: 10px;
-      top: -30px;
-      right: -30px;
-      @apply shadow bg-white absolute rounded-bl-full text-success;
+      width: 30px;
+      height: 30px;
+      border-radius: 0px 00px 0px 20px;
+      padding: 4px 8px;
+      background: #fff;
+      color: @success-color;
+      right: 0;
+      top: 0;
+      @apply absolute  z-20;
     }
   }
 </style>

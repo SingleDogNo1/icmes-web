@@ -76,7 +76,7 @@ export default {
 当我想同时混合`mixin-a.js`和`mixins-b.js`时，悲剧发生了: 由于两个功能点上类似，导致里面都出现了`name`属性和`setName`的方法，这势必会导致后写入的会覆盖之前写入的。如果你说只需要改个命名就可以解决，那么如果两个方法不是一个人写的，而大家又刚好都写了同样的属性和方法名呢？无论如何，`mixins`确实会导致这类型的隐患
 
 ```js
-// mixin-a.js，这个文件其实是操作设备
+// mixin-device.js，这个文件其实是操作设备
 export default {
   data() {
     return {
@@ -90,7 +90,7 @@ export default {
   }
 }
 
-// mixin-b.js，这个文件其实是操作员工
+// mixin-user.js，这个文件其实是操作员工
 export default {
   data() {
     return {

@@ -11,6 +11,12 @@
   </PageWrapper>
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'SystemManagementLog',
+  };
+</script>
+
 <script lang="ts" setup>
   import { nextTick, ref } from 'vue';
   import { trimEnd } from 'lodash-es';
@@ -22,6 +28,7 @@
   import { getLogListApi } from '/@/api/info/log';
   import { GetLogListParam } from '/@/api/info/model/logModel';
   import { schemas, columns } from './data';
+  import { Dayjs } from 'dayjs';
 
   const { getDictMap } = useUserState();
 
@@ -60,7 +67,7 @@
           let content = '空';
           if (!isNaN(date)) {
             const format = pairs.length > 1 ? trimEnd(pairs[1], '}') : 'YYYY-MM-DD';
-            content = formatDate(date, format);
+            content = formatDate(date as unknown as Dayjs, format);
           }
           return content;
         },

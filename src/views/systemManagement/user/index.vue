@@ -22,6 +22,12 @@
   </div>
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'UserIndex',
+  };
+</script>
+
 <script lang="ts" setup>
   import { ref, Ref, nextTick } from 'vue';
   import { useDesign } from '/@/hooks/web/useDesign';

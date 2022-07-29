@@ -1,6 +1,13 @@
 <template>
   <div ref="chartRef" :style="{ height, width }"></div>
 </template>
+
+<script lang="ts">
+  export default {
+    name: 'LineChartDemo',
+  };
+</script>
+
 <script lang="ts" setup>
   import { PropType, ref, Ref, onMounted } from 'vue';
 

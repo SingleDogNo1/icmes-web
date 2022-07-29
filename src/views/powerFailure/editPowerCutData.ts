@@ -282,6 +282,7 @@ export const editPowerCutSchemas: FormSchema[] = [
       if (!values.type) return true;
       return !values.type.includes('ELEC_SP');
     },
+    itemProps: { validateTrigger: 'blur' },
     componentProps: {
       mode: 'multiple',
       api: getPowerCutDevicesListApi,
@@ -336,6 +337,7 @@ export const editPowerCutSchemas: FormSchema[] = [
       if (!values.type) return true;
       return !values.type.includes('ELEC_SP');
     },
+    itemProps: { validateTrigger: 'blur' },
     componentProps: ({ formModel, formActionType }) => {
       console.log('formModel, formActionType :>> ', formModel, formActionType);
       return {

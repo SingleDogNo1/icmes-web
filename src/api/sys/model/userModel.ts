@@ -164,3 +164,41 @@ export interface EmployeeResultModel {
   /** 员工工种 */
   workType: string;
 }
+
+export interface AuthUserModel {
+  accessToken: string;
+  changePassword: boolean;
+  employeeCode: string;
+  employeeId: number;
+  employeeName: string;
+  faceFlag: boolean;
+  id: number;
+  organizationId: number;
+  specialDevice: string;
+  roles: AuthRoleOrganizationModel;
+}
+
+export interface AuthRoleOrganizationModel {
+  organizationCode: string;
+  organizationId: number;
+  organizationName: string;
+  roleCode: string;
+  roleId: number;
+  roleName: string;
+  childOrganizations: number[];
+  features: AuthFeatureModel[];
+}
+
+export interface AuthFeatureModel {
+  code: string;
+  id: number;
+  menuId: number;
+  name: string;
+  resources: AuthResourceModel[];
+}
+
+export interface AuthResourceModel {
+  code: string;
+  name: string;
+  id: number;
+}
