@@ -56,3 +56,34 @@ export interface ProductionBaseModel {
   /** 用于高并发的数据版本控制 */
   versionTag: string;
 }
+
+export interface ProductionAdvanceModel extends ProductionBaseModel {
+  /** 质量指标详情 */
+  qualityQuotas: ProductionRelatedQualityQuotaModel[];
+  /** 使用标识符 */
+  useFlag: boolean;
+}
+
+export interface ProductionRelatedQualityQuotaModel {
+  /** 编码 */
+  code: string;
+  /** 质量指标ID */
+  id: number;
+  /** 名称 */
+  name: string;
+  operator: OperatorModel;
+  /** 指标类型: 1-正常指标 2-其他指标 */
+  type: number;
+  /** 质量指标单位 */
+  unitCode: string;
+  value: string;
+}
+
+export interface OperatorModel {
+  /** 运算符号编码 */
+  code: string;
+  /** 运算符号ID */
+  id: number;
+  /** 运算符号名称 */
+  name: string;
+}

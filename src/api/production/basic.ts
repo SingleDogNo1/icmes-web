@@ -4,6 +4,7 @@ import {
   DashboardRealTimeResultModel,
   GetProductionListParams,
   GetProductionListResultModel,
+  ProductionAdvanceModel,
 } from './model/basicModel';
 
 enum Api {
@@ -23,5 +24,12 @@ export function getProductionListApi(params: GetProductionListParams) {
   return defHttp.post<GetProductionListResultModel>({
     url: Api.baseUrl + 'list/',
     params,
+  });
+}
+
+/** 查询所有产品详细--作者：Daniel */
+export function getAllProductionApi() {
+  return defHttp.get<ProductionAdvanceModel[]>({
+    url: Api.baseUrl + 'all',
   });
 }

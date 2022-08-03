@@ -8,3 +8,5 @@
 | 表格嵌套表单提交 | 参考[停送电配置 >> 高压操作票 >> 配置步骤](/src/views/archives/powerCutConfig/operationTicket/index.vue) |
 | 上传图片 | 参考[停送电配置 >> 供电系统图 >> 新建编辑](/src/views/archives/powerCutConfig/powerSystemList/editModal.vue) |
 | ApiSelect 无默认值时，初次选择导致表单检验错误 | 增加`itemProps: { validateTrigger: 'blur' }`配置,参考[新建停送电申请单](src/views/powerFailure/editPowerCutData.ts) |
+| ApiSelect 远程请求选项，需要对结果进行处理时，使用 `onOptionsReady`方法进行处理。**注意: 操作结果必须可以直接返回原数组，如果需要过滤等操作，可以使用 `lodash`函数进行处理** | 参考[新建商品煤检测](/src/views/qualityManage/commodityCoalDetection/data.ts) |
+| 表格删除功能，弹出框样式不正常 | 修改 popConfirm 组件位置可以规避此问题，参考[商品煤检测](/src/views/qualityManage/commodityCoalDetection/index.vue) |

@@ -1,5 +1,6 @@
 import { chain } from 'lodash-es';
 import { CommercialCoalInspectionModel } from '/@/api/quality/model/commercialCoalInspectionModel';
+import { jsonToSheetXlsx } from '/@/components/Excel';
 
 /**
  * 计算给定数组中指定 key 的非空值总和的平均数
@@ -171,4 +172,32 @@ export function gen_line_series_data(data, xAxis, legends, type) {
     res.push(gen_line_series_item(data, xAxis, pre, type));
     return res;
   }, [] as any);
+}
+
+/**
+ * @param ori_data 用于导出的原始数据
+ * @param columns 表头数据，title为表头名称， key为对应的字段名称
+ * @param filename 导出文件名
+ */
+export function exportExcel<T>(
+  ori_data: T[],
+  columns: { key: string; title: string }[],
+  filename: string,
+) {
+  // 根据需要展示的字段，生成表头
+  const header = columns.reduce((res, pre) => {
+    res[pre.key] = pre.title;
+    return res;
+  }, {});
+
+  // 筛选出表头对应的数据
+  const data = ori_data.map((item) => {
+    const obj = {};
+    Object.keys(header).forEach((v) => {
+      obj[v] = item[v];
+    });
+    return obj;
+  });
+
+  jsonToSheetXlsx({ filename, header, data });
 }

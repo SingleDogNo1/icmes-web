@@ -28,7 +28,6 @@
   import { getLogListApi } from '/@/api/info/log';
   import { GetLogListParam } from '/@/api/info/model/logModel';
   import { schemas, columns } from './data';
-  import { Dayjs } from 'dayjs';
 
   const { getDictMap } = useUserState();
 
@@ -67,7 +66,7 @@
           let content = '空';
           if (!isNaN(date)) {
             const format = pairs.length > 1 ? trimEnd(pairs[1], '}') : 'YYYY-MM-DD';
-            content = formatDate(date as unknown as Dayjs, format);
+            content = formatDate(date, format);
           }
           return content;
         },

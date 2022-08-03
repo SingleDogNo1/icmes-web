@@ -1,6 +1,9 @@
 <template>
   <Spin :spinning="loading">
-    <div ref="chartRef" :style="{ height: '400px', width: '100%' }"></div>
+    <div v-if="hasData" ref="chartRef" :style="{ height: '400px', width: '100%' }"></div>
+    <div v-else class="w-full h-400px bg-white flex flex-col justify-center">
+      <Empty :image="Empty.PRESENTED_IMAGE_SIMPLE" />
+    </div>
   </Spin>
 </template>
 
@@ -12,7 +15,7 @@
 
 <script lang="ts" setup>
   import { ref, Ref, watch, PropType } from 'vue';
-  import { Spin } from 'ant-design-vue';
+  import { Spin, Empty } from 'ant-design-vue';
   import { useECharts } from '/@/hooks/web/useECharts';
 
   type ChartData = {
@@ -32,16 +35,19 @@
   });
 
   const chartRef = ref<HTMLDivElement | null>(null);
+  const hasData = ref(false);
   const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
 
   watch(
     () => props.data,
     (data) => {
-      console.log('data :>> ', data);
-      const { batchQualifiedRate: qualified, batchStableRate: stable } = data;
+      const { batchQualifiedRate, batchStableRate } = data;
+      hasData.value = !!(batchQualifiedRate && batchStableRate);
 
-      const qualifiedRate = parseFloat((qualified * 100).toFixed(1));
-      const stableRate = parseFloat((stable * 100).toFixed(1));
+      const qualifiedRate = parseFloat((batchQualifiedRate * 100).toFixed(1));
+      const unqualifiedRate = parseFloat((100 - qualifiedRate).toFixed(1));
+      const stableRate = parseFloat((batchStableRate * 100).toFixed(1));
+      const unstableRate = parseFloat((100 - stableRate).toFixed(1));
 
       setOptions({
         backgroundColor: '#fff',
@@ -65,7 +71,7 @@
             },
           },
         ],
-        tooltip: { trigger: 'item', formatter: '{a} <br/>{b} : {c} ({d}%)' },
+        tooltip: { trigger: 'item', formatter: '{a} <br/>{b} : ({c}%)' },
         series: [
           {
             name: '批合格率',
@@ -74,7 +80,7 @@
             center: ['25%', '50%'],
             data: [
               { value: qualifiedRate, name: '合格' },
-              { value: 100 - qualifiedRate, name: '不合格' },
+              { value: unqualifiedRate, name: '不合格' },
             ],
           },
           {
@@ -84,7 +90,7 @@
             center: ['75%', '50%'],
             data: [
               { value: stableRate, name: '稳定' },
-              { value: 100 - stableRate, name: '不稳定' },
+              { value: unstableRate, name: '不稳定' },
             ],
           },
         ],

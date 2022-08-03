@@ -7,21 +7,21 @@ const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm';
 const DATE_FORMAT = 'YYYY-MM-DD ';
 
 export function formatToDateTime(
-  date: dayjs.Dayjs | undefined = undefined,
+  date: dayjs.Dayjs | number | undefined = undefined,
   format = DATE_TIME_FORMAT,
 ): string {
   return dayjs(date).format(format);
 }
 
 export function formatToDate(
-  date: dayjs.Dayjs | undefined = undefined,
+  date: dayjs.Dayjs | number | undefined = undefined,
   format = DATE_FORMAT,
 ): string {
   return dayjs(date).format(format);
 }
 
 export function formatDate(
-  date: dayjs.Dayjs | undefined = undefined,
+  date: dayjs.Dayjs | number | undefined = undefined,
   pattern = 'YYYY-MM-DD HH:mm:ss',
 ) {
   if (!date) return '';

@@ -4,7 +4,7 @@
 import Unocss from 'unocss/vite';
 import { presetAttributify, presetUno } from 'unocss';
 import transformerDirective from '@unocss/transformer-directives';
-import { successColor, primaryColor, disabledColor } from '/@/settings/designSetting';
+import { successColor, primaryColor, disabledColor, errorColor } from '/@/settings/designSetting';
 
 export function configIUnocssPlugin() {
   return Unocss({
@@ -21,6 +21,7 @@ export function configIUnocssPlugin() {
         primary: primaryColor,
         success: successColor,
         disabled: disabledColor,
+        error: errorColor,
       },
     },
     transformers: [transformerDirective()],

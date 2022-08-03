@@ -20,7 +20,7 @@ export interface GetCommercialCoalInspectionListParams {
   /** 每页条数 */
   pageSize: number;
   /** 产品标识 */
-  productionId: number;
+  productionId: number | string;
   /** 发运日期–开始时间 */
   startTime: number;
   /** 审核状态:  0-待审批 1-审批通过 2-审批驳回 3-作废 */
@@ -40,6 +40,7 @@ export interface GetCommercialCoalInspectionListResultModel {
   items: Nullable<CommercialCoalInspectionModel[]>;
   /** 饼图数据 */
   pieCharts: Nullable<ProductionCountRatePieChartModel[]>;
+  synchroDataTime: number;
   totalCount: number;
   totalPages: number;
 }
@@ -147,4 +148,55 @@ export interface ProductionCountRatePieChartModel {
   productionName: string;
   /** 产品类型 */
   productionType: number;
+}
+
+export interface EditCommercialCoalInspectionParams {
+  /** 外灰 */
+  aar: number;
+  /** 内灰 */
+  ad: number;
+  /** 检测批号 */
+  batchNumber: string;
+  /** 扣水 */
+  buckleWater: number;
+  /** 矿别 */
+  coalType: string;
+  /** 焦型 */
+  cokeType: number;
+  /** 流向 */
+  direction: string;
+  /** 检测日期 */
+  inspectionDate: number;
+  /** 装车计划号 */
+  loadingPlanId: number;
+  /** 装车类型: 0-火车装车 1-地销装车 2-自建数据 */
+  loadingType: number;
+  /** 内水 */
+  mad: number;
+  /** 备注 */
+  memo: string;
+  /** 发热量 */
+  mj: number;
+  /** 全水 */
+  mt: number;
+  /** （品种）产品标识 */
+  productionId: number;
+  /** 分析基高位发热量 */
+  qgrAd: number;
+  /** 干燥基高位发热量 */
+  qgrD: number;
+  /** 收到基低位发热量 */
+  qnetArCal: number;
+  /** 收到基低位发热量 */
+  qnetArMj: number;
+  /** 全硫 */
+  std: number;
+  /** 发运量 */
+  tonnage: number;
+  /**  挥发分var */
+  var: number;
+  /** 挥发分vdaf */
+  vdaf: number;
+  /**  用于高并发的数据版本控制 */
+  versionTag: string;
 }

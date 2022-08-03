@@ -1,7 +1,7 @@
 <template>
   <PageWrapper>
     <template #headerContent>
-      <BasicForm @register="register" @submit="getLogList" />
+      <BasicForm @register="register" @submit="getData" />
     </template>
 
     <div class="flex">
@@ -15,21 +15,32 @@
 
     <BasicTable class="mt-4" @register="registerTable" :loading="loading">
       <template #toolbar>
-        <a-button type="primary">新建商品煤检测</a-button>
+        <a-button type="primary" @click="openEditDataDrawer(true, {})">新建商品煤检测</a-button>
+        <a-button type="primary" @click="openExportReportModal(true, {})">导出整月</a-button>
         <a-button>数据导入</a-button>
+        <span class="text-disabled">
+          上次导入时间: {{ formatDate(synchroDataTime, 'YYYY-MM-DD HH:mm') }}
+        </span>
       </template>
 
       <template #qualified="{ record }">
-        <span :class="record.qualified === 0 ? 'text-danger' : ''">
+        <span :class="record.qualified === 0 ? 'text-error' : ''">
           {{ qualifiedTextArr[record.qualified] }}
         </span>
       </template>
       <template #stable="{ record }">
-        <span :class="record.qualified === 0 ? 'text-danger' : ''">
+        <span :class="record.qualified === 0 ? 'text-error' : ''">
           {{ stablesTextArr[record.stable] }}
         </span>
       </template>
+
+      <template #action="{ record }">
+        <TableAction :actions="createActions(record)" />
+      </template>
     </BasicTable>
+
+    <EditDataDrawer @register="editDataDrawer" @submit="getData" />
+    <ExportReportModal @register="exportReportModal" @submit="getData" />
   </PageWrapper>
 </template>
 
@@ -43,22 +54,26 @@
   import { ref, nextTick, onMounted } from 'vue';
   import { PageWrapper } from '/@/components/Page';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { BasicTable, useTable } from '/@/components/Table';
-  import { schemas } from './data';
+  import { useDrawer } from '/@/components/Drawer';
+  import { useModal } from '/@/components/Modal';
+  import { BasicTable, useTable, TableAction, ActionItem } from '/@/components/Table';
+  import { schemas, columns } from './data';
   import LineChart from './components/lineChart.vue';
   import PieChart from './components/pieChart.vue';
-  import { getApprovalsListApi } from '/@/api/quality/commercialCoalInspection';
+  import {
+    getApprovalsListApi,
+    delCommercialCoalInspectionApi,
+  } from '/@/api/quality/commercialCoalInspection';
   import {
     GetCommercialCoalInspectionListParams,
     CommercialCoalInspectionModel,
   } from '/@/api/quality/model/commercialCoalInspectionModel';
-  import { dateUtil } from '/@/utils/dateUtil';
-  import { useUserState } from '/@/hooks/web/useUserState';
+  import { formatDate } from '/@/utils/dateUtil';
+  import EditDataDrawer from './components/editDataDrawer.vue';
+  import ExportReportModal from './components/exportReportModal.vue';
+  import { useMessage } from '/@/hooks/web/useMessage';
 
-  const { getDictMap } = useUserState();
-
-  const coalTypeMap = getDictMap('DT_PROD_CHECK_MINE');
-  const directionMap = getDictMap('DT_PROD_CHECK_ DIREC');
+  const { createMessage } = useMessage();
 
   const [register, { getFieldsValue }] = useForm({
     labelWidth: 60,
@@ -68,119 +83,86 @@
   });
 
   const [registerTable, { setTableData }] = useTable({
-    pagination: false,
     canResize: false,
-    maxHeight: 200, // TODO 不生效？
-    columns: [
-      {
-        title: '日期',
-        dataIndex: 'inspectionDate',
-        fixed: 'left',
-        customRender: ({ record }) => {
-          return dateUtil(record.inspectionDate, 'YYYY-MM-DD');
-        },
-      },
-      {
-        title: '矿别',
-        dataIndex: 'coalType',
-        fixed: 'left',
-        customRender: ({ record }) => {
-          return coalTypeMap[record.loadingPlanBaseModel.coalType];
-        },
-      },
-      {
-        title: '流向',
-        dataIndex: 'direction',
-        customRender: ({ record }) => {
-          return directionMap[record.loadingPlanBaseModel.direction];
-        },
-      },
-      {
-        title: '产品',
-        dataIndex: 'productionVariety',
-        customRender: ({ record }) => {
-          return record.loadingPlanBaseModel.productionVariety;
-        },
-      },
-      {
-        title: '发运量(T)',
-        dataIndex: 'tonnage',
-        customRender: ({ record }) => {
-          return record.loadingPlanBaseModel.tonnage ?? '-';
-        },
-      },
-      { title: '化验编号', dataIndex: 'batchNumber' },
-      {
-        title: '全水分Mt(%)',
-        dataIndex: 'mt',
-        customRender: ({ record }) => {
-          return record.mt ?? '-';
-        },
-      },
-      {
-        title: '灰分Ad(%)',
-        dataIndex: 'ad',
-        customRender: ({ record }) => {
-          return record.ad ?? '-';
-        },
-      },
-      {
-        title: '挥发分Vdaf(%)',
-        dataIndex: 'vdaf',
-        customRender: ({ record }) => {
-          return record.vdaf ?? '-';
-        },
-      },
-      {
-        title: '全硫St,d(%)',
-        dataIndex: 'std',
-        customRender: ({ record }) => {
-          return record.std ?? '-';
-        },
-      },
-      {
-        title: 'Qnet,ar(Cal/g)',
-        dataIndex: 'qnetArCal',
-        customRender: ({ record }) => {
-          return record.qnetArCal ?? '-';
-        },
-      },
-      {
-        title: '质量区间',
-        dataIndex: 'qualityRange',
-        customRender: ({ record }) => {
-          return record.qualityRange ?? '-';
-        },
-      },
-      { title: '合格', dataIndex: 'qualified', slots: { customRender: 'qualified' } },
-      { title: '稳定', dataIndex: 'stable', slots: { customRender: 'stable' } },
-    ],
+    columns,
+    actionColumn: {
+      width: 160,
+      title: '操作',
+      fixed: 'right',
+      dataIndex: 'action',
+      slots: { customRender: 'action' },
+    },
   });
+
+  const [editDataDrawer, { openDrawer: openEditDataDrawer }] = useDrawer();
+  const [exportReportModal, { openModal: openExportReportModal }] = useModal();
 
   const loading = ref(false);
   const data = ref<CommercialCoalInspectionModel[]>([]);
   const pieChartData = ref<Nullable<{ batchQualifiedRate: number; batchStableRate: number }>>(null);
+  const synchroDataTime = ref<number>();
   const qualifiedTextArr = ref(['不合格', '合格', '空', '无']);
   const stablesTextArr = ref(['不稳定', '稳定', '空', '无']);
 
   onMounted(() => {
-    getLogList();
+    getData();
   });
 
-  async function getLogList() {
+  async function getData() {
     loading.value = true;
     await nextTick();
     const values = getFieldsValue() as GetCommercialCoalInspectionListParams;
 
     try {
-      const { items, batchQualifiedRate, batchStableRate } = await getApprovalsListApi(values);
+      const {
+        items,
+        batchQualifiedRate,
+        batchStableRate,
+        synchroDataTime: synchro_data_time,
+      } = await getApprovalsListApi(values);
       data.value = items || [];
       pieChartData.value = { batchQualifiedRate, batchStableRate };
+      synchroDataTime.value = synchro_data_time;
+
       setTableData(items || []);
     } catch (error: any) {
       throw new Error(error);
     } finally {
       loading.value = false;
     }
+  }
+
+  function createActions(record: CommercialCoalInspectionModel): ActionItem[] {
+    return [
+      {
+        label: '查看',
+        onClick: () => {
+          openEditDataDrawer(true, { data: record, edit: false });
+        },
+      },
+      {
+        label: '编辑',
+        onClick: () => {
+          openEditDataDrawer(true, { data: record, edit: true });
+        },
+      },
+      {
+        label: '删除',
+        color: 'error',
+        popConfirm: {
+          title: '数据删除后将无法恢复，确认删除数据？',
+          placement: 'left',
+          confirm: async () => {
+            try {
+              await delCommercialCoalInspectionApi(record.id);
+              createMessage.success('删除成功');
+              await getData();
+            } catch (error: any) {
+              throw new Error(error);
+            }
+          },
+        },
+      },
+    ];
   }
 </script>
