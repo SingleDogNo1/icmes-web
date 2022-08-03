@@ -17,7 +17,7 @@
       <template #toolbar>
         <a-button type="primary" @click="openEditDataDrawer(true, {})">新建商品煤检测</a-button>
         <a-button type="primary" @click="openExportReportModal(true, {})">导出整月</a-button>
-        <a-button>数据导入</a-button>
+        <a-button @click="handleDataImport">数据导入</a-button>
         <span class="text-disabled">
           上次导入时间: {{ formatDate(synchroDataTime, 'YYYY-MM-DD HH:mm') }}
         </span>
@@ -39,8 +39,12 @@
       </template>
     </BasicTable>
 
+    <!-- 新建 & 编辑 & 查看商品煤数据 -->
     <EditDataDrawer @register="editDataDrawer" @submit="getData" />
+    <!-- 导出本月数据弹窗 -->
     <ExportReportModal @register="exportReportModal" @submit="getData" />
+    <!-- 数据导入弹窗 -->
+    <ImportDataModal @register="importDataModal" @done="getData" />
   </PageWrapper>
 </template>
 
@@ -68,9 +72,10 @@
     GetCommercialCoalInspectionListParams,
     CommercialCoalInspectionModel,
   } from '/@/api/quality/model/commercialCoalInspectionModel';
-  import { formatDate } from '/@/utils/dateUtil';
+  import { dateUtil, formatDate } from '/@/utils/dateUtil';
   import EditDataDrawer from './components/editDataDrawer.vue';
   import ExportReportModal from './components/exportReportModal.vue';
+  import ImportDataModal from './components/importDataModal.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
 
   const { createMessage } = useMessage();
@@ -96,6 +101,7 @@
 
   const [editDataDrawer, { openDrawer: openEditDataDrawer }] = useDrawer();
   const [exportReportModal, { openModal: openExportReportModal }] = useModal();
+  const [importDataModal, { openModal: openImportDataModal }] = useModal();
 
   const loading = ref(false);
   const data = ref<CommercialCoalInspectionModel[]>([]);
@@ -130,6 +136,15 @@
     } finally {
       loading.value = false;
     }
+  }
+
+  function handleDataImport() {
+    const duration = dateUtil().diff(dateUtil(synchroDataTime.value), 'minutes');
+    if (duration <= 10) {
+      createMessage.warning('10分钟内已更新过数据，请稍后再试');
+      return;
+    }
+    openImportDataModal(true, {});
   }
 
   function createActions(record: CommercialCoalInspectionModel): ActionItem[] {

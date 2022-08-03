@@ -51,3 +51,11 @@ export function delCommercialCoalInspectionApi(id: number) {
     url: Api.baseUrl + `/${id}`,
   });
 }
+
+/** importData */
+export function importCommercialCoalInspectionApi(params: { startTime: string; endTime: string }) {
+  return customHttp.post<{ data: number }>({
+    url: Api.baseUrl + '/import',
+    params,
+  });
+}

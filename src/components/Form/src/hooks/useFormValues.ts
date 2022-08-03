@@ -64,8 +64,8 @@ export function useFormValues({
 
       const [startTime, endTime]: string[] = values[field];
 
-      values[startTimeKey] = Number(dateUtil(startTime).format(format));
-      values[endTimeKey] = Number(dateUtil(endTime).format(format));
+      values[startTimeKey] = dateUtil(startTime).format(format);
+      values[endTimeKey] = dateUtil(endTime).format(format);
       Reflect.deleteProperty(values, field);
     }
 

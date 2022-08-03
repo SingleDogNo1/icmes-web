@@ -22,9 +22,8 @@ export const schemas: FormSchema[] = [
     field: 'timeRange',
     label: '日期',
     component: 'RangePicker',
-    colProps: { span: 8 },
-    defaultValue: [dateUtil().startOf('month'), dateUtil().endOf('day')],
-    // defaultValue: [dateUtil('2022-03-01').startOf('month'), dateUtil('2022-05-31').endOf('day')],
+    // defaultValue: [dateUtil().startOf('month'), dateUtil().endOf('day')],
+    defaultValue: [dateUtil('2022-03-01').startOf('month'), dateUtil('2022-05-31').endOf('day')],
     componentProps: {
       format: 'YYYY-MM-DD',
       showTime: {
@@ -36,7 +35,6 @@ export const schemas: FormSchema[] = [
     field: 'direction',
     label: '流向',
     component: 'RadioButtonGroup',
-    colProps: { span: 8 },
     componentProps: {
       buttonStyle: 'solid',
       options: directionOptions,
@@ -46,7 +44,6 @@ export const schemas: FormSchema[] = [
     field: 'productionId',
     label: '产品',
     component: 'ApiSelect',
-    colProps: { span: 8 },
     componentProps: {
       showSearch: true,
       api: getProductionListApi,
