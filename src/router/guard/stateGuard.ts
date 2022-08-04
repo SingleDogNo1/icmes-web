@@ -13,7 +13,7 @@ export function createStateGuard(router: Router) {
       const { resetState: resetTabState } = useMultipleTabStore();
       const { resetState: resetUserStoreState } = useUserStore();
       const { resetAllState } = useAppStore();
-      const { resetPermissionStoreState } = usePermissionStore();
+      const { resetState: resetPermissionStoreState } = usePermissionStore();
       resetAllState();
       resetPermissionStoreState();
       resetTabState();
