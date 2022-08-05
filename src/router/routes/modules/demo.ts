@@ -47,7 +47,7 @@ const demo: BackModeRouteRecordRaw = {
       ],
     },
     {
-      path: 'https://2x.antdv.com/components/icon-cn',
+      path: 'https://www.antdv.com/components/overview',
       name: 'DocExternal',
       component: 'IFRAME',
       meta: {
@@ -61,7 +61,7 @@ const demo: BackModeRouteRecordRaw = {
       component: 'IFRAME',
       meta: {
         code: DEMO_CHILDREN_CODE,
-        frameSrc: 'https://2x.antdv.com/components/icon-cn',
+        frameSrc: 'https://www.antdv.com/components/overview',
         title: 'routes.demo.iframe.doc',
       },
     },

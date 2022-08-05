@@ -16,6 +16,13 @@
     </div>
   </div>
 </template>
+
+<script lang="ts">
+  export default {
+    name: 'LoginPage',
+  };
+</script>
+
 <script lang="ts" setup>
   import { AppLogo } from '/@/components/Application';
   import LoginForm from './LoginForm.vue';
@@ -53,6 +60,11 @@
 
       img {
         width: 48px;
+      }
+
+      .logo {
+        width: 36px;
+        height: 36px;
       }
     }
 

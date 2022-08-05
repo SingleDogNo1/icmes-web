@@ -12,20 +12,11 @@ const board: BackModeRouteRecordRaw = {
   },
   children: [
     {
-      path: 'productionBoard',
+      path: 'https://www.antdv.com/components/overview',
       name: 'ProductionBoard',
-      component: '/board/production/index',
+      component: 'IFRAME',
       meta: {
         code: 27500,
-        title: 'routes.board.productionBoard',
-      },
-    },
-    {
-      path: 'productionBoard/create',
-      name: 'CreateProductionBoard',
-      component: '/board/production/create',
-      meta: {
-        code: 275000,
         title: 'routes.board.productionBoard',
       },
     },

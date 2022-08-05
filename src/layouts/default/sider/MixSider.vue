@@ -66,7 +66,7 @@
           :items="childrenMenus"
           :theme="getMenuTheme"
           mixSider
-          @menuClick="handleMenuClick"
+          @menu-click="handleMenuClick"
         />
       </ScrollContainer>
       <div
@@ -245,7 +245,6 @@
         const path = currentRoute.value?.path;
         if (!path) return;
         activePath.value = await getCurrentParentPath(path);
-        // hanldeModuleClick(parentPath);
         if (unref(getIsMixSidebar)) {
           const activeMenu = unref(menuModules).find((item) => item.path === unref(activePath));
           const p = activeMenu?.path;
@@ -355,6 +354,11 @@
       justify-content: center;
 
       img {
+        width: @logo-width;
+        height: @logo-width;
+      }
+
+      .logo {
         width: @logo-width;
         height: @logo-width;
       }

@@ -29,7 +29,7 @@
       <CollapseContainer title="在线logo示例" class="mb-6 text-center qrcode-demo-item">
         <QrCode
           :value="qrCodeUrl"
-          logo="https://vebn.oss-cn-beijing.aliyuncs.com/vben/logo.png"
+          logo="https://v3.cn.vuejs.org/logo.png"
           :options="{
             color: { dark: '#55D187' },
           }"
@@ -40,7 +40,7 @@
         <QrCode
           :value="qrCodeUrl"
           :logo="{
-            src: 'https://vebn.oss-cn-beijing.aliyuncs.com/vben/logo.png',
+            src: 'https://v3.cn.vuejs.org/logo.png',
             logoSize: 0.2,
             borderSize: 0.05,
             borderRadius: 50,
@@ -83,6 +83,7 @@
 
   const qrCodeUrl = 'https://www.baidu.com';
   export default defineComponent({
+    name: 'QRCodeDemo',
     components: { CollapseContainer, QrCode, PageWrapper },
     setup() {
       const qrRef = ref<Nullable<QrCodeActionType>>(null);

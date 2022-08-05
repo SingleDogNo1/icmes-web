@@ -184,6 +184,10 @@
         width: @logo-width;
         height: @logo-width;
       }
+      .logo {
+        width: @logo-width;
+        height: @logo-width;
+      }
     }
 
     &--mobile {

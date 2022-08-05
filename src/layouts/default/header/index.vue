@@ -7,6 +7,7 @@
         :theme="getHeaderTheme"
         :style="getLogoWidth"
       />
+      <AppLogo :class="`${prefixCls}-logo`" :theme="getHeaderTheme" :style="getLogoWidth" />
       <LayoutTrigger
         v-if="
           (getShowContent && getShowHeaderTrigger && !getSplit && !getIsMixSidebar) || getIsMobile
