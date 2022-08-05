@@ -49,9 +49,9 @@
       background: url('../../../assets/images/logo.png') 0 / contain no-repeat;
     }
 
-    &.light {
-      border-bottom: 1px solid @border-color-base;
-    }
+    // &.light {
+    //   border-bottom: 1px solid @border-color-base;
+    // }
 
     &.collapsed-show-title {
       padding-left: 20px;
