@@ -6,7 +6,7 @@ titleTemplate: 开发文档
 
 hero:
   name: ICMES_WEB_NEW
-  tagline: 基于 Vben Admin 二次开发，Vite & Vue3.x & Pinia & Typescript & Unocss & Ant Design Vue 升级
+  tagline: 基于 Vben Admin 二次开发，Vite & Vue3.x & Pinia & Typescript & Unocss & Ant Design Vue
   actions:
     - theme: brand
       text: 快速开始
