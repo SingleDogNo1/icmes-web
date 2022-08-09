@@ -48,6 +48,12 @@
   </Popover>
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'ColorPickerComp',
+  };
+</script>
+
 <script lang="ts" setup>
   import { ref, computed, nextTick, watch, PropType } from 'vue';
   import { Popover } from 'ant-design-vue';
