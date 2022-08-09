@@ -1,13 +1,15 @@
 export default {
-  title: 'VitePress',
-  description: 'Just playing around.',
+  title: 'ICMES',
+  description: 'ICMES DOCS',
+  head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
   themeConfig: {
+    logo: '/logo.png',
     siteTitle: 'ICMES 开发文档',
     search: false,
     searchMaxSuggestions: 10,
     editLink: {
-      // pattern: 'https://github.com/lost-dream/icmes-web/edit/main/docs/src/:path', // github
-      pattern: 'http://192.168.88.79:8081/ZHAOCHENMIN/icmes-web-new/edit/main/docs/src/:path', // gitlab
+      pattern: 'https://github.com/lost-dream/icmes-web/edit/main/docs/src/:path', // github
+      // pattern: 'http://192.168.88.79:8081/ZHAOCHENMIN/icmes-web-new/edit/main/docs/src/:path', // gitlab
     },
     nav: [
       {
