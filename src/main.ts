@@ -1,8 +1,9 @@
+import 'uno.css';
 import '/@/design/index.less';
 // import 'virtual:windi-base.css';
 // import 'virtual:windi-components.css';
 // import 'virtual:windi-utilities.css';
-import 'uno.css';
+
 // Register icon sprite
 import 'virtual:svg-icons-register';
 import App from './App.vue';
@@ -52,7 +53,7 @@ async function bootstrap() {
   setupErrorHandle(app);
 
   // https://next.router.vuejs.org/api/#isready
-  // await router.isReady();
+  await router.isReady();
 
   app.mount('#app');
 }
