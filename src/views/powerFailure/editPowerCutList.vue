@@ -272,6 +272,9 @@
   }
 
   function visibleHVDeviceTooltip(options: DeviceModel[]) {
+    const value = getFieldsValue();
+    console.log('value :>> ', value);
+
     const hvDevices = options.filter((option) => highVoltageDeviceTypes.includes(option.powerType));
     checked_hv_main_devices.value = hvDevices;
     showHVTooltip.value = hvDevices.length > 0;
@@ -284,8 +287,10 @@
     }
   }
 
-  function handleChangePowerCutType(data, option: PowerCutConfigExtendEntity) {
-    console.log('value :>> ', data, option);
+  function handleChangePowerCutType(data: string, option: PowerCutConfigExtendEntity) {
+    if (data.includes('ELEC_SP')) {
+      showHVTooltip.value = false;
+    }
 
     const formModel = getFieldsValue();
 
@@ -295,7 +300,7 @@
       typeWatcher.value.shift();
     }
 
-    console.log('data :>> ', typeWatcher.value, option, checked_hv_main_devices.value);
+    console.log('data :>> ', data, typeWatcher.value, option, checked_hv_main_devices.value);
 
     /*
             option.powerCutType === 2  当前选中低压
