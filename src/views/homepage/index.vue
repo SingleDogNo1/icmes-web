@@ -2,6 +2,12 @@
   <PageWrapper dense contentFullHeight :class="prefixCls" />
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'HomePage',
+  };
+</script>
+
 <script lang="ts" setup>
   import { PageWrapper } from '/@/components/Page';
   import { useDesign } from '/@/hooks/web/useDesign';

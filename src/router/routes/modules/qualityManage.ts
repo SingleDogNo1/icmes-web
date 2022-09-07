@@ -7,7 +7,7 @@ const qualityManage: BackModeRouteRecordRaw = {
   redirect: '/quality/index',
   meta: {
     code: 19000,
-    icon: 'powerFailure|svg',
+    icon: 'fa:diamond',
     title: 'routes.qualityManage.title',
   },
   children: [

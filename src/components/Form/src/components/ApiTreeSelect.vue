@@ -92,7 +92,6 @@
         }
         emit('options-ready', treeData.value);
 
-        console.log('treeData :>> ', treeData);
         isFirstLoaded.value = true;
         emit('options-change', treeData.value);
       }
