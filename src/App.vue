@@ -23,18 +23,24 @@
   // 切换页面时更改标题
   useTitle();
 
-  // 根据系统主题自动切换亮色 / 暗色主题
-  const darkMedia = window.matchMedia('(prefers-color-scheme: dark)');
-  let handleChangeColorScheme = ({ matches: isDarkMode }: MediaQueryListEvent) => {
-    setDarkMode(isDarkMode ? ThemeEnum.DARK : ThemeEnum.LIGHT);
-    updateDarkTheme(isDarkMode ? ThemeEnum.DARK : ThemeEnum.LIGHT);
+  function updateTheme(theme: ThemeEnum) {
+    setDarkMode(theme);
+    updateDarkTheme(theme);
     updateHeaderBgColor();
     updateSidebarBgColor();
-  };
+  }
+
+  // 根据系统主题自动切换亮色 / 暗色主题
+  const darkMedia = window.matchMedia('(prefers-color-scheme: dark)');
+  updateTheme(darkMedia.matches ? ThemeEnum.DARK : ThemeEnum.LIGHT);
 
   if (typeof darkMedia.addEventListener === 'function') {
-    darkMedia.addEventListener('change', handleChangeColorScheme);
+    darkMedia.addEventListener('change', ({ matches: isDarkMode }) => {
+      updateTheme(isDarkMode ? ThemeEnum.DARK : ThemeEnum.LIGHT);
+    });
   } else if (typeof darkMedia.addListener === 'function') {
-    darkMedia.addListener(handleChangeColorScheme);
+    darkMedia.addListener(({ matches: isDarkMode }) => {
+      updateTheme(isDarkMode ? ThemeEnum.DARK : ThemeEnum.LIGHT);
+    });
   }
 </script>
