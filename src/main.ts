@@ -1,7 +1,5 @@
 import 'uno.css';
 import '/@/design/index.less';
-
-// Register icon sprite
 import 'virtual:svg-icons-register';
 import App from './App.vue';
 import { createApp } from 'vue';
@@ -13,10 +11,10 @@ import { setupStore } from '/@/store';
 import { setupGlobDirectives } from '/@/directives';
 import { setupI18n } from '/@/locales/setupI18n';
 import { registerGlobComp } from '/@/components/registerGlobComp';
+import { createEnterAnimate } from './design/enterAnimate';
 
-// Importing on demand in local development will increase the number of browser requests by around 20%.
-// This may slow down the browser refresh speed.
-// Therefore, only enable on-demand importing in production environments .
+// 打包环境配置了按需导入，但本地开发按需导入反而导致刷新效率降低
+// 仅在开发环境下全量引入 antd.css
 if (import.meta.env.DEV) {
   import('ant-design-vue/dist/antd.less');
 }
@@ -24,33 +22,32 @@ if (import.meta.env.DEV) {
 async function bootstrap() {
   const app = createApp(App);
 
-  // Configure store
+  // 创建网页动画用的 css 类名
+  createEnterAnimate();
+
+  // 配置 pinia
   setupStore(app);
 
-  // Initialize internal system configuration
+  // 初始化项目配置
   initAppConfigStore();
 
-  // Register global components
+  // 注册全局组件
   registerGlobComp(app);
 
-  // Multilingual configuration
-  // Asynchronous case: language files may be obtained from the server side
+  // 配置国际化
   await setupI18n(app);
 
-  // Configure routing
+  // 初始化路由
   setupRouter(app);
 
-  // router-guard
+  // 注册路由守卫
   setupRouterGuard(router);
 
-  // Register global directive
+  // 注册全局指令
   setupGlobDirectives(app);
 
-  // Configure global error handling
+  // 配置全局错误处理
   setupErrorHandle(app);
-
-  // https://next.router.vuejs.org/api/#isready
-  await router.isReady();
 
   app.mount('#app');
 }

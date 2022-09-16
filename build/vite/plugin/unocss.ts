@@ -25,5 +25,15 @@ export function configIUnocssPlugin() {
       },
     },
     transformers: [transformerDirective()],
+    rules: [
+      [
+        'overflow-ellipsis',
+        {
+          overflow: 'hidden',
+          'text-overflow': 'ellipsis',
+          'white-space': 'nowrap',
+        },
+      ],
+    ],
   });
 }
