@@ -1,9 +1,6 @@
 {
-  "vetur.format.enable": false,
   "editor.formatOnSave": true,
   "typescript.tsdk": "./node_modules/typescript/lib",
-  "vetur.validation.script": false,
-  "vetur.validation.template": false,
   //===========================================
   //============= Editor ======================
   //===========================================
@@ -81,7 +78,11 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
-  "i18n-ally.localesPaths": ["src/locales/lang"],
+  "i18n-ally.localesPaths": [
+    "src/locales",
+    "src/locales/lang",
+    "public/resource/tinymce/langs"
+  ],
   "i18n-ally.keystyle": "nested",
   "i18n-ally.sortKeys": true,
   "i18n-ally.namespace": true,

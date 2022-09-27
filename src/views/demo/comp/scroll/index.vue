@@ -19,9 +19,11 @@
   import { PageWrapper } from '/@/components/Page';
 
   export default defineComponent({
+    name: 'ScrollDemo',
     components: { ScrollContainer, PageWrapper },
   });
 </script>
+
 <style lang="less" scoped>
   .scroll-wrap {
     width: 50%;

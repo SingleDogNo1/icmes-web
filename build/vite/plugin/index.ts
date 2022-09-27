@@ -15,7 +15,7 @@ import { configThemePlugin } from './theme';
 import { configImageminPlugin } from './imagemin';
 import { configSvgIconsPlugin } from './svgSprite';
 import { configHmrPlugin } from './hmr';
-import { configIUnocssPlugin } from './unocss';
+import { configIUnocssPlugin } from './uno.config';
 
 export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   const {

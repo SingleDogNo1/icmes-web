@@ -1,6 +1,5 @@
 {
   "recommendations": [
-    "octref.vetur",
     "dbaeumer.vscode-eslint",
     "stylelint.vscode-stylelint",
     "esbenp.prettier-vscode",
@@ -8,8 +7,6 @@
     "lokalise.i18n-ally",
     "antfu.iconify",
     "mikestead.dotenv",
-    "heybourn.headwind",
-    "voorjaar.windicss-intellisense",
     "antfu.unocss"
   ]
 }

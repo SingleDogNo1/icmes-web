@@ -1,14 +1,13 @@
-// 使用 unocss 替换 windicss
-// https://github.com/lost-dream/unocss
-// TODO: 实现 windicss 中 createEnterPlugin方法
+// https://github.com/unocss/unocss
+// TODO 怎么完美的配合 unocss vscode 插件使用？
 import Unocss from 'unocss/vite';
-import { presetAttributify, presetUno } from 'unocss';
+import { presetAttributify, presetUno, presetIcons } from 'unocss';
 import transformerDirective from '@unocss/transformer-directives';
 import { successColor, primaryColor, disabledColor, errorColor } from '/@/settings/designSetting';
 
 export function configIUnocssPlugin() {
   return Unocss({
-    presets: [presetUno(), presetAttributify()],
+    presets: [presetUno(), presetAttributify(), presetIcons()],
     theme: {
       breakpoints: {
         sm: '576px',
