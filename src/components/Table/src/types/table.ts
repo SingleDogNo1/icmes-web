@@ -408,7 +408,8 @@ export interface BasicTableProps<T = any> {
 
 export type CellFormat =
   | string
-  | ((text: string, record: Recordable, index: number) => string | number)
+  | ((text: string | number, record: Recordable, index: number) => string | number)
+  | ((record: Recordable[]) => string | number)
   | Map<string | number, any>;
 
 // @ts-ignore

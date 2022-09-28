@@ -34,8 +34,7 @@ export function usePermission() {
     const {
       meta: { code },
     } = useRoute();
-    const hasEditPermission = features[code!] as { [index: string]: boolean } | undefined;
-    return hasEditPermission;
+    return features[code!] as { [index: string]: boolean } | undefined;
   }
 
   /**

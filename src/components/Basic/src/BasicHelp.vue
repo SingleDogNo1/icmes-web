@@ -95,7 +95,7 @@
   @prefix-cls: ~'@{namespace}-basic-help';
 
   .@{prefix-cls} {
-    display: inline-block;
+    display: inline-flex;
     margin-left: 6px;
     font-size: 14px;
     color: @text-color-help-dark;

@@ -64,6 +64,7 @@
 </script>
 <style lang="less">
   .table-settings {
+    display: inline-flex;
     & > * {
       margin-right: 12px;
     }
