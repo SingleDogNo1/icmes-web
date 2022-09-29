@@ -1,190 +1,251 @@
-<script lang="tsx">
-  import {
-    defineComponent,
-    computed,
-    ref,
-    unref,
-    reactive,
-    onMounted,
-    watch,
-    nextTick,
-    CSSProperties,
-  } from 'vue';
-  import { useEventListener } from '/@/hooks/event/useEventListener';
-  import { getSlot } from '/@/utils/helper/tsxHelper';
+<template>
+  <div ref="rootNode" :style="warpStyle">
+    <div ref="innerNode" :style="innerStyle">
+      <div
+        v-for="(item, i) in event?.items"
+        :style="(getItemStyle(i) as CSSProperties)"
+        :key="event?.start + i"
+        class="vue3-infinite-list"
+      >
+        <slot :event="event" :item="item" :index="event.start + i"></slot>
+      </div>
+    </div>
+  </div>
+</template>
+<script lang="ts" setup>
+  import { watch, ref, reactive, toRefs, onMounted, onBeforeUnmount, CSSProperties } from 'vue';
+  import { basicProps } from './props';
+  import { StyleCache, ScrollDirectionEnum, ItemStyle } from './types';
+  import { SizeAndPosManager } from './sizeAndPosManager';
+  import { addEventListener, removeEventListener, isPureNumber } from './utils';
+  import { Event } from './event';
 
-  type NumberOrNumberString = PropType<string | number | undefined>;
+  const props = defineProps(basicProps);
 
-  const props = {
-    height: [Number, String] as NumberOrNumberString,
-    maxHeight: [Number, String] as NumberOrNumberString,
-    maxWidth: [Number, String] as NumberOrNumberString,
-    minHeight: [Number, String] as NumberOrNumberString,
-    minWidth: [Number, String] as NumberOrNumberString,
-    width: [Number, String] as NumberOrNumberString,
-    bench: {
-      type: [Number, String] as NumberOrNumberString,
-      default: 0,
-    },
-    itemHeight: {
-      type: [Number, String] as NumberOrNumberString,
-      required: true,
-    },
-    items: {
-      type: Array as PropType<any[]>,
-      default: () => [],
-    },
+  const positionMap = {
+    horizontal: 'left',
+    vertical: 'top',
   };
 
-  const prefixCls = 'virtual-scroll';
+  const scrollMap = {
+    vertical: 'scrollTop',
+    horizontal: 'scrollLeft',
+  };
 
-  function convertToUnit(str: string | number | null | undefined, unit = 'px'): string | undefined {
-    if (str == null || str === '') {
-      return undefined;
-    } else if (isNaN(+str!)) {
-      return String(str);
-    } else {
-      return `${Number(str)}${unit}`;
-    }
-  }
+  const sizeMap = {
+    vertical: 'height',
+    horizontal: 'width',
+  };
 
-  export default defineComponent({
-    name: 'VirtualScroll',
-    props,
-    setup(props, { slots }) {
-      const wrapElRef = ref<HTMLDivElement | null>(null);
-      const state = reactive({
-        first: 0,
-        last: 0,
-        scrollTop: 0,
-      });
-
-      const getBenchRef = computed(() => {
-        return parseInt(props.bench as string, 10);
-      });
-
-      const getItemHeightRef = computed(() => {
-        return parseInt(props.itemHeight as string, 10);
-      });
-
-      const getFirstToRenderRef = computed(() => {
-        return Math.max(0, state.first - unref(getBenchRef));
-      });
-
-      const getLastToRenderRef = computed(() => {
-        return Math.min((props.items || []).length, state.last + unref(getBenchRef));
-      });
-
-      const getContainerStyleRef = computed((): CSSProperties => {
-        return {
-          height: convertToUnit((props.items || []).length * unref(getItemHeightRef)),
-        };
-      });
-
-      const getWrapStyleRef = computed((): CSSProperties => {
-        const styles: Recordable<string> = {};
-        const height = convertToUnit(props.height);
-        const minHeight = convertToUnit(props.minHeight);
-        const minWidth = convertToUnit(props.minWidth);
-        const maxHeight = convertToUnit(props.maxHeight);
-        const maxWidth = convertToUnit(props.maxWidth);
-        const width = convertToUnit(props.width);
-
-        if (height) styles.height = height;
-        if (minHeight) styles.minHeight = minHeight;
-        if (minWidth) styles.minWidth = minWidth;
-        if (maxHeight) styles.maxHeight = maxHeight;
-        if (maxWidth) styles.maxWidth = maxWidth;
-        if (width) styles.width = width;
-        return styles;
-      });
-
-      watch([() => props.itemHeight, () => props.height], () => {
-        onScroll();
-      });
-
-      function getLast(first: number): number {
-        const wrapEl = unref(wrapElRef);
-        if (!wrapEl) {
-          return 0;
-        }
-        const height = parseInt(props.height || 0, 10) || wrapEl.clientHeight;
-
-        return first + Math.ceil(height / unref(getItemHeightRef));
-      }
-
-      function getFirst(): number {
-        return Math.floor(state.scrollTop / unref(getItemHeightRef));
-      }
-
-      function onScroll() {
-        const wrapEl = unref(wrapElRef);
-        if (!wrapEl) {
-          return;
-        }
-        state.scrollTop = wrapEl.scrollTop;
-        state.first = getFirst();
-        state.last = getLast(state.first);
-      }
-
-      function renderChildren() {
-        const { items = [] } = props;
-        return items.slice(unref(getFirstToRenderRef), unref(getLastToRenderRef)).map(genChild);
-      }
-
-      function genChild(item: any, index: number) {
-        index += unref(getFirstToRenderRef);
-        const top = convertToUnit(index * unref(getItemHeightRef));
-        return (
-          <div class={`${prefixCls}__item`} style={{ top }} key={index}>
-            {getSlot(slots, 'default', { index, item })}
-          </div>
-        );
-      }
-
-      onMounted(() => {
-        state.last = getLast(0);
-        nextTick(() => {
-          const wrapEl = unref(wrapElRef);
-          if (!wrapEl) {
-            return;
-          }
-          useEventListener({
-            el: wrapEl,
-            name: 'scroll',
-            listener: onScroll,
-            wait: 0,
-          });
-        });
-      });
-
-      return () => (
-        <div class={prefixCls} style={unref(getWrapStyleRef)} ref={wrapElRef}>
-          <div class={`${prefixCls}__container`} style={unref(getContainerStyleRef)}>
-            {renderChildren()}
-          </div>
-        </div>
-      );
-    },
+  let rootNode = ref(null);
+  let innerNode = ref(null);
+  let warpStyle = ref({});
+  let innerStyle = ref({});
+  const basicInnerStyle = ref({
+    position: 'relative',
+    overflow: 'hidden',
+    width: '100%',
+    minHeight: '100%',
   });
+
+  let items: any[] = [];
+  let offset: number | undefined;
+  let oldOffset: number | null;
+  let scrollChangeReason: string;
+  let sizeAndPosManager: SizeAndPosManager;
+  let styleCache: StyleCache = {};
+  const { itemSize, scrollDirection } = toRefs(props);
+  const event = reactive(new Event());
+  const getItemStyle = (index: number) => {
+    index += event.start;
+    const style = styleCache[index];
+    if (style) return style;
+    const { size, offset } = sizeAndPosManager.getSizeAndPositionForIndex(index);
+    const result: ItemStyle = {
+      ...{
+        position: 'absolute',
+        left: 0,
+        width: '100%',
+        height: '100%',
+      },
+      [getCurrSizeProp()]: addUnit(size),
+      [positionMap[props.scrollDirection as ScrollDirectionEnum]]: addUnit(offset),
+    };
+
+    return (styleCache[index] = result);
+  };
+  const initAll = () => {
+    createSizeAndPosManager();
+    addEventListener(rootNode.value, 'scroll', handleScroll);
+
+    offset =
+      props.scrollOffset ||
+      (props.scrollToIndex != null && getOffsetForIndex(props.scrollToIndex)) ||
+      0;
+    scrollChangeReason = 'requested';
+
+    setTimeout(() => {
+      if (props.scrollOffset != null) {
+        scrollTo(props.scrollOffset);
+      } else if (props.scrollToIndex != null) {
+        scrollTo(getOffsetForIndex(props.scrollToIndex));
+      }
+    }, 0);
+    setDomStyle();
+    scrollRender();
+  };
+  const handleScroll = (e: UIEvent) => {
+    const nodeOffset = getNodeOffset();
+    if (nodeOffset! < 0 || offset === nodeOffset || e.target !== rootNode.value) return;
+    offset = nodeOffset;
+    scrollChangeReason = 'observed';
+    scrollRender();
+  };
+  const scrollRender = () => {
+    const { start, stop } = sizeAndPosManager.getVisibleRange({
+      containerSize: getCurrSizeVal() || 0,
+      offset: offset || 0,
+      buffer: props.buffer,
+    });
+    // fill items;
+    if (typeof start !== 'undefined' && typeof stop !== 'undefined') {
+      items.length = 0;
+      for (let i = start; i <= stop; i++) {
+        items.push(props.data?.[i]);
+      }
+      event.start = start;
+      event.stop = stop;
+      event.offset = offset!;
+      event.items = items;
+      event.total = getItemCount();
+      if (!isPureNumber(itemSize?.value)) {
+        innerStyle.value = {
+          ...basicInnerStyle.value,
+          [getCurrSizeProp()]: addUnit(sizeAndPosManager.getTotalSize()),
+        };
+      }
+    }
+    renderEnd();
+  };
+  const scrollTo = (value: number) => {
+    if (!rootNode.value) return;
+    (rootNode.value[getCurrScrollProp()] as number) = value;
+    oldOffset = value;
+  };
+  const renderEnd = () => {
+    if (oldOffset !== offset && scrollChangeReason === 'requested') {
+      scrollTo(offset!);
+    }
+  };
+
+  // init SizeAndPosManager
+  const createSizeAndPosManager = () => {
+    if (!sizeAndPosManager)
+      sizeAndPosManager = new SizeAndPosManager({
+        itemCount: getItemCount(),
+        itemSizeGetter: (index) => getSize(index),
+        estimatedItemSize: getEstimatedItemSize(),
+      });
+    return sizeAndPosManager;
+  };
+  const getNodeOffset = () => {
+    return rootNode.value?.[getCurrScrollProp()];
+  };
+  const getCurrSizeProp = () => {
+    return sizeMap[scrollDirection.value as ScrollDirectionEnum];
+  };
+  const getCurrSizeVal = () => {
+    return props[getCurrSizeProp()];
+  };
+  const getCurrScrollProp = () => scrollMap[scrollDirection.value as ScrollDirectionEnum];
+
+  const getOffsetForIndex = (
+    index: number,
+    scrollToAlignment: string = props.scrollToAlignment,
+    itemCount: number = getItemCount(),
+  ): number => {
+    if (index < 0 || index >= itemCount) index = 0;
+    return sizeAndPosManager.getUpdatedOffsetForIndex({
+      align: scrollToAlignment,
+      containerSize: getCurrSizeVal(),
+      currentOffset: offset || 0,
+      targetIndex: index,
+    });
+  };
+  const getSize = (index: number): number => {
+    if (typeof itemSize?.value === 'function') {
+      return itemSize.value(index);
+    }
+    return itemSize?.value as number;
+  };
+  const getItemCount = (): number => {
+    return props.data ? props.data.length : 0;
+  };
+  const getEstimatedItemSize = () => {
+    return (typeof itemSize?.value === 'number' && itemSize.value) || 50;
+  };
+  const recomputeSizes = (startIndex = 0) => {
+    styleCache = {};
+    sizeAndPosManager.resetItem(startIndex);
+  };
+  const addUnit = (val: any): string => {
+    return typeof val === 'string' ? val : val + 'px';
+  };
+  const setDomStyle = () => {
+    warpStyle.value = {
+      ...{
+        overflow: 'auto',
+        willChange: 'transform',
+        WebkitOverflowScrolling: 'touch',
+      },
+      height: addUnit(props.height),
+      width: addUnit(props.width),
+    };
+    innerStyle.value = {
+      ...basicInnerStyle.value,
+      [getCurrSizeProp()]: addUnit(sizeAndPosManager.getTotalSize()),
+    };
+  };
+  const clearStyleCache = () => {
+    for (let key in styleCache) {
+      delete styleCache[key];
+    }
+  };
+
+  onMounted(() => setTimeout(initAll));
+  onBeforeUnmount(() => {
+    clearStyleCache();
+    sizeAndPosManager.destroy();
+    removeEventListener(rootNode.value, 'scroll', handleScroll);
+  });
+
+  watch(
+    () => props.data,
+    () => {
+      sizeAndPosManager.updateConfig({
+        itemCount: getItemCount(),
+        estimatedItemSize: getEstimatedItemSize(),
+      });
+      oldOffset = null;
+      recomputeSizes();
+      setDomStyle();
+      setTimeout(scrollRender, 0);
+    },
+  );
+  watch(
+    () => props.scrollOffset,
+    () => {
+      offset = props.scrollOffset || 0;
+      scrollChangeReason = 'requested';
+      scrollRender();
+    },
+  );
+  watch(
+    () => props.scrollToIndex,
+    () => {
+      offset = getOffsetForIndex(props.scrollToIndex!, props.scrollToAlignment, getItemCount());
+      scrollChangeReason = 'requested';
+      scrollRender();
+    },
+  );
 </script>
-<style scoped lang="less">
-  .virtual-scroll {
-    position: relative;
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    overflow: auto;
-    flex: 1 1 auto;
-
-    &__container {
-      display: block;
-    }
-
-    &__item {
-      position: absolute;
-      right: 0;
-      left: 0;
-    }
-  }
-</style>

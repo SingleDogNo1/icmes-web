@@ -6,81 +6,38 @@
 
 ```vue
 <template>
-  <div class="p-4 virtual-scroll-demo">
-    <Divider>基础滚动示例</Divider>
-    <div class="virtual-scroll-demo-wrap">
-      <VirtualScroll :itemHeight="41" :items="data" :height="300" :width="300">
-        <template v-slot="{ item }">
-          <div class="virtual-scroll-demo__item">{{ item.title }}</div>
-        </template>
-      </VirtualScroll>
-    </div>
-
-    <Divider>即使不可见，也预先加载50条数据，防止空白</Divider>
-    <div class="virtual-scroll-demo-wrap">
-      <VirtualScroll :itemHeight="41" :items="data" :height="300" :width="300" :bench="50">
-        <template v-slot="{ item }">
-          <div class="virtual-scroll-demo__item">{{ item.title }}</div>
-        </template>
-      </VirtualScroll>
-    </div>
-  </div>
+  <Divider>基础滚动示例</Divider>
+  <VScroll :data="data" :width="1000" :height="500" :itemSize="50" v-slot="{ item, index }">
+    <div> {{ index + 1 }} : {{ item.title }} </div>
+  </VScroll>
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { VirtualScroll } from '/@/components/VirtualScroll/index';
-
+  import { VScroll } from '/@/components/VirtualScroll';
   import { Divider } from 'ant-design-vue';
-  const data: any[] = (() => {
-    const arr: any[] = [];
-    for (let index = 1; index < 20000; index++) {
+
+  const data = (() => {
+    const arr: Recordable[] = [];
+    for (let index = 0; index < 100000; index++) {
       arr.push({
-        title: '列表项' + index,
+        title: '列表项' + (index + 1),
       });
     }
     return arr;
   })();
-  export default defineComponent({
-    components: { VirtualScroll, Divider },
-    setup() {
-      return { data: data };
-    },
-  });
 </script>
-<style lang="less" scoped>
-  .virtual-scroll-demo {
-    &-wrap {
-      display: flex;
-      margin: 0 30%;
-      background: #fff;
-      justify-content: center;
-    }
-
-    /deep/ &__item {
-      height: 40px;
-      padding: 0 20px;
-      line-height: 40px;
-      border-bottom: 1px solid #ddd;
-    }
-  }
-</style>
 ```
 
 ## Props
 
-| 属性       | 类型             | 默认值 | 可选值 | 说明               |
-| ---------- | ---------------- | ------ | ------ | ------------------ |
-| height     | `string｜number` | -      | -      | 高度               |
-| width      | `string｜number` | -      | -      | 宽度               |
-| maxHeight  | `string｜number` | -      | -      | 最大高度           |
-| maxWidth   | `string｜number` | -      | -      | 最大宽度           |
-| minHeight  | `string｜number` | -      | -      | 最小高度           |
-| minWidth   | `string｜number` | -      | -      | 最小宽度           |
-| itemHeight | `string｜number` | -      | -      | 每个选项高度，必传 |
-| items      | `any[]`          | -      | -      | 选项列表           |
-
-## Slots
-
-| 名称    | 说明 |
-| ------- | ---- |
-| default | 默认 |
+| props | desc | default |
+| :-: | :-: | :-: |
+| width | 滚动列表的宽度, 默认值 100%. 当滚动方向为水平滚动时必填(需要确定的宽度计算相关值) | `100%` |
+| height | 滚动列表的高度, 默认值 100%. 当滚动方向为垂直滚动时必填(需要确定的宽度计算相关值) | `100%` |
+| data | 虚拟列表数据，必填 | - |
+| scrollDirection | 滚动方向 | `vertical` |
+| scrollToAlignment | 配合 scrollToIndex 使用, 控制当前焦点的对齐方式 | `auto` |
+| buffer | 在显示内容之外预加载的缓冲列表项个数，用来优化滚动时的效果 | 4 |
+| itemSize | 列表项的高度/宽度(取决于滚动方向), 必填. 可以是具体的数字或返回给定高度的函数 | - |
+| scrollOffset | 设置滚动的偏移量 | - |
+| scrollToIndex | 设置滚动到列表项的索引 | - |
