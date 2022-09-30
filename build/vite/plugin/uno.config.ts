@@ -3,7 +3,12 @@
 import Unocss from 'unocss/vite';
 import { presetAttributify, presetUno, presetIcons } from 'unocss';
 import transformerDirective from '@unocss/transformer-directives';
-import { successColor, primaryColor, disabledColor, errorColor } from '/@/settings/designSetting';
+import {
+  successColor,
+  primaryColor,
+  disabledColor,
+  errorColor,
+} from '../../../src/settings/designSetting';
 
 export function configIUnocssPlugin() {
   return Unocss({
