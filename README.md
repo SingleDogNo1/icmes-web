@@ -1,9 +1,5 @@
 # ICMES
 
-## Q & A
-
-unocss 打包失败，怎么解决？ `CssSyntaxError: /Users/singledogno.1/workspace/icmes-web-vue3/assets/index.b100b8b9.js-unocss-hash.css:1:2527: Unknown word`
-
 ## 业务开发常见问题
 
 | Q | A |
