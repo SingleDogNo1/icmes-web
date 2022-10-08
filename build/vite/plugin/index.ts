@@ -3,7 +3,8 @@ import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import legacy from '@vitejs/plugin-legacy';
 import purgeIcons from 'vite-plugin-purge-icons';
-import windiCSS from 'vite-plugin-windicss';
+// import windiCSS from 'vite-plugin-windicss';
+import unocss from '@unocss/vite';
 import vueSetupExtend from 'vite-plugin-vue-setup-extend';
 import { configHtmlPlugin } from './html';
 import { configPwaConfig } from './pwa';
@@ -15,7 +16,6 @@ import { configThemePlugin } from './theme';
 import { configImageminPlugin } from './imagemin';
 import { configSvgIconsPlugin } from './svgSprite';
 import { configHmrPlugin } from './hmr';
-// import { configIUnocssPlugin } from './uno.config';
 
 export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   const {
@@ -38,9 +38,9 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
   ];
 
   // vite-plugin-windicss
-  vitePlugins.push(windiCSS());
+  // vitePlugins.push(windiCSS());
   // unocss
-  // vitePlugins.push(configIUnocssPlugin());
+  vitePlugins.push(unocss());
 
   !isBuild && vitePlugins.push(configHmrPlugin());
 
