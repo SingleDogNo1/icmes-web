@@ -50,7 +50,7 @@
             :begin="begin"
             :end="end"
             :format="format"
-            :lunar="lunar && lunarFun"
+            :lunar="((lunar && lunarFun) as unknown as boolean)"
             :backgroundText="backgroundText"
             @on-select="onSelect"
             @on-month-change="monthChange"
@@ -60,6 +60,12 @@
     </div>
   </div>
 </template>
+
+<script lang="ts">
+  export default {
+    name: 'CalendarComp',
+  };
+</script>
 
 <script lang="ts" setup>
   import { ref, reactive, watch, toRefs } from 'vue';

@@ -73,7 +73,7 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { Row, Col } from 'ant-design-vue';
-  import { Calendar } from '/@/components/Business';
+  import { Calendar } from '/@/components/Calendar';
 
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();

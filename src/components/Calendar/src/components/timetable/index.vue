@@ -79,6 +79,12 @@
   </div>
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'TimeTableComp',
+  };
+</script>
+
 <script lang="ts" setup>
   import { ref, reactive, watch, toRefs, unref } from 'vue';
   import {

@@ -18,7 +18,7 @@
         v-model:value="radio"
         class="ctrl-btn"
         :disabled="!edit_permission"
-        @change="(handleChangeStatus as any)"
+        @change="handleChangeStatus as any"
       >
         <Radio class="work-day" :value="0">生产日</Radio>
         <Radio class="repair-day" :value="1">检修日</Radio>
@@ -37,7 +37,7 @@
 <script lang="ts" setup>
   import { ref, PropType, watch, toRefs, unref, nextTick } from 'vue';
   import { PageWrapper } from '/@/components/Page';
-  import { Calendar } from '/@/components/Business';
+  import { Calendar } from '/@/components/Calendar';
   import { Radio } from 'ant-design-vue';
   import { useUserStore } from '/@/store/modules/user';
   import type { Date } from './types';
