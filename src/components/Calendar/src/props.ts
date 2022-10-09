@@ -139,7 +139,7 @@ export const basicTableProps = {
     type: [String, Number],
   },
   lunar: {
-    type: Boolean,
+    type: Object,
   },
   monFirst: {
     type: Boolean,

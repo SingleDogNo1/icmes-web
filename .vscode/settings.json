@@ -133,7 +133,6 @@
     "sortablejs",
     "Storaged",
     "stylelint",
-    "tailwindcss",
     "tinymce",
     "Unocss",
     "unref",
@@ -141,7 +140,6 @@
     "vitejs",
     "vitepress",
     "vueuse",
-    "windi",
     "zeropadding",
     "zxcvbn"
   ],

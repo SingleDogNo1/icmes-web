@@ -50,7 +50,7 @@
             :begin="begin"
             :end="end"
             :format="format"
-            :lunar="((lunar && lunarFun) as unknown as boolean)"
+            :lunar="lunar && lunarFun"
             :backgroundText="backgroundText"
             @on-select="onSelect"
             @on-month-change="monthChange"

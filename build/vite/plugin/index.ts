@@ -3,7 +3,6 @@ import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import legacy from '@vitejs/plugin-legacy';
 import purgeIcons from 'vite-plugin-purge-icons';
-// import windiCSS from 'vite-plugin-windicss';
 import unocss from '@unocss/vite';
 import vueSetupExtend from 'vite-plugin-vue-setup-extend';
 import { configHtmlPlugin } from './html';
@@ -37,9 +36,8 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
     vueSetupExtend(),
   ];
 
-  // vite-plugin-windicss
-  // vitePlugins.push(windiCSS());
   // unocss
+  // 为了更好的配合 vscode Unocss 插件使用，配置项放在根目录的 uno.config.ts
   vitePlugins.push(unocss());
 
   !isBuild && vitePlugins.push(configHmrPlugin());

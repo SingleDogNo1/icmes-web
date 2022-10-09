@@ -16,7 +16,7 @@
 如果您使用的 IDE 是[vscode](https://code.visualstudio.com/)的话，建议安装以下工具来提高开发效率
 
 - [Iconify IntelliSense](https://marketplace.visualstudio.com/items?itemName=antfu.iconify) - Iconify 图标插件
-- [windicss IntelliSense](https://marketplace.visualstudio.com/items?itemName=voorjaar.windicss-intellisense) - windicss 提示插件
+- [Unocss](https://marketplace.visualstudio.com/items?itemName=antfu.unocss) - unocss 提示插件
 - [I18n-ally](https://marketplace.visualstudio.com/items?itemName=Lokalise.i18n-ally) - i18n 插件
 - [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) - vue3 开发必备
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) - 脚本代码检查
@@ -150,5 +150,5 @@ pnpm -v
 │       └── websocket # 测试ws服务器
 ├── types # 类型文件
 ├── vite.config.ts # vite配置文件
-└── windi.config.ts # windcss配置文件
+└── uno.config.ts # unocss配置文件
 ```
