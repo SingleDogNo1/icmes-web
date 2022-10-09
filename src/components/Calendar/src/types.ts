@@ -1,23 +1,26 @@
-export interface CalendarInterface {
+export interface BasicPropsInterface {
   monFirst?: boolean;
-  completion?: boolean;
-  useSwipe?: boolean;
   weeks?: string[];
-  className?: string;
-  language?: 'en' | 'cn';
-  holidays: { [key: string]: string };
+  useSwipe?: boolean;
+  begin?: string;
+  end?: string;
+  completion?: boolean;
+  holidays?: Record<string, string>;
   customDays?: any;
-  tileContent: { [key: string]: any };
-  remarks: { [key: string]: any };
-  disabled: string[];
-  begin: string;
-  end: string;
-  monthRange: string[];
+  tileContent?: Record<string, any>;
+  remarks?: Record<string, string>;
+  selectMode?: 'select' | 'multi' | 'range' | 'multiRange';
+  selectDate?: string | string[] | SelectRangeInterface | SelectRangeInterface[];
+  disabled?: string[];
+}
+
+export interface CalendarInterface extends BasicPropsInterface {
   mode: 'monthRange' | 'week' | 'month';
-  selectMode: 'select' | 'multi' | 'range' | 'multiRange';
-  lunar?: any;
-  selectDate?: any;
+  monthRange: string[];
+  language?: 'en' | 'cn';
   format: (year: string, month: string) => string[];
+  lunar?: boolean;
+  className?: string;
 }
 
 export interface SwipeInterface {
@@ -45,31 +48,18 @@ export type deltaType = {
   y: number;
 };
 
-export interface TimeTableInterface {
-  monFirst?: boolean;
+export interface SelectRangeInterface {
+  start: string;
+  end: string;
+}
+
+export interface TimeTableInterface extends BasicPropsInterface {
   format?: (year: string | number, month: string | number) => any[];
-  weeks: string[];
   tableMode: 'month' | 'week' | 'monthRange';
-  lunar?: any;
-  useSwipe: boolean;
+  lunar?: Record<string, any>;
   tableIndex?: number;
   timestamp?: number;
   year?: string | number;
   month?: string | number;
   day?: string | number;
-  begin?: string;
-  end?: string;
-  completion: boolean;
-  holidays?: { [key: string]: string };
-  customDays?: any;
-  // tileContent: { className?: string; tileContent?: string }[] | { [key: string]: any };
-  tileContent?: any;
-  remarks: { [key: string]: string };
-  selectMode: 'select' | 'multi' | 'range' | 'multiRange';
-  selectDate?:
-    | string
-    | string[]
-    | { start?: string; end?: string }
-    | { start?: string; end?: string }[];
-  disabled: string[];
 }

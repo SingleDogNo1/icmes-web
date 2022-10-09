@@ -217,7 +217,7 @@
     @apply w-full select-none relative bg-white;
 
     .@{prefix-cls}-container {
-      @apply w-full h-10 flex bg-primary text-white relative px-3 z-10 text-xl leading-10 shadow-sm;
+      @apply w-full h-10 flex items-center bg-primary text-white relative px-3 z-10 text-xl leading-10 shadow-sm;
 
       .@{prefix-cls}-info {
         @apply text-base h-full flex-1 flex justify-center items-center;
@@ -225,6 +225,7 @@
 
       .@{prefix-cls}-next,
       .@{prefix-cls}-prev {
+        @apply h-full flex items-center;
         span {
           cursor: pointer;
         }

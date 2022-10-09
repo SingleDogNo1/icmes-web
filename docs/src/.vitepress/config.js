@@ -285,6 +285,10 @@ function genComponentsSidebar() {
           text: 'VirtualScroll',
           link: '/components/virtual-scroll',
         },
+        {
+          text: 'Calendar',
+          link: '/components/calendar',
+        },
       ],
     },
     {

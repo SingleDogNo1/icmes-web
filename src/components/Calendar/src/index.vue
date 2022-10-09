@@ -387,6 +387,7 @@
   }
 
   function render(renderYear: number, renderMonth: number, renderDay?: number) {
+    console.log('todayY, todayM, todaytD :>> ', renderYear, renderMonth, renderDay);
     if (renderYear && renderMonth) {
       year.value = renderYear;
       month.value = renderMonth;

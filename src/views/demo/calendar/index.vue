@@ -1,5 +1,5 @@
 <template>
-  <Row :gutter="16">
+  <Row :gutter="[16, 16]">
     <Col :span="6">
       <Calendar
         ref="CalendarRef"
@@ -66,12 +66,19 @@
     </Col>
     <Col :span="6">
       <!-- <Calendar backgroundText selectMode="range" mode="monthRange" :monthRange="monthRange" /> -->
+      <a-button @click="backToToday">返回</a-button>
     </Col>
   </Row>
 </template>
 
+<script lang="ts">
+  export default {
+    name: 'CalendarDemo',
+  };
+</script>
+
 <script lang="ts" setup>
-  import { ref } from 'vue';
+  import { ref, nextTick } from 'vue';
   import { Row, Col } from 'ant-design-vue';
   import { Calendar } from '/@/components/Calendar';
 
@@ -127,12 +134,12 @@
     console.log(selectDate, 'selectDate');
   }
 
-  // function backToToday() {
-  //   nextTick(() => {
-  //     console.log('weekModeRef :>> ', CalendarRef.value);
-  //   });
-  //   // weekModeRef.value.setToday();
-  // }
+  function backToToday() {
+    nextTick(() => {
+      console.log('weekModeRef :>> ', CalendarRef.value);
+      CalendarRef.value.setToday();
+    });
+  }
 
   function formatOfSelecteMode(year, month) {
     const transform = {

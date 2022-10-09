@@ -1,37 +1,38 @@
 import { PropType } from 'vue';
-import { TimeTableInterface, CalendarInterface } from './types';
+import { SelectRangeInterface } from './types';
 
 export const basicCalendarProps = {
-  format: {
-    type: Function as PropType<CalendarInterface['format']>,
-    default: null,
+  selectMode: {
+    type: String as PropType<'select' | 'multi' | 'range' | 'multiRange'>,
+    default: 'select',
   },
-  holidays: {
-    type: Object,
-    default() {
-      return {};
-    },
+  mode: {
+    type: String as PropType<'monthRange' | 'week' | 'month'>,
+    default: 'month',
   },
-  customDays: {
-    type: Object,
-    default: null,
-  },
-  lunar: {
-    type: Boolean,
-    default: true,
-  },
-  remarks: {
-    type: Object,
-    default() {
-      return {};
-    },
+  selectDate: {
+    type: [String, Array, Object] as PropType<
+      string | string[] | SelectRangeInterface[] | SelectRangeInterface
+    >,
   },
   monthRange: {
     type: Array as PropType<string[]>,
     default: null,
   },
+  remarks: {
+    type: Object as PropType<Record<string, string>>,
+    default() {
+      return {};
+    },
+  },
   tileContent: {
-    type: Object,
+    type: Object as PropType<Record<string, Record<string, string>>>,
+    default() {
+      return {};
+    },
+  },
+  holidays: {
+    type: Object as PropType<Record<string, string>>,
     default() {
       return {};
     },
@@ -44,21 +45,21 @@ export const basicCalendarProps = {
     type: Boolean,
     default: true,
   },
-  backgroundText: {
-    type: Boolean,
-    default: true,
-  },
   monFirst: {
     type: Boolean,
     default: false,
   },
-  className: {
-    type: String,
+  backgroundText: {
+    type: Boolean,
+    default: true,
   },
-  mode: {
-    type: String as PropType<CalendarInterface['mode']>,
-    validator: (v: any) => ['month', 'week', 'monthRange'].includes(v),
-    default: 'month',
+  language: {
+    type: String as PropType<'en' | 'cn'>,
+    default: 'cn',
+  },
+  format: {
+    type: Function as PropType<(year: string, month: string) => string[]>,
+    default: null,
   },
   weeks: {
     type: Array as PropType<string[]>,
@@ -72,21 +73,20 @@ export const basicCalendarProps = {
     type: String,
     default: null,
   },
-  selectMode: {
-    type: String as PropType<CalendarInterface['selectMode']>,
-    validator: (v: any) => ['select', 'multi', 'range', 'multiRange'].includes(v),
-    default: 'select',
-  },
-  language: {
-    type: String as PropType<'en' | 'cn'>,
-    default: 'cn',
-  },
-  selectDate: {
-    type: [String, Array, Object],
-  },
   disabled: {
     type: Array as PropType<string[]>,
     default: () => [],
+  },
+  lunar: {
+    type: Boolean,
+    default: true,
+  },
+  customDays: {
+    type: Object,
+    default: null,
+  },
+  className: {
+    type: String,
   },
 };
 
@@ -113,16 +113,19 @@ export const basicSwipeProps = {
 };
 
 export const basicTableProps = {
+  monFirst: {
+    type: Boolean,
+    default: true,
+  },
   format: {
-    type: Function as PropType<TimeTableInterface['format']>,
+    type: Function as PropType<(year: string | number, month: string | number) => any[]>,
   },
   weeks: {
     type: Array as PropType<string[]>,
     default: null,
   },
   tableMode: {
-    type: String as PropType<TimeTableInterface['tableMode']>,
-    validator: (v: any) => ['month', 'week', 'monthRange'].includes(v),
+    type: String as PropType<'month' | 'week' | 'monthRange'>,
     default: 'month',
   },
   language: {
@@ -141,10 +144,7 @@ export const basicTableProps = {
   lunar: {
     type: Object,
   },
-  monFirst: {
-    type: Boolean,
-    default: true,
-  },
+
   useSwipe: {
     type: Boolean,
     default: true,
@@ -192,8 +192,7 @@ export const basicTableProps = {
     type: Number,
   },
   selectMode: {
-    type: String as PropType<TimeTableInterface['selectMode']>,
-    validator: (v: any) => ['select', 'multi', 'range', 'multiRange'].includes(v),
+    type: String as PropType<'select' | 'multi' | 'range' | 'multiRange'>,
     default: null,
   },
   disabled: {
@@ -201,7 +200,8 @@ export const basicTableProps = {
     default: () => [],
   },
   selectDate: {
-    type: [String, Array, Object] as PropType<TimeTableInterface['selectDate']>,
-    default: null,
+    type: [String, Array, Object] as PropType<
+      string | string[] | SelectRangeInterface[] | SelectRangeInterface
+    >,
   },
 };
