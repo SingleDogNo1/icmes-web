@@ -1,3 +1,4 @@
+// 全局引入 ant-design less 变量，并允许重设变量值。[ant-design less 变量查询](https://github.com/vueComponent/ant-design-vue/blob/next/components/style/themes/default.less)
 import { generateAntColors, primaryColor } from '../config/themeConfig';
 import { getThemeVariables } from 'ant-design-vue/dist/theme';
 import { resolve } from 'path';
@@ -18,8 +19,6 @@ export function generateModifyVars(dark = false) {
   const modifyVars = getThemeVariables({ dark });
   return {
     ...modifyVars,
-    // Used for global import to avoid the need to import each style file separately
-    // reference:  Avoid repeated references
     hack: `${modifyVars.hack} @import (reference) "${resolve('src/design/config.less')}";`,
     'primary-color': primary,
     ...primaryColorObj,
