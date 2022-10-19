@@ -13,6 +13,12 @@
   //============= Other =======================
   //===========================================
   "breadcrumbs.enabled": true,
+  "vetur.format.enable": false,
+  "vetur.validation.script": false,
+  "vetur.validation.templateProps": false,
+  "vetur.validation.style": false,
+  "vetur.validation.template": false,
+  "vetur.validation.interpolation": false,
   //===========================================
   //============= files =======================
   //===========================================
@@ -121,6 +127,7 @@
     "pinia",
     "Pointlist",
     "Popconfirm",
+    "Prefixs",
     "qrcode",
     "resizer",
     "SAFTY",

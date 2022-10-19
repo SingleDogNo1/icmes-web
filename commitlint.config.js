@@ -1,3 +1,4 @@
+// https://cz-git.qbb.sh/zh/config/
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
@@ -21,31 +22,6 @@ const scopeComplete = execSync('git status --porcelain || true')
 module.exports = {
   ignores: [(commit) => commit.includes('init')],
   extends: ['@commitlint/config-conventional'],
-  parserPreset: {
-    parserOpts: {
-      headerPattern: /^(\w*|[\u4e00-\u9fa5]*)(?:[\(\（](.*)[\)\）])?[\:\：] (.*)/,
-      headerCorrespondence: ['type', 'scope', 'subject'],
-      referenceActions: [
-        'close',
-        'closes',
-        'closed',
-        'fix',
-        'fixes',
-        'fixed',
-        'resolve',
-        'resolves',
-        'resolved',
-      ],
-      issuePrefixes: ['#'],
-      noteKeywords: ['BREAKING CHANGE'],
-      fieldPattern: /^-(.*?)-$/,
-      revertPattern: /^Revert\s"([\s\S]*)"\s*This reverts commit (\w*)\./,
-      revertCorrespondence: ['header', 'hash'],
-      warn() {},
-      mergePattern: null,
-      mergeCorrespondence: null,
-    },
-  },
   rules: {
     'body-leading-blank': [2, 'always'],
     'footer-leading-blank': [1, 'always'],
@@ -92,7 +68,6 @@ module.exports = {
     allowBreakingChanges: ['feat', 'fix'],
     emptyScopesAlias: 'empty:      不填写',
     customScopesAlias: 'custom:     自定义',
-    // 中英文对照版
     messages: {
       type: '选择你要提交的类型 :',
       scope: '选择一个提交范围 (可选):',

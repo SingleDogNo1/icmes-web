@@ -7,6 +7,11 @@
     "lokalise.i18n-ally",
     "antfu.iconify",
     "mikestead.dotenv",
-    "antfu.unocss"
+    "antfu.unocss",
+    "octref.vetur",
+    "Vue.volar",
+    "Vue.vscode-typescript-vue-plugin",
+    "sdras.vue-vscode-snippets",
+    "hollowtree.vue-snippets",
   ]
 }
