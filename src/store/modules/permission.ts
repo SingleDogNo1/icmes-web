@@ -144,7 +144,7 @@ export const usePermissionStore = defineStore({
       let routeList: AppRouteRecordRaw[] | BackModeRouteRecordRaw[] = [];
       try {
         this.changePermissionCode();
-        const ori_routes = import.meta.globEager('../../router/routes/modules/**/*.ts');
+        const ori_routes = import.meta.glob('../../router/routes/modules/**/*.ts', { eager: true });
         const routes: any[] = [];
 
         const { getMenu: menu } = useUserStore();
@@ -155,7 +155,7 @@ export const usePermissionStore = defineStore({
         }
 
         Object.keys(ori_routes).forEach((key) => {
-          const mod = ori_routes[key].default || {};
+          const mod = (ori_routes[key] as Record<string, any>).default || {};
           const modList = Array.isArray(mod) ? [...mod] : [mod];
           menuList.map((item) => {
             if (item.code === modList[0].meta.code) {

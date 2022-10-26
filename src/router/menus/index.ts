@@ -5,12 +5,12 @@ import { usePermissionStore } from '/@/store/modules/permission';
 import { transformMenuModule, getAllParentPath } from '/@/router/helper/menuHelper';
 import { PermissionModeEnum } from '/@/enums/appEnum';
 
-const modules = import.meta.globEager('./modules/**/*.ts');
+const modules = import.meta.glob('./modules/**/*.ts', { eager: true });
 
 const menuModules: MenuModule[] = [];
 
 Object.keys(modules).forEach((key) => {
-  const mod = modules[key].default || {};
+  const mod = (modules[key] as Record<string, any>).default || {};
   const modList = Array.isArray(mod) ? [...mod] : [mod];
   menuModules.push(...modList);
 });
