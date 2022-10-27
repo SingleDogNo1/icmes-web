@@ -165,7 +165,7 @@ export const usePermissionStore = defineStore({
           routes.push(...modList);
         });
 
-        if (import.meta.env.Mode === 'production') {
+        if (!import.meta.env.VITE_RUNTIME_ENV && import.meta.env.PROD) {
           // 正式线上环境，删除 demo 路由
           remove(routes, (item) => item.name === 'Demo');
         }

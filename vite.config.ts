@@ -76,8 +76,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       //     drop_console: VITE_DROP_CONSOLE,
       //   },
       // },
-      // Turning off brotliSize display can slightly reduce packaging time
-      brotliSize: false,
       chunkSizeWarningLimit: 2000,
     },
     define: {
@@ -109,6 +107,11 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         'ant-design-vue/es/locale/en_US',
       ],
       exclude: ['vue-demi'],
+    },
+    preview: {
+      host: '0.0.0.0',
+      port: 8888,
+      open: true,
     },
   };
 };
