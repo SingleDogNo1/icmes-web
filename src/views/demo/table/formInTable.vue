@@ -49,6 +49,23 @@
     {
       title: '姓名2',
       dataIndex: 'name2',
+      editComponent: 'Select',
+      editComponentProps: {
+        options: [
+          {
+            label: 'Option1',
+            value: '1',
+          },
+          {
+            label: 'Option2',
+            value: '2',
+          },
+          {
+            label: 'Option3',
+            value: '3',
+          },
+        ],
+      },
       width: 150,
       editRow: true,
       editRule: true,

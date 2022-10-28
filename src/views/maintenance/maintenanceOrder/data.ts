@@ -134,7 +134,7 @@ export const columns: BasicColumn[] = [
     width: 160,
     dataIndex: 'planStartTime',
     customRender: ({ record }) => {
-      return formatToDateTime(record.planStartTime);
+      return record.planStartTime ? formatToDateTime(record.planStartTime) : '';
     },
   },
   {

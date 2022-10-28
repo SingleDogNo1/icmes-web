@@ -23,10 +23,15 @@
       <!-- 检修对象 -->
       <template #devices="{ record }">
         <span v-if="!record.devices"></span>
-        <a-button v-else-if="record.devices.length === 1" type="primary" size="small">
+        <a-button
+          v-else-if="record.devices.length === 1"
+          type="primary"
+          size="small"
+          class="!whitespace-normal !h-auto"
+        >
           {{ record.devices[0] }}
         </a-button>
-        <Dropdown.Button v-else type="primary" size="small">
+        <Dropdown.Button v-else type="primary" size="small" class="devices-dropdown">
           {{ record.devices[0] }}
           <template #overlay>
             <Menu>
@@ -46,6 +51,8 @@
         />
       </template>
     </BasicTable>
+
+    <SettingDrawer @register="registerDrawer" />
   </PageWrapper>
 </template>
 
@@ -63,6 +70,8 @@
   import { useDesign } from '/@/hooks/web/useDesign';
   import { BasicForm, useForm } from '/@/components/Form';
   import { BasicTable, useTable, TableAction, PaginationProps } from '/@/components/Table';
+  import { useDrawer } from '/@/components/Drawer';
+  import SettingDrawer from './maintenanceSetting.vue';
   import { getMaintenanceOrdersApi } from '/@/api/maintenance/maintenanceOrder';
   import { GetMaintenanceOrdersParams } from '/@/api/maintenance/model/maintenanceOrderModel';
   import { schemas, columns } from './data';
@@ -111,6 +120,7 @@
       getMaintenanceOrderList(form);
     },
   });
+  const [registerDrawer, { openDrawer }] = useDrawer();
 
   onMounted(() => {
     handleSearch();
@@ -125,7 +135,7 @@
   }
 
   function maintenanceOrderConfig() {
-    console.log('maintenanceOrderConfig :>> ');
+    openDrawer(true);
   }
 
   function onSelectChange(selectedRowKeys: number[]) {
@@ -155,3 +165,18 @@
     await getMaintenanceOrderList(data);
   }
 </script>
+
+<style lang="less" scoped>
+  .devices-dropdown {
+    width: 100%;
+    white-space: normal;
+    ::v-deep(button) {
+      white-space: normal;
+      height: auto;
+    }
+
+    ::v-deep(.ant-dropdown-trigger) {
+      height: auto;
+    }
+  }
+</style>
