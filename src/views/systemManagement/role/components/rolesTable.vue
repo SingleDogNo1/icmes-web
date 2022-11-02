@@ -103,7 +103,7 @@
         popConfirm: {
           title: '数据删除后将无法恢复，确认删除数据？',
           confirm: async () => {
-            loading.value = false;
+            loading.value = true;
             try {
               await deleteRoleApi(record.id);
               createMessage.success('删除成功');
