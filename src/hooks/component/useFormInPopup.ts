@@ -1,15 +1,17 @@
-import { ref, createVNode } from 'vue';
+import { reactive, createVNode } from 'vue';
 import { Modal } from 'ant-design-vue';
 import { Icon } from '/@/components/Icon';
 import { errorColor } from '/@/settings/designSetting';
+import { warn } from '/@/utils/log';
 
 /** 当 modal | drawer嵌套表单时，关闭前校验表单是否发生过变化，如果有变化则弹出提示 */
 export function useFormInPopup() {
-  const oriFormData = ref({});
+  let oriFormData = reactive({});
 
   /** 当 modal | drawer 打开时，备份初始的表单值 */
   function saveInitData(data) {
-    oriFormData.value = data;
+    console.log('data :>> ', data);
+    oriFormData = data;
   }
 
   /**
@@ -26,16 +28,14 @@ export function useFormInPopup() {
     // 在少部分业务逻辑中，修改后的字段不完全等于初始字段，因此比较时只需要比较修改后的字段在初始数据中的值是否发生了改变
     // 如果发生了改变，则弹出提示
     for (const key in data) {
-      console.log(
-        'key, oriFormData.value[key], data[key] :>> ',
-        key,
-        oriFormData.value[key],
-        data[key],
-      );
-      flag = flag && oriFormData.value[key] === data[key];
+      if (oriFormData[key] !== data[key]) {
+        warn(
+          `发生变化的 key :>> ${key}, 原本的值 :>> ${oriFormData[key]}, 改变后的值 :>> ${data[key]}`,
+        );
+      }
+      flag = flag && oriFormData[key] === data[key];
     }
 
-    console.log('flag', flag);
     if (flag) {
       return Promise.resolve(true);
     } else {

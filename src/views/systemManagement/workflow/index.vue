@@ -39,7 +39,7 @@
 </script>
 
 <script lang="ts" setup>
-  import { ref, Ref, nextTick } from 'vue';
+  import { ref, Ref, nextTick, onMounted } from 'vue';
   import { PageWrapper } from '/@/components/Page';
   import { BasicForm, useForm } from '/@/components/Form';
   import { useDesign } from '/@/hooks/web/useDesign';
@@ -82,7 +82,8 @@
     selectedRow.value = row;
   }
 
-  nextTick(() => {
+  onMounted(async () => {
+    await nextTick();
     handleSubmit();
   });
 </script>

@@ -2,8 +2,9 @@
   <BasicDrawer
     v-bind="$attrs"
     @register="register"
-    title="检修单配置"
+    :title="title"
     width="70%"
+    :close-func="handleClose"
     @visible-change="toggleVisible"
   >
     <Tabs v-model:activeKey="activeKey" animated>
@@ -35,7 +36,7 @@
   import { Tabs } from 'ant-design-vue';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { BasicForm, useForm } from '/@/components/Form';
-  import SettingTable from './mainrenanceSettingTable.vue';
+  import SettingTable from './maintenanceSettingTable.vue';
   import CommonTab from './CommonTab.vue';
   import { dateUtil } from '/@/utils/dateUtil';
   import {
@@ -45,118 +46,35 @@
   import { getPowerCutConfigListApi } from '/@/api/info/powerCutConfig';
   import { MaintenanceOrderConfigurationModel } from '/@/api/maintenance/model/maintenanceOrderModel';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { useFormInPopup } from '/@/hooks/component/useFormInPopup';
+  import { maintenanceSettingSchemas as schemas } from './data';
 
   const { createMessage } = useMessage();
+  const { saveInitData, validCloseable } = useFormInPopup();
 
+  const title = '检修单配置';
   const activeKey = ref<'basic' | 'common'>('basic');
   const SettingTableRef = ref();
-  const [registerForm, { getFieldsValue, setFieldsValue, validate }] = useForm({
-    schemas: [
-      {
-        field: 'taskPushTime',
-        label: '检修任务每日推送时间',
-        component: 'TimePicker',
-        required: true,
-        componentProps: {
-          valueFormat: 'x',
-        },
-      },
-      {
-        field: 'autoCloseUnFinishedTask',
-        label: '当日检修任务未执行是否自动作废',
-        component: 'Switch',
-        defaultValue: false,
-      },
-      {
-        field: 'closeUnFinishedTaskTime',
-        label: '作废时间为次日',
-        component: 'TimePicker',
-        componentProps: {
-          valueFormat: 'x',
-        },
-        show: ({ values }) => {
-          return !!values.autoCloseUnFinishedTask;
-        },
-      },
-      {
-        field: 'onlyApplyMaintenance',
-        label: '检修单与停电单关联时的审批配置',
-        component: 'RadioGroup',
-        defaultValue: true,
-        componentProps: {
-          options: [
-            {
-              label: '只审批检修单',
-              value: true,
-            },
-            {
-              label: '检修单和停电单各自审批',
-              value: false,
-            },
-          ],
-        },
-      },
-      {
-        field: 'items',
-        label: '检修单与停电单类型的匹配',
-        component: 'Divider',
-        labelWidth: '100px',
-      },
-      {
-        field: 'items',
-        label: '',
-        component: 'Input',
-        slot: 'items',
-      },
-      // ------------------------ hidden fields ------------------------
-      {
-        field: 'exportName',
-        label: '导出检修计划的命名',
-        component: 'Input',
-        show: false,
-      },
-      {
-        field: 'generalMeasures',
-        label: '通用措施',
-        component: 'Input',
-        show: false,
-      },
-      {
-        field: 'id',
-        label: 'ID',
-        component: 'InputNumber',
-        show: false,
-      },
-    ],
+  const [registerForm, { getFieldsValue, setFieldsValue, validate, resetFields }] = useForm({
+    schemas,
     labelWidth: 220,
     autoSubmitOnEnter: true,
     showActionButtonGroup: false,
   });
 
-  const [register, { setDrawerProps }] = useDrawerInner();
+  const [register, { setDrawerProps, closeDrawer }] = useDrawerInner();
 
   async function toggleVisible(visible: boolean) {
     if (visible) {
       getMaintenanceOrdersConfig();
     } else {
-      setFieldsValue({});
+      resetFields();
     }
   }
 
   async function getMaintenanceOrdersConfig() {
     setDrawerProps({ loading: true });
     try {
-      const maintenanceOrdersConfig = await getMaintenanceOrdersConfigApi();
-      parseTime(maintenanceOrdersConfig.closeUnFinishedTaskTime);
-      setFieldsValue({
-        ...maintenanceOrdersConfig,
-        ...{
-          closeUnFinishedTaskTime: parseTime(maintenanceOrdersConfig.closeUnFinishedTaskTime),
-          taskPushTime: parseTime(maintenanceOrdersConfig.taskPushTime),
-        },
-      });
-      SettingTableRef.value.genMaintenanceOptions(maintenanceOrdersConfig.items);
-
       const { items: powerCutConfigList } = await getPowerCutConfigListApi({
         ascending: false,
         onlyNeedUse: false,
@@ -164,7 +82,7 @@
         pageNo: 1,
         pageSize: 0,
       });
-
+      // 生成停送电类型下拉列表
       const powerTypeOptions =
         powerCutConfigList?.map((item) => {
           return {
@@ -173,8 +91,20 @@
             disabled: false,
           };
         }) || [];
-
       SettingTableRef.value.setPowerTypeOptions(powerTypeOptions);
+
+      const maintenanceOrdersConfig = await getMaintenanceOrdersConfigApi();
+      // 获取检修单配置，备份获取的数据
+      saveInitData(maintenanceOrdersConfig);
+      // 重新组织数据，修改关闭时间 & 推送时间 为 当天 0 点 + 经过的时间，供时间控件正常显示
+      setFieldsValue({
+        ...maintenanceOrdersConfig,
+        ...{
+          closeUnFinishedTaskTime: parseTime(maintenanceOrdersConfig.closeUnFinishedTaskTime),
+          taskPushTime: parseTime(maintenanceOrdersConfig.taskPushTime),
+        },
+      });
+      SettingTableRef.value.genMaintenanceOptions(maintenanceOrdersConfig.items);
       SettingTableRef.value.genPowerTypeOptions(maintenanceOrdersConfig.items);
     } catch (error: any) {
       throw new Error(error);
@@ -198,6 +128,7 @@
   async function save() {
     await validate();
     setDrawerProps({ loading: true });
+    // 保存时，重新组织数据，修改关闭时间 & 推送时间 为时间控件显示的时间 - 当天 0 点的时间
     const data = getFieldsValue() as MaintenanceOrderConfigurationModel;
     data.closeUnFinishedTaskTime =
       data.closeUnFinishedTaskTime - dateUtil().startOf('day').valueOf();
@@ -212,5 +143,13 @@
     } finally {
       setDrawerProps({ loading: false });
     }
+  }
+
+  function handleClose() {
+    const data = getFieldsValue() as MaintenanceOrderConfigurationModel;
+    data.closeUnFinishedTaskTime =
+      data.closeUnFinishedTaskTime - dateUtil().startOf('day').valueOf();
+    data.taskPushTime = data.taskPushTime - dateUtil().startOf('day').valueOf();
+    return validCloseable(title, data, closeDrawer);
   }
 </script>

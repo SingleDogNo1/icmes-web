@@ -146,3 +146,81 @@ export const columns: BasicColumn[] = [
     },
   },
 ];
+
+export const maintenanceSettingSchemas: FormSchema[] = [
+  {
+    field: 'taskPushTime',
+    label: '检修任务每日推送时间',
+    component: 'TimePicker',
+    required: true,
+    componentProps: {
+      valueFormat: 'x',
+    },
+  },
+  {
+    field: 'autoCloseUnFinishedTask',
+    label: '当日检修任务未执行是否自动作废',
+    component: 'Switch',
+    defaultValue: false,
+  },
+  {
+    field: 'closeUnFinishedTaskTime',
+    label: '作废时间为次日',
+    component: 'TimePicker',
+    componentProps: {
+      valueFormat: 'x',
+    },
+    show: ({ values }) => {
+      return !!values.autoCloseUnFinishedTask;
+    },
+  },
+  {
+    field: 'onlyApplyMaintenance',
+    label: '检修单与停电单关联时的审批配置',
+    component: 'RadioGroup',
+    defaultValue: true,
+    componentProps: {
+      options: [
+        {
+          label: '只审批检修单',
+          value: true,
+        },
+        {
+          label: '检修单和停电单各自审批',
+          value: false,
+        },
+      ],
+    },
+  },
+  {
+    field: 'Divider',
+    label: '检修单与停电单类型的匹配',
+    component: 'Divider',
+    labelWidth: '100px',
+  },
+  {
+    field: 'items',
+    label: '',
+    component: 'Input',
+    slot: 'items',
+  },
+  // ------------------------ hidden fields ------------------------
+  {
+    field: 'exportName',
+    label: '导出检修计划的命名',
+    component: 'Input',
+    show: false,
+  },
+  {
+    field: 'generalMeasures',
+    label: '通用措施',
+    component: 'Input',
+    show: false,
+  },
+  {
+    field: 'id',
+    label: 'ID',
+    component: 'InputNumber',
+    show: false,
+  },
+];
