@@ -8,7 +8,6 @@ const board: BackModeRouteRecordRaw = {
   meta: {
     code: 17000,
     icon: 'ion:grid-outline',
-    title: 'routes.board.title',
   },
   children: [
     {
@@ -17,7 +16,6 @@ const board: BackModeRouteRecordRaw = {
       component: 'IFRAME',
       meta: {
         code: 27500,
-        title: 'routes.board.productionBoard',
       },
     },
     {
@@ -26,7 +24,6 @@ const board: BackModeRouteRecordRaw = {
       component: '/board/alarm/index',
       meta: {
         code: 27100,
-        title: 'routes.board.alarmBoard',
       },
     },
     {
@@ -35,7 +32,6 @@ const board: BackModeRouteRecordRaw = {
       component: '/board/task/index',
       meta: {
         code: 27600,
-        title: 'routes.board.taskBoard',
       },
     },
   ],

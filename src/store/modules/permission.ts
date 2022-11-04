@@ -1,6 +1,7 @@
 import type { AppRouteRecordRaw, Menu, BackModeRouteRecordRaw } from '/@/router/types';
+import type { Menu as ConfigMenu } from '/@/api/info/model/configModel';
 import { defineStore } from 'pinia';
-import { remove } from 'lodash-es';
+import { remove, orderBy } from 'lodash-es';
 import { store } from '/@/store';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useUserStore } from './user';
@@ -148,31 +149,74 @@ export const usePermissionStore = defineStore({
         const routes: any[] = [];
 
         const { getMenu: menu } = useUserStore();
-        const menuList: any[] = [];
-        for (const code in menu) {
-          const item = menu[code];
-          menuList.push({ ...item, ...{ code: Number(code) } });
+
+        // 获取后台返回目录权限
+        function traversalObject<T>(obj) {
+          const arr: T[] = [];
+          function fun(obj) {
+            if (!obj) return;
+            Object.keys(obj).forEach((K) => {
+              fun(obj[K].childs);
+              const z = { ...{ code: Number(K) }, ...obj[K] };
+              delete z.childs;
+              arr.push(z);
+            });
+          }
+          fun(obj);
+          return arr;
         }
+
+        const menuList = traversalObject<ConfigMenu & { code: number }>(menu);
 
         Object.keys(ori_routes).forEach((key) => {
           const mod = (ori_routes[key] as Record<string, any>).default || {};
           const modList = Array.isArray(mod) ? [...mod] : [mod];
-          menuList.map((item) => {
-            if (item.code === modList[0].meta.code) {
-              modList[0].meta.orderNo = item.order;
-            }
-          });
+
+          // 获取路由文件，对应后台权限写入 title 和 order
+          function genRoute(list) {
+            list.forEach((item) => {
+              menuList.forEach((item2) => {
+                if (item.meta.code === item2.code) {
+                  item.meta.title = item.meta.title || item2.name;
+                  item.meta.order = item.meta.order || item2.order;
+
+                  if (item.children) {
+                    genRoute(item.children);
+                  }
+                }
+              });
+            });
+          }
+          genRoute(modList);
+
           routes.push(...modList);
         });
 
-        if (!import.meta.env.VITE_RUNTIME_ENV && import.meta.env.PROD) {
-          // 正式线上环境，删除 demo 路由
-          remove(routes, (item) => item.name === 'Demo');
+        // 生成的菜单中 meta 中没有 order 字段，表示没有出现在后台返回的权限中，过滤
+        function filterTree(tree: any[] = [], arr: any[] = []) {
+          if (!tree.length) return [];
+          for (const item of tree) {
+            if (!item.meta.order) continue;
+            let node: any = undefined;
+            if (Array.isArray(item.children)) {
+              node = { ...item, children: [] };
+            } else {
+              node = { ...item };
+            }
+            arr.push(node);
+            if (item.children && item.children.length) filterTree(item.children, node.children);
+          }
+          return arr;
         }
 
-        routeList = routes as AppRouteRecordRaw[];
+        const filter_routes = filterTree(routes);
 
-        routeList.sort((a, b) => (a.meta.orderNo || 0) - (b.meta.orderNo || 0));
+        if (!import.meta.env.VITE_RUNTIME_ENV && import.meta.env.PROD) {
+          // 正式线上环境，删除 demo 路由
+          remove(filter_routes, (item) => item.name === 'Demo');
+        }
+
+        routeList = orderBy(filter_routes, 'meta.order');
       } catch (error: any) {
         throw new Error(error);
       }

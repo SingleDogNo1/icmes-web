@@ -55,8 +55,6 @@ export default powerFailure;
 export interface RouteMeta {
   // 必填，路由权限
   code: string | number;
-  // 路由title  一般必填
-  title: string;
   // 是否忽略KeepAlive缓存
   ignoreKeepAlive?: boolean;
   // 是否固定标签
@@ -79,8 +77,6 @@ export interface RouteMeta {
   hideTab?: boolean;
   // 当前路由不再菜单显示
   hideMenu?: boolean;
-  // 菜单排序，只对第一级有效
-  orderNo?: number;
   // 忽略路由。用于在ROUTE_MAPPING以及BACK权限模式下，生成对应的菜单而忽略路由。2.5.3以上版本有效
   ignoreRoute?: boolean;
   // 是否在子级菜单的完整path中忽略本级path。2.5.3以上版本有效

@@ -8,7 +8,6 @@ const systemManagement: BackModeRouteRecordRaw = {
   meta: {
     code: 14000,
     icon: 'uil:setting',
-    title: 'routes.system.title',
   },
   children: [
     {
@@ -17,7 +16,6 @@ const systemManagement: BackModeRouteRecordRaw = {
       component: '/systemManagement/log/index',
       meta: {
         code: 24000,
-        title: 'routes.system.log',
       },
     },
     {
@@ -26,7 +24,6 @@ const systemManagement: BackModeRouteRecordRaw = {
       component: '/systemManagement/dictionary/index',
       meta: {
         code: 24100,
-        title: 'routes.system.dictionary',
       },
     },
     {
@@ -35,7 +32,6 @@ const systemManagement: BackModeRouteRecordRaw = {
       component: '/systemManagement/role/index',
       meta: {
         code: 24200,
-        title: 'routes.system.role',
       },
     },
     {
@@ -44,7 +40,6 @@ const systemManagement: BackModeRouteRecordRaw = {
       component: '/systemManagement/user/index',
       meta: {
         code: 24300,
-        title: 'routes.system.user',
       },
     },
     {
@@ -52,8 +47,7 @@ const systemManagement: BackModeRouteRecordRaw = {
       name: 'systemManagementNotificationWay',
       component: '/systemManagement/notificationWay/index',
       meta: {
-        code: 24500,
-        title: 'routes.system.notificationWay',
+        code: 24600,
       },
     },
     {
@@ -62,7 +56,6 @@ const systemManagement: BackModeRouteRecordRaw = {
       component: '/systemManagement/workflow/index',
       meta: {
         code: 24500,
-        title: 'routes.system.workflow',
       },
     },
     {
@@ -71,7 +64,6 @@ const systemManagement: BackModeRouteRecordRaw = {
       component: '/systemManagement/strategyEngine/index',
       meta: {
         code: 24900,
-        title: 'routes.system.strategyEngine',
       },
     },
     {
@@ -82,7 +74,6 @@ const systemManagement: BackModeRouteRecordRaw = {
       meta: {
         code: 24700,
         hideChildrenInMenu: true,
-        title: 'routes.system.configurableObjects',
       },
       children: [
         {
@@ -91,7 +82,6 @@ const systemManagement: BackModeRouteRecordRaw = {
           component: '/systemManagement/configurableObjects/index',
           meta: {
             code: 24700,
-            title: 'routes.system.configurableObjects',
           },
         },
         {
@@ -100,7 +90,6 @@ const systemManagement: BackModeRouteRecordRaw = {
           component: '/systemManagement/configurableObjects/detail',
           meta: {
             code: 24700,
-            title: 'routes.system.configurableObjects',
             hideMenu: true,
             hideTab: true,
             currentActiveMenu: '/system/configurable-objects/index',
@@ -116,7 +105,6 @@ const systemManagement: BackModeRouteRecordRaw = {
       meta: {
         code: 24800,
         hideChildrenInMenu: true,
-        title: 'routes.system.plc.collocation',
       },
       children: [
         {
@@ -125,7 +113,6 @@ const systemManagement: BackModeRouteRecordRaw = {
           component: '/systemManagement/PLCCollocation/index',
           meta: {
             code: 24800,
-            title: 'routes.system.plc.collocation',
           },
         },
         {
@@ -134,7 +121,6 @@ const systemManagement: BackModeRouteRecordRaw = {
           component: '/systemManagement/PLCCollocation/signalConfig',
           meta: {
             code: 24800,
-            title: 'routes.system.plc.signalConfig',
             hideMenu: true,
             hideTab: true,
             currentActiveMenu: '/system/plc/collocation',

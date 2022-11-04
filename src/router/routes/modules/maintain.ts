@@ -8,7 +8,6 @@ const maintain: BackModeRouteRecordRaw = {
   meta: {
     code: 16000,
     icon: 'equipmentMaintenance|svg',
-    title: 'routes.maintain.title',
   },
   children: [
     {
@@ -17,7 +16,6 @@ const maintain: BackModeRouteRecordRaw = {
       component: '/maintenance/maintenanceOrder/index',
       meta: {
         code: 26500,
-        title: 'routes.maintain.maintenanceOrder',
       },
     },
   ],

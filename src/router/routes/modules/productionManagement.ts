@@ -9,7 +9,6 @@ const productionManagement: BackModeRouteRecordRaw = {
   meta: {
     code: 15000,
     icon: 'clarity:calendar-outline-badged',
-    title: 'routes.productionManagement.title',
   },
   children: [
     // 调度日志(系统运转日志)
@@ -22,7 +21,6 @@ const productionManagement: BackModeRouteRecordRaw = {
         code: 25010,
         hideChildrenInMenu: true,
         hideBreadcrumb: true,
-        title: 'routes.productionManagement.dispatch',
       },
       children: [
         {
@@ -34,7 +32,6 @@ const productionManagement: BackModeRouteRecordRaw = {
             currentActiveMenu: '/prod-manage/dispatch',
             hideBreadcrumb: true,
             hideTab: true,
-            title: 'routes.productionManagement.dispatch',
           },
         },
         {
@@ -46,7 +43,6 @@ const productionManagement: BackModeRouteRecordRaw = {
             currentActiveMenu: '/prod-manage/dispatch',
             hideTab: true,
             hideBreadcrumb: true,
-            title: 'routes.productionManagement.dispatch',
           },
         },
       ],

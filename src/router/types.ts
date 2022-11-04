@@ -65,8 +65,6 @@ export interface BackModeRouteRecordRaw {
   meta: {
     // 路由对应后端权限码
     code: number | string;
-    // 路由title  一般必填
-    title: string;
     // 是否忽略权限，只在权限模式为Role的时候有效
     ignoreAuth?: boolean;
     // 可以访问的角色，只在权限模式为Role的时候有效
@@ -93,8 +91,6 @@ export interface BackModeRouteRecordRaw {
     hideTab?: boolean;
     // 当前路由不再菜单显示
     hideMenu?: boolean;
-    // 菜单排序，只对第一级有效
-    orderNo?: number;
     // 忽略路由。用于在ROUTE_MAPPING以及BACK权限模式下，生成对应的菜单而忽略路由。2.5.3以上版本有效
     ignoreRoute?: boolean;
     // 是否在子级菜单的完整path中忽略本级path。2.5.3以上版本有效

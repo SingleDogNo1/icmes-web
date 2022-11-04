@@ -3,9 +3,6 @@ export {};
 declare module 'vue-router' {
   interface RouteMeta extends Record<string | number | symbol, unknown> {
     code?: string;
-    orderNo?: number;
-    // title
-    title: string;
     // Whether to ignore permissions
     ignoreAuth?: boolean;
     // role info

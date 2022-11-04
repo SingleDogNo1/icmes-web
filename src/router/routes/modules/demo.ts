@@ -1,10 +1,10 @@
-import { BackModeRouteRecordRaw } from '/@/router/types';
-
+// 项目完全由后端控制权限，所以示例路由独立于其他任何菜单存在，且逻辑上需要借用业务路由的逻辑
+// 业务菜单名称由后端返回，无需定义 title，示例路由必须添加 meta.title 保证正常渲染标题
 // 模拟添加示例权限码，没有实际的业务意义，打包后自动删除示例菜单
 const DEMO_MENU_CODE = 17000,
   DEMO_CHILDREN_CODE = 27500;
 
-const demo: BackModeRouteRecordRaw = {
+const demo = {
   path: '/demo',
   name: 'Demo',
   component: 'LAYOUT',

@@ -8,7 +8,6 @@ const qualityManage: BackModeRouteRecordRaw = {
   meta: {
     code: 19000,
     icon: 'fa:diamond',
-    title: 'routes.qualityManage.title',
   },
   children: [
     {
@@ -17,7 +16,6 @@ const qualityManage: BackModeRouteRecordRaw = {
       component: '/qualityManage/commodityCoalDetection/index',
       meta: {
         code: 29200,
-        title: 'routes.qualityManage.commodityCoalDetection',
       },
     },
   ],
