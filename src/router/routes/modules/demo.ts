@@ -12,7 +12,7 @@ const demo = {
   meta: {
     code: DEMO_MENU_CODE,
     icon: 'ion:layers-outline',
-    title: 'routes.demo.title',
+    title: '示例',
   },
   children: [
     {
@@ -23,7 +23,7 @@ const demo = {
       meta: {
         code: DEMO_CHILDREN_CODE,
         icon: 'ion:grid-outline',
-        title: 'routes.dashboard.dashboard',
+        title: 'Dashboard',
       },
       children: [
         {
@@ -32,7 +32,7 @@ const demo = {
           component: '/dashboard/analysis/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.dashboard.analysis',
+            title: '分析页',
           },
         },
         {
@@ -41,7 +41,7 @@ const demo = {
           component: '/dashboard/workbench/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.dashboard.workbench',
+            title: '工作台',
           },
         },
       ],
@@ -52,7 +52,7 @@ const demo = {
       component: 'IFRAME',
       meta: {
         code: DEMO_CHILDREN_CODE,
-        title: 'routes.demo.iframe.docExternal',
+        title: '项目文档(外链)',
       },
     },
     {
@@ -62,7 +62,7 @@ const demo = {
       meta: {
         code: DEMO_CHILDREN_CODE,
         frameSrc: 'https://www.antdv.com/components/overview',
-        title: 'routes.demo.iframe.doc',
+        title: '项目文档(内嵌)',
       },
     },
 
@@ -74,7 +74,7 @@ const demo = {
       meta: {
         code: DEMO_CHILDREN_CODE,
         icon: 'ion:aperture-outline',
-        title: 'routes.demo.page.page',
+        title: '页面',
       },
       children: [
         {
@@ -84,7 +84,7 @@ const demo = {
           component: 'LAYOUT',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.page.form',
+            title: '表单页',
           },
           children: [
             {
@@ -93,7 +93,7 @@ const demo = {
               component: '/demo/page/form/basic/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.page.formBasic',
+                title: '基础表单',
               },
             },
             {
@@ -102,7 +102,7 @@ const demo = {
               component: '/demo/page/form/step/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.page.formStep',
+                title: '分步表单',
               },
             },
             {
@@ -111,7 +111,7 @@ const demo = {
               component: '/demo/page/form/high/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.page.formHigh',
+                title: '高级表单',
               },
             },
           ],
@@ -123,7 +123,7 @@ const demo = {
           redirect: '/page-demo/desc/basic',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.page.desc',
+            title: '详情页',
           },
           children: [
             {
@@ -132,7 +132,7 @@ const demo = {
               component: '/demo/page/desc/basic/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.page.descBasic',
+                title: '基础详情页',
               },
             },
             {
@@ -141,7 +141,7 @@ const demo = {
               component: '/demo/page/desc/high/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.page.descHigh',
+                title: '高级详情页',
               },
             },
           ],
@@ -153,7 +153,7 @@ const demo = {
           component: 'LAYOUT',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.page.result',
+            title: '结果页',
           },
           children: [
             {
@@ -162,7 +162,7 @@ const demo = {
               component: '/demo/page/result/success/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.page.resultSuccess',
+                title: '成功页',
               },
             },
             {
@@ -171,7 +171,7 @@ const demo = {
               component: '/demo/page/result/fail/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.page.resultFail',
+                title: '失败页',
               },
             },
           ],
@@ -183,7 +183,7 @@ const demo = {
           redirect: '/page-demo/account/setting',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.page.account',
+            title: '个人页',
           },
           children: [
             {
@@ -192,7 +192,7 @@ const demo = {
               component: '/demo/page/account/center/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.page.accountCenter',
+                title: '个人中心',
               },
             },
           ],
@@ -204,7 +204,7 @@ const demo = {
           redirect: '/page-demo/exception/404',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.page.exception',
+            title: '异常页',
           },
           children: [
             {
@@ -252,7 +252,7 @@ const demo = {
               },
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.page.netWorkError',
+                title: '网络错误',
               },
             },
             {
@@ -264,7 +264,7 @@ const demo = {
               },
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.page.notData',
+                title: '无数据',
               },
             },
           ],
@@ -276,7 +276,7 @@ const demo = {
           redirect: '/page-demo/list/card',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.page.list',
+            title: '列表页',
           },
           children: [
             {
@@ -285,7 +285,7 @@ const demo = {
               component: '/demo/page/list/basic/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.page.listBasic',
+                title: '标准列表',
               },
             },
             {
@@ -294,7 +294,7 @@ const demo = {
               component: '/demo/page/list/card/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.page.listCard',
+                title: '卡片列表',
               },
             },
             {
@@ -303,7 +303,7 @@ const demo = {
               component: '/demo/page/list/search/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.page.listSearch',
+                title: '搜索列表',
               },
             },
           ],
@@ -318,7 +318,7 @@ const demo = {
       meta: {
         icon: 'whh:paintroll',
         code: DEMO_CHILDREN_CODE,
-        title: 'routes.demo.setup.page',
+        title: '引导页',
       },
     },
     {
@@ -327,7 +327,7 @@ const demo = {
       component: '/demo/comp/dragPanel/index',
       meta: {
         code: DEMO_CHILDREN_CODE,
-        title: 'routes.demo.comp.dragPanel',
+        title: '可拖拽面板',
       },
     },
     {
@@ -336,7 +336,7 @@ const demo = {
       component: '/demo/calendar/index',
       meta: {
         code: DEMO_CHILDREN_CODE,
-        title: 'routes.demo.calendar',
+        title: '日历组件',
       },
     },
     {
@@ -345,7 +345,7 @@ const demo = {
       component: 'LAYOUT',
       meta: {
         code: DEMO_CHILDREN_CODE,
-        title: 'routes.demo.gridLayout.title',
+        title: '可拖拽网格组件',
       },
       children: [
         {
@@ -354,7 +354,7 @@ const demo = {
           component: '/demo/grid-layout/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.gridLayout.basic',
+            title: '基础示例',
           },
         },
       ],
@@ -365,7 +365,7 @@ const demo = {
       component: '/demo/colorPicker/index',
       meta: {
         code: DEMO_CHILDREN_CODE,
-        title: 'routes.demo.colorPicker',
+        title: '取色器',
       },
     },
     {
@@ -374,7 +374,7 @@ const demo = {
       component: '/demo/comp/transition/index',
       meta: {
         code: DEMO_CHILDREN_CODE,
-        title: 'routes.demo.comp.transition',
+        title: '动画组件',
       },
     },
     {
@@ -383,7 +383,7 @@ const demo = {
       component: '/demo/comp/modal/index',
       meta: {
         code: DEMO_CHILDREN_CODE,
-        title: 'routes.demo.comp.modal',
+        title: '弹窗扩展',
       },
     },
     {
@@ -392,7 +392,7 @@ const demo = {
       component: '/demo/comp/cropper/index',
       meta: {
         code: DEMO_CHILDREN_CODE,
-        title: 'routes.demo.comp.cropperImage',
+        title: '图片裁剪',
       },
     },
     {
@@ -401,7 +401,7 @@ const demo = {
       component: '/demo/comp/time/index',
       meta: {
         code: DEMO_CHILDREN_CODE,
-        title: 'routes.demo.comp.time',
+        title: '相对时间',
       },
     },
     {
@@ -410,7 +410,7 @@ const demo = {
       component: '/demo/comp/count-to/index',
       meta: {
         code: DEMO_CHILDREN_CODE,
-        title: 'routes.demo.comp.countTo',
+        title: '数字动画',
       },
     },
     {
@@ -419,7 +419,7 @@ const demo = {
       component: '/demo/comp/drawer/index',
       meta: {
         code: DEMO_CHILDREN_CODE,
-        title: 'routes.demo.comp.drawer',
+        title: '抽屉扩展',
       },
     },
     {
@@ -428,7 +428,7 @@ const demo = {
       component: '/demo/comp/desc/index',
       meta: {
         code: DEMO_CHILDREN_CODE,
-        title: 'routes.demo.comp.desc',
+        title: '详情组件',
       },
     },
     {
@@ -439,7 +439,7 @@ const demo = {
       meta: {
         code: DEMO_CHILDREN_CODE,
         icon: 'ion:layers-outline',
-        title: 'routes.demo.comp.comp',
+        title: '组件',
       },
       children: [
         {
@@ -448,7 +448,7 @@ const demo = {
           component: '/demo/comp/button/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.comp.basic',
+            title: '基础组件',
           },
         },
         {
@@ -457,7 +457,7 @@ const demo = {
           component: '/demo/comp/qrcode/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.comp.qrcode',
+            title: '二维码组件',
           },
         },
         {
@@ -466,7 +466,7 @@ const demo = {
           component: '/demo/comp/strength-meter/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.comp.strength',
+            title: '密码强度组件',
           },
         },
         {
@@ -475,7 +475,7 @@ const demo = {
           component: '/demo/comp/upload/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.comp.upload',
+            title: '上传组件',
           },
         },
         {
@@ -484,7 +484,7 @@ const demo = {
           component: '/demo/comp/loading/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.comp.loading',
+            title: 'Loading',
           },
         },
         {
@@ -493,7 +493,7 @@ const demo = {
           component: '/demo/comp/card-list/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.comp.cardList',
+            title: '卡片列表',
           },
         },
         {
@@ -504,7 +504,7 @@ const demo = {
           meta: {
             code: DEMO_CHILDREN_CODE,
             icon: 'mdi:form-select',
-            title: 'routes.demo.form.form',
+            title: 'Form',
           },
           children: [
             {
@@ -513,7 +513,7 @@ const demo = {
               component: '/demo/form/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.form.basic',
+                title: '基础表单',
               },
             },
             {
@@ -522,7 +522,7 @@ const demo = {
               component: '/demo/form/UseForm',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.form.useForm',
+                title: 'useForm',
               },
             },
             {
@@ -531,7 +531,7 @@ const demo = {
               component: '/demo/form/RefForm',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.form.refForm',
+                title: 'RefForm',
               },
             },
             {
@@ -540,7 +540,7 @@ const demo = {
               component: '/demo/form/AdvancedForm',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.form.advancedForm',
+                title: '可收缩表单',
               },
             },
             {
@@ -549,7 +549,7 @@ const demo = {
               component: '/demo/form/RuleForm',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.form.ruleForm',
+                title: '表单验证',
               },
             },
             {
@@ -558,7 +558,7 @@ const demo = {
               component: '/demo/form/DynamicForm',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.form.dynamicForm',
+                title: '动态表单',
               },
             },
             {
@@ -567,7 +567,7 @@ const demo = {
               component: '/demo/form/CustomerForm',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.form.customerForm',
+                title: '自定义组件',
               },
             },
             {
@@ -576,7 +576,7 @@ const demo = {
               component: '/demo/form/AppendForm',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.form.appendForm',
+                title: '表单增删示例',
               },
             },
           ],
@@ -589,7 +589,7 @@ const demo = {
           meta: {
             code: DEMO_CHILDREN_CODE,
             icon: 'carbon:table-split',
-            title: 'routes.demo.table.table',
+            title: 'Table',
           },
           children: [
             {
@@ -598,7 +598,7 @@ const demo = {
               component: '/demo/table/Basic',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.table.basic',
+                title: '基础表格',
               },
             },
             {
@@ -607,7 +607,7 @@ const demo = {
               component: '/demo/table/TreeTable',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.table.treeTable',
+                title: '树形表格',
               },
             },
             {
@@ -616,7 +616,7 @@ const demo = {
               component: '/demo/table/FetchTable',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.table.fetchTable',
+                title: '远程加载示例',
               },
             },
             {
@@ -625,7 +625,7 @@ const demo = {
               component: '/demo/table/FixedColumn',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.table.fixedColumn',
+                title: '固定列',
               },
             },
             {
@@ -634,7 +634,7 @@ const demo = {
               component: '/demo/table/CustomerCell',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.table.customerCell',
+                title: '自定义列',
               },
             },
             {
@@ -643,7 +643,7 @@ const demo = {
               component: '/demo/table/FormTable',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.table.formTable',
+                title: '开启搜索区域',
               },
             },
             {
@@ -652,7 +652,7 @@ const demo = {
               component: '/demo/table/UseTable',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.table.useTable',
+                title: 'UseTable',
               },
             },
             {
@@ -661,7 +661,7 @@ const demo = {
               component: '/demo/table/RefTable',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.table.refTable',
+                title: 'RefTable',
               },
             },
             {
@@ -670,7 +670,7 @@ const demo = {
               component: '/demo/table/MultipleHeader',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.table.multipleHeader',
+                title: '多级表头',
               },
             },
             {
@@ -679,7 +679,7 @@ const demo = {
               component: '/demo/table/MergeHeader',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.table.mergeHeader',
+                title: '合并单元格',
               },
             },
             {
@@ -688,7 +688,7 @@ const demo = {
               component: '/demo/table/ExpandTable',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.table.expandTable',
+                title: '可展开表格',
               },
             },
             {
@@ -697,7 +697,7 @@ const demo = {
               component: '/demo/table/FixedHeight',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.table.fixedHeight',
+                title: '定高/头部自定义',
               },
             },
             {
@@ -706,7 +706,7 @@ const demo = {
               component: '/demo/table/FooterTable',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.table.footerTable',
+                title: '表尾行合计',
               },
             },
             {
@@ -715,7 +715,7 @@ const demo = {
               component: '/demo/table/EditCellTable',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.table.editCellTable',
+                title: '可编辑单元格',
               },
             },
             {
@@ -724,7 +724,7 @@ const demo = {
               component: '/demo/table/EditRowTable',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.table.editRowTable',
+                title: '可编辑行',
               },
             },
             {
@@ -733,7 +733,7 @@ const demo = {
               component: '/demo/table/formInTable',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.table.formInTable',
+                title: '表格嵌套表单',
               },
             },
             {
@@ -742,7 +742,7 @@ const demo = {
               component: '/demo/table/AuthColumn',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.table.authColumn',
+                title: '权限列',
               },
             },
             {
@@ -751,7 +751,7 @@ const demo = {
               component: '/demo/table/ResizeParentHeightTable',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.table.resizeParentHeightTable',
+                title: '继承父元素高度',
               },
             },
           ],
@@ -764,7 +764,7 @@ const demo = {
           meta: {
             code: DEMO_CHILDREN_CODE,
             icon: 'clarity:tree-view-line',
-            title: 'routes.demo.comp.tree',
+            title: 'Tree',
           },
           children: [
             {
@@ -773,7 +773,7 @@ const demo = {
               component: '/demo/tree/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.comp.treeBasic',
+                title: '基础树',
               },
             },
             {
@@ -782,7 +782,7 @@ const demo = {
               component: '/demo/tree/EditTree',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.comp.editTree',
+                title: '可搜索/工具栏',
               },
             },
             {
@@ -791,7 +791,7 @@ const demo = {
               component: '/demo/tree/ActionTree',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.comp.actionTree',
+                title: '函数操作示例',
               },
             },
           ],
@@ -803,7 +803,7 @@ const demo = {
           redirect: '/comp/lazy/basic',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.comp.lazy',
+            title: '懒加载组件',
           },
           children: [
             {
@@ -812,7 +812,7 @@ const demo = {
               component: '/demo/comp/lazy/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.comp.lazyBasic',
+                title: '基础示例',
               },
             },
             {
@@ -821,7 +821,7 @@ const demo = {
               component: '/demo/comp/lazy/Transition',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.comp.lazyTransition',
+                title: '动画效果',
               },
             },
           ],
@@ -833,7 +833,7 @@ const demo = {
           redirect: '/comp/verify/drag',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.comp.verify',
+            title: '验证组件',
           },
           children: [
             {
@@ -842,7 +842,7 @@ const demo = {
               component: '/demo/comp/verify/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.comp.verifyDrag',
+                title: '拖拽校验',
               },
             },
             {
@@ -851,7 +851,7 @@ const demo = {
               component: '/demo/comp/verify/Rotate',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.comp.verifyRotate',
+                title: '图片还原',
               },
             },
           ],
@@ -866,7 +866,7 @@ const demo = {
       meta: {
         code: DEMO_CHILDREN_CODE,
         icon: 'ion:git-compare-outline',
-        title: 'routes.demo.feat.feat',
+        title: '功能',
       },
       children: [
         {
@@ -875,7 +875,7 @@ const demo = {
           component: '/demo/feat/icon/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.feat.icon',
+            title: '图标',
           },
         },
         {
@@ -884,7 +884,7 @@ const demo = {
           component: '/demo/feat/ws/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.feat.ws',
+            title: 'websocket测试',
           },
         },
         {
@@ -893,7 +893,7 @@ const demo = {
           component: '/demo/feat/session-timeout/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.feat.sessionTimeout',
+            title: '登录过期',
           },
         },
         {
@@ -902,7 +902,7 @@ const demo = {
           component: '/demo/feat/print/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.feat.print',
+            title: '打印',
           },
         },
         {
@@ -911,7 +911,7 @@ const demo = {
           component: '/demo/feat/tabs/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.feat.tabs',
+            title: '标签页操作',
           },
         },
         {
@@ -921,7 +921,7 @@ const demo = {
           component: 'LAYOUT',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.feat.breadcrumb',
+            title: '面包屑导航',
           },
           children: [
             {
@@ -930,7 +930,7 @@ const demo = {
               component: '/demo/feat/breadcrumb/FlatList',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.feat.breadcrumbFlat',
+                title: '平级模式',
               },
             },
             {
@@ -939,7 +939,7 @@ const demo = {
               component: '/demo/feat/breadcrumb/FlatListDetail',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.feat.breadcrumbFlatDetail',
+                title: '平级详情',
                 hideMenu: true,
                 hideTab: true,
                 currentActiveMenu: '/feat/breadcrumb/flat',
@@ -951,7 +951,7 @@ const demo = {
               component: '/demo/feat/breadcrumb/ChildrenList',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.feat.breadcrumbChildren',
+                title: '层级模式',
               },
               children: [
                 {
@@ -961,21 +961,20 @@ const demo = {
                   meta: {
                     code: DEMO_CHILDREN_CODE,
                     currentActiveMenu: '/feat/breadcrumb/children',
-                    title: 'routes.demo.feat.breadcrumbChildrenDetail',
+                    title: '层级详情',
                   },
                 },
               ],
             },
           ],
         },
-
         {
           path: 'context-menu',
           name: 'ContextMenuDemo',
           component: '/demo/feat/context-menu/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.feat.contextMenu',
+            title: '右键菜单',
           },
         },
         {
@@ -984,7 +983,7 @@ const demo = {
           component: '/demo/feat/download/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.feat.download',
+            title: '文件下载',
           },
         },
         {
@@ -993,7 +992,7 @@ const demo = {
           component: '/demo/feat/click-out-side/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.feat.clickOutSide',
+            title: 'ClickOutSide组件',
           },
         },
         {
@@ -1002,7 +1001,7 @@ const demo = {
           component: '/demo/feat/img-preview/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.feat.imgPreview',
+            title: '图片预览',
           },
         },
         {
@@ -1011,7 +1010,7 @@ const demo = {
           component: '/demo/feat/copy/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.feat.copy',
+            title: '剪切板',
           },
         },
         {
@@ -1020,7 +1019,7 @@ const demo = {
           component: '/demo/feat/msg/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.feat.msg',
+            title: '消息提示',
           },
         },
         {
@@ -1029,7 +1028,7 @@ const demo = {
           component: '/demo/feat/watermark/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.feat.watermark',
+            title: '水印',
           },
         },
         {
@@ -1038,7 +1037,7 @@ const demo = {
           component: '/demo/feat/ripple/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.feat.ripple',
+            title: '水波纹',
           },
         },
         {
@@ -1047,7 +1046,7 @@ const demo = {
           component: '/demo/feat/full-screen/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.feat.fullScreen',
+            title: '全屏',
           },
         },
         {
@@ -1056,7 +1055,7 @@ const demo = {
           component: '/sys/error-log/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.feat.errorLog',
+            title: '错误日志',
           },
         },
         {
@@ -1067,7 +1066,7 @@ const demo = {
           meta: {
             code: DEMO_CHILDREN_CODE,
             icon: 'mdi:microsoft-excel',
-            title: 'routes.demo.excel.excel',
+            title: 'Excel',
           },
 
           children: [
@@ -1077,7 +1076,7 @@ const demo = {
               component: '/demo/excel/CustomExport',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.excel.customExport',
+                title: '选择导出格式',
               },
             },
             {
@@ -1086,7 +1085,7 @@ const demo = {
               component: '/demo/excel/JsonExport',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.excel.jsonExport',
+                title: 'JSON数据导出',
               },
             },
             {
@@ -1095,7 +1094,7 @@ const demo = {
               component: '/demo/excel/ArrayExport',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.excel.arrayExport',
+                title: 'Array数据导出',
               },
             },
             {
@@ -1104,7 +1103,7 @@ const demo = {
               component: '/demo/excel/ImportExcel',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.excel.importExcel',
+                title: '导入',
               },
             },
           ],
@@ -1115,7 +1114,7 @@ const demo = {
           component: '/demo/feat/tab-params/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.feat.tab',
+            title: 'Tab带参',
             carryParam: true,
             hidePathForChildren: true,
           },
@@ -1126,7 +1125,7 @@ const demo = {
               component: '/demo/feat/tab-params/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.feat.tab1',
+                title: 'Tab带参1',
                 carryParam: true,
                 ignoreRoute: true,
               },
@@ -1137,7 +1136,7 @@ const demo = {
               component: '/demo/feat/tab-params/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.feat.tab2',
+                title: 'Tab带参2',
                 carryParam: true,
                 ignoreRoute: true,
               },
@@ -1150,7 +1149,7 @@ const demo = {
           component: 'LAYOUT',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.feat.menu',
+            title: 'Menu带参',
             ignoreKeepAlive: true,
           },
           children: [
@@ -1160,7 +1159,7 @@ const demo = {
               component: '/demo/feat/menu-params/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.feat.menu1',
+                title: 'Menu带参1',
                 ignoreKeepAlive: true,
               },
             },
@@ -1170,7 +1169,7 @@ const demo = {
               component: '/demo/feat/menu-params/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.feat.menu2',
+                title: 'Menu带参2',
                 ignoreKeepAlive: true,
               },
             },
@@ -1186,7 +1185,7 @@ const demo = {
       meta: {
         code: DEMO_CHILDREN_CODE,
         icon: 'tabler:chart-dots',
-        title: 'routes.demo.flow.name',
+        title: '图形编辑器',
       },
       children: [
         {
@@ -1195,7 +1194,7 @@ const demo = {
           component: '/demo/comp/flow-chart/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.flow.flowChart',
+            title: '流程图',
           },
         },
       ],
@@ -1208,7 +1207,7 @@ const demo = {
       meta: {
         code: DEMO_CHILDREN_CODE,
         icon: 'ion:bar-chart-outline',
-        title: 'routes.demo.charts.charts',
+        title: '图表',
       },
       children: [
         {
@@ -1216,7 +1215,7 @@ const demo = {
           name: 'BaiduMap',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.charts.baiduMap',
+            title: '百度地图',
           },
           component: '/demo/charts/map/Baidu',
         },
@@ -1225,7 +1224,7 @@ const demo = {
           name: 'AMap',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.charts.aMap',
+            title: '高德地图',
           },
           component: '/demo/charts/map/Gaode',
         },
@@ -1234,7 +1233,7 @@ const demo = {
           name: 'GoogleMap',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.charts.googleMap',
+            title: '谷歌地图',
           },
           component: '/demo/charts/map/Google',
         },
@@ -1254,7 +1253,7 @@ const demo = {
               component: '/demo/charts/Map',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.charts.map',
+                title: '地图',
               },
             },
             {
@@ -1263,7 +1262,7 @@ const demo = {
               component: '/demo/charts/Line',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.charts.line',
+                title: '折线图',
               },
             },
             {
@@ -1272,7 +1271,7 @@ const demo = {
               component: '/demo/charts/Pie',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.charts.pie',
+                title: '饼图',
               },
             },
           ],
@@ -1287,7 +1286,7 @@ const demo = {
       meta: {
         code: DEMO_CHILDREN_CODE,
         icon: 'carbon:table-split',
-        title: 'routes.demo.editor.editor',
+        title: '编辑器',
       },
       children: [
         {
@@ -1296,7 +1295,7 @@ const demo = {
           name: 'JsonEditorDemo',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.editor.jsonEditor',
+            title: 'Json编辑器',
           },
         },
         {
@@ -1305,7 +1304,7 @@ const demo = {
           name: 'MarkdownDemo',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.editor.markdown',
+            title: 'markdown编辑器',
           },
           redirect: '/editor/markdown/index',
           children: [
@@ -1315,7 +1314,7 @@ const demo = {
               component: '/demo/editor/markdown/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.editor.tinymceBasic',
+                title: '富文本',
               },
             },
             {
@@ -1324,7 +1323,7 @@ const demo = {
               component: '/demo/editor/markdown/Editor',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.editor.tinymceForm',
+                title: '嵌入form',
               },
             },
           ],
@@ -1335,7 +1334,7 @@ const demo = {
           name: 'TinymceDemo',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.editor.tinymce',
+            title: '富文本',
           },
           redirect: '/editor/tinymce/index',
           children: [
@@ -1345,7 +1344,7 @@ const demo = {
               component: '/demo/editor/tinymce/index',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.editor.tinymceBasic',
+                title: '基础使用',
               },
             },
             {
@@ -1354,7 +1353,7 @@ const demo = {
               component: '/demo/editor/tinymce/Editor',
               meta: {
                 code: DEMO_CHILDREN_CODE,
-                title: 'routes.demo.editor.tinymceForm',
+                title: '嵌入form',
               },
             },
           ],
@@ -1368,7 +1367,7 @@ const demo = {
       component: 'LAYOUT',
       meta: {
         code: DEMO_CHILDREN_CODE,
-        title: 'routes.demo.comp.scroll',
+        title: '滚动组件',
       },
       children: [
         {
@@ -1377,7 +1376,7 @@ const demo = {
           component: '/demo/comp/scroll/index',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.comp.scrollBasic',
+            title: '基础滚动',
           },
         },
         {
@@ -1386,7 +1385,7 @@ const demo = {
           component: '/demo/comp/scroll/Action',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.comp.scrollAction',
+            title: '滚动函数',
           },
         },
         {
@@ -1395,7 +1394,7 @@ const demo = {
           component: '/demo/comp/scroll/VirtualScroll',
           meta: {
             code: DEMO_CHILDREN_CODE,
-            title: 'routes.demo.comp.virtualScroll',
+            title: '虚拟滚动',
           },
         },
       ],
