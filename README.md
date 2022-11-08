@@ -2,7 +2,7 @@
 
 ## chore
 
-vite > 3.1.x 版本不兼容插件`vite-plugin-theme`, 报错`Uncaught ReferenceError: COLOR_PLUGIN_OUTPUT_FILE_NAME is not defined`。现在降级为固定版本 3.0.9，后续待处理
+- [x] vite > 3.1.x 版本不兼容插件`vite-plugin-theme`, 报错`Uncaught ReferenceError: COLOR_PLUGIN_OUTPUT_FILE_NAME is not defined`。
 
 ## 业务开发常见问题
 
