@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import type { UserConfig, ConfigEnv } from 'vite';
 import pkg from './package.json';
 import dayjs from 'dayjs';
@@ -115,6 +116,12 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       host: '0.0.0.0',
       port: 8888,
       open: true,
+    },
+    test: {
+      environment: 'jsdom', // or 'jsdom', 'node'
+      coverage: {
+        reporter: ['text', 'json', 'html'],
+      },
     },
   };
 };
