@@ -10,7 +10,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="CalendarSwipe">
   import { ref, onMounted } from 'vue';
   import { offloadFn, hasTransitions } from '../../utils';
   import { SwipeInterface, startType, deltaType } from '../../types';

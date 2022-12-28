@@ -50,7 +50,7 @@
             :begin="begin"
             :end="end"
             :format="format"
-            :lunar="lunar && lunarFun"
+            :lunar="computedLunar"
             :backgroundText="backgroundText"
             @on-select="onSelect"
             @on-month-change="monthChange"
@@ -61,14 +61,8 @@
   </div>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'CalendarComp',
-  };
-</script>
-
-<script lang="ts" setup>
-  import { ref, reactive, watch, toRefs } from 'vue';
+<script lang="ts" setup name="CalendarComp">
+  import { ref, reactive, watch, toRefs, computed } from 'vue';
   import { CalendarInterface } from './types';
   import Tools from './components/tools/index.vue';
   import Swipe from './components/swipe/index.vue';
@@ -116,6 +110,7 @@
     selectDate,
     remarks,
     weeks,
+    lunar,
     language: propLanguage,
   } = toRefs(props);
   const timestamp = ref(+new Date()); // listener timestamp change to refresh timetable
@@ -136,10 +131,11 @@
       multi: [],
       multiRange: [],
       range: { start: '', end: '' },
-    }[selectMode.value];
+    }[selectMode?.value as string];
   const timetableList = reactive({ list: getTimetableList() });
   const selectDateInner = ref(initSelectValue);
   const { prefixCls } = useDesign('calendar');
+  const computedLunar = computed(() => (lunar?.value ? lunarFun : undefined));
 
   function swiperChangeEnd(index: number) {
     const isWeekMode = tableMode.value === 'week';
@@ -445,12 +441,12 @@
     },
   );
 
-  watch(tileContent, () => {
+  watch(tileContent!, () => {
     refreshRender();
   });
 
-  if (Object.keys(props.tileContent).length) {
-    watch(props.tileContent, () => {
+  if (Object.keys(props.tileContent!).length) {
+    watch(props.tileContent!, () => {
       refreshRender();
     });
   }

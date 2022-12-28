@@ -4,7 +4,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 import legacy from '@vitejs/plugin-legacy';
 import purgeIcons from 'vite-plugin-purge-icons';
 import unocss from '@unocss/vite';
-import vueSetupExtend from 'vite-plugin-vue-setup-extend';
+import vueSetupExtend from 'vite-plugin-vue-setup-extend-plus';
 import { configHtmlPlugin } from './html';
 import { configPwaConfig } from './pwa';
 import { configMockPlugin } from './mock';

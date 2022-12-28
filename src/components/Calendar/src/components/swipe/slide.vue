@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="CalendarSwiperSlide">
   import { useDesign } from '/@/hooks/web/useDesign';
 
   defineProps({

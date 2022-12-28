@@ -79,13 +79,7 @@
   </div>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'TimeTableComp',
-  };
-</script>
-
-<script lang="ts" setup>
+<script lang="ts" setup name="CalendarTimeTable">
   import { ref, reactive, watch, toRefs, unref } from 'vue';
   import {
     disabledDate,
@@ -139,14 +133,14 @@
   const tableMode = ref(propsTableMode);
   const begin = ref(propsBegin);
   const end = ref(propsEnd);
-  const completion = ref(propsTableMode.value === 'week' || propsCompletion.value);
+  const completion = ref(propsTableMode.value === 'week' || propsCompletion?.value);
   const formatRangeMonth = ref([year?.value, month?.value]);
-  disabledDateHandle.update(disabled.value);
-  setRemarkHandle.update(remarks.value);
+  disabledDateHandle.update(disabled?.value);
+  setRemarkHandle.update(remarks?.value);
   setTileContentHandle.update(tileContent?.value);
 
   function selectComputed(date: string) {
-    switch (selectMode.value) {
+    switch (selectMode?.value) {
       case 'range':
         return rangeOption({ selectDate: selectDate?.value, date } as any);
       case 'multiRange':
@@ -168,7 +162,7 @@
     }
 
     let selectValue;
-    switch (selectMode.value) {
+    switch (selectMode?.value) {
       case 'select':
         selectValue = singleSelect(selectDate?.value as string, date);
         break;
@@ -254,7 +248,7 @@
   });
 
   function render({ year, month, day }: any) {
-    completion.value = propsTableMode.value === 'week' || propsCompletion.value;
+    completion.value = propsTableMode.value === 'week' || propsCompletion?.value;
     const firstDayOfMonth = new Date(year, month - 1, 1).getDay(); //what day is the first day of the month
     const lastDateOfCurrentMonth = new Date(year, month, 0).getDate(); //last date of current month
     const lastDateOfLastMonth = new Date(year, month - 1, 0).getDate(); // last day Of last month
@@ -379,8 +373,8 @@
   watch(
     () => props.timestamp,
     () => {
-      disabledDateHandle.update(disabled.value);
-      setRemarkHandle.update(remarks.value);
+      disabledDateHandle.update(disabled?.value);
+      setRemarkHandle.update(remarks?.value);
       setTileContentHandle.update(tileContent?.value);
       refreshRender();
     },

@@ -11,13 +11,7 @@
   </PageWrapper>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'TaskBoard',
-  };
-</script>
-
-<script lang="ts" setup>
+<script lang="ts" setup name="TaskBoard">
   import { ref } from 'vue';
   import { Tabs } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';

@@ -9,6 +9,7 @@
     :disabled="disabled"
   />
 </template>
+
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { BasicTree, TreeActionType } from '/@/components/Tree';

@@ -7,7 +7,7 @@
     <template #workingShift="{ record }">
       <Switch
         v-model:checked="record.useful"
-        @change="toggleNoticeWorkingShift(record, ($event as boolean))"
+        @change="toggleNoticeWorkingShift(record, $event as boolean)"
       />
     </template>
 

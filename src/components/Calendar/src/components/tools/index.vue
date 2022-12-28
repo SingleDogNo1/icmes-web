@@ -56,13 +56,7 @@
   </div>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'CalendarTools',
-  };
-</script>
-
-<script lang="ts" setup>
+<script lang="ts" setup name="CalendarTools">
   import { ref, reactive, watch, toRefs } from 'vue';
   import {
     StepBackwardOutlined,

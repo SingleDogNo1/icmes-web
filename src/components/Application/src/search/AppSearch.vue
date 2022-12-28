@@ -8,12 +8,6 @@
   </div>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'AppSearch',
-  };
-</script>
-
 <script lang="ts" setup>
   import { ref, watchEffect } from 'vue';
   import { Tooltip } from 'ant-design-vue';

@@ -52,6 +52,32 @@ yarn run lint:eslint
 
 同时项目内也自带了 vscode eslint 配置，具体在 `.vscode/setting.json` 文件夹内部。只要使用 vscode 开发不用任何设置即可使用
 
+::: danger 注意
+
+项目引用了[vite-plugin-vue-setup-extend](https://github.com/chenxch/vite-plugin-vue-setup-extend-plus)来简化`setup`语法，可以将`name / inheritAttrs`等属性直接设置在包含`<script setup>`的标签上
+
+```diff
+- <script lang="ts">
+-   export default {
+-     name: 'HelloWorld',
+-     inheritAttrs: false,
+-   };
+- </script>
+
+- <script lang="ts" setup></script>
++ <script lang="ts" setup name="HelloWorld" inheritAttrs="false"></script>
+```
+
+因为以上变更不通过`eslint`校验，所以禁用了[vue/multi-word-component-names](https://eslint.vuejs.org/rules/multi-word-component-names.html)规则。但是原则上规则是有必要的。即使不进行校验，仍然应该严格遵守以下规范:
+
+- 组件名称不能为单个词语组成
+- 如果是驼峰命名，组件名称首字母必须大写
+- 如果没有标记组件名称，默认使用组件文件的名称，规则参照以上两条
+
+该规范在项目开发中期加入，当前项目已有大部分组件使用了代码中的第一种格式，全部修改成本太高，以后考虑逐步修改。
+
+:::
+
 ## CommitLint
 
 在一个团队中，每个人的 git 的 commit 信息都不一样，五花八门，没有一个机制很难保证规范化，如何才能规范化呢？可能你想到的是 git 的 hook 机制，去写 shell 脚本去实现。这当然可以，其实 JavaScript 有一个很好的工具可以实现这个模板，它就是 commitlint（用于校验 git 提交信息规范）。

@@ -49,7 +49,13 @@
   </PageWrapper>
 </template>
 
-<script lang="ts" setup>
+<!-- <script lang="ts">
+  export default {
+    name: 'AlarmBoard',
+  };
+</script> -->
+
+<script lang="ts" setup name="AlarmBoard">
   import { Row, Col } from 'ant-design-vue';
   // TODO 咱们这个灯能不能导出成 SVG 格式，可以省很多事
   import { AlertTwoTone } from '@ant-design/icons-vue';
