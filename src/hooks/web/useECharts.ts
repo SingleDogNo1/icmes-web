@@ -30,8 +30,8 @@ export function useECharts(
       return cacheOptions.value as EChartsOption;
     }
     return {
-      backgroundColor: 'transparent',
       ...cacheOptions.value,
+      backgroundColor: '#100c2a',
     } as EChartsOption;
   });
 
