@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "vitepress dev src --host --port 4000"
+    "dev": "vitepress dev src --host --port 4000",
+    "build": "vitepress build src"
   },
   "author": "",
   "license": "ISC",

@@ -47,7 +47,7 @@ const powerFailure: BackModeRouteRecordRaw = {
 export default powerFailure;
 ```
 
-登录成功后，[buildRoutesAction](`/src/store/modules/permission.ts`)方法会生成可用的路由列表
+登录成功后，`/src/store/modules/permission.ts`中`buildRoutesAction`方法会生成可用的路由列表
 
 ### Meta 配置说明
 

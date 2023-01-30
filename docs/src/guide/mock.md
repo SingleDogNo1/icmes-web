@@ -2,7 +2,7 @@
 
 ## 接口请求
 
-接口统一存放于 [src/api/](/src/api) 下面管理
+接口统一存放于 `src/api/` 下面管理
 
 以通知接口为例:
 
@@ -12,7 +12,7 @@
 
 ## axios 配置
 
-**axios** 请求封装存放于 [src/utils/http/axios](/src/utils/http/axios) 文件夹内部
+**axios** 请求封装存放于`src/utils/http/axios`文件夹内部
 
 除 `index.ts` 文件内容需要根据项目自行修改外，其余文件无需修改
 
