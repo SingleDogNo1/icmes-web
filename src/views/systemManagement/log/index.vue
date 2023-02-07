@@ -11,13 +11,7 @@
   </PageWrapper>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'SystemManagementLog',
-  };
-</script>
-
-<script lang="ts" setup>
+<script lang="ts" setup name="SystemManagementLog">
   import { nextTick, ref } from 'vue';
   import { trimEnd } from 'lodash-es';
   import { formatDate } from '/@/utils/dateUtil';

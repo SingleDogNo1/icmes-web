@@ -461,6 +461,15 @@ const demo = {
           },
         },
         {
+          path: 'image',
+          name: 'ImageDemo',
+          component: '/demo/comp/image/index',
+          meta: {
+            code: DEMO_CHILDREN_CODE,
+            title: '图片组件',
+          },
+        },
+        {
           path: 'strength-meter',
           name: 'StrengthMeterDemo',
           component: '/demo/comp/strength-meter/index',

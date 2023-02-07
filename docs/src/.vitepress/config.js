@@ -197,6 +197,10 @@ function genComponentsSidebar() {
           link: '/components/lazy-container',
         },
         {
+          text: 'Image',
+          link: '/components/Image',
+        },
+        {
           text: 'CodeEditor',
           link: '/components/code-editor',
         },
