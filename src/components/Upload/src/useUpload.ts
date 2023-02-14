@@ -6,11 +6,18 @@ export function useUploadType({
   helpTextRef,
   maxNumberRef,
   maxSizeRef,
+  imageSizeRef,
 }: {
   acceptRef: Ref<string[]>;
   helpTextRef: Ref<string>;
   maxNumberRef: Ref<number>;
   maxSizeRef: Ref<number>;
+  imageSizeRef: Ref<{
+    minWidth?: number;
+    maxWidth?: number;
+    minHeight?: number;
+    maxHeight?: number;
+  }>;
 }) {
   // 文件类型限制
   const getAccept = computed(() => {
@@ -53,6 +60,19 @@ export function useUploadType({
     const maxNumber = unref(maxNumberRef);
     if (maxNumber && maxNumber !== Infinity) {
       helpTexts.push(t('component.upload.maxNumber', [maxNumber]));
+    }
+    const imageSize = unref(imageSizeRef);
+    if (imageSize.maxWidth) {
+      helpTexts.push(t('component.upload.maxWidth', [imageSize.maxWidth]));
+    }
+    if (imageSize.minWidth) {
+      helpTexts.push(t('component.upload.minWidth', [imageSize.minWidth]));
+    }
+    if (imageSize.maxHeight) {
+      helpTexts.push(t('component.upload.maxHeight', [imageSize.maxHeight]));
+    }
+    if (imageSize.minHeight) {
+      helpTexts.push(t('component.upload.minHeight', [imageSize.minHeight]));
     }
     return helpTexts.join('，');
   });

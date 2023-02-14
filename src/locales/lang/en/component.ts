@@ -106,6 +106,10 @@ export default {
     maxSize: 'A single file does not exceed {0}MB ',
     maxSizeMultiple: 'Only upload files up to {0}MB!',
     maxNumber: 'Only upload up to {0} files',
+    maxHeight: 'Maximum height {0}px',
+    maxWidth: 'Maximum width {0}px',
+    minHeight: 'Minimum width {0}px',
+    minWidth: 'Minimum width {0}px',
 
     legend: 'Legend',
     fileName: 'File name',

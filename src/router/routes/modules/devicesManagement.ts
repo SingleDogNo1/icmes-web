@@ -18,6 +18,17 @@ const devicesManagement: BackModeRouteRecordRaw = {
         code: 23000,
       },
     },
+    {
+      path: 'advance-search',
+      name: 'devicesManagementAdvanceList',
+      component: '/devicesManagement/devicesList/advanceSearch',
+      meta: {
+        code: 23000,
+        hideMenu: true,
+        hideTab: true,
+        currentActiveMenu: '/device/list',
+      },
+    },
   ],
 };
 

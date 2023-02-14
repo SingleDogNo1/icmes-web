@@ -6,6 +6,7 @@ const {
   successColor,
   primaryColor,
   disabledColor,
+  warningColor,
   errorColor,
 } = require('./src/settings/designSetting');
 
@@ -23,6 +24,7 @@ export default defineConfig({
       primary: primaryColor,
       success: successColor,
       disabled: disabledColor,
+      warning: warningColor,
       error: errorColor,
     },
   },

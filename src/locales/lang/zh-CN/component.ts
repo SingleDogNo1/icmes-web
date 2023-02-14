@@ -109,6 +109,10 @@ export default {
     maxSize: '单个文件不超过{0}MB',
     maxSizeMultiple: '只能上传不超过{0}MB的文件!',
     maxNumber: '最多只能上传{0}个文件',
+    maxHeight: '最大高度{0}px',
+    maxWidth: '最大宽度{0}px',
+    minHeight: '最小高度{0}px',
+    minWidth: '最小宽度{0}px',
 
     legend: '略缩图',
     fileName: '文件名',

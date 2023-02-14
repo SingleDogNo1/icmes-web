@@ -103,5 +103,8 @@ export const basicProps = {
 
   labelAlign: propTypes.string,
 
-  rowProps: Object as PropType<RowProps>,
+  rowProps: {
+    type: Object as PropType<RowProps>,
+    default: { gutter: 16 },
+  },
 };

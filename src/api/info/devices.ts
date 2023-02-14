@@ -1,4 +1,5 @@
 import { defHttp } from '/@/utils/http/axios';
+import { ContentTypeEnum } from '/@/enums/httpEnum';
 import {
   GetDevicesListParam,
   GetDevicesListResultModel,
@@ -60,6 +61,9 @@ export function getMoreCriterionDevicesListApi(params: GetMoreCriterionDevicesPa
 export function uploadDevicesPhotoApi(params) {
   return defHttp.post<{ fileId: string }>({
     url: Api.baseUrl + 'photo',
+    headers: {
+      'Content-Type': ContentTypeEnum.FORM_DATA,
+    },
     params,
   });
 }

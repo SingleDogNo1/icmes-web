@@ -56,6 +56,8 @@ export interface GetDevicesListParam {
 /** 设备查询接口返回数据 */
 export interface GetDevicesListResultModel {
   items: Nullable<DeviceModel[]>;
+  totalCount: number;
+  totalPages: number;
 }
 
 export interface DeviceModel {

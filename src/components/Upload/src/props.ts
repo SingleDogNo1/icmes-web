@@ -43,6 +43,15 @@ export const basicProps = {
     type: String as PropType<string>,
     default: null,
   },
+  imageSize: {
+    type: Object as PropType<{
+      minWidth?: number;
+      maxWidth?: number;
+      minHeight?: number;
+      maxHeight?: number;
+    }>,
+    default: null,
+  },
 };
 
 export const uploadContainerProps = {

@@ -47,15 +47,11 @@
   import { defineComponent, reactive, ref, toRefs, unref, computed, PropType } from 'vue';
   import { Upload, Alert } from 'ant-design-vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
-  //   import { BasicTable, useTable } from '/@/components/Table';
-  // hooks
   import { useUploadType } from './useUpload';
   import { useMessage } from '/@/hooks/web/useMessage';
-  //   types
   import { FileItem, UploadResultStatus } from './typing';
   import { basicProps } from './props';
   import { createTableColumns, createActionColumn } from './data';
-  // utils
   import { checkImgType, getBase64WithFile } from './helper';
   import { buildUUID } from '/@/utils/uuid';
   import { isFunction } from '/@/utils/is';
@@ -81,7 +77,7 @@
       //   是否正在上传
       const isUploadingRef = ref(false);
       const fileListRef = ref<FileItem[]>([]);
-      const { accept, helpText, maxNumber, maxSize } = toRefs(props);
+      const { accept, helpText, maxNumber, maxSize, imageSize } = toRefs(props);
 
       const { t } = useI18n();
       const [register, { closeModal }] = useModalInner();
@@ -91,6 +87,7 @@
         helpTextRef: helpText,
         maxNumberRef: maxNumber,
         maxSizeRef: maxSize,
+        imageSizeRef: imageSize,
       });
 
       const { createMessage } = useMessage();
@@ -122,16 +119,81 @@
           : t('component.upload.startUpload');
       });
 
-      // 上传前校验
-      function beforeUpload(file: File) {
-        const { size, name } = file;
-        const { maxSize } = props;
-        // 设置最大值，则判断
-        if (maxSize && file.size / 1024 / 1024 >= maxSize) {
-          createMessage.error(t('component.upload.maxSizeMultiple', [maxSize]));
-          return false;
-        }
+      function checkImageSize(file: File, imageSize) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = function ({ target }) {
+            const image = new Image();
+            image.src = target?.result as string;
+            image.onload = function () {
+              const { width, height } = image;
+              const keys = Object.keys(imageSize);
+              console.log('width, height :>> ', width, height, imageSize, keys);
+              if (keys.length === 1) {
+                if (imageSize.minWidth && imageSize.minWidth >= width) {
+                  resolve(void 0);
+                } else if (imageSize.maxWidth && imageSize.maxWidth <= width) {
+                  resolve(void 0);
+                } else if (imageSize.minHeight && imageSize.minHeight >= height) {
+                  resolve(void 0);
+                } else if (imageSize.maxHeight && imageSize.maxHeight <= height) {
+                  resolve(void 0);
+                } else {
+                  resolve(void 0);
+                }
+              } else if (keys.length === 2) {
+                if (
+                  imageSize.minWidth &&
+                  imageSize.minHeight &&
+                  imageSize.minWidth <= width &&
+                  imageSize.minHeight <= height
+                ) {
+                  resolve(void 0);
+                } else if (
+                  imageSize.minWidth &&
+                  imageSize.maxHeight &&
+                  imageSize.minWidth <= width &&
+                  imageSize.maxHeight >= height
+                ) {
+                  resolve(void 0);
+                } else if (
+                  imageSize.maxWidth &&
+                  imageSize.minHeight &&
+                  imageSize.maxWidth >= width &&
+                  imageSize.minHeight <= height
+                ) {
+                  resolve(void 0);
+                } else if (
+                  imageSize.maxWidth &&
+                  imageSize.maxHeight &&
+                  imageSize.maxWidth >= width &&
+                  imageSize.maxHeight >= height
+                ) {
+                  resolve(void 0);
+                } else {
+                  const helpTexts: string[] = [];
+                  if (imageSize.maxWidth) {
+                    helpTexts.push(t('component.upload.maxWidth', [imageSize.maxWidth]));
+                  }
+                  if (imageSize.minWidth) {
+                    helpTexts.push(t('component.upload.minWidth', [imageSize.minWidth]));
+                  }
+                  if (imageSize.maxHeight) {
+                    helpTexts.push(t('component.upload.maxHeight', [imageSize.maxHeight]));
+                  }
+                  if (imageSize.minHeight) {
+                    helpTexts.push(t('component.upload.minHeight', [imageSize.minHeight]));
+                  }
+                  reject('上传图片要求' + helpTexts.join('，'));
+                }
+              }
+            };
+          };
+        });
+      }
 
+      function buildImagesList(file: File, size: number, name: string) {
         const commonItem = {
           uuid: buildUUID(),
           file,
@@ -140,10 +202,9 @@
           percent: 0,
           type: name.split('.').pop(),
         };
+
         // 生成图片缩略图
         if (checkImgType(file)) {
-          // beforeUpload，如果异步会调用自带上传方法
-          // file.thumbUrl = await getBase64(file);
           getBase64WithFile(file).then(({ result: thumbUrl }) => {
             fileListRef.value = [
               ...unref(fileListRef),
@@ -157,6 +218,29 @@
           fileListRef.value = [...unref(fileListRef), commonItem];
         }
         return false;
+      }
+
+      // 上传前校验
+      function beforeUpload(file: File) {
+        const { size, name } = file;
+        const { maxSize, imageSize } = props;
+        // 设置最大值，则判断
+        if (maxSize && file.size / 1024 / 1024 >= maxSize) {
+          createMessage.error(t('component.upload.maxSizeMultiple', [maxSize]));
+          return false;
+        }
+
+        if (imageSize) {
+          checkImageSize(file, imageSize)
+            .then(() => {
+              buildImagesList(file, size, name);
+            })
+            .catch((error) => {
+              createMessage.error(error);
+            });
+        } else {
+          buildImagesList(file, size, name);
+        }
       }
 
       // 删除
