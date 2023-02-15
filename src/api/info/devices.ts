@@ -75,3 +75,19 @@ export function getCamerasListApi(params: GetCamerasListParam) {
     params,
   });
 }
+
+/** 删除设备信息-作者：戴常怡 */
+export function delDeviceApi(id: number) {
+  return defHttp.post<{ code: string }>({
+    url: Api.baseUrl + id,
+  });
+}
+
+/** 批量导出二维码--作者：gbliang */
+export function exportDeviceQRCodeApi(params: { deviceIds: number[] }) {
+  return defHttp.post<BlobPart>({
+    url: Api.baseUrl + 'qrcode/',
+    params,
+    responseType: 'blob',
+  });
+}

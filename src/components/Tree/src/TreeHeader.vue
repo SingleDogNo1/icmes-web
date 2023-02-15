@@ -10,22 +10,21 @@
     >
       <div :class="getInputSearchCls" v-if="search">
         <InputSearch
-          :placeholder="placeholder"
+          :placeholder="t('common.searchText')"
           size="small"
           allowClear
           v-model:value="searchValue"
-          @search="emitChange"
         />
       </div>
       <Dropdown @click.prevent v-if="toolbar">
         <Icon icon="ion:ellipsis-vertical" />
         <template #overlay>
-          <Menu @click="handleMenuClick">
+          <Menu @click="handleMenuClick as any">
             <template v-for="item in toolbarList" :key="item.value">
               <MenuItem v-bind="{ key: item.value }">
                 {{ item.label }}
               </MenuItem>
-              <Menu.Divider v-if="item.divider" />
+              <MenuDivider v-if="item.divider" />
             </template>
           </Menu>
         </template>
@@ -35,21 +34,15 @@
 </template>
 <script lang="ts" setup>
   import { computed, ref, watch, useSlots } from 'vue';
-  import { Dropdown, Menu, MenuItem, InputSearch } from 'ant-design-vue';
+  import { Dropdown, Menu, MenuItem, MenuDivider, InputSearch } from 'ant-design-vue';
   import { Icon } from '/@/components/Icon';
   import { BasicTitle } from '/@/components/Basic';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useDebounceFn } from '@vueuse/core';
   import { createBEM } from '/@/utils/bem';
-  import { ToolbarEnum } from './tree';
-
-  const slots = useSlots();
-  const { t } = useI18n();
-
+  import { ToolbarEnum } from './types';
   const searchValue = ref('');
-
   const [bem] = createBEM('tree-header');
-
   const props = defineProps({
     helpMessage: {
       type: [String, Array] as PropType<string | string[]>,
@@ -62,10 +55,6 @@
     toolbar: {
       type: Boolean,
       default: false,
-    },
-    toolbarOptions: {
-      type: Array as PropType<{ label: string; value: string }[]>,
-      default: () => [],
     },
     checkable: {
       type: Boolean,
@@ -87,13 +76,10 @@
       type: Function,
       default: undefined,
     },
-    placeholder: {
-      type: String,
-      default: '搜索',
-    },
   } as const);
-  const emit = defineEmits(['strictly-change', 'search', 'clickExtraTooltip']);
-
+  const emit = defineEmits(['strictly-change', 'search']);
+  const slots = useSlots();
+  const { t } = useI18n();
   const getInputSearchCls = computed(() => {
     const titleExists = slots.headerTitle || props.title;
     return [
@@ -104,9 +90,8 @@
       },
     ];
   });
-
   const toolbarList = computed(() => {
-    const { checkable, toolbarOptions } = props;
+    const { checkable } = props;
     const defaultToolbarList = [
       { label: t('component.tree.expandAll'), value: ToolbarEnum.EXPAND_ALL },
       {
@@ -115,7 +100,6 @@
         divider: checkable,
       },
     ];
-
     return checkable
       ? [
           { label: t('component.tree.selectAll'), value: ToolbarEnum.SELECT_ALL },
@@ -125,13 +109,11 @@
             divider: checkable,
           },
           ...defaultToolbarList,
-          // { label: t('component.tree.checkStrictly'), value: ToolbarEnum.CHECK_STRICTLY },
-          // { label: t('component.tree.checkUnStrictly'), value: ToolbarEnum.CHECK_UN_STRICTLY },
-          ...toolbarOptions,
+          { label: t('component.tree.checkStrictly'), value: ToolbarEnum.CHECK_STRICTLY },
+          { label: t('component.tree.checkUnStrictly'), value: ToolbarEnum.CHECK_UN_STRICTLY },
         ]
       : defaultToolbarList;
   });
-
   function handleMenuClick(e: { key: ToolbarEnum }) {
     const { key } = e;
     switch (key) {
@@ -147,30 +129,24 @@
       case ToolbarEnum.UN_EXPAND_ALL:
         props.expandAll?.(false);
         break;
-      // case ToolbarEnum.CHECK_STRICTLY:
-      //   emit('strictly-change', false);
-      //   break;
-      // case ToolbarEnum.CHECK_UN_STRICTLY:
-      //   emit('strictly-change', true);
-      //   break;
-      default:
-        emit('clickExtraTooltip', key);
+      case ToolbarEnum.CHECK_STRICTLY:
+        emit('strictly-change', false);
+        break;
+      case ToolbarEnum.CHECK_UN_STRICTLY:
+        emit('strictly-change', true);
+        break;
     }
   }
-
   function emitChange(value?: string): void {
     emit('search', value);
   }
-
   const debounceEmitChange = useDebounceFn(emitChange, 200);
-
   watch(
     () => searchValue.value,
     (v) => {
       debounceEmitChange(v);
     },
   );
-
   watch(
     () => props.searchText,
     (v) => {

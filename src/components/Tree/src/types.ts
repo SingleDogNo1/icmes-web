@@ -19,7 +19,6 @@ export const treeEmits = [
   'change',
   'check',
   'update:searchValue',
-  'click:extraTooltip',
 ];
 
 export interface TreeState {
@@ -60,12 +59,7 @@ export const treeProps = buildProps({
     default: '',
   },
   toolbar: Boolean,
-  toolbarOptions: {
-    type: Array as PropType<{ label: string; value: string }[]>,
-    default: () => [],
-  },
   search: Boolean,
-  placeholder: String,
   searchValue: {
     type: String,
     default: '',
@@ -140,6 +134,7 @@ export const treeProps = buildProps({
     type: Boolean,
     default: false,
   },
+  treeWrapperClassName: String,
 });
 
 export type TreeProps = ExtractPropTypes<typeof treeProps>;
@@ -147,6 +142,7 @@ export type TreeProps = ExtractPropTypes<typeof treeProps>;
 export interface ContextMenuItem {
   label: string;
   icon?: string;
+  hidden?: boolean;
   disabled?: boolean;
   handler?: Fn;
   divider?: boolean;
@@ -191,4 +187,9 @@ export interface TreeActionType {
   updateNodeByKey: (key: string, node: Omit<TreeDataItem, 'key'>) => void;
   setSearchValue: (value: string) => void;
   getSearchValue: () => string;
+  getSelectedNode: (
+    key: KeyType,
+    treeList?: TreeItem[],
+    selectNode?: TreeItem | null,
+  ) => TreeItem | null;
 }

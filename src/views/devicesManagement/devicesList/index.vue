@@ -54,7 +54,9 @@
       </template>
     </BasicTable>
 
-    <EditDeviceDrawer @register="registerDrawer" />
+    <EditDeviceDrawer @register="registerEditDeviceDrawer" />
+
+    <ExportQRCodeDrawer @register="registerExportQRCodeDrawer" />
   </PageWrapper>
 </template>
 
@@ -71,18 +73,22 @@
     ActionItem,
   } from '/@/components/Table';
   import EditDeviceDrawer from './components/EditDeviceDrawer.vue';
+  import ExportQRCodeDrawer from './components/ExportQRCode.vue';
   import { useRouter, useRoute } from 'vue-router';
   import { useUserStore } from '/@/store/modules/user';
-  import { getDevicesListApi } from '/@/api/info/devices';
+  import { getDevicesListApi, delDeviceApi, exportDeviceQRCodeApi } from '/@/api/info/devices';
   import { DeviceModel, GetDevicesListParam } from '/@/api/info/model/devicesModel';
   import { Popover } from 'ant-design-vue';
   import { useUserState } from '/@/hooks/web/useUserState';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import { downloadByData } from '/@/utils/file/download';
   import { useDrawer } from '/@/components/Drawer';
   import { schemas, columns } from './data';
   import { deviceListToTree } from './utils';
 
   const router = useRouter();
   const { getDictName } = useUserState();
+  const { createMessage } = useMessage();
 
   const {
     meta: { code },
@@ -117,7 +123,8 @@
     },
   });
 
-  const [registerDrawer, { openDrawer: openEditDeviceDrawer }] = useDrawer();
+  const [registerEditDeviceDrawer, { openDrawer: openEditDeviceDrawer }] = useDrawer();
+  const [registerExportQRCodeDrawer, { openDrawer: openExportQRCodeDrawer }] = useDrawer();
 
   onMounted(() => {
     search();
@@ -162,7 +169,7 @@
   }
 
   function exportQRCode() {
-    console.log('exportQRCode :>> ');
+    openExportQRCodeDrawer(true, {});
   }
 
   function showDeviceDetail(record: DeviceModel) {
@@ -223,7 +230,6 @@
         label: '新增附属',
         disabled: !hasEditPermission,
         onClick: () => {
-          console.log('新增附属 :>> ', record);
           openEditDeviceDrawer(true, {
             method: 'edit',
             type: record.isPrimary ? 'primary' : 'attach',
@@ -235,8 +241,13 @@
         label: '下载二维码',
         ifShow: record.isPrimary,
         disabled: !hasQRCodePermission,
-        onClick: () => {
-          console.log('下载二维码 :>> ', record);
+        onClick: async () => {
+          try {
+            const data = await exportDeviceQRCodeApi({ deviceIds: [record.id] });
+            downloadByData(data, record.name + '.zip');
+          } catch (error: any) {
+            throw new Error(error);
+          }
         },
       },
       {
@@ -246,7 +257,13 @@
         popConfirm: {
           title: '数据删除后将无法恢复，确认删除数据？',
           confirm: async () => {
-            console.log('删除操作 :>> ', record);
+            try {
+              await delDeviceApi(record.id);
+              createMessage.success('删除成功');
+              await search();
+            } catch (error: any) {
+              throw new Error(error);
+            }
           },
         },
       },

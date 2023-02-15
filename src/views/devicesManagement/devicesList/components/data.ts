@@ -33,24 +33,34 @@ async function getProcessTree(params) {
   }
 }
 
-/**
- {
-
-  "isPrimary": true, // 是否是主设备
-  "parentId": 0, // 主设备 -1 ，附属设备为主设备 id
-  "photoList": [
-    { "order": 0, "photo": "string" }
-  ],
-  "powerCutRelativeDeviceIds": [0],
-  // "purchaseDate": 0, 购买日期
-
-  "vendorId": 0
-}
- */
-
 export const editDeviceSchemas = (code: string): FormSchema[] => {
   const hasEditPricePermission = getFeature[code!].DEVICE_PRICE_VIEW;
   return [
+    {
+      field: 'isPrimary',
+      label: '是否是主设备',
+      component: 'Checkbox',
+      show: false,
+    },
+    {
+      field: 'parentId',
+      label: '主设备 ID',
+      component: 'Input',
+      show: false,
+    },
+    {
+      field: 'powerCutRelativeDeviceIds',
+      label: '停电关联设备',
+      component: 'Checkbox',
+      defaultValue: [],
+      show: false,
+    },
+    {
+      field: 'vendorId',
+      label: '采购商用厂商标识符',
+      component: 'Checkbox',
+      show: false,
+    },
     {
       field: 'processNo',
       label: '设备编号',

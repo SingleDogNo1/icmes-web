@@ -28,7 +28,7 @@ export interface GetDevicesListParam {
   /** 是否按工艺系统分类返回一棵假树 */
   isTreeForProcessId?: boolean;
   /** 位置标识符列表 */
-  location?: string[];
+  location?: string | number[];
   /** 排序的字段名 */
   orderBy?: string;
   /** 权限组织id集合 */
