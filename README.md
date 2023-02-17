@@ -1,8 +1,6 @@
 # ICMES
 
-## chore
-
-- [x] vite > 3.1.x 版本不兼容插件`vite-plugin-theme`, 报错`Uncaught ReferenceError: COLOR_PLUGIN_OUTPUT_FILE_NAME is not defined`。
+## 使用 pinia 中的数据时，需要先 unref 解除绑定，否则操作时会影响 pinia 数据本身
 
 ## 业务开发常见问题
 

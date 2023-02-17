@@ -1,5 +1,12 @@
 <template>
-  <BasicDrawer v-bind="$attrs" @register="registerDrawer" showFooter width="800" @ok="handleSubmit">
+  <BasicDrawer
+    v-bind="$attrs"
+    @register="registerDrawer"
+    showFooter
+    width="800"
+    @ok="handleSubmit"
+    @close="handleClose"
+  >
     <template #title>
       <span> {{ title }} </span>
       <a-button size="small" type="primary" class="ml-3">导入助手</a-button>
@@ -13,6 +20,7 @@
               v-if="!item.extraDisplayMode"
               v-model:value="item.value"
               :addon-after="item.unit"
+              :disabled="drawerMethod === 'view'"
             />
             <Textarea v-else v-model:value="item.value" :auto-size="{ minRows: 2, maxRows: 5 }" />
           </FormItem>
@@ -28,9 +36,11 @@
   import { BasicForm, useForm } from '/@/components/Form';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { DeviceModel } from '/@/api/info/model/devicesModel';
+  import { getDeviceDetailApi } from '/@/api/info/devices';
   import { FormItem, FormItemRest, Textarea } from 'ant-design-vue';
   import { editDeviceSchemas } from './data';
   import { useRoute } from 'vue-router';
+  import { useUserStore } from '/@/store/modules/user';
 
   interface Data {
     // 主设备 | 附属设备
@@ -44,12 +54,15 @@
   const {
     meta: { code: permissionCode },
   } = useRoute();
-
+  const { getFeature } = useUserStore();
+  const hasEditPermission = getFeature[permissionCode!].POWER_CUT_CONFIG;
+  console.log('hasEditPermission :>> ', hasEditPermission);
   const emit = defineEmits(['success']);
   const drawerType = ref('');
-  const drawerMethod = ref('');
+  const drawerMethod = ref<'create' | 'edit' | 'view'>();
+  const drawerMethodText = ref('');
 
-  const [registerForm, { resetFields, validate }] = useForm({
+  const [registerForm, { resetFields, validate, setFieldsValue, setProps }] = useForm({
     schemas: editDeviceSchemas(permissionCode!),
     showActionButtonGroup: false,
   });
@@ -59,11 +72,26 @@
     setDrawerProps({ confirmLoading: false });
     console.log('record :>> ', record);
     drawerType.value = record.type === 'primary' ? '设备台账' : '附属设备';
-    drawerMethod.value =
+    drawerMethod.value = record.method;
+    drawerMethodText.value =
       record.method === 'create' ? '新建' : record.method === 'edit' ? '编辑' : '查看';
+
+    if (record.method !== 'create' && record.data) {
+      console.log('record.data. :>> ', record.data.id);
+      const data = await getDeviceDetailApi(record.data.id);
+      console.log('data :>> ', data);
+      // data.manufacturingDate = data.manufacturingDate || 1676537083220;
+      // data.purchaseDate = data.purchaseDate || 1676537083220;
+      setFieldsValue(data);
+      if (record.method === 'view') {
+        setProps({
+          disabled: true,
+        });
+      }
+    }
   });
 
-  const title = computed(() => drawerMethod.value + drawerType.value);
+  const title = computed(() => drawerMethodText.value + drawerType.value);
 
   async function handleSubmit() {
     try {
@@ -75,5 +103,9 @@
     } finally {
       setDrawerProps({ confirmLoading: false });
     }
+  }
+
+  function handleClose() {
+    setProps({ disabled: false });
   }
 </script>

@@ -26,6 +26,7 @@ import {
   ACCOUNT_KEY,
   ACCOUNT_TREE_KEY,
   ORGANIZATION_KEY,
+  ORGANIZATION_TREE_KEY,
 } from '/@/enums/userEnums';
 import { DEFAULT_CACHE_TIME } from '/@/settings/encryptionSetting';
 import { toRaw } from 'vue';
@@ -57,6 +58,7 @@ interface BasicStore {
   [ACCOUNT_KEY]: OrganizationEmployeeModel;
   [ACCOUNT_TREE_KEY]: OrganizationEmployeeModel[];
   [ORGANIZATION_KEY]: OrganizationsFullNameModel[];
+  [ORGANIZATION_TREE_KEY]: OrganizationsFullNameModel[];
 }
 
 type LocalStore = BasicStore;

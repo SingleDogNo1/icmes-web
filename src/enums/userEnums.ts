@@ -19,3 +19,4 @@ export const DEVICE_LIST_KEY = 'DEVICE__LIST__';
 export const ACCOUNT_TREE_KEY = 'ACCOUNT__TREE__';
 export const ACCOUNT_KEY = 'ACCOUNT__';
 export const ORGANIZATION_KEY = 'USER__ORGANIZATION__';
+export const ORGANIZATION_TREE_KEY = 'USER__ORGANIZATION__TREE__';

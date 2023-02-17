@@ -16,7 +16,7 @@ import { Image } from '/@/components/Image';
 const { getFeature } = useUserStoreWithOut();
 
 const { getDictOptions } = useUserState();
-const { getOrganizationsList, getToken: token } = useUserStoreWithOut();
+const { getOrganizationTree: organizationTree, getToken: token } = useUserStoreWithOut();
 const { t } = useI18n();
 const { apiUrl } = useGlobSetting();
 const categoryList = ref<any[]>([]);
@@ -51,7 +51,7 @@ export const editDeviceSchemas = (code: string): FormSchema[] => {
     {
       field: 'powerCutRelativeDeviceIds',
       label: '停电关联设备',
-      component: 'Checkbox',
+      component: 'Select',
       defaultValue: [],
       show: false,
     },
@@ -80,10 +80,10 @@ export const editDeviceSchemas = (code: string): FormSchema[] => {
         params: { name: '' },
         resultField: 'items',
         labelField: 'name',
-        valueField: 'realId',
+        valueField: 'code',
         fieldNames: {
           label: 'name',
-          value: 'realId',
+          value: 'code',
         },
         immediate: true,
         onOptionsReady: (options) => {
@@ -172,9 +172,9 @@ export const editDeviceSchemas = (code: string): FormSchema[] => {
       label: '出厂日期',
       component: 'DatePicker',
       colProps: { span: 12 },
-      componentProps: {
-        valueFormat: 'x',
-      },
+      // componentProps: {
+      //   valueFormat: 'x',
+      // },
     },
     {
       field: 'organizationId',
@@ -185,12 +185,12 @@ export const editDeviceSchemas = (code: string): FormSchema[] => {
       componentProps: {
         showSearch: true,
         maxlength: 15,
-        treeData: listToTreeAsParentId(getOrganizationsList!),
+        treeData: organizationTree,
         dropdownStyle: { maxHeight: '400px', overflow: 'auto' },
         fieldNames: {
           label: 'name',
           key: 'id',
-          value: 'id',
+          value: 'name',
         },
       },
     },
@@ -213,6 +213,8 @@ export const editDeviceSchemas = (code: string): FormSchema[] => {
         api: getProcessTree,
         showSearch: true,
         treeNodeFilterProp: 'name',
+        labelField: 'name',
+        valueField: 'code',
         fieldNames: {
           label: 'name',
           value: 'id',
@@ -230,9 +232,9 @@ export const editDeviceSchemas = (code: string): FormSchema[] => {
       label: '投运日期',
       component: 'DatePicker',
       colProps: { span: 12 },
-      componentProps: {
-        valueFormat: 'x',
-      },
+      // componentProps: {
+      //   valueFormat: 'x',
+      // },
     },
     {
       field: 'locationId',
@@ -246,7 +248,7 @@ export const editDeviceSchemas = (code: string): FormSchema[] => {
         api: getLocationListApi,
         resultField: 'items',
         labelField: 'name',
-        valueField: 'id',
+        valueField: 'code',
         fieldNames: {
           label: 'name',
           value: 'id',

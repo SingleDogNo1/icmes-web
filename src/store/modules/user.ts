@@ -18,6 +18,7 @@ import {
   ACCOUNT_KEY,
   ACCOUNT_TREE_KEY,
   ORGANIZATION_KEY,
+  ORGANIZATION_TREE_KEY,
 } from '/@/enums/userEnums';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
 import {
@@ -82,6 +83,7 @@ interface UserState {
   account: Nullable<OrganizationEmployeeModel[]>;
   accountTree: Nullable<OrganizationEmployeeModel>;
   organizations: Nullable<OrganizationsFullNameModel[]>;
+  organizationTree: Nullable<OrganizationsFullNameModel[]>;
 }
 
 export const useUserStore = defineStore({
@@ -109,6 +111,7 @@ export const useUserStore = defineStore({
     account: null,
     accountTree: null,
     organizations: null,
+    organizationTree: null,
   }),
   getters: {
     getUserInfo(): LoginResultModel | null {
@@ -156,6 +159,11 @@ export const useUserStore = defineStore({
     },
     getOrganizationsList(): OrganizationsFullNameModel[] | null {
       return this.organizations || getAuthCache<OrganizationsFullNameModel[]>(ORGANIZATION_KEY);
+    },
+    getOrganizationTree(): OrganizationsFullNameModel[] | null {
+      return (
+        this.organizationTree || getAuthCache<OrganizationsFullNameModel[]>(ORGANIZATION_TREE_KEY)
+      );
     },
     getSessionTimeout(): boolean {
       return !!this.sessionTimeout;
@@ -225,6 +233,10 @@ export const useUserStore = defineStore({
     setOrganizationsList(organizations: OrganizationsFullNameModel[] | null) {
       this.organizations = organizations;
       setAuthCache(ORGANIZATION_KEY, organizations);
+    },
+    setOrganizationTree(organizationTree: OrganizationsFullNameModel[] | null) {
+      this.organizationTree = organizationTree;
+      setAuthCache(ORGANIZATION_TREE_KEY, organizationTree);
     },
     setSessionTimeout(flag: boolean) {
       this.sessionTimeout = flag;
@@ -370,8 +382,10 @@ export const useUserStore = defineStore({
             this.setAllAccount(allAccount || []);
 
             const allAccountTree = listToTreeAsParentId(allAccount);
+            const organizationTree = listToTreeAsParentId(organizationsList!);
             this.setAllAccountTree(allAccountTree as unknown as OrganizationEmployeeModel);
             this.setOrganizationsList(organizationsList);
+            this.setOrganizationTree(organizationTree);
           } catch (error) {
             Promise.reject(error);
             console.log(error);
@@ -462,6 +476,7 @@ export const useUserStore = defineStore({
       this.setAllAccount(null);
       this.setAllAccountTree(null);
       this.setOrganizationsList(null);
+      this.setOrganizationTree(null);
       this.setSessionTimeout(false);
       this.setUserInfo(null);
       goLogin && router.push(PageEnum.BASE_LOGIN);

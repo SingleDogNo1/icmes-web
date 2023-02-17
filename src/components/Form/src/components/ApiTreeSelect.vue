@@ -87,6 +87,7 @@
         if (tree_data.length > 1) {
           // 是扁平结构
           treeData.value = listToTreeAsParentId(tree_data);
+          console.log('tree_data :>> ', treeData.value);
         } else {
           treeData.value = tree_data;
         }

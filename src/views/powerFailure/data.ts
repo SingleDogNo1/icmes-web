@@ -4,13 +4,9 @@ import type { FormSchema } from '/@/components/Form/index';
 import type { BasicColumn } from '/@/components/Table';
 import { getPowerCutConfigListApi } from '/@/api/info/powerCutConfig';
 import { useUserStoreWithOut } from '/@/store/modules/user';
-import { listToTreeAsParentId } from '/@/utils/helper/treeHelper';
-import { cloneDeep } from 'lodash-es';
 import { useUserState } from '/@/hooks/web/useUserState';
 
-const { getOrganizationsList } = useUserStoreWithOut();
-const orgList = cloneDeep(getOrganizationsList);
-const org_tree = listToTreeAsParentId(orgList!);
+const { getOrganizationTree: org_tree } = useUserStoreWithOut();
 
 const { getDictOptions } = useUserState();
 const powerCutStatusOptions = getDictOptions('BT_POWER_CUT_STATUS');

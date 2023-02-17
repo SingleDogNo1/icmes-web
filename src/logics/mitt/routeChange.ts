@@ -27,5 +27,5 @@ export function listenerRouteChange(
 }
 
 export function removeTabChangeListener() {
-  emitter.clear();
+  emitter.all.clear();
 }

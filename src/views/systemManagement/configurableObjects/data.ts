@@ -4,13 +4,8 @@ import { getProcessListApi } from '/@/api/info/process';
 import { getLocationListApi } from '/@/api/info/location';
 import { listToTreeAsParentId } from '/@/utils/helper/treeHelper';
 import { useUserStoreWithOut } from '/@/store/modules/user';
-import { cloneDeep } from 'lodash-es';
 
-const { getOrganizationsList } = useUserStoreWithOut();
-
-const organizationTree = listToTreeAsParentId(cloneDeep(getOrganizationsList) || []);
-
-console.log('getOrganizationsList :>> ', getOrganizationsList, organizationTree);
+const { getOrganizationTree: organizationTree } = useUserStoreWithOut();
 
 async function getProcessTree(params) {
   try {

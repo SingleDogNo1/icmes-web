@@ -12,6 +12,7 @@ import {
   DeviceCollection,
   GetCamerasListParam,
   GetCamerasListResultModel,
+  DeviceModel,
 } from './model/devicesModel';
 
 enum Api {
@@ -89,5 +90,14 @@ export function exportDeviceQRCodeApi(params: { deviceIds: number[] }) {
     url: Api.baseUrl + 'qrcode/',
     params,
     responseType: 'blob',
+  });
+}
+
+// /devices/{id}
+// 获取设备详细信息-作者：戴常怡
+
+export function getDeviceDetailApi(id: number | string) {
+  return defHttp.get<DeviceModel>({
+    url: Api.baseUrl + id,
   });
 }

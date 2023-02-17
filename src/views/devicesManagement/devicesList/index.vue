@@ -7,7 +7,7 @@
     </BasicForm>
     <BasicTable @register="registerTable" :loading="deviceTableLoading">
       <template #tableTitle>
-        <a-button :disabled="!hasEditPermission" type="primary" @click="addDevice">
+        <a-button :disabled="!hasEditPermission" type="primary" class="mr-2" @click="addDevice">
           新建设备台账
         </a-button>
         <a-button :disabled="!hasEditPermission" @click="addAttachDevice">新建附属设备</a-button>
