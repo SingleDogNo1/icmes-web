@@ -29,6 +29,14 @@ const devicesManagement: BackModeRouteRecordRaw = {
         currentActiveMenu: '/device/list',
       },
     },
+    {
+      path: 'type',
+      name: 'devicesManagementType',
+      component: '/devicesManagement/devicesType/index',
+      meta: {
+        code: 23100,
+      },
+    },
   ],
 };
 

@@ -52,3 +52,33 @@ interface SpecDataModel {
   typeName: string;
   unit: string;
 }
+
+export interface CreateDeviceCategoryParams {
+  /** 设备类型编号 */
+  code: string;
+  /** 设备图标 */
+  icon: string;
+  /** 设备类型是否是主设备 */
+  isPrimary: boolean;
+  /** 设备类型名称 */
+  name: string;
+  /** 设备参数ids */
+  specDataIds: number[];
+}
+
+export interface DeviceCategoryCollection {
+  totalCount: number;
+  totalPages: number;
+  items: Nullable<DeviceCategoryModel[]>;
+}
+
+export interface UpdateDevicesCategoryParams {
+  /** 图标 */
+  icon: string;
+  /** 设备类型名称 */
+  name: string;
+  /** 设备参数ids */
+  specDataIds: number[];
+  /** 版本号 */
+  versionTag: string;
+}

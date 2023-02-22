@@ -3,6 +3,10 @@ import { FileBasicColumn } from './typing';
 import type { BasicColumn } from '/@/components/Table';
 
 export const basicProps = {
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
   helpText: {
     type: String as PropType<string>,
     default: '',
