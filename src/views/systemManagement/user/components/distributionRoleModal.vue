@@ -11,12 +11,12 @@
     <Row :gutter="16" class="h-full">
       <Col :span="8" class="h-full overflow-hidden">
         <BasicTree
-          class="border"
+          class="border border-gray-300"
           ref="treeRef"
           search
           :treeData="treeData"
           :loading="loading"
-          :replace-fields="{ key: 'id' }"
+          :field-names="{ key: 'id' }"
         />
       </Col>
       <Col :span="16">

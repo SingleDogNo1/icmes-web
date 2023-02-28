@@ -3,7 +3,7 @@
     :treeData="(treeData as any)"
     ref="treeRef"
     :checkable="true"
-    :replace-fields="{ title: 'label', key: 'id' }"
+    :field-names="{ title: 'label', key: 'id' }"
     :default-expand-level="1"
     :checked-keys="checkedKeys"
     :disabled="disabled"

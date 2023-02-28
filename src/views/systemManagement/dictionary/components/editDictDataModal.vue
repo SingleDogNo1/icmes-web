@@ -110,8 +110,6 @@
                     }, [] as string[])
                   : [];
 
-                console.log('exist_names :>> ', exist_names, value, exist_names.includes(value));
-
                 if (exist_names.includes(value)) {
                   return Promise.reject('字典名称重复，请重新输入');
                 } else {

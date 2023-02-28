@@ -3,7 +3,7 @@
     <div class="h-full p-4 mt-4 overflow-auto bg-white">
       <Tabs type="card">
         <TabPane key="permission" tab="用户权限">
-          <PageWrapper contentFullHeight fixedHeight dense>
+          <PageWrapper contentFullHeight dense>
             <RoleTree :disabled="true" :checked-keys="rowPermission" />
           </PageWrapper>
         </TabPane>

@@ -1,6 +1,6 @@
 <template>
   <PageWrapper contentFullHeight fixedHeight dense>
-    <div class="h-full p-4 mt-4 overflow-auto bg-white">
+    <div class="h-full p-4 mt-4 bg-white">
       <a-button class="mb-2.5" type="primary" @click="openModal(true, {})">新增角色</a-button>
       <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
         <template #action="{ record }">
@@ -79,10 +79,12 @@
   watch(
     () => props.searchData,
     (value) => {
-      getRolesList(value);
-      setPagination({
-        current: value.pageNo,
-      });
+      if (value) {
+        getRolesList(value);
+        setPagination({
+          current: value.pageNo,
+        });
+      }
     },
     {
       deep: true,

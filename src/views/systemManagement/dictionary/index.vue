@@ -64,7 +64,6 @@
     const value = getFieldsValue() as GetDictTypesParam;
 
     const form = { ...value, ...page };
-    console.log('searchData :>> ', form);
     searchData.value = form;
   }
 

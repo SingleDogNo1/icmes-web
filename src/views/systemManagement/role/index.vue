@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, nextTick, Ref } from 'vue';
+  import { ref, nextTick, Ref, onMounted } from 'vue';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { BasicForm, useForm } from '/@/components/Form';
   import { schemas } from './data';
@@ -63,6 +63,10 @@
     layout: 'inline',
     schemas,
     autoSubmitOnEnter: true,
+  });
+
+  onMounted(() => {
+    handleSubmit();
   });
 
   function handleSubmit() {
@@ -109,8 +113,6 @@
     const userData = await getRolesUserList(selectedRow.value?.id);
     rowUserData.value = userData;
   }
-
-  handleSubmit();
 </script>
 
 <style scoped lang="less">

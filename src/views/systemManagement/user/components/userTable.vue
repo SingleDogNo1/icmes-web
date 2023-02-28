@@ -1,8 +1,10 @@
 <template>
   <PageWrapper contentFullHeight fixedHeight dense>
-    <div class="h-full p-4 mt-4 overflow-auto bg-white">
-      <a-button class="mb-2.5" type="primary" @click="openModal(true, {})">新增账号</a-button>
+    <div class="h-full p-4 mt-4 bg-white">
       <BasicTable @register="registerTable" :loading="loading" @row-click="handleClickRow">
+        <template #tableTitle>
+          <a-button class="mb-2.5" type="primary" @click="openModal(true, {})"> 新增账号 </a-button>
+        </template>
         <template #employeeId="{ record }">
           <LockTwoTone twoToneColor="#f00" v-if="record.locked" />
           <UnlockTwoTone twoToneColor="#ace" v-else />
