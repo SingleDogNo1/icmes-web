@@ -5,6 +5,7 @@
       :title="title"
       v-bind="omit($attrs, 'class')"
       ref="headerRef"
+      class="border-b border-gray-200"
       @back="() => go(-1)"
       v-if="content || $slots.headerContent || title || getHeaderSlots.length"
     >
@@ -55,7 +56,7 @@
     inheritAttrs: false,
     props: {
       title: propTypes.string,
-      needBack: propTypes.bool.def(false),
+      needBack: propTypes.bool.def(true),
       dense: propTypes.bool,
       ghost: propTypes.bool,
       content: propTypes.string,

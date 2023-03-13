@@ -30,9 +30,10 @@ export function useFormValues({
       if (!key || isFunction(value)) {
         continue;
       }
+      const schemas = unref(getSchema);
       const transformDateFunc = unref(getProps).transformDateFunc;
       if (isObject(value)) {
-        value = transformDateFunc?.(value);
+        value = transformDateFunc?.(value, key, schemas);
       }
 
       if (isArray(value) && value[0]?.format && value[1]?.format) {

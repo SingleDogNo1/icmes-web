@@ -73,7 +73,7 @@ export function useUserState() {
    */
   function getDictMap(code) {
     const TYPE = getDictByType(code).options;
-    const map = {};
+    const map: Record<string, string> = {};
 
     for (const key in TYPE) {
       const value = TYPE[key];

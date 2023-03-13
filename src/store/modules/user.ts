@@ -1,4 +1,5 @@
 import type { Menu, Dict } from '/@/api/info/model/configModel';
+import { cloneDeep } from 'lodash-es';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
 import { PageEnum } from '/@/enums/pageEnum';
@@ -378,10 +379,12 @@ export const useUserStore = defineStore({
               pageSize: 0,
             });
 
-            this.setDeviceList(deviceList || []);
-            this.setAllAccount(allAccount || []);
+            const employees = allAccount.filter((v) => v.isEmployee);
 
-            const allAccountTree = listToTreeAsParentId(allAccount);
+            this.setDeviceList(deviceList || []);
+            this.setAllAccount(employees || []);
+
+            const allAccountTree = listToTreeAsParentId(cloneDeep(allAccount));
             const organizationTree = listToTreeAsParentId(organizationsList!);
             this.setAllAccountTree(allAccountTree as unknown as OrganizationEmployeeModel);
             this.setOrganizationsList(organizationsList);

@@ -1,16 +1,13 @@
 <template>
-  <div> {{ msg }} </div>
+  <PageWrapper title="title" contentFullHeight contentBackground>
+    <div> {{ msg }} </div>
+  </PageWrapper>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'ProdManageDispatchDetail',
-  };
-</script>
-
-<script lang="ts" setup>
+<script lang="ts" setup name="ProdManageDispatchDetail">
   import { ref } from 'vue';
   import { useRoute } from 'vue-router';
+  import { PageWrapper } from '/@/components/Page';
 
   const {
     params: { id: routeId },

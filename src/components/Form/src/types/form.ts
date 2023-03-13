@@ -118,7 +118,7 @@ export interface FormProps {
 
   resetFunc?: () => Promise<void>;
   submitFunc?: () => Promise<void>;
-  transformDateFunc?: (date: any) => string;
+  transformDateFunc?: (date: any, key?: any, schemas?: any) => string;
   colon?: boolean;
 }
 export interface FormSchema {

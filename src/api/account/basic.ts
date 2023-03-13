@@ -17,7 +17,7 @@ import {
 import { GetRoleListByIdParams, GetRoleListByIdResultModel } from './model/rolesModel';
 
 enum Api {
-  getPermission = '/account/permission',
+  baseUrl = '/account/',
   getAccountList = '/account/list/',
   editAccount = '/account/',
   uploadAvatar = '/account/profile/avatar',
@@ -26,7 +26,7 @@ enum Api {
 
 /** 获取当前用户权限--作者：徐宏亮 */
 export function getPermissionApi() {
-  return defHttp.get<PermissionResultModel>({ url: Api.getPermission });
+  return defHttp.get<PermissionResultModel>({ url: Api.baseUrl + 'permission' });
 }
 
 /** 获取账号列表--作者：徐宏亮 */
