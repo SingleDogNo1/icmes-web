@@ -1,3 +1,4 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
 import { PowerCutFormFullModel } from './basicModel';
 import { AxiosRequestConfig, AxiosResponseHeaders } from 'axios';
 
@@ -37,8 +38,4 @@ export interface ExportPowerCutTicketResultModel {
   statusText: string;
 }
 
-export interface GetPowerCutFormListResultModel {
-  items: Nullable<PowerCutFormFullModel[]>;
-  totalCount: number;
-  totalPages: number;
-}
+export type GetPowerCutFormListResultModel = BasicFetchListResult<PowerCutFormFullModel>;

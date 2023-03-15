@@ -1,3 +1,4 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
 import {
   workflowObjectTypeEnum,
   notificationPhaseEnum,
@@ -16,14 +17,6 @@ export interface GetReminderListParam {
   workflowNodeId: number;
 }
 
-export interface GetReminderListResultModel {
-  items: Nullable<ReminderModel[]>;
-  /** 数据总条数 */
-  totalCount: number;
-  /** 数据总页数 */
-  totalPages: number;
-}
-
 export interface ReminderModel {
   id: number;
   isWorkingShiftNoticeOn: boolean;
@@ -36,3 +29,5 @@ export interface ReminderModel {
   versionTag: string;
   workflowNodeId: number;
 }
+
+export type GetReminderListResultModel = BasicFetchListResult<ReminderModel>;

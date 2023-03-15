@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 export interface GetConfigurableObjectsListParam {
   /** 是否正序 */
   ascending: true;
@@ -9,12 +11,6 @@ export interface GetConfigurableObjectsListParam {
   pageNo: number;
   /** 每页多少条数据(0 表示不分页) */
   pageSize: number;
-}
-
-export interface GetConfigurableObjectsListResultModel {
-  items: Nullable<ConfigurableObjectFullModel[]>;
-  totalCount: number;
-  totalPages: number;
 }
 
 export interface ConfigurableObjectModel {
@@ -60,6 +56,9 @@ export interface ConfigurableObjectFullModel extends ConfigurableObjectModel {
   /** 伪唯一标识符(C+Id: 配点对象; D+Id: 设备) */
   unionId: string;
 }
+
+export type GetConfigurableObjectsListResultModel =
+  BasicFetchListResult<ConfigurableObjectFullModel>;
 
 export enum TypeEnum {
   /** 配点对象 */

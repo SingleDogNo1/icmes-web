@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 /** 通过 ID 获取账号角色列表接口参数 */
 export interface GetRoleListByIdParams {
   /** 正序倒序 */
@@ -10,13 +12,6 @@ export interface GetRoleListByIdParams {
   pageSize: number;
 }
 
-/** 通过 ID 获取账号角色列表接口返回数据 */
-export interface GetRoleListByIdResultModel {
-  items: Nullable<AccountRoleModel[]>;
-  totalCount: number;
-  totalPages: number;
-}
-
 export interface AccountRoleModel {
   assId: number;
   fullOrgName: string;
@@ -26,6 +21,9 @@ export interface AccountRoleModel {
   roleId: number;
   roleName: string;
 }
+
+/** 通过 ID 获取账号角色列表接口返回数据 */
+export type GetRoleListByIdResultModel = BasicFetchListResult<AccountRoleModel>;
 
 export interface GetRoleListParams {
   /** 正序倒序 */
@@ -46,12 +44,6 @@ export interface GetRoleListParams {
   pageSize?: number;
 }
 
-export interface GetRoleListResultModel {
-  totalCount: number;
-  totalPages: number;
-  items: Nullable<RoleModel[]>;
-}
-
 export interface RoleModel {
   code: string;
   id: number;
@@ -60,6 +52,8 @@ export interface RoleModel {
   remark: string;
   versionTag: string;
 }
+
+export type GetRoleListResultModel = BasicFetchListResult<RoleModel>;
 
 export interface AddRoleParams {
   /** 角色Id */
@@ -117,15 +111,11 @@ export interface GetAccountOrgParams {
   pageNo: number;
 }
 
-export interface GetAccountOrgResultModel {
-  totalCount: number;
-  totalPages: number;
-  items: Nullable<AccountOrgModel[]>;
-}
-
 export interface AccountOrgModel {
   code: string;
   fullOrgName: string;
   id: number;
   name: string;
 }
+
+export type GetAccountOrgResultModel = BasicFetchListResult<AccountOrgModel>;

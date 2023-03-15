@@ -1,3 +1,4 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
 export interface PermissionResultModel {
   featureScopes: any;
   features: any;
@@ -20,12 +21,6 @@ export interface GetAccountListParams {
   pageSize: number;
   /** 专用设备号 */
   specialDevice?: string;
-}
-
-export interface GetAccountListModel {
-  items: Nullable<AccountModel[]>;
-  totalCount: number;
-  totalPages: number;
 }
 
 export interface AccountModel {
@@ -52,6 +47,8 @@ export interface AccountModel {
   /** 用于高并发的数据版本控制 */
   versionTag: string;
 }
+
+export type GetAccountListModel = BasicFetchListResult<AccountModel>;
 
 export interface EditAccountParams {
   /** 员工工号 */
@@ -109,12 +106,6 @@ export interface getAssignmentParams {
   pageSize: number;
 }
 
-export interface getAssignmentAgentResultModel {
-  items: Nullable<AccountConsignProxyModel[]>;
-  totalCount: number;
-  totalPages: number;
-}
-
 export interface AccountConsignProxyModel {
   assId: number;
   assignProxyCode: string;
@@ -131,6 +122,8 @@ export interface AccountConsignProxyModel {
   roleName: string;
   versionTag: string;
 }
+
+export type getAssignmentAgentResultModel = BasicFetchListResult<AccountConsignProxyModel>;
 
 export interface AccountAssignProxyModel {
   assId: number;
@@ -149,11 +142,8 @@ export interface AccountAssignProxyModel {
   roleName: string;
   versionTag: string;
 }
-export interface getAssignmentProxiesResultModel {
-  items: Nullable<AccountAssignProxyModel[]>;
-  totalCount: number;
-  totalPages: number;
-}
+
+export type getAssignmentProxiesResultModel = BasicFetchListResult<AccountAssignProxyModel>;
 
 export interface ChangePWDParams {
   /** 确认密码 */

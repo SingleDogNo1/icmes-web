@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 export interface GetProcessListParam {
   /** 是否正序 */
   ascending?: true;
@@ -19,12 +21,6 @@ export interface GetProcessListParam {
   pageSize?: number;
   /** 父级工艺系统Id */
   parentId?: number;
-}
-
-export interface GetProcessListResultModel {
-  items: Nullable<ProcessModel[]>;
-  totalCount: number;
-  totalPages: number;
 }
 
 export interface ProcessModel {
@@ -55,3 +51,5 @@ export interface ProcessModel {
   /** 用于高并发的数据版本控制 */
   versionTag: string;
 }
+
+export type GetProcessListResultModel = BasicFetchListResult<ProcessModel>;

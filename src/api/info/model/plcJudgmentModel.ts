@@ -1,4 +1,6 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
 import { DevicePLCDetectTypeEnum } from '/@/enums/plcJudgmentEnum';
+
 export interface GetPowerJudgmentParams {
   /** 正序倒序 **/
   ascending?: boolean;
@@ -10,12 +12,6 @@ export interface GetPowerJudgmentParams {
   pageSize?: number;
   /** 停送电业务节点 **/
   powerBusinessNode?: string;
-}
-
-export interface PlcJudgmentRuleCollectionModal {
-  items: Nullable<PlcJudgmentRuleModel[]>;
-  totalCount: number;
-  totalPages: number;
 }
 
 export interface PlcJudgmentRuleModel {
@@ -40,6 +36,8 @@ export interface PlcJudgmentRuleModel {
   /** 策略编号 **/
   strategyNumber: string;
 }
+
+export type PlcJudgmentRuleCollectionModal = BasicFetchListResult<PlcJudgmentRuleModel>;
 
 export interface EditPowerJudgmentParams {
   /** 描述 **/

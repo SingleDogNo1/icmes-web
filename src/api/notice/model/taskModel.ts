@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 export interface GetTaskListParams {
   /** 是否正序 */
   ascending?: boolean;
@@ -14,12 +16,6 @@ export interface GetTaskListParams {
   status?: number[];
 }
 
-export interface GetTaskListResultModel {
-  totalCount: number;
-  totalPages: number;
-  items: Nullable<TaskModel[]>;
-}
-
 export interface TaskModel {
   belongeUserId: number;
   businessCreateUserId: number;
@@ -32,3 +28,5 @@ export interface TaskModel {
   taskStatus: number;
   updateTime: number;
 }
+
+export type GetTaskListResultModel = BasicFetchListResult<TaskModel>;

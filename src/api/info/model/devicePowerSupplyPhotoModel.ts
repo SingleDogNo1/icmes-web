@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 /** 获取系统配置接口返回数据 */
 export interface GetDevicePowerSupplyPhotoListParams {
   /** 模糊查询参数 */
@@ -6,13 +8,6 @@ export interface GetDevicePowerSupplyPhotoListParams {
   pageNo?: number;
   /** 一页多少条记录 0标识不分页全部显示 */
   pageSize?: number;
-}
-
-export interface DevicePowerSupplyPhotoCollection {
-  deviceIds: Nullable<number[]>;
-  items: Nullable<DevicePowerSupplyPhotoExtendModel[]>;
-  totalCount: number;
-  totalPages: number;
 }
 
 export interface DevicePowerSupplyPhotoExtendModel {
@@ -31,6 +26,11 @@ export interface DevicePowerSupplyPhotoExtendModel {
   /** 照片名称 */
   photoName: string;
 }
+
+export type DevicePowerSupplyPhotoCollection =
+  BasicFetchListResult<DevicePowerSupplyPhotoExtendModel> & {
+    deviceIds: Nullable<number[]>;
+  };
 
 export interface DevicePowerSupplyPhotoBaseModel {
   /** 设备id */

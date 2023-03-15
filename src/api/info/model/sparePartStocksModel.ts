@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 export interface GetStockHistoryParams {
   /** 是否正序 */
   ascending?: boolean;
@@ -27,12 +29,6 @@ export interface GetSparePartStocksListByIdParams {
   pageNo?: number;
   /** 每页多少条数据(0 表示不分页) */
   pageSize?: number;
-}
-
-export interface SparePartStockCollection {
-  items: Nullable<SparePartStockHistoryFullModel[]>;
-  totalCount: number;
-  totalPages: number;
 }
 
 export enum LockFlagEnum {
@@ -87,6 +83,8 @@ export interface SparePartStockHistoryFullModel {
   /** 用于高并发的数据版本控制 */
   versionTag: string;
 }
+
+export type SparePartStockCollection = BasicFetchListResult<SparePartStockHistoryFullModel>;
 
 export interface CreateInStockParams {
   /** 日期 */

@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 export interface GetNoticeListParam {
   /** 是否正序 */
   ascending?: boolean;
@@ -13,13 +15,6 @@ export interface GetNoticeListParam {
   pageSize: number;
 }
 
-export interface GetNoticeListResultModel {
-  hasNotRead: boolean;
-  items: Nullable<MessageModel[]>;
-  totalCount: number;
-  totalPages: number;
-}
-
 export interface MessageModel {
   belongeUserId: number;
   businessCreateUserId: number;
@@ -31,6 +26,10 @@ export interface MessageModel {
   readed: boolean;
   updateTime: number;
 }
+
+export type GetNoticeListResultModel = BasicFetchListResult<MessageModel> & {
+  hasNotRead: boolean;
+};
 
 export interface businessDataModel {
   id: string;

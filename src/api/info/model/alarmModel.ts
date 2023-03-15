@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 export enum AlarmStatusEnum {
   /** 待处理 */
   UNDONE = 1,
@@ -28,14 +30,6 @@ export interface GetAlarmsListParam {
   status: number;
   /** 报警来源 */
   warningSource: string;
-}
-
-export interface GetAlarmsListResultModel {
-  items: Nullable<AlarmObjectModel[]>;
-  /** 数据总条数 */
-  totalCount: number;
-  /** 数据总页数 */
-  totalPages: number;
 }
 
 export interface AlarmObjectModel {
@@ -90,6 +84,8 @@ export interface AlarmObjectModel {
   /** 报警来源 */
   warningSource: string;
 }
+
+export type GetAlarmsListResultModel = BasicFetchListResult<AlarmObjectModel>;
 
 export interface UpdateAlarmsOperationsParam {
   /** 处理描述 */

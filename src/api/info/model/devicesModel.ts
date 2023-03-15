@@ -1,3 +1,4 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
 import { DevicePowerTypeCodesEnum } from '/@/enums/powerCutEnum';
 import { EmployeeResultModel } from '/@/api/sys/model/userModel';
 
@@ -51,13 +52,6 @@ export interface GetDevicesListParam {
   searchWithDevicePowerType?: boolean;
   /** 设备状态集合 */
   status?: string[];
-}
-
-/** 设备查询接口返回数据 */
-export interface GetDevicesListResultModel {
-  items: Nullable<DeviceModel[]>;
-  totalCount: number;
-  totalPages: number;
 }
 
 export interface DeviceModel {
@@ -183,6 +177,8 @@ export interface DeviceModel {
   /** 版本控制 */
   versionTag: string;
 }
+
+export type GetDevicesListResultModel = BasicFetchListResult<DeviceModel>;
 
 export interface DeviceBaseModel {
   code: string;
@@ -349,12 +345,6 @@ export interface DevicePowerModel {
   /** 主设备名称 */
   primaryName?: string;
 }
-export interface GetPowerCutDevicesListResultModel {
-  associatedDevices: Nullable<number[]>;
-  items: Nullable<PowerCutDeviceModel[]>;
-  totalCount: number;
-  totalPages: number;
-}
 
 export interface PowerCutDeviceModel {
   /** 附属设备数量 */
@@ -403,6 +393,10 @@ export interface PowerCutDeviceModel {
   status: string;
 }
 
+export type GetPowerCutDevicesListResultModel = BasicFetchListResult<PowerCutDeviceModel> & {
+  associatedDevices: Nullable<number[]>;
+};
+
 export interface BatchUpdatePowerConfigParam {
   /** 设备ids */
   deviceIds?: number[];
@@ -445,13 +439,10 @@ export interface GetMoreCriterionDevicesParams {
   status?: string[];
 }
 
-export interface DeviceCollection {
-  items: Nullable<DeviceModel[]>;
+export type DeviceCollection = BasicFetchListResult<DeviceModel> & {
   /** 设备规格列表 */
   specModList: Nullable<DeviceSpecDataModel[]>;
-  totalCount: number;
-  totalPages: number;
-}
+};
 
 export interface GetCamerasListParam {
   /** 是否正序 */
@@ -462,12 +453,6 @@ export interface GetCamerasListParam {
   pageNo: number;
   /** 一页多少条记录 0标识不分页全部显示 */
   pageSize: number;
-}
-
-export interface GetCamerasListResultModel {
-  items: Nullable<CameraModel[]>;
-  totalCount: number;
-  totalPages: number;
 }
 
 export interface CameraModel {
@@ -488,3 +473,5 @@ export interface CameraModel {
   /** 摄像头位置 */
   location: string;
 }
+
+export type GetCamerasListResultModel = BasicFetchListResult<CameraModel>;

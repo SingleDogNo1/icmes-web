@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 export interface CreateEmployeeParams {
   /** 员工出生日期 */
   birthDate: number;
@@ -103,12 +105,6 @@ export interface GetEmployeesListParams {
   workType?: string;
 }
 
-export interface GetEmployeesListResultModel {
-  items: Nullable<EmployeeFullNameModel[]>;
-  totalCount: number;
-  totalPages: number;
-}
-
 export interface EmployeeFullNameModel {
   avatar: string;
   category: string;
@@ -126,3 +122,5 @@ export interface EmployeeFullNameModel {
   specialDevice: string;
   workType: string;
 }
+
+export type GetEmployeesListResultModel = BasicFetchListResult<EmployeeFullNameModel>;

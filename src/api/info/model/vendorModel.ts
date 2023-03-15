@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 export interface GetVendorsListParams {
   /** 正序倒序 */
   ascending?: boolean;
@@ -15,13 +17,6 @@ export interface GetVendorsListParams {
   pageSize: number;
   /** 厂商类型 */
   type: string;
-}
-
-export interface VendorsListResultModel {
-  totalPages: number;
-  totalCount: number;
-  interfaceCustomers: Nullable<string[]>;
-  items: Nullable<VendorModel[]>;
 }
 
 export interface VendorModel {
@@ -60,6 +55,10 @@ export interface VendorModel {
   /** 用于高并发的数据版本控制 */
   versionTag: string;
 }
+
+export type VendorsListResultModel = BasicFetchListResult<VendorModel> & {
+  interfaceCustomers: Nullable<string[]>;
+};
 
 export interface EditVendorResultModel {
   code: number;

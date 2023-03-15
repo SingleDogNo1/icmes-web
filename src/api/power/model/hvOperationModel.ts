@@ -1,3 +1,4 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
 import { HvOperationTemplateTypeEnum } from '/@/enums/powerCutEnum';
 
 export interface GetHvOperationParams {
@@ -32,6 +33,8 @@ export interface HvOperateTemplateAdvanceModel {
   steps: Nullable<HvOperationTemplateStepModel[]>;
 }
 
+export type GetHvOperationTemplateResultModel = BasicFetchListResult<HvOperateTemplateAdvanceModel>;
+
 export interface HvOperationTemplateDeviceModel {
   /** 设备唯一标识符 */
   deviceCode: string;
@@ -54,12 +57,6 @@ export interface HvOperationTemplateStepModel {
   step: string;
   /** 操作类型 */
   type: HvOperationTemplateTypeEnum;
-}
-
-export interface GetHvOperationTemplateResultModel {
-  items: Nullable<HvOperateTemplateAdvanceModel[]>;
-  totalCount: number;
-  totalPages: number;
 }
 
 export interface ToggleHvOperationTemplateParams {

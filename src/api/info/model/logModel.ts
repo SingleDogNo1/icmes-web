@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 export interface GetLogListParam {
   ascending: boolean;
   globalName: string;
@@ -13,12 +15,6 @@ export interface GetLogListParam {
   timeStart: number;
 }
 
-export interface GetLogListResultModel {
-  items: Nullable<LogModel[]>;
-  totalCount: number;
-  totalPages: number;
-}
-
 export interface LogModel {
   content: string;
   id: string;
@@ -30,3 +26,5 @@ export interface LogModel {
   terminalType: string;
   time: number;
 }
+
+export type GetLogListResultModel = BasicFetchListResult<LogModel>;

@@ -1,3 +1,4 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
 import { workflowObjectTypeEnum } from '/@/enums/workflowEnum';
 
 export interface GetReportingListParam {
@@ -10,14 +11,6 @@ export interface GetReportingListParam {
   /** 每页多少条记录 0表示不分页 */
   pageSize?: number;
   workflowNodeId: number;
-}
-
-export interface GetReportingListResultModel {
-  items: Nullable<ReportingModel[]>;
-  /** 数据总条数 */
-  totalCount: number;
-  /** 数据总页数 */
-  totalPages: number;
 }
 
 export interface ReportingModel {
@@ -35,3 +28,5 @@ export interface ReportingModel {
   versionTag: string;
   workflowNodeId: number;
 }
+
+export type GetReportingListResultModel = BasicFetchListResult<ReportingModel>;

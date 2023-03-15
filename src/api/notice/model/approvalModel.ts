@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 export interface GetApprovalListParams {
   /** 是否正序 */
   ascending?: boolean;
@@ -14,12 +16,6 @@ export interface GetApprovalListParams {
   status?: number[];
 }
 
-export interface GetApprovalListResultModel {
-  totalCount: number;
-  totalPages: number;
-  items: Nullable<ApprovalModel[]>;
-}
-
 export interface ApprovalModel {
   approvalStatus: number;
   belongeUserId: number;
@@ -32,3 +28,5 @@ export interface ApprovalModel {
   id: number;
   updateTime: number;
 }
+
+export type GetApprovalListResultModel = BasicFetchListResult<ApprovalModel>;

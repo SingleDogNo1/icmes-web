@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 export interface GetDictTypesParam {
   /** 是否正序 */
   ascending: boolean;
@@ -71,14 +73,6 @@ export interface GetDictDataParam {
   typeCode?: string;
 }
 
-export interface GetDictDataResultModel {
-  items: Nullable<DictDataModel[]>;
-  /** 总条数 */
-  totalCount: number;
-  /** 总页数 */
-  totalPages: number;
-}
-
 export interface DictDataModel {
   /** 字典编码 */
   code: string;
@@ -101,6 +95,8 @@ export interface DictDataModel {
   /** 用于高并发的数据版本控制 */
   versionTag: string;
 }
+
+export type GetDictDataResultModel = BasicFetchListResult<DictDataModel>;
 
 export interface AddDictDataParam {
   /** 字典编码 */

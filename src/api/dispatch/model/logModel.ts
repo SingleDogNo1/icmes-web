@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 export interface GetDispatchListParams {
   /** 是否正序 */
   ascending?: boolean;
@@ -11,12 +13,6 @@ export interface GetDispatchListParams {
   pageSize: number;
   /** 开始时间 */
   startDate?: number[];
-}
-
-export interface GetDispatchListResultModel {
-  totalCount: number;
-  totalPages: number;
-  items: Nullable<DispatchLogModel[]>;
 }
 
 export interface DispatchLogModel {
@@ -64,6 +60,8 @@ export interface DispatchLogModel {
   /** 班次名称 */
   workingShiftDetailName: string;
 }
+
+export type GetDispatchListResultModel = BasicFetchListResult<DispatchLogModel>;
 
 export interface EmployeeBaseModel {
   /** 员工工号Code */

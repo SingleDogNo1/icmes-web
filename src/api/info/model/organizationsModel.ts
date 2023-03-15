@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 export interface AccountTreeParams {
   /** 正序倒序 */
   ascending?: boolean;
@@ -71,14 +73,6 @@ export interface OrganizationsListParams {
   type?: string;
 }
 
-export interface OrganizationsListResultModel {
-  /** 数据总页数 */
-  totalPages: number;
-  /** 数据总条数 */
-  totalCount: number;
-  items: Nullable<OrganizationsFullNameModel[]>;
-}
-
 export interface OrganizationsFullNameModel {
   /** 组织机构code */
   code: string;
@@ -101,6 +95,8 @@ export interface OrganizationsFullNameModel {
   /** 版本标志 */
   versionTag: string;
 }
+
+export type OrganizationsListResultModel = BasicFetchListResult<OrganizationsFullNameModel>;
 
 export interface OrganizationParams {
   /** 组织机构code */

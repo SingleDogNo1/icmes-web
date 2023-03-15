@@ -11,13 +11,13 @@ import {
 } from './model/distributionroomModel';
 
 enum Api {
-  distributionRoomUrl = '/info/distributionroom/',
+  baseUrl = '/info/distributionroom/',
 }
 
 /** 获取配电室列表-作者：孔轩 */
 export function getDistributionRoomListApi(params: GetDistributionRoomListParam) {
   return defHttp.post<GetDistributionRoomListResult>({
-    url: Api.distributionRoomUrl + 'list/',
+    url: Api.baseUrl + 'list/',
     params,
   });
 }
@@ -25,7 +25,7 @@ export function getDistributionRoomListApi(params: GetDistributionRoomListParam)
 /** 创建配电室列表-作者：孔轩 */
 export function createDistributionRoomApi(params: EditDistributionRoomParam) {
   return defHttp.post<boolean>({
-    url: Api.distributionRoomUrl,
+    url: Api.baseUrl,
     params,
   });
 }
@@ -33,7 +33,7 @@ export function createDistributionRoomApi(params: EditDistributionRoomParam) {
 /** 编辑配电室列表-作者：孔轩 */
 export function editDistributionRoomApi(params: EditDistributionRoomParam) {
   return defHttp.put<boolean>({
-    url: Api.distributionRoomUrl + params.id,
+    url: Api.baseUrl + params.id,
     params,
   });
 }
@@ -41,7 +41,7 @@ export function editDistributionRoomApi(params: EditDistributionRoomParam) {
 /** 删除配电室列表-作者：孔轩 */
 export function delDistributionRoomApi(id: number) {
   return defHttp.delete<boolean>({
-    url: Api.distributionRoomUrl + id,
+    url: Api.baseUrl + id,
   });
 }
 
@@ -51,7 +51,7 @@ export function getDistributionCabinetsListApi(
   params: GetDistributionRoomListParam,
 ) {
   return defHttp.post<GetDistributionRoomListResult>({
-    url: Api.distributionRoomUrl + roomId + '/cabinets/list',
+    url: Api.baseUrl + roomId + '/cabinets/list',
     params,
   });
 }
@@ -59,7 +59,7 @@ export function getDistributionCabinetsListApi(
 /** 创建配电柜信息-作者：linan */
 export function createDistributionCabinetsApi(params: EditDistributionCabinetsParam) {
   return defHttp.post<boolean>({
-    url: Api.distributionRoomUrl + params.roomId + '/cabinets',
+    url: Api.baseUrl + params.roomId + '/cabinets',
     params,
   });
 }
@@ -67,7 +67,7 @@ export function createDistributionCabinetsApi(params: EditDistributionCabinetsPa
 /** 编辑配电柜信息-作者：linan */
 export function editDistributionCabinetsApi(params: EditDistributionCabinetsParam) {
   return defHttp.put<boolean>({
-    url: Api.distributionRoomUrl + '/cabinets/' + params.id,
+    url: Api.baseUrl + '/cabinets/' + params.id,
     params,
   });
 }
@@ -75,7 +75,7 @@ export function editDistributionCabinetsApi(params: EditDistributionCabinetsPara
 /** 删除配电柜信息-作者：linan */
 export function delDistributionCabinetsApi(id: number) {
   return defHttp.delete<boolean>({
-    url: Api.distributionRoomUrl + '/cabinets/' + id,
+    url: Api.baseUrl + '/cabinets/' + id,
   });
 }
 
@@ -85,7 +85,7 @@ export function getDistributionEntranceGuardsListApi(
   params: GetDistributionRoomListParam,
 ) {
   return defHttp.post<GetDistributionRoomListResult>({
-    url: Api.distributionRoomUrl + roomId + '/entrancegards/list',
+    url: Api.baseUrl + roomId + '/entrancegards/list',
     params,
   });
 }
@@ -93,7 +93,7 @@ export function getDistributionEntranceGuardsListApi(
 /** 创建门禁信息-作者：孔轩 */
 export function createDistributionEntranceGuardsApi(params: EditDistributionEntranceGuardsParam) {
   return defHttp.post<boolean>({
-    url: Api.distributionRoomUrl + params.roomId + '/entrancegards',
+    url: Api.baseUrl + params.roomId + '/entrancegards',
     params,
   });
 }
@@ -101,7 +101,7 @@ export function createDistributionEntranceGuardsApi(params: EditDistributionEntr
 /** 编辑配门信息-作者：孔轩 */
 export function editDistributionEntranceGuardsApi(params: EditDistributionEntranceGuardsParam) {
   return defHttp.put<boolean>({
-    url: Api.distributionRoomUrl + params.roomId + '/entrancegards/' + params.id,
+    url: Api.baseUrl + params.roomId + '/entrancegards/' + params.id,
     params,
   });
 }
@@ -109,14 +109,14 @@ export function editDistributionEntranceGuardsApi(params: EditDistributionEntran
 /** 删除门禁信息-作者：孔轩 */
 export function delDistributionEntranceGuardsApi(roomId: number, id: number) {
   return defHttp.delete<boolean>({
-    url: Api.distributionRoomUrl + roomId + '/entrancegards/' + id,
+    url: Api.baseUrl + roomId + '/entrancegards/' + id,
   });
 }
 
 /** 配置设备-作者：孔轩 */
 export function editDistributionCabinetsDevicesApi(params: EditDistributionCabinetsDevicesParam) {
   return defHttp.put<boolean>({
-    url: Api.distributionRoomUrl + '/cabinets/' + params.id + '/devices/',
+    url: Api.baseUrl + '/cabinets/' + params.id + '/devices/',
     params,
   });
 }

@@ -1,9 +1,7 @@
-export interface BasicPageParams {
-  page: number;
-  pageSize: number;
-}
-
-export interface BasicFetchResult<T extends any> {
-  items: T[];
-  total: number;
+export interface BasicFetchListResult<T> {
+  items: Nullable<T[]>;
+  /** 数据总条数 */
+  totalCount: number;
+  /** 数据总页数 */
+  totalPages: number;
 }

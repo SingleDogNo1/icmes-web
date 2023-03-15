@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 export interface GetLocationListParams {
   /** 递归的层级次数0标识全部子孙 **/
   hierarchy?: number;
@@ -11,11 +13,6 @@ export interface GetLocationListParams {
   pageSize?: number;
   /** 当前页码数 **/
   pageNo?: number;
-}
-export interface GetLocationListResultModel {
-  items: Nullable<LocationFullNameModel[]>;
-  totalCount: number;
-  totalPages: number;
 }
 
 export interface LocationModel {
@@ -53,3 +50,5 @@ export interface LocationFullNameModel {
   /** 版本标志 */
   versionTag: string;
 }
+
+export type GetLocationListResultModel = BasicFetchListResult<LocationFullNameModel>;

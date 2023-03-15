@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 export interface GetMaintenanceOrdersParams {
   /** 是否正序 */
   ascending: boolean;
@@ -29,12 +31,6 @@ export interface GetMaintenanceOrdersParams {
   planStartTime: number;
   /** 状态 */
   status: string[];
-}
-
-export interface MaintenanceOrderCollection {
-  items: Nullable<MaintenanceOrderAdvanceSimplifyModel[]>;
-  totalPages: number;
-  totalCount: number;
 }
 
 export interface MaintenanceOrderAdvanceSimplifyModel {
@@ -83,6 +79,8 @@ export interface MaintenanceOrderAdvanceSimplifyModel {
   /** 用于高并发的数据版本控制 */
   versionTag: string;
 }
+
+export type MaintenanceOrderCollection = BasicFetchListResult<MaintenanceOrderAdvanceSimplifyModel>;
 
 export interface MaintenanceOrderConfigurationModel {
   /** 是否自动关闭当日未检修的任务 */

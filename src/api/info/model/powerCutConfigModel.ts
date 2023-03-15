@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 export interface GetPowerCutConfigParams {
   /** 是否正序 */
   ascending: boolean;
@@ -13,13 +15,6 @@ export interface GetPowerCutConfigParams {
   pageSize: number;
 }
 
-export interface PowerCutConfigResultModel {
-  items: Nullable<PowerCutConfigExtendEntity[]>;
-  totalCount: number;
-  totalPages: number;
-  workFlowCodes: string[];
-}
-
 export interface PowerCutConfigExtendEntity {
   configId: number;
   name: string;
@@ -29,6 +24,10 @@ export interface PowerCutConfigExtendEntity {
   useful: boolean;
   workFlowCode: string;
 }
+
+export type PowerCutConfigResultModel = BasicFetchListResult<PowerCutConfigExtendEntity> & {
+  workFlowCodes: string[];
+};
 
 export interface PowerCutConfigOrganization {
   organizationId: number;

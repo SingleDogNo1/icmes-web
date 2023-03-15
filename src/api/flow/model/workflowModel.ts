@@ -1,6 +1,6 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
 import {
   workflowNodeTypeEnum,
-  reportingObjectTypeEnum,
   reminderTypeEnum,
   notificationPhaseEnum,
   nodeTypeEnum,
@@ -22,14 +22,6 @@ export interface GetWorkflowsListParam {
   pageSize: number;
 }
 
-export interface GetWorkflowsListResultModel {
-  items: Nullable<WorkFlowModel[]>;
-  /** 数据总条数 */
-  totalCount: number;
-  /** 数据总页数 */
-  totalPages: number;
-}
-
 export interface WorkFlowModel {
   businessType: string;
   code: string;
@@ -42,6 +34,8 @@ export interface WorkFlowModel {
   updateUserId: number;
   versionTag: string;
 }
+
+export type GetWorkflowsListResultModel = BasicFetchListResult<WorkFlowModel>;
 
 export interface CreateWorkflowParam {
   /** 业务类型 */
@@ -70,12 +64,6 @@ export interface getWorkflowNodesListByIdParams {
   pageSize: number;
 }
 
-export interface getWorkflowNodesListByIdResultModel {
-  totalCount: number;
-  totalPages: number;
-  items: Nullable<WorkflowNodeModel[]>;
-}
-
 export interface WorkflowNodeModel {
   code: string;
   formKey: string;
@@ -100,6 +88,8 @@ export interface WorkflowNodeModel {
   versionTag: string;
 }
 
+export type getWorkflowNodesListByIdResultModel = BasicFetchListResult<WorkflowNodeModel>;
+
 export interface ReminderModel {
   id: number;
   isWorkingShiftNoticeOn: boolean;
@@ -120,7 +110,7 @@ export interface ReportingModel {
   isWorkingShiftNoticeOn: boolean;
   jsonParseObjectInfo: string;
   reportingObject: string;
-  reportingObjectType: reportingObjectTypeEnum;
+  reportingObjectType: workflowObjectTypeEnum;
   timeoutPeriod: number;
   updateTime: number;
   updateUserId: number;
@@ -140,8 +130,8 @@ export interface WorkflowNodeModel {
   isSystemAutoExec: boolean;
   method: workflowNodeTypeEnum;
   name: string;
-  nodeReminderList: Nullable<ReminderModel[]>;
-  nodeReportingList: Nullable<ReportingModel[]>;
+  nodeReminderList: ReminderModel[];
+  nodeReportingList: ReportingModel[];
   numberOfSigned: number;
   operateFailureStatus: string;
   operateSuccessStatus: string;

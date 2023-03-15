@@ -1,3 +1,4 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
 import { DevicePLCDetectTypeEnum } from '/@/enums/PLCDetectTypeEnum';
 
 export interface GetPLCJudgmentRuleListParams {
@@ -26,12 +27,6 @@ export interface ReqPLCJudgmentRuleParams {
   strategyId: number;
 }
 
-export interface GetPLCJudgmentRuleListResultModel {
-  items: Nullable<PlcJudgmentRuleModel[]>;
-  totalCount: number;
-  totalPages: number;
-}
-
 export interface PlcJudgmentRuleModel extends ReqPLCJudgmentRuleParams {
   /** plc判断规则标识 */
   id: number;
@@ -44,3 +39,5 @@ export interface PlcJudgmentRuleModel extends ReqPLCJudgmentRuleParams {
   /** 策略编号 */
   strategyNumber: string;
 }
+
+export type GetPLCJudgmentRuleListResultModel = BasicFetchListResult<PlcJudgmentRuleModel>;

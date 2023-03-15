@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 export interface DashboardRealTimeResultModel {
   date: string;
   shiftName: string;
@@ -18,12 +20,6 @@ export interface GetProductionListParams {
   productionGroup?: string;
   /** 产品类型 */
   typeArr: number[];
-}
-
-export interface GetProductionListResultModel {
-  items: Nullable<ProductionBaseModel[]>;
-  totalCount: number;
-  totalPages: number;
 }
 
 export interface ProductionBaseModel {
@@ -56,6 +52,8 @@ export interface ProductionBaseModel {
   /** 用于高并发的数据版本控制 */
   versionTag: string;
 }
+
+export type GetProductionListResultModel = BasicFetchListResult<ProductionBaseModel>;
 
 export interface ProductionAdvanceModel extends ProductionBaseModel {
   /** 质量指标详情 */

@@ -1,3 +1,5 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
+
 export interface GetDevicesCategoryListParam {
   /** 是否正序 */
   ascending?: boolean;
@@ -11,13 +13,6 @@ export interface GetDevicesCategoryListParam {
   pageNo: number;
   /** 每页条数 */
   pageSize: number;
-}
-
-/** 设备查询接口返回数据 */
-export interface GetDevicesCategoryListResultModel {
-  items: Nullable<DeviceCategoryModel[]>;
-  totalCount: number;
-  totalPages: number;
 }
 
 export interface DeviceCategoryModel {
@@ -44,6 +39,8 @@ export interface DeviceCategoryModel {
   versionTag: string;
 }
 
+export type GetDevicesCategoryListResultModel = BasicFetchListResult<DeviceCategoryModel>;
+
 interface SpecDataModel {
   extraDisplayMode: boolean;
   id: number;
@@ -66,11 +63,7 @@ export interface CreateDeviceCategoryParams {
   specDataIds: number[];
 }
 
-export interface DeviceCategoryCollection {
-  totalCount: number;
-  totalPages: number;
-  items: Nullable<DeviceCategoryModel[]>;
-}
+export type DeviceCategoryCollection = BasicFetchListResult<DeviceCategoryModel>;
 
 export interface UpdateDevicesCategoryParams {
   /** 图标 */

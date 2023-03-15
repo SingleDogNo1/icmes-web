@@ -18,21 +18,19 @@ import { GetRoleListByIdParams, GetRoleListByIdResultModel } from './model/roles
 
 enum Api {
   baseUrl = '/account/',
-  getAccountList = '/account/list/',
-  editAccount = '/account/',
-  uploadAvatar = '/account/profile/avatar',
-  getAccountInfoById = '/account/info/',
 }
 
 /** 获取当前用户权限--作者：徐宏亮 */
 export function getPermissionApi() {
-  return defHttp.get<PermissionResultModel>({ url: Api.baseUrl + 'permission' });
+  return defHttp.get<PermissionResultModel>({
+    url: Api.baseUrl + 'permission',
+  });
 }
 
 /** 获取账号列表--作者：徐宏亮 */
 export function getAccountListApi(params: GetAccountListParams) {
   return defHttp.post<GetAccountListModel>({
-    url: Api.getAccountList,
+    url: Api.baseUrl + 'list/',
     params,
   });
 }
@@ -40,7 +38,7 @@ export function getAccountListApi(params: GetAccountListParams) {
 /** 创建账号--作者：徐宏亮 */
 export function addAccountApi(params: EditAccountParams) {
   return defHttp.post<EditAccountResultModel>({
-    url: Api.editAccount,
+    url: Api.baseUrl,
     params,
   });
 }
@@ -48,43 +46,54 @@ export function addAccountApi(params: EditAccountParams) {
 /** 编辑账号--作者：徐宏亮 */
 export function editAccountApi(id: string | number, params: EditAccountParams) {
   return defHttp.put<EditAccountResultModel>({
-    url: Api.editAccount + id,
+    url: Api.baseUrl + id,
     params,
   });
 }
 
 /** 删除账号--作者：张瑞晗 */
 export function deleteAccountByIdApi(id: string | number) {
-  return defHttp.delete<EditAccountResultModel>({ url: Api.editAccount + id });
+  return defHttp.delete<EditAccountResultModel>({ url: Api.baseUrl + id });
 }
 
 /** 获取账号详情--作者：徐宏亮 */
 export function getAccountByIdApi(id: string | number) {
-  return defHttp.get<EmployeeBaseModel>({ url: Api.editAccount + id });
+  return defHttp.get<EmployeeBaseModel>({ url: Api.baseUrl + id });
 }
 
 /** 通过工号获取账号详情--作者：孔轩 */
 export function getAccountByCodeApi(params: { code: string }) {
-  return defHttp.post<EmployeeBaseModel>({ url: Api.getAccountInfoById, params });
+  return defHttp.post<EmployeeBaseModel>({
+    url: Api.baseUrl + 'info/',
+    params,
+  });
 }
 
 /** 锁定账号--作者：张瑞晗 */
 export function lockAccountByIdApi(id: string | number) {
-  return defHttp.put<EditAccountResultModel>({ url: Api.editAccount + id + '/lock' });
+  return defHttp.put<EditAccountResultModel>({
+    url: Api.baseUrl + id + '/lock',
+  });
 }
 /** 解锁锁定账号--作者：张瑞晗 */
 export function unlockAccountByIdApi(id: string | number) {
-  return defHttp.put<EditAccountResultModel>({ url: Api.editAccount + id + '/unlock' });
+  return defHttp.put<EditAccountResultModel>({
+    url: Api.baseUrl + id + '/unlock',
+  });
 }
 
 /** 账号初始密码--作者：张瑞晗 */
 export function resetPasswordByIdApi(id: string | number) {
-  return defHttp.put<EditAccountResultModel>({ url: Api.editAccount + id + '/password/reset' });
+  return defHttp.put<EditAccountResultModel>({
+    url: Api.baseUrl + id + '/password/reset',
+  });
 }
 
 /** 账号初始化脸部信息--作者：张瑞晗 */
 export function resetFaceByIdApi(id: string | number) {
-  return defHttp.put<EditAccountResultModel>({ url: Api.editAccount + id + '/face/reset' });
+  return defHttp.put<EditAccountResultModel>({
+    url: Api.baseUrl + id + '/face/reset',
+  });
 }
 
 /** 账号角色列表查询--作者：张瑞晗 */
@@ -98,7 +107,7 @@ export function getRolesListByIdApi(id: number | string, params: GetRoleListById
 /** 用户角色编辑(分配角色)--作者：徐宏亮 */
 export function distributionRoleByIdApi(id: string | number, params: DistributionRoleParams) {
   return defHttp.post<EditAccountResultModel>({
-    url: Api.editAccount + id + '/relation/role-organization',
+    url: Api.baseUrl + id + '/relation/role-organization',
     params,
   });
 }
@@ -110,19 +119,21 @@ export function delRoleByIdApi(
   roleId: string | number,
 ) {
   return defHttp.delete<EditAccountResultModel>({
-    url: Api.editAccount + id + '/organizations/' + orgId + '/roles/' + roleId,
+    url: Api.baseUrl + id + '/organizations/' + orgId + '/roles/' + roleId,
   });
 }
 
 /** 账号权限列表查询--作者：徐宏亮 */
 export function getFeaturesListByIdApi(id: string | number) {
-  return defHttp.get<FeatureModel[]>({ url: Api.editAccount + id + '/features/list' });
+  return defHttp.get<FeatureModel[]>({
+    url: Api.baseUrl + id + '/features/list',
+  });
 }
 
 /** 账号指派代理人列表查询--作者：徐宏亮 */
 export function getAssignmentAgentListApi(id: string, params: getAssignmentParams) {
   return defHttp.post<getAssignmentAgentResultModel>({
-    url: Api.editAccount + id + '/consignProxies/list/',
+    url: Api.baseUrl + id + '/consignProxies/list/',
     params,
   });
 }
@@ -130,7 +141,7 @@ export function getAssignmentAgentListApi(id: string, params: getAssignmentParam
 /** 账号接手代理人查询--作者：张瑞晗 */
 export function getAssignmentProxiesListApi(id: number, params: getAssignmentParams) {
   return defHttp.post<getAssignmentProxiesResultModel>({
-    url: Api.editAccount + id + '/assignProxies/list/',
+    url: Api.baseUrl + id + '/assignProxies/list/',
     params,
   });
 }
@@ -142,7 +153,7 @@ export function uploadAvatarApi(params: { name: string; file: string }) {
   data.append('files', JSON.stringify(files));
 
   return defHttp.post({
-    url: Api.uploadAvatar,
+    url: Api.baseUrl + 'profile/avatar',
     params: data,
   });
 }
@@ -150,7 +161,7 @@ export function uploadAvatarApi(params: { name: string; file: string }) {
 /** 修改密码--作者：徐宏亮 */
 export function changePasswordApi(params: ChangePWDParams) {
   return defHttp.put<EditAccountResultModel>({
-    url: Api.editAccount + '/password/',
+    url: Api.baseUrl + '/password/',
     params,
   });
 }

@@ -1,3 +1,4 @@
+import { BasicFetchListResult } from '/@/api/model/baseModel';
 import { TypeEnum } from './configurableObjectModel';
 
 export interface GetPlcPointsTreeParams {
@@ -90,12 +91,6 @@ export interface PLCPointBaseModel {
   versionTag?: string;
 }
 
-export interface PLCPointCollection {
-  items: Nullable<PLCPointFullModel[]>;
-  totalCount: number;
-  totalPages: number;
-}
-
 export interface PLCPointFullModel extends PLCPointBaseModel {
   ancientCode: string;
   ancientName: string;
@@ -104,6 +99,8 @@ export interface PLCPointFullModel extends PLCPointBaseModel {
   processNo: string;
   relativeCode: string;
 }
+
+export type PLCPointCollection = BasicFetchListResult<PLCPointFullModel>;
 
 export interface UpdatePlcPointParams {
   plcPointlist: PLCPointBaseModel[];
