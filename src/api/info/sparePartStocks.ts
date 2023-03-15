@@ -92,7 +92,7 @@ export function delOutStockSparePartsApi(id: number) {
 }
 
 /** 锁定配置-作者：李楠 */
-export function UpdateStockSparePartsSettingApi(id: number, params: UpdateSettingParams) {
+export function updateStockSparePartsSettingApi(id: number, params: UpdateSettingParams) {
   return defHttp.post<{ code: string }>({
     url: Api.baseUrl + '/setting/' + id,
     params,

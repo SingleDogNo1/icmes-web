@@ -6,22 +6,28 @@
         <a-space>
           <a-button
             type="primary"
+            :disabled="!hasEditPermission"
             @click="
               openEditStockModal(true, { occurrenceType: OccurrenceTypeEnum['IN'], data: null })
             "
-            >入库</a-button
           >
+            入库
+          </a-button>
           <a-button
+            :disabled="!hasEditPermission"
             @click="
               openEditStockModal(true, { occurrenceType: OccurrenceTypeEnum['OUT'], data: null })
             "
-            >出库</a-button
           >
+            出库
+          </a-button>
         </a-space>
       </template>
 
       <template #toolbar>
-        <a-button>锁定配置</a-button>
+        <a-button :disabled="!hasLockPermission" @click="openLockConfigModal(true, {})">
+          锁定配置
+        </a-button>
       </template>
 
       <template #action="{ record }">
@@ -30,7 +36,8 @@
     </BasicTable>
   </PageWrapper>
 
-  <EditStockModal @register="registerModal" @success="getSparePartStocksList()" />
+  <EditStockModal @register="registerEditStockModal" @success="getSparePartStocksList()" />
+  <LockConfigModal @register="registerLockConfigModal" />
 </template>
 
 <script lang="ts" setup name="WarehousePage">
@@ -55,6 +62,17 @@
   import { schemas, columns } from './data';
   import { useModal } from '/@/components/Modal';
   import EditStockModal from './EditStockModal.vue';
+  import LockConfigModal from './LockConfigModal.vue';
+  import { useUserStore } from '/@/store/modules/user';
+  import { useRoute } from 'vue-router';
+
+  const { getFeature } = useUserStore();
+  const {
+    meta: { code },
+  } = useRoute();
+
+  const hasEditPermission = getFeature[code!].REPLACE_MOVE_EDIT;
+  const hasLockPermission = getFeature[code!].REPLACE_LOCK_CONFI;
 
   const loading = ref(false);
 
@@ -84,7 +102,8 @@
     },
   });
 
-  const [registerModal, { openModal: openEditStockModal }] = useModal();
+  const [registerEditStockModal, { openModal: openEditStockModal }] = useModal();
+  const [registerLockConfigModal, { openModal: openLockConfigModal }] = useModal();
 
   function createActions(record: SparePartStockHistoryFullModel): ActionItem[] {
     if (record.lockFlag === LockFlagEnum['UNLOCK']) {

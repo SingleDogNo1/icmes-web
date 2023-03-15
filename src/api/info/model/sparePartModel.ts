@@ -44,3 +44,26 @@ export interface SparePartModel {
   /** 用于高并发的数据版本控制 */
   versionTag: string;
 }
+
+export enum SwitchStatusEnum {
+  OFF,
+  ON,
+}
+
+export interface SparePartHistorySettingModel {
+  /** 标识符 */
+  id: number;
+  /** 锁定天数 */
+  lockDays: number;
+  /** 推送人 */
+  pushEmployeeList: {
+    /** 推送人 ID */
+    employeeId: number;
+    /** 推送人姓名 */
+    employeeName: string;
+  }[];
+  /** 推送时间 */
+  pushTime: number;
+  /** 推送通知开关 */
+  switchStatus: SwitchStatusEnum;
+}

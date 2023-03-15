@@ -1,5 +1,5 @@
 import { defHttp } from '/@/utils/http/axios';
-import { SparePartModel } from './model/sparePartModel';
+import { SparePartModel, SparePartHistorySettingModel } from './model/sparePartModel';
 
 enum Api {
   baseUrl = '/info/spareParts/',
@@ -9,5 +9,12 @@ enum Api {
 export function getSparePartDetailApi({ id }: { id: number }) {
   return defHttp.get<SparePartModel>({
     url: Api.baseUrl + 'detail/' + id,
+  });
+}
+
+/** 获取推送配置 */
+export function getSparePartPushSettingsApi() {
+  return defHttp.get<SparePartHistorySettingModel>({
+    url: Api.baseUrl + 'pushSetting',
   });
 }
