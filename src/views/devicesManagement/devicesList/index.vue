@@ -74,13 +74,13 @@
   } from '/@/components/Table';
   import EditDeviceDrawer from './components/EditDeviceDrawer.vue';
   import ExportQRCodeDrawer from './components/ExportQRCode.vue';
-  import { useRouter, useRoute } from 'vue-router';
-  import { useUserStore } from '/@/store/modules/user';
+  import { useRouter } from 'vue-router';
   import { getDevicesListApi, delDeviceApi, exportDeviceQRCodeApi } from '/@/api/info/devices';
   import { DeviceModel, GetDevicesListParam } from '/@/api/info/model/devicesModel';
   import { Popover } from 'ant-design-vue';
   import { useUserState } from '/@/hooks/web/useUserState';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { usePermission } from '/@/hooks/web/usePermission';
   import { downloadByData } from '/@/utils/file/download';
   import { useDrawer } from '/@/components/Drawer';
   import { schemas, columns } from './data';
@@ -89,13 +89,10 @@
   const router = useRouter();
   const { getDictName } = useUserState();
   const { createMessage } = useMessage();
+  const { getPermissionList } = usePermission();
 
-  const {
-    meta: { code },
-  } = useRoute();
-  const { getFeature } = useUserStore();
-  const hasEditPermission = getFeature[code!].DEVICE_EDIT;
-  const hasQRCodePermission = getFeature[code!].DEVICE_QRCODE;
+  const hasEditPermission = getPermissionList()?.DEVICE_EDIT;
+  const hasQRCodePermission = getPermissionList()?.DEVICE_QRCODE;
 
   const deviceTableLoading = ref(false);
 

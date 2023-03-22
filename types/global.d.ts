@@ -56,6 +56,11 @@ declare global {
     __: unknown;
   }
 
+  interface Array<T> {
+    findLastIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number;
+    findLast(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T;
+  }
+
   declare interface ViteEnv {
     VITE_PORT: number;
     VITE_USE_MOCK: boolean;

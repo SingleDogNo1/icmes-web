@@ -47,6 +47,28 @@ const productionManagement: BackModeRouteRecordRaw = {
         },
       ],
     },
+    {
+      path: 'yearPlan',
+      name: 'ProdManageYearPlanLayout',
+      component: 'LAYOUT',
+      redirect: '/prod-manage/yearPlan/index',
+      meta: {
+        code: 25030,
+        hideChildrenInMenu: true,
+      },
+      children: [
+        {
+          path: 'index',
+          name: 'ProdManageYearPlan',
+          component: '/productionManagement/yearPlan/index',
+          meta: {
+            currentActiveMenu: '/prod-manage/yearPlan',
+            code: 25030,
+            hideChildrenInMenu: true,
+          },
+        },
+      ],
+    },
   ],
 };
 

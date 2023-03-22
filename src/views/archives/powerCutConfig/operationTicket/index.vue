@@ -66,23 +66,20 @@
   } from '/@/api/power/model/hvOperationModel';
   import { primaryColor } from '/@/settings/designSetting';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { useUserStore } from '/@/store/modules/user';
-  import { useRoute } from 'vue-router';
   import EditTicketModal from './components/editTicketModal.vue';
   import EditRangeModal from './components/editRangeModal.vue';
   import { useGo } from '/@/hooks/web/usePage';
+  import { usePermission } from '/@/hooks/web/usePermission';
   import { useDrawer } from '/@/components/Drawer';
   import TicketInfoDrawer from './components/ticketInfoDrawer.vue';
 
   const { prefixCls } = useDesign('operation-ticket');
   const { createMessage, createConfirm } = useMessage();
-  const {
-    meta: { code },
-  } = useRoute();
-  const { getFeature } = useUserStore();
+  const { getPermissionList } = usePermission();
+
   const go = useGo();
 
-  const hasEditPermission = getFeature[code!].POWER_CUT_CONFIG;
+  const hasEditPermission = !!getPermissionList()?.POWER_CUT_CONFIG;
   const loading = ref(false);
   const [registerForm, { getFieldsValue }] = useForm({
     layout: 'inline',

@@ -34,24 +34,20 @@
     ActionItem,
   } from '/@/components/Table';
   import EditDeviceTypeDrawer from './editDeviceTypeDrawer.vue';
-  import { useRoute } from 'vue-router';
-  import { useUserStore } from '/@/store/modules/user';
   import { getDeviceCategoryListApi, delDevicesCategoryApi } from '/@/api/info/devicesCategory';
   import {
     GetDevicesCategoryListParam,
     DeviceCategoryModel,
   } from '/@/api/info/model/devicesCategoryModel';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { usePermission } from '/@/hooks/web/usePermission';
   import { useDrawer } from '/@/components/Drawer';
   import { schemas, columns } from './data';
 
   const { createMessage } = useMessage();
+  const { getPermissionList } = usePermission();
 
-  const {
-    meta: { code },
-  } = useRoute();
-  const { getFeature } = useUserStore();
-  const hasEditPermission = getFeature[code!].DEVICE_TYPE_EDIT;
+  const hasEditPermission = !!getPermissionList()?.DEVICE_TYPE_EDIT;
 
   const tableLoading = ref(false);
 

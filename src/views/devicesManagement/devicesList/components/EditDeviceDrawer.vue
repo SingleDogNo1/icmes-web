@@ -40,7 +40,7 @@
   import { FormItem, FormItemRest, Textarea } from 'ant-design-vue';
   import { editDeviceSchemas } from './data';
   import { useRoute } from 'vue-router';
-  import { useUserStore } from '/@/store/modules/user';
+  import { usePermission } from '/@/hooks/web/usePermission';
 
   interface Data {
     // 主设备 | 附属设备
@@ -51,11 +51,12 @@
     data: Nullable<DeviceModel>;
   }
 
+  const { getPermissionList } = usePermission();
+
   const {
     meta: { code: permissionCode },
   } = useRoute();
-  const { getFeature } = useUserStore();
-  const hasEditPermission = getFeature[permissionCode!].POWER_CUT_CONFIG;
+  const hasEditPermission = !!getPermissionList()?.POWER_CUT_CONFIG;
   console.log('hasEditPermission :>> ', hasEditPermission);
   const emit = defineEmits(['success']);
   const drawerType = ref('');

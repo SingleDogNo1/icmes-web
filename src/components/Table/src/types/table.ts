@@ -156,6 +156,7 @@ export interface BasicTableProps<T = any> {
   summaryFunc?: (...arg: any) => Recordable[];
   // 自定义合计表格内容
   summaryData?: Recordable[];
+  sticky?: boolean;
   // 是否显示合计行
   showSummary?: boolean;
   // 是否可拖拽列
@@ -422,8 +423,7 @@ export interface BasicColumn extends ColumnProps<Recordable> {
       | unknown[]
       | (((props: Record<string, unknown>) => unknown[]) & (() => unknown[]) & (() => unknown[]));
   }[];
-
-  //
+  customCell?: (record, rowIndex: number, column) => object | void;
   flag?: 'INDEX' | 'DEFAULT' | 'CHECKBOX' | 'RADIO' | 'ACTION';
   customTitle?: VueNode;
   customSlots?: BasicColumn;

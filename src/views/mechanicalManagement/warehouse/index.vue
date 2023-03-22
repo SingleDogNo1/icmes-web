@@ -63,16 +63,12 @@
   import { useModal } from '/@/components/Modal';
   import EditStockModal from './EditStockModal.vue';
   import LockConfigModal from './LockConfigModal.vue';
-  import { useUserStore } from '/@/store/modules/user';
-  import { useRoute } from 'vue-router';
+  import { usePermission } from '/@/hooks/web/usePermission';
 
-  const { getFeature } = useUserStore();
-  const {
-    meta: { code },
-  } = useRoute();
+  const { getPermissionList } = usePermission();
 
-  const hasEditPermission = getFeature[code!].REPLACE_MOVE_EDIT;
-  const hasLockPermission = getFeature[code!].REPLACE_LOCK_CONFI;
+  const hasEditPermission = !!getPermissionList()?.REPLACE_MOVE_EDIT;
+  const hasLockPermission = !!getPermissionList()?.REPLACE_LOCK_CONFI;
 
   const loading = ref(false);
 
