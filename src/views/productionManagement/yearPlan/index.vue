@@ -114,7 +114,7 @@
         label: '编辑',
         onClick: () => {
           console.log('编辑操作 :>> ', record);
-          openViewYearPlanDrawer(true, record);
+          openEditYearPlanDrawer(true, { id: record.id });
         },
       },
       {

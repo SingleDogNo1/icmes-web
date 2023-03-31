@@ -4,8 +4,8 @@ import type { ComputedRef } from 'vue';
 import { computed, Ref, ref, toRaw, unref, watch } from 'vue';
 import { renderEditCell } from '../components/editable';
 import { useI18n } from '/@/hooks/web/useI18n';
-import { isArray, isBoolean, isFunction, isMap, isString } from '/@/utils/is';
-import { cloneDeep, isEqual } from 'lodash-es';
+import { isArray, isBoolean, isFunction, isMap, isString, isObject } from '/@/utils/is';
+import { cloneDeep, isEqual, without, merge } from 'lodash-es';
 import { formatToDate } from '/@/utils/dateUtil';
 import { ACTION_COLUMN_FLAG, DEFAULT_ALIGN, INDEX_COLUMN_FLAG, PAGE_SIZE } from '../const';
 
@@ -14,7 +14,7 @@ function handleItem(item: BasicColumn, ellipsis: boolean) {
   item.align = item.align || DEFAULT_ALIGN;
   if (ellipsis) {
     if (!key) {
-      item.key = dataIndex;
+      item.key = dataIndex as BasicColumn['key'];
     }
     if (!isBoolean(item.ellipsis)) {
       Object.assign(item, {
@@ -251,6 +251,28 @@ export function useColumns(
 
     return columns;
   }
+
+  function updateColumn(column: Partial<BasicColumn> | string, options?: Partial<BasicColumn>) {
+    let columns = getColumns();
+    if (isString(column)) {
+      let currentColumn = columns.find((v) => v.dataIndex === column) as BasicColumn;
+      const currentColumnIndex = columns.findIndex((v) => v.dataIndex === column);
+      const otherColumns = without(columns, currentColumn);
+      currentColumn = merge(currentColumn, options);
+      otherColumns.splice(currentColumnIndex, 0, currentColumn);
+      columns = otherColumns;
+    } else if (isObject(column)) {
+      let currentColumn = columns.find((v) => v.dataIndex === column.dataIndex) as BasicColumn;
+      const currentColumnIndex = columns.findIndex((v) => v.dataIndex === column.dataIndex);
+      const otherColumns = without(columns, currentColumn);
+      currentColumn = merge(currentColumn, column);
+      otherColumns.splice(currentColumnIndex, 0, currentColumn);
+      columns = otherColumns;
+    }
+
+    setColumns(columns);
+  }
+
   function getCacheColumns() {
     return cacheColumns;
   }
@@ -259,6 +281,7 @@ export function useColumns(
     getColumnsRef,
     getCacheColumns,
     getColumns,
+    updateColumn,
     setColumns,
     getViewColumns,
     setCacheColumnsByField,

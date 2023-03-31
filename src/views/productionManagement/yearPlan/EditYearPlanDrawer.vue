@@ -1,10 +1,11 @@
 <template>
   <BasicDrawer
     v-bind="$attrs"
-    @register="registerDrawer"
-    title="查看年度计划"
+    :title="title"
     width="80%"
     show-footer
+    @register="registerDrawer"
+    @close="closeDrawer"
   >
     <div class="w-750px mx-auto">
       <Steps :current="current">
@@ -15,7 +16,13 @@
     </div>
 
     <div class="mt-5">
-      <Step1 ref="Step1Ref" @next="handleStep1Next" v-show="current === 0" />
+      <Step1
+        ref="Step1Ref"
+        :monthDetailsData="monthDetailsData"
+        :productionList="productionList"
+        @next="handleStep1Next"
+        v-show="current === 0"
+      />
       <Step2
         @prev="handleStepPrev"
         @next="handleStep2Next"
@@ -40,11 +47,42 @@
   import Step1 from './Step1.vue';
   import Step2 from './Step2.vue';
   import Step3 from './Step3.vue';
+  import { getYearPlanMonthDetailApi } from '/@/api/production/yearPlan';
+  import { ProductionYearPlanMonthFullModel } from '/@/api/production/model/yearPlanModel';
+  import { getProductionListApi } from '/@/api/production/basic';
+  import { ProductionBaseModel } from '/@/api/production/model/basicModel';
 
-  const [registerDrawer, { setDrawerProps }] = useDrawerInner(async (record) => {
+  interface MonthDetailData {
+    year: string; // 接口返回当前年份的数字(2023)，需要转换成 YYYY-MM-DD HH:mm:ss 以供 antd 正常解析
+    memo: ProductionYearPlanMonthFullModel['memo'];
+    monthProductions: ProductionYearPlanMonthFullModel['monthProductions'];
+  }
+
+  const title = ref('');
+  const monthDetailsData = ref<MonthDetailData | null>(null);
+  const productionList = ref<ProductionBaseModel[]>([]);
+
+  const [registerDrawer, { setDrawerProps }] = useDrawerInner(async (record: { id?: number }) => {
     setDrawerProps({ loading: true });
     try {
-      console.log('record :>> ', record);
+      console.log('recordId :>> ', record);
+      title.value = record.id ? '编辑年度计划' : '新建年度计划';
+      const { items } = await getProductionListApi({ typeArr: [0, 1], ascending: true });
+      productionList.value = items || [];
+
+      if (!record.id) return;
+      const { year, memo, monthProductions } = await getYearPlanMonthDetailApi(record.id);
+      const month_productions = monthProductions || [];
+      month_productions.forEach((v) => {
+        (v as unknown as Record<string, string>).productTypeText =
+          v.productType === 0 ? '原煤' : '洗选煤种';
+      });
+
+      monthDetailsData.value = {
+        year: `${year}-01-01 00:00:00`,
+        memo,
+        monthProductions: monthProductions || [],
+      };
     } catch (error: any) {
       throw new Error(error);
     } finally {
@@ -86,5 +124,9 @@
     const data = await Step1Ref.value?.submit();
     if (!data) return;
     console.log('data :>> ', data);
+  }
+
+  function closeDrawer() {
+    Step1Ref.value?.reset();
   }
 </script>

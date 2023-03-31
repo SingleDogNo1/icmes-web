@@ -92,6 +92,9 @@ export function useTable(tableProps?: Props): [
     setColumns: (columns: BasicColumn[]) => {
       getTableInstance().setColumns(columns);
     },
+    updateColumn: (column: BasicColumn, options?: BasicColumn) => {
+      getTableInstance().updateColumn(column, options);
+    },
     setTableData: (values: any[]) => {
       return getTableInstance().setTableData(values);
     },

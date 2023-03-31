@@ -154,7 +154,7 @@
 
     const form = {
       ...values,
-      ...{ leadOutEmployeeIds: values.leadOutEmployeeIds ? [values.leadOutEmployeeIds] : [] },
+      ...{ leadOutEmployeeIds: values?.leadOutEmployeeIds ? [values.leadOutEmployeeIds] : [] },
     };
     try {
       const { items, totalCount } = await getSparePartStocksListApi(form);

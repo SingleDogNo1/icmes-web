@@ -11,7 +11,7 @@ export interface GetProductionListParams {
   /** 全局查询 */
   globalName?: string;
   /** 排序的字段名 */
-  orderBy: string;
+  orderBy?: string;
   /** 当前页码 */
   pageNo?: number;
   /** 一页多少条记录 0标识不分页全部显示 */

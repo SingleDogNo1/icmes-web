@@ -180,53 +180,74 @@ export const reportTableColumns: BasicColumn[] = [
   },
 ];
 
-export const step1Schemas: FormSchema[] = [
+export const step1Schemas = (productionList): BasicColumn[] => [
   {
-    field: 'account',
-    component: 'Select',
-    label: '付款账户',
-    required: true,
-    defaultValue: '1',
-    componentProps: {
-      options: [
-        {
-          label: 'anncwb@126.com',
-          value: '1',
-        },
-      ],
+    title: '产品',
+    dataIndex: 'productionId',
+    editComponent: 'Select',
+    editRow: true,
+    editRule: async (text) => {
+      if (!text) {
+        return '产品不能为空';
+      }
+      return '';
+    },
+    editComponentProps: {
+      style: {
+        width: '100%',
+      },
     },
   },
   {
-    field: 'fac',
-    component: 'InputGroup',
-    label: '收款账户',
-    required: true,
-    defaultValue: 'test@example.com',
-    slot: 'fac',
+    title: '类型',
+    dataIndex: 'productTypeText',
+    editRow: true,
+    editComponentProps: {
+      readonly: true,
+      bordered: false,
+      placeholder: '请选择产品',
+    },
   },
   {
-    field: 'pay',
-    component: 'Input',
-    label: '',
-    defaultValue: 'zfb',
-    show: false,
+    title: '灰分(%)',
+    dataIndex: 'ash',
+    editRow: true,
   },
   {
-    field: 'payeeName',
-    component: 'Input',
-    label: '收款人姓名',
-    defaultValue: 'foo',
-    required: true,
+    title: '水分(%)',
+    dataIndex: 'moisture',
+    editRow: true,
   },
   {
-    field: 'money',
-    component: 'Input',
-    label: '转账金额',
-    defaultValue: '500',
-    required: true,
-    renderComponentContent: () => {
+    title: '发热量(大卡)',
+    dataIndex: 'mj',
+    editRow: true,
+  },
+  {
+    title: '计划产率(%)',
+    dataIndex: 'productivity',
+    helpMessage: '洗选产品必填',
+    editRow: true,
+    editRule: async (text, record) => {
+      const productionId = record.editValueRefs.productionId;
+      const currentRow = productionList.find((v) => v.id === productionId);
+      // 当前行数据产品如果是原煤，不能输入计划产率，所以不校验
+      if (currentRow?.type === 0) {
+        return '';
+      } else if (!text) {
+        return '请输入计划产率';
+      } else {
+        return '';
+      }
+    },
+    editComponentProps: ({ record }) => {
+      const productionId = record.editValueRefs.productionId;
+      const currentRow = productionList.find((v) => v.id === productionId);
+      // 当前行数据产品如果是原煤，输入框不能输入，视觉上也不可见 (readonly, 去除边框)
       return {
-        prefix: () => '￥',
+        readonly: currentRow?.type === 0,
+        bordered: currentRow?.type !== 0,
+        placeholder: '',
       };
     },
   },
