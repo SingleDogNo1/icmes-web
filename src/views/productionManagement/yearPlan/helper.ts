@@ -1,5 +1,5 @@
 import { ProductionYearPlanProductionAdvanceModel } from '/@/api/production/model/yearPlanModel';
-import { omit } from 'lodash-es';
+import { omit, cloneDeep } from 'lodash-es';
 
 /**
  * 处理数字显示，保留 accuracy 位数
@@ -138,38 +138,26 @@ export function basicTableCellStyle(index, list) {
   }
 }
 
-export function parseMonthPlanTableData(list, monthWorkDays) {
-  const monthPlanList = (list || []).reduce((res, pre) => {
-    res.push({
-      productType: pre.productType,
-      productionGroup: pre.productionGroup,
-      productVarieties: pre.productVarieties,
-      ...pre.monthAmounts.reduce((RES, PRE) => {
-        RES['month' + PRE.month] = PRE.amount;
-        return RES;
-      }, {} as Recordable<any>),
-    });
-    return res;
-  }, [] as any[]);
-
+export function setMonthPlanTableData(list, monthWorkDays) {
+  const monthPlanList = cloneDeep(list || []);
   const rawCoal = monthPlanList.filter((v) => v.productType === 0);
   const rawCoalIndex = monthPlanList.findLastIndex((v) => v.productType === 0);
 
   // 创建一条数据，表示所有原煤数据各自相加的合计
   const totalRawCoal = rawCoal.reduce(
     (res, pre) => {
-      res.month1 += pre.month1 || 0;
-      res.month2 += pre.month2 || 0;
-      res.month3 += pre.month3 || 0;
-      res.month4 += pre.month4 || 0;
-      res.month5 += pre.month5 || 0;
-      res.month6 += pre.month6 || 0;
-      res.month7 += pre.month7 || 0;
-      res.month8 += pre.month8 || 0;
-      res.month9 += pre.month9 || 0;
-      res.month10 += pre.month10 || 0;
-      res.month11 += pre.month11 || 0;
-      res.month12 += pre.month12 || 0;
+      res.month1 += parseFloat(pre.month1) || 0;
+      res.month2 += parseFloat(pre.month2) || 0;
+      res.month3 += parseFloat(pre.month3) || 0;
+      res.month4 += parseFloat(pre.month4) || 0;
+      res.month5 += parseFloat(pre.month5) || 0;
+      res.month6 += parseFloat(pre.month6) || 0;
+      res.month7 += parseFloat(pre.month7) || 0;
+      res.month8 += parseFloat(pre.month8) || 0;
+      res.month9 += parseFloat(pre.month9) || 0;
+      res.month10 += parseFloat(pre.month10) || 0;
+      res.month11 += parseFloat(pre.month11) || 0;
+      res.month12 += parseFloat(pre.month12) || 0;
 
       return res;
     },
@@ -226,18 +214,18 @@ export function parseMonthPlanTableData(list, monthWorkDays) {
   // 创建一条数据，表示所有精煤数据各自相加的合计
   const totalCleanedCoal = cleanedCoal.reduce(
     (res, pre) => {
-      res.month1 += pre.month1 || 0;
-      res.month2 += pre.month2 || 0;
-      res.month3 += pre.month3 || 0;
-      res.month4 += pre.month4 || 0;
-      res.month5 += pre.month5 || 0;
-      res.month6 += pre.month6 || 0;
-      res.month7 += pre.month7 || 0;
-      res.month8 += pre.month8 || 0;
-      res.month9 += pre.month9 || 0;
-      res.month10 += pre.month10 || 0;
-      res.month11 += pre.month11 || 0;
-      res.month12 += pre.month12 || 0;
+      res.month1 += parseFloat(pre.month1) || 0;
+      res.month2 += parseFloat(pre.month2) || 0;
+      res.month3 += parseFloat(pre.month3) || 0;
+      res.month4 += parseFloat(pre.month4) || 0;
+      res.month5 += parseFloat(pre.month5) || 0;
+      res.month6 += parseFloat(pre.month6) || 0;
+      res.month7 += parseFloat(pre.month7) || 0;
+      res.month8 += parseFloat(pre.month8) || 0;
+      res.month9 += parseFloat(pre.month9) || 0;
+      res.month10 += parseFloat(pre.month10) || 0;
+      res.month11 += parseFloat(pre.month11) || 0;
+      res.month12 += parseFloat(pre.month12) || 0;
       return res;
     },
     {
@@ -266,18 +254,18 @@ export function parseMonthPlanTableData(list, monthWorkDays) {
 
   const totalOutputCoal = outputCoal.reduce(
     (res, pre) => {
-      res.month1 += pre.month1 || 0;
-      res.month2 += pre.month2 || 0;
-      res.month3 += pre.month3 || 0;
-      res.month4 += pre.month4 || 0;
-      res.month5 += pre.month5 || 0;
-      res.month6 += pre.month6 || 0;
-      res.month7 += pre.month7 || 0;
-      res.month8 += pre.month8 || 0;
-      res.month9 += pre.month9 || 0;
-      res.month10 += pre.month10 || 0;
-      res.month11 += pre.month11 || 0;
-      res.month12 += pre.month12 || 0;
+      res.month1 += parseFloat(pre.month1) || 0;
+      res.month2 += parseFloat(pre.month2) || 0;
+      res.month3 += parseFloat(pre.month3) || 0;
+      res.month4 += parseFloat(pre.month4) || 0;
+      res.month5 += parseFloat(pre.month5) || 0;
+      res.month6 += parseFloat(pre.month6) || 0;
+      res.month7 += parseFloat(pre.month7) || 0;
+      res.month8 += parseFloat(pre.month8) || 0;
+      res.month9 += parseFloat(pre.month9) || 0;
+      res.month10 += parseFloat(pre.month10) || 0;
+      res.month11 += parseFloat(pre.month11) || 0;
+      res.month12 += parseFloat(pre.month12) || 0;
       return res;
     },
     {
@@ -312,7 +300,7 @@ export function parseMonthPlanTableData(list, monthWorkDays) {
       (res, pre) => {
         const value = item[pre];
         if (/month\d+$/i.test(pre)) {
-          res.number += value;
+          res.number += parseFloat(value);
           res.length++;
         }
         return res;
@@ -328,6 +316,34 @@ export function parseMonthPlanTableData(list, monthWorkDays) {
   });
 
   console.log('monthPlanList :>> ', monthPlanList);
-
   return monthPlanList;
+}
+
+export function parseMonthPlanTableData(list, monthWorkDays) {
+  const monthPlanList = (list || []).reduce((res, pre) => {
+    res.push({
+      productType: pre.productType,
+      productionGroup: pre.productionGroup,
+      productVarieties: pre.productVarieties,
+      ...pre.monthAmounts.reduce((RES, PRE) => {
+        RES['month' + PRE.month] = PRE.amount;
+        return RES;
+      }, {} as Recordable<any>),
+    });
+    return res;
+  }, [] as any[]);
+
+  const tableData = setMonthPlanTableData(monthPlanList, monthWorkDays);
+
+  return tableData;
+}
+
+export function parseStep2FormTable(list, monthWorkDays) {
+  const monthPlanList = cloneDeep(list || []).filter(
+    (v) => !v.productVarieties.match(/(总量|合计|平均)/g),
+  );
+
+  const tableData = setMonthPlanTableData(monthPlanList, monthWorkDays);
+
+  return tableData;
 }

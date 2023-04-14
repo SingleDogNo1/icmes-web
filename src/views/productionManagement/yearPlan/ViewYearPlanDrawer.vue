@@ -101,6 +101,7 @@
         dataIndex: 'title',
         fixed: true,
         customCell: (_, index) => {
+          console.log('yearPlanTableData :>> ', yearPlanTableData);
           const list = unref(yearPlanTableData);
           // 获取列表中最后一条原煤数据所在的索引
           const rawCoalIndex = list.findLastIndex((v) => v.productType === 0);
@@ -126,9 +127,7 @@
         title: '',
         dataIndex: 'productVarieties',
         fixed: true,
-        format: (amount) => {
-          return amount || '/';
-        },
+        format: (amount) => amount || '/',
         customCell: (_, index) => {
           const list = unref(yearPlanTableData);
           // 获取列表中最后一条原煤数据所在的索引
@@ -200,6 +199,12 @@
     ],
   });
 
+  const monthsColumns = new Array(12).fill(0).map((_v, i) => ({
+    title: i + 1 + '月',
+    dataIndex: 'month' + (i + 1),
+    customCell: (_, i) => basicTableCellStyle(i, monthPlanTableData.value),
+  }));
+
   const [registerMonthPlanTable, { setTableData: setMonthPlanTableData }] = useTable({
     showIndexColumn: false,
     pagination: false,
@@ -265,66 +270,7 @@
           }
         },
       },
-      {
-        title: '1 月',
-        dataIndex: 'month1',
-        customCell: (_record, index) => basicTableCellStyle(index, monthPlanTableData.value),
-      },
-      {
-        title: '2 月',
-        dataIndex: 'month2',
-        customCell: (_record, index) => basicTableCellStyle(index, monthPlanTableData.value),
-      },
-      {
-        title: '3 月',
-        dataIndex: 'month3',
-        customCell: (_record, index) => basicTableCellStyle(index, monthPlanTableData.value),
-      },
-      {
-        title: '4 月',
-        dataIndex: 'month4',
-        customCell: (_record, index) => basicTableCellStyle(index, monthPlanTableData.value),
-      },
-      {
-        title: '5 月',
-        dataIndex: 'month5',
-        customCell: (_record, index) => basicTableCellStyle(index, monthPlanTableData.value),
-      },
-      {
-        title: '6 月',
-        dataIndex: 'month6',
-        customCell: (_record, index) => basicTableCellStyle(index, monthPlanTableData.value),
-      },
-      {
-        title: '7 月',
-        dataIndex: 'month7',
-        customCell: (_record, index) => basicTableCellStyle(index, monthPlanTableData.value),
-      },
-      {
-        title: '8 月',
-        dataIndex: 'month8',
-        customCell: (_record, index) => basicTableCellStyle(index, monthPlanTableData.value),
-      },
-      {
-        title: '9 月',
-        dataIndex: 'month9',
-        customCell: (_record, index) => basicTableCellStyle(index, monthPlanTableData.value),
-      },
-      {
-        title: '10 月',
-        dataIndex: 'month10',
-        customCell: (_record, index) => basicTableCellStyle(index, monthPlanTableData.value),
-      },
-      {
-        title: '11 月',
-        dataIndex: 'month11',
-        customCell: (_record, index) => basicTableCellStyle(index, monthPlanTableData.value),
-      },
-      {
-        title: '12 月',
-        dataIndex: 'month12',
-        customCell: (_record, index) => basicTableCellStyle(index, monthPlanTableData.value),
-      },
+      ...monthsColumns,
       {
         title: '全年累计',
         dataIndex: 'total',

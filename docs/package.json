@@ -10,7 +10,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "vitepress": "^1.0.0-alpha.4",
+    "vitepress": "^1.0.0-alpha.65",
     "vue": "^3.2.37"
+  },
+  "dependencies": {
+    "vite": "4",
+    "vitepress-plugin-search": "^1.0.4-alpha.20"
   }
 }

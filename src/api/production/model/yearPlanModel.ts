@@ -78,9 +78,9 @@ export interface ProductionYearPlanAdvanceModel extends ProductionYearPlanBaseMo
 
 export interface GetProductionYearPlanParams {
   /** 是否正序 */
-  ascending: boolean;
+  ascending?: boolean;
   /** 排序的字段名 */
-  orderBy: string;
+  orderBy?: string;
   /** 当前页码 */
   pageNo?: number;
   /** 一页多少条记录 0标识不分页全部显示 */

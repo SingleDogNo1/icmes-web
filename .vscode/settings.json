@@ -150,5 +150,6 @@
   ],
   "[dotenv]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
-  }
+  },
+  "commentTranslate.source": "Google"
 }
