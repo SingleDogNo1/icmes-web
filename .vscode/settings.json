@@ -10,15 +10,46 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "diffEditor.ignoreTrimWhitespace": false,
   //===========================================
+  //============ Better Comments ==============
+  //===========================================
+  "better-comments.multilineComments": true,
+  "better-comments.tags": [
+    {
+      "tag": "!",
+      "color": "#FF2D00",
+      "strikethrough": false,
+      "backgroundColor": "transparent"
+    },
+    {
+      "tag": "TODO",
+      "color": "#FF8C00",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent"
+    },
+    {
+      "tag": "FIXME",
+      "color": "#6e98ba",
+      "strikethrough": false,
+      "backgroundColor": "transparent"
+    },
+    {
+      "tag": "INFO",
+      "color": "#4acb90",
+      "strikethrough": false,
+      "backgroundColor": "transparent"
+    },
+    {
+      "tag": "*",
+      "color": "#98C379",
+      "strikethrough": false,
+      "backgroundColor": "transparent"
+    }
+  ],
+  //===========================================
   //============= Other =======================
   //===========================================
   "breadcrumbs.enabled": true,
-  "vetur.format.enable": false,
-  "vetur.validation.script": false,
-  "vetur.validation.templateProps": false,
-  "vetur.validation.style": false,
-  "vetur.validation.template": false,
-  "vetur.validation.interpolation": false,
   //===========================================
   //============= files =======================
   //===========================================

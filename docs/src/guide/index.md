@@ -15,6 +15,8 @@
 
 如果您使用的 IDE 是[vscode](https://code.visualstudio.com/)的话，建议安装以下工具来提高开发效率
 
+项目配置了相应的代码片段，输入`vue3`点击`tab`可以快速插入 `vue3 setup + ts`模板。
+
 - [Iconify IntelliSense](https://marketplace.visualstudio.com/items?itemName=antfu.iconify) - Iconify 图标插件
 - [Unocss](https://marketplace.visualstudio.com/items?itemName=antfu.unocss) - unocss 提示插件
 - [I18n-ally](https://marketplace.visualstudio.com/items?itemName=Lokalise.i18n-ally) - i18n 插件
@@ -23,8 +25,52 @@
 - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) - 代码格式化
 - [Stylelint](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint) - css 格式化
 - [DotENV](https://marketplace.visualstudio.com/items?itemName=mikestead.dotenv) - .env 文件 高亮
+- [better-comments](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments) - 高亮各种类型的注释，更方便看到代码中的警告和重要提示
 
-输入`vue3`点击`tab`可以快速插入 `vue3 setup + ts`模板，其他参考 `.vscode` 配置
+::: danger better-comment 插件在 vue3 语法的文件中的提示存在问题，解决方法如下（如果插件本身升级解决了此问题，无需以下操作）
+
+- 找到 当前插件所在目录，mac 地址为 `/Users/username/.vscode/extensions/aaron-bond.better-comments-3.0.2`
+- 在 out/parser.js`setDelimiter`方法中添加如下代码，重启 vscode 即可
+
+  ```diff
+  setDelimiter(languageCode) {
+    return __awaiter(this, void 0, void 0, function* () {
+      this.supportedLanguage = false;
+      this.ignoreFirstLine = false;
+      this.isPlainText = false;
+      const config = yield this.configuration.GetCommentConfiguration(languageCode);
+      if (config) {
+        let blockCommentStart = config.blockComment ? config.blockComment[0] : null;
+        let blockCommentEnd = config.blockComment ? config.blockComment[1] : null;
+        this.setCommentFormat(config.lineComment || blockCommentStart, blockCommentStart, blockCommentEnd);
+        this.supportedLanguage = true;
+      }
+      switch (languageCode) {
+        case "apex":
+        case "javascript":
+        case "javascriptreact":
+        case "typescript":
+        case "typescriptreact":
+          this.highlightJSDoc = true;
+          break;
+        case "elixir":
+        case "python":
+        case "tcl":
+          this.ignoreFirstLine = true;
+          break;
+        case "plaintext":
+          this.isPlainText = true;
+          // If highlight plaintext is enabled, this is a supported language
+          this.supportedLanguage = this.contributions.highlightPlainText;
+          break;
+  +      case "vue":
+  +        this.setCommentFormat("//", "/*", "*/")
+      }
+    });
+  }
+  ```
+
+:::
 
 ## 安装
 
