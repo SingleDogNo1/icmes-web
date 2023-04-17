@@ -1,6 +1,10 @@
 <template>
   <div class="step2">
     <BasicTable @register="registerMonthPlanTable" title="每月明细表" class="month-plan-table">
+      <template #toolbar>
+        <Description :column="2" @register="registerDesc" class="mb-4" />
+      </template>
+
       <template v-for="item in monthCols" :key="item" #[item]="{ record }">
         <span v-if="record.productVarieties.match(/总量|合计|平均/g)"> {{ record[item] }} </span>
         <a-input v-else v-model:value="record[item]" @blur="handleChangeCol" />
@@ -28,6 +32,8 @@
         </Table.Summary>
       </template>
     </BasicTable>
+
+    <BasicTable @register="registerYearPlanTable" />
   </div>
 </template>
 
@@ -35,8 +41,15 @@
   import { ref, unref, watch, toRefs, computed } from 'vue';
   import { Table } from 'ant-design-vue';
   import { cloneDeep } from 'lodash-es';
+  import { dateUtil } from '/@/utils/dateUtil';
   import { BasicTable, useTable } from '/@/components/Table';
-  import { basicTableCellStyle, parseMonthPlanTableData, parseStep2FormTable } from './helper';
+  import { Description, useDescription } from '/@/components/Description';
+  import {
+    basicTableCellStyle,
+    parseMonthPlanTableData,
+    parseStep2FormTable,
+    parseFloatNumber,
+  } from './helper';
   import { ProductionYearPlanProductionAdvanceModel } from '/@/api/production/model/yearPlanModel';
   import { MonthDetailData } from './types';
 
@@ -47,6 +60,7 @@
   }>();
 
   const monthPlanTableData = ref<ProductionYearPlanProductionAdvanceModel[]>([]);
+  const yearPlanTableData = ref<Record<string, string | number>[]>([]);
 
   const { schemas, monthWorkDays, monthDetailsData } = toRefs(props);
 
@@ -63,6 +77,15 @@
       res += pre.workDayTotal;
       return res;
     }, 0);
+  });
+  const descData = ref({ year: '', weight: '万吨' });
+  const [registerDesc] = useDescription({
+    data: descData,
+    labelStyle: { width: '100px' },
+    schema: [
+      { field: 'year', label: '生产年度' },
+      { field: 'weight', label: '重量单位' },
+    ],
   });
 
   const [registerMonthPlanTable, { setTableData: setMonthPlanTableData, getDataSource }] = useTable(
@@ -141,6 +164,121 @@
     },
   );
 
+  const [
+    registerYearPlanTable,
+    {
+      // setTableData: setYearPlanTableData
+    },
+  ] = useTable({
+    showIndexColumn: false,
+    pagination: false,
+    striped: false,
+    canResize: false,
+    columns: [
+      {
+        title: '',
+        width: 90,
+        dataIndex: 'title',
+        fixed: true,
+        customCell: (_, index) => {
+          console.log('yearPlanTableData :>> ', yearPlanTableData);
+          const list = unref(yearPlanTableData);
+          // 获取列表中最后一条原煤数据所在的索引
+          const rawCoalIndex = list.findLastIndex((v) => v.productType === 0);
+          // 获取列表中原煤数据的条数
+          const rawCoalList = list.filter((v) => v.productType === 0);
+          // 从第一条原煤开始，合并${原煤数据条数}行数据
+          if (index === 0) {
+            return { rowSpan: rawCoalList.length, style: { background: '#d9f2cb' } };
+          }
+          if (index > 0 && index <= rawCoalIndex) {
+            return { rowSpan: 0 };
+          }
+          // 原煤位置之后为产出煤种，起始位置为${最后一条原煤索引 + 1}，到数据结束
+          if (index === rawCoalIndex + 1) {
+            return { rowSpan: list.length - rawCoalList.length, style: { background: '#d8eaff' } };
+          }
+          if (index > rawCoalIndex + 1) {
+            return { rowSpan: 0 };
+          }
+        },
+      },
+      {
+        title: '',
+        dataIndex: 'productVarieties',
+        fixed: true,
+        format: (amount) => amount || '/',
+        customCell: (_, index) => {
+          const list = unref(yearPlanTableData);
+          // 获取列表中最后一条原煤数据所在的索引
+          const rawCoalIndex = list.findLastIndex((v) => v.productType === 0);
+          // 从第一条原煤开始，合并${原煤数据条数}行数据
+          if (index < rawCoalIndex) {
+            return { style: { background: '#d9f2cb' } };
+          }
+
+          if (index === rawCoalIndex) {
+            return { style: { color: '#ff6702', background: '#d9f2cb' } };
+          }
+
+          // 原煤位置之后为产出煤种，起始位置为${最后一条原煤索引 + 1}，到数据结束
+          if (index > rawCoalIndex && index < list.length - 1) {
+            return { style: { background: '#d8eaff' } };
+          }
+
+          if (index === list.length - 1) {
+            return { style: { color: '#ff6702', background: '#d8eaff' } };
+          }
+        },
+      },
+      {
+        title: '数量(万吨)',
+        dataIndex: 'productAmount',
+        format: (amount) => {
+          if (!amount) return '/';
+          return parseFloatNumber(amount);
+        },
+        customCell: (_record, index) => basicTableCellStyle(index, yearPlanTableData.value),
+      },
+      {
+        title: '产率（%）',
+        dataIndex: 'productivity',
+        format: (amount) => {
+          if (!amount) return '/';
+          return parseFloatNumber(amount * 100) + '%';
+        },
+        customCell: (_record, index) => basicTableCellStyle(index, yearPlanTableData.value),
+      },
+      {
+        title: '灰分（%）',
+        dataIndex: 'ash',
+        format: (ash) => {
+          if (!ash) return '/';
+          return parseFloatNumber(ash * 100) + '%';
+        },
+        customCell: (_record, index) => basicTableCellStyle(index, yearPlanTableData.value),
+      },
+      {
+        title: '水分（%）',
+        dataIndex: 'moisture',
+        format: (moisture) => {
+          if (!moisture) return '/';
+          return parseFloatNumber(moisture * 100) + '%';
+        },
+        customCell: (_record, index) => basicTableCellStyle(index, yearPlanTableData.value),
+      },
+      {
+        title: '发热量(大卡)',
+        dataIndex: 'mj',
+        format: (mj) => {
+          if (!mj) return '/';
+          return parseFloatNumber(mj * 100) + '%';
+        },
+        customCell: (_record, index) => basicTableCellStyle(index, yearPlanTableData.value),
+      },
+    ],
+  });
+
   watch(
     [monthWorkDays, schemas, monthDetailsData],
     ([monthWorkDays, schemas, monthDetailsData]) => {
@@ -151,6 +289,7 @@
         schemas,
         monthDetailsData,
       );
+      descData.value.year = dateUtil(monthDetailsData.year).format('YYYY');
 
       const monthProductions = cloneDeep(monthDetailsData.monthProductions);
 
@@ -185,6 +324,15 @@
     const data = parseStep2FormTable(tableData, monthWorkDays.value);
     setMonthPlanTableData(data); // 拼接原始数据，生成每月明细表格展示的格式
   }
+
+  function submit() {
+    const tableData = getDataSource();
+    console.log('tableData :>> ', tableData);
+  }
+
+  defineExpose({
+    submit,
+  });
 </script>
 
 <style scoped>

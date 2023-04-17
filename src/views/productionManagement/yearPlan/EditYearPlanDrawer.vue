@@ -24,6 +24,7 @@
         :productionList="productionList"
       />
       <Step2
+        ref="Step2Ref"
         v-show="current === 1 && state.initStep2"
         :schemas="step2Schemas"
         :monthDetailsData="monthDetailsData"
@@ -95,6 +96,7 @@
   });
 
   const Step1Ref = ref();
+  const Step2Ref = ref();
   const current = ref(0);
   const step2Schemas = ref(null);
 
@@ -133,10 +135,11 @@
     current.value--;
   }
 
-  function handleStep2Next(step2Values: any) {
-    current.value++;
-    state.initStep3 = true;
-    console.log(step2Values);
+  function handleStep2Next() {
+    // current.value++;
+    // state.initStep3 = true;
+    Step2Ref.value.submit();
+    // console.log(step2Values);
   }
 
   function handleRedo() {
