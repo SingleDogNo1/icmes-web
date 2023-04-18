@@ -1,9 +1,14 @@
 import { defHttp } from '/@/utils/http/axios';
 import {
   ReqProductionPlanCreateParams,
+  ReqProductionPlanUpdateParams,
+  ReqProductivityCalculationParams,
   ProductionPlanAdvanceModel,
   GetProductionPlanParams,
   ProductionPlanCollection,
+  ResProductivityCalculationModel,
+  ReqProductionDataOperationStatisticsParams,
+  ProductionDataOperationStatisticsPlanModelCollection,
 } from './model/plan';
 
 enum Api {
@@ -26,10 +31,17 @@ export function getProductionPlanApi(id) {
 }
 
 /** 修改生产计划--作者：王利宇 */
-export function updateProductionPlanApi(id, params: ReqProductionPlanCreateParams) {
+export function updateProductionPlanApi(id: number, params: ReqProductionPlanUpdateParams) {
   return defHttp.put<{ code: string }>({
     url: Api.baseUrl + id,
     params,
+  });
+}
+
+/** 删除生产计划--作者：杨晓飞 */
+export function delProductionPlanApi(id: number) {
+  return defHttp.delete<{ code: string }>({
+    url: Api.baseUrl + id,
   });
 }
 
@@ -37,6 +49,23 @@ export function updateProductionPlanApi(id, params: ReqProductionPlanCreateParam
 export function getProductionPlanListApi(params: GetProductionPlanParams) {
   return defHttp.post<ProductionPlanCollection>({
     url: Api.baseUrl + 'list/',
+    params,
+  });
+}
+
+/** 计算产率--作者：杨晓飞 */
+export function calcProductionPlanProductivityApi(params: ReqProductivityCalculationParams) {
+  return defHttp.post<ResProductivityCalculationModel>({
+    url: Api.baseUrl + 'productivity',
+    params,
+  });
+}
+
+export function getProductionPlanDetailProductionRelationApi(
+  params: ReqProductionDataOperationStatisticsParams,
+) {
+  return defHttp.post<ProductionDataOperationStatisticsPlanModelCollection>({
+    url: Api.baseUrl + 'queryProductionPlanDetailProductionRelation',
     params,
   });
 }

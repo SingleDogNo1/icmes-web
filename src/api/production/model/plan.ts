@@ -25,6 +25,13 @@ export interface ReqProductionPlanCreateParams {
   startDate: number;
 }
 
+export interface ReqProductionPlanUpdateParams extends ReqProductionPlanCreateParams {
+  /** 计划单号 */
+  code: string;
+  /** 用于高并发的数据版本控制 */
+  versionTag: string;
+}
+
 export interface GetProductionPlanParams {
   /** 是否正序 */
   ascending: boolean;
@@ -122,3 +129,48 @@ export interface ProductionPlanAdvanceModel extends ProductionPlanBaseModel {
 }
 
 export type ProductionPlanCollection = BasicFetchListResult<ProductionPlanBaseModel>;
+
+export interface ReqProductivityCalculationParams {
+  items: ProductionPlanRelatedProductionModel[];
+}
+
+export interface ResProductivityCalculationModel {
+  items: {
+    /** 产品id */
+    id: number;
+    /** 产率 */
+    productivity: number;
+  }[];
+}
+
+export interface ReqProductionDataOperationStatisticsParams {
+  /** 按时间排序 */
+  ascending: boolean;
+  /** 计划结束日期 */
+  endDate: string;
+  /** 计划开始日期 */
+  startDate: string;
+  /** 班次 */
+  workShiftDetailId: number;
+}
+
+export interface ProductionDataOperationStatisticsPlanModel {
+  amount: number;
+  ash: number;
+  code: string;
+  endDate: string;
+  id: number;
+  memo: string;
+  planWashingTotal: number;
+  productionCode: string;
+  productionGroup: string;
+  productionId: number;
+  productivity: number;
+  startDate: string;
+  type: number;
+  unit: string;
+  varieties: string;
+}
+export interface ProductionDataOperationStatisticsPlanModelCollection {
+  list: Nullable<ProductionDataOperationStatisticsPlanModel>;
+}

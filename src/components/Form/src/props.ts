@@ -53,6 +53,7 @@ export const basicProps = {
   transformDateFunc: {
     type: Function as PropType<Fn>,
     default: (date: any, key, schemas) => {
+      console.log('schemas, date, key :>> ', schemas, date, key);
       const data = schemas.filter((v) => v.field === key);
 
       return (

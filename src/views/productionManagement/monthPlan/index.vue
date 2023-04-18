@@ -7,7 +7,7 @@
         <a-button
           type="primary"
           :disabled="!editPermission"
-          @click="openEditYearPlanDrawer(true, { type: 'edit', recordId: null })"
+          @click="openEditYearPlanDrawer(true, { type: 'create', recordId: null })"
         >
           新建
         </a-button>
@@ -90,7 +90,7 @@
   import { GetProductionPlanParams, ProductionPlanBaseModel } from '/@/api/production/model/plan';
   import { ProductionPlanStatusEnum } from '/@/api/production/model/basicModel';
   import { useDrawer } from '/@/components/Drawer';
-  import EditPlanDrawer from './EditYearPlanDrawer.vue';
+  import EditPlanDrawer from './EditPlanDrawer.vue';
   import { successColor, warningColor, disabledColor, errorColor } from '/@/settings/designSetting';
   import { dateUtil } from '/@/utils/dateUtil';
   import { parseFloatNumber } from '/@/utils';
