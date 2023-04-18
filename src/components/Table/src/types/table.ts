@@ -412,6 +412,7 @@ export type CellFormat =
   | string
   | ((text: string | number, record: Recordable, index: number) => string | number)
   | ((record: Recordable[]) => string | number)
+  | ((record: Recordable) => string | number)
   | Map<string | number, any>;
 
 // @ts-ignore

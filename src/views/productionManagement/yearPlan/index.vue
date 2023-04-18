@@ -42,7 +42,7 @@
   import { useDrawer } from '/@/components/Drawer';
   import ViewYearPlanDrawer from './ViewYearPlanDrawer.vue';
   import EditYearPlanDrawer from './EditYearPlanDrawer.vue';
-  import { parseFloatNumber } from './helper';
+  import { parseFloatNumber } from '/@/utils';
 
   const { createMessage } = useMessage();
   const { getPermissionList } = usePermission();

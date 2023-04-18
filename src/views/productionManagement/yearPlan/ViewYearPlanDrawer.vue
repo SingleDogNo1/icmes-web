@@ -38,12 +38,8 @@
   import { getCalendarsStatisticsApi } from '/@/api/info/calendar';
   import { ProductionYearPlanProductionAdvanceModel } from '/@/api/production/model/yearPlanModel';
   import { CalendarStatisticsItemModel } from '/@/api/info/model/calendarModel';
-  import {
-    parseFloatNumber,
-    parseYearPlanTableData,
-    basicTableCellStyle,
-    parseMonthPlanTableData,
-  } from './helper';
+  import { parseFloatNumber } from '/@/utils';
+  import { parseYearPlanTableData, basicTableCellStyle, parseMonthPlanTableData } from './helper';
 
   const descData = ref({});
   const monthDetailList = ref<CalendarStatisticsItemModel[]>([]);

@@ -89,3 +89,13 @@ export const withInstall = <T>(component: T, alias?: string) => {
   };
   return component as T & Plugin;
 };
+
+/**
+ * 处理数字显示，保留 accuracy 位数
+ * @param num 需要处理的数字
+ * @param accuracy 精度，保留几位小数
+ * @returns 处理后保留的数字
+ */
+export function parseFloatNumber(num: number | string, accuracy = 2) {
+  return Math.round(parseFloat(num) * Math.pow(10, accuracy)) / Math.pow(10, accuracy);
+}

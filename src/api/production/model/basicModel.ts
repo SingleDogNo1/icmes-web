@@ -85,3 +85,13 @@ export interface OperatorModel {
   /** 运算符号名称 */
   name: string;
 }
+
+/** 生产计划当前状态 */
+export enum ProductionPlanStatusEnum {
+  /** 待生产 */
+  PENDING,
+  /** 生产中 */
+  DURING,
+  /** 已结束 */
+  END,
+}
