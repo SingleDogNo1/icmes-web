@@ -52,17 +52,8 @@ export const basicProps = {
   // 转化时间
   transformDateFunc: {
     type: Function as PropType<Fn>,
-    default: (date: any, key, schemas) => {
-      console.log('schemas, date, key :>> ', schemas, date, key);
-      const data = schemas.filter((v) => v.field === key);
-
-      return (
-        date?.format(
-          data[0].componentProps?.format ||
-            data[0].componentProps?.valueFormat ||
-            'YYYY-MM-DD HH:mm:ss',
-        ) ?? date
-      );
+    default: (date) => {
+      return date?.format('YYYY-MM-DD HH:mm:ss') ?? date;
     },
   },
   rulesMessageJoinLabel: propTypes.bool.def(true),

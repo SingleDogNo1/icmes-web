@@ -2,7 +2,7 @@
   <div class="step2">
     <BasicTable @register="registerMonthPlanTable" title="每月明细表" class="month-plan-table">
       <template #toolbar>
-        <Description :column="2" @register="registerDesc" class="mb-4" />
+        <Description @register="registerDesc" />
       </template>
 
       <template v-for="item in monthCols" :key="item" #[item]="{ record }">
@@ -44,12 +44,8 @@
   import { dateUtil } from '/@/utils/dateUtil';
   import { BasicTable, useTable } from '/@/components/Table';
   import { Description, useDescription } from '/@/components/Description';
-  import {
-    basicTableCellStyle,
-    parseMonthPlanTableData,
-    parseStep2FormTable,
-    parseFloatNumber,
-  } from '/@/utils';
+  import { parseFloatNumber } from '/@/utils';
+  import { basicTableCellStyle, parseMonthPlanTableData, parseStep2FormTable } from './helper';
   import { ProductionYearPlanProductionAdvanceModel } from '/@/api/production/model/yearPlanModel';
   import { MonthDetailData } from './types';
 
@@ -82,6 +78,7 @@
   const [registerDesc] = useDescription({
     data: descData,
     labelStyle: { width: '100px' },
+    column: 2,
     schema: [
       { field: 'year', label: '生产年度' },
       { field: 'weight', label: '重量单位' },

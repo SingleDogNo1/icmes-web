@@ -19,7 +19,7 @@ export interface GetProductionListParams {
   /** 产品分组 */
   productionGroup?: string;
   /** 产品类型 */
-  typeArr: number[];
+  typeArr?: number[];
 }
 
 export interface ProductionBaseModel {

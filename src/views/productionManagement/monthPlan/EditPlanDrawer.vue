@@ -27,28 +27,21 @@
           </template>
         </ASelect>
       </template>
-
-      <template #productionList="{ model, field }">
-        {{ model[field] }}
-
-        <BasicTable @register="registerTable" @edit-change="onEditChange">
-          <template #action="{ record }">
-            <TableAction :actions="createActions(record)" />
-          </template>
-        </BasicTable>
-
-        <Row class="bg-white h-10 px-2">
-          <Col :span="24" class="text-right">
-            <a-button @click="handleAddRow" preIcon="ant-design:plus-outlined">
-              添加输入行
-            </a-button>
-            <a-button class="ml-3" type="primary" :loading="loading" @click="handleSave">
-              保存
-            </a-button>
-          </Col>
-        </Row>
-      </template>
     </BasicForm>
+
+    <BasicTable @register="registerTable" @edit-change="onEditChange">
+      <template #action="{ record }">
+        <TableAction :actions="createActions(record)" />
+      </template>
+    </BasicTable>
+
+    <Row class="bg-white h-10 px-2">
+      <Col :span="24" class="text-right">
+        <a-button block @click="handleAddRow" preIcon="ant-design:plus-outlined">
+          添加输入行
+        </a-button>
+      </Col>
+    </Row>
 
     <template #footer>
       <a-button :loading="loading" @click="save"> 保存 </a-button>
@@ -57,7 +50,8 @@
 </template>
 
 <script lang="ts" setup name="EditYearPlanDrawer">
-  import { ref, onMounted, nextTick } from 'vue';
+  import { ref, unref, onMounted, nextTick } from 'vue';
+  import { LoadingOutlined } from '@ant-design/icons-vue';
   import { BasicForm, useForm } from '/@/components/Form';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { cloneDeep } from 'lodash-es';
@@ -66,10 +60,13 @@
   import { Select as ASelect, Row, Col } from 'ant-design-vue';
   import { dateUtil } from '/@/utils/dateUtil';
   import { useI18n } from '/@/hooks/web/useI18n';
-  import { getProductionListApi } from '/@/api/production/reportConfig';
+  import { getProductionListApi as getReportConfigListApi } from '/@/api/production/reportConfig';
   import { ProductionListSettingModel } from '/@/api/production/model/reportConfig';
+  import { getProductionListApi } from '/@/api/production/basic';
+  import { ProductionBaseModel } from '/@/api/production/model/basicModel';
+  import { getProductionPlanApi, calcProductionPlanProductivityApi } from '/@/api/production/plan';
 
-  interface Record {
+  interface RecordData {
     type: 'create' | 'edit' | 'view';
     recordId: Nullable<number>;
   }
@@ -82,11 +79,12 @@
   const { t } = useI18n();
   const loading = ref(false);
   const title = ref('');
-  const editId = ref<number | undefined>(undefined);
   const rateAccordingOptions = ref<RateAccordingOptions[]>([]);
   const loadingRateAccordingOptions = ref(false);
+  const productionList = ref<ProductionBaseModel[]>([]);
 
-  const [registerForm, { getFieldsValue }] = useForm({
+  const [registerForm, { getFieldsValue, setFieldsValue }] = useForm({
+    showActionButtonGroup: false,
     schemas: [
       {
         field: 'code',
@@ -130,98 +128,152 @@
           maxlength: 50,
         },
       },
-      {
-        field: 'productionList',
-        label: '',
-        component: 'Input',
-        slot: 'productionList',
-      },
     ],
-    labelWidth: 60,
-    autoSubmitOnEnter: true,
+    autoSubmitOnEnter: false,
     fieldMapToTime: [['timeRange', ['startDate', 'endDate'], 'x']],
   });
 
   const [registerTable, { setTableData, getDataSource, updateTableDataRecord }] = useTable({
-    title: '表格中嵌套表单操作',
-    titleHelpMessage: [
-      '新增一行数据时必须添加数据中的标识唯一值字段（示例中为 id）以保证数据唯一性',
-      '控制行数据变化的方法也是通过唯一标识字段（示例中为 id）来修改的',
-    ],
+    title: '计划入洗原煤和产出',
+    resizeHeightOffset: 100,
+    rowKey: 'key',
     columns: [
       {
-        title: '姓名',
-        dataIndex: 'name',
-        width: 150,
+        title: '产品',
+        dataIndex: 'id',
+        editComponent: 'ApiSelect',
+        width: 250,
         editRow: true,
-        editRule: true,
+        editRule: async (text) => {
+          if (!text) {
+            return '请选择产品';
+          }
+          return '';
+        },
+        editComponentProps: ({ record, column, text, index }) => {
+          return {
+            api: getProductionListApi,
+            resultField: 'items',
+            valueField: 'id',
+            allowClear: true,
+            onOptionsReady: (options) => {
+              productionList.value = options;
+              const typeArr = ['原煤', '洗选产品', '其它'];
+              options.forEach((option: ProductionBaseModel & { label: string }) => {
+                option.label = `${option.varieties}(${typeArr[option.type]})`;
+              });
+              return options;
+            },
+            onSelect: (val, option) => {
+              console.log(
+                'val, record, column, text, index  :>> ',
+                val,
+                record,
+                column,
+                text,
+                index,
+              );
+              const typeArr = ['原煤', '洗选产品', '其它'];
+              record.editValueRefs.productType = typeArr[option.type];
+
+              // upda
+            },
+          };
+        },
       },
+      // {
+      //   title: '产品',
+      //   dataIndex: 'id',
+      //   editComponent: 'Select',
+      //   width: 250,
+      //   editRow: true,
+      //   editRule: async (text) => {
+      //     if (!text) {
+      //       return '请选择产品';
+      //     }
+      //     return '';
+      //   },
+      //   editComponentProps: {
+      //     options: [],
+      //     onChange: (val, option) => {
+      //       console.log('val,option :>> ', val, option);
+      //     },
+      //   },
+      // },
       {
-        title: '姓名1',
-        dataIndex: 'name1',
-        helpMessage: '添加测试规则，不可以为三个字',
+        title: '数量',
+        dataIndex: 'amount',
+        editComponentProps: ({ record, column, text, index }) => {
+          console.log('record, column, text, index :>> ', record, column, text, index);
+          return {
+            addonAfter: '吨',
+            onchange: async () => {
+              const curRowOption = unref(productionList)[index];
+              const { amount, ash, productivity } = record.editValueRefs;
+              const form = {
+                ...curRowOption,
+                amount: amount || null,
+                ash: ash || null,
+                productivity: productivity || null,
+                interfaceProduction: curRowOption.interfaceProduction || '',
+              };
+              console.log('val :>> ', form);
+              // !只输入当前行数据进行查询会报错，必须查询表格所有数据才能正确查询
+              const { items } = await calcProductionPlanProductivityApi({ items: [form] });
+              console.log('items :>> ', items);
+              record.editValueRefs.productivity = items[0].productivity;
+            },
+          };
+        },
         width: 150,
         editRow: true,
         editRule: async (text) => {
-          if (text.length === 3) {
-            return '姓名1不能是三个字';
+          if (!text) {
+            return '请输入数量';
           }
           return '';
         },
       },
       {
-        title: '姓名2',
-        dataIndex: 'name2',
-        editComponent: 'Select',
+        title: '产率（%）',
+        dataIndex: 'productivity',
         editComponentProps: {
-          options: [
-            {
-              label: 'Option1',
-              value: '1',
-            },
-            {
-              label: 'Option2',
-              value: '2',
-            },
-            {
-              label: 'Option3',
-              value: '3',
-            },
-          ],
+          readonly: true,
+          bordered: false,
+          placeholder: '',
         },
         width: 150,
         editRow: true,
         editRule: true,
       },
       {
-        title: '姓名3',
-        dataIndex: 'name3',
+        title: '灰分（%）',
+        dataIndex: 'ash',
+        editComponent: 'InputNumber',
+        editComponentProps: {
+          controls: false,
+          defaultValue: 2,
+          min: 0,
+          max: 100,
+          precision: 2,
+        },
         width: 150,
         editRow: true,
         editRule: true,
       },
       {
-        title: '姓名4',
-        dataIndex: 'name4',
+        title: '类型',
+        dataIndex: 'productType',
+        editComponentProps: {
+          readonly: true,
+          bordered: false,
+          placeholder: '',
+        },
         width: 150,
-        editRow: true,
-        editRule: true,
-      },
-      {
-        title: '姓名5',
-        dataIndex: 'name5',
-        width: 150,
-        editRow: true,
-        editRule: true,
-      },
-      {
-        title: '地址',
-        dataIndex: 'address',
         editRow: true,
         editRule: true,
       },
     ],
-    resizeHeightOffset: 40,
     pagination: false,
     actionColumn: {
       width: 100,
@@ -231,7 +283,7 @@
     },
   });
 
-  const [registerDrawer, { setDrawerProps }] = useDrawerInner(async (record: Record) => {
+  const [registerDrawer, { setDrawerProps }] = useDrawerInner(async (record: RecordData) => {
     setDrawerProps({ loading: true });
     try {
       title.value =
@@ -241,8 +293,37 @@
           ? '编辑年度计划'
           : '查看年度计划';
 
-      if (!record.recordId) return;
-      editId.value = record.recordId;
+      if (!record.recordId) {
+        // 新建
+        reloadTable([
+          {
+            amount: null,
+            ash: null,
+            id: null,
+            productivity: null,
+            unit: '',
+          },
+        ]);
+      } else {
+        // 编辑 && 查看
+        const data = await getProductionPlanApi(record.recordId);
+        setFieldsValue({
+          code: data.code,
+          createTime: data.createTime,
+          timeRange: [data.startDate, data.endDate],
+          rateAccording: data.rateAccording,
+          memo: data.memo,
+        });
+
+        const productionList = data.productionList as unknown as Record<string, string>[];
+
+        productionList.forEach((v) => {
+          const typeArr = ['原煤', '洗选产品', '其它'];
+          v.productType = typeArr[v.type];
+        });
+
+        reloadTable(data.productionList);
+      }
     } catch (error: any) {
       throw new Error(error);
     } finally {
@@ -253,7 +334,7 @@
   onMounted(async () => {
     try {
       loadingRateAccordingOptions.value = true;
-      const data = await getProductionListApi();
+      const data = await getReportConfigListApi();
       const options = (data || []).filter((v) => v.useful);
 
       rateAccordingOptions.value = [{ id: -1, name: '全部产量报表' }, ...options];
@@ -316,7 +397,7 @@
       name4: null,
       name5: null,
       address: null,
-      id: new Date().getTime(), // 新增的数据, 添加时间戳作为唯一值，在操作行数据时使用
+      id: null,
     });
 
     reloadTable(data);
@@ -337,16 +418,14 @@
       // mock 提交数据
       if (valid) {
         loading.value = true;
-        setTimeout(() => {
-          loading.value = false;
-          createMessage.success('保存成功, 打开控制台查看提交结果');
-          const data = getDataSource().reduce((res, pre) => {
-            res.push(cloneDeep(pre.editValueRefs));
-            return res;
-          }, [] as Recordable<any>[]);
+        loading.value = false;
+        createMessage.success('保存成功, 打开控制台查看提交结果');
+        const data = getDataSource().reduce((res, pre) => {
+          res.push(cloneDeep(pre.editValueRefs));
+          return res;
+        }, [] as Recordable<any>[]);
 
-          console.log('data :>> ', data);
-        }, 2000);
+        console.log('data :>> ', data);
       }
     });
   }
@@ -372,6 +451,10 @@
 
   function save() {
     const data = getFieldsValue();
-    console.log('data :>> ', data);
+    const tableData = getDataSource();
+
+    handleSave();
+
+    console.log('data :>> ', data, tableData);
   }
 </script>

@@ -124,8 +124,10 @@ export interface ProductionPlanRelatedProductionModel extends ProductionBaseMode
   ash: number;
 }
 
-export interface ProductionPlanAdvanceModel extends ProductionPlanBaseModel {
+export interface ProductionPlanAdvanceModel
+  extends Omit<ProductionPlanBaseModel, 'productionCode' | 'productionId'> {
   productionList: ProductionPlanRelatedProductionModel[];
+  rateAccording: number[];
 }
 
 export type ProductionPlanCollection = BasicFetchListResult<ProductionPlanBaseModel>;

@@ -86,7 +86,7 @@
   import { Icon } from '/@/components/Icon';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { getProductionPlanListApi } from '/@/api/production/plan';
+  import { getProductionPlanListApi, delProductionPlanApi } from '/@/api/production/plan';
   import { GetProductionPlanParams, ProductionPlanBaseModel } from '/@/api/production/model/plan';
   import { ProductionPlanStatusEnum } from '/@/api/production/model/basicModel';
   import { useDrawer } from '/@/components/Drawer';
@@ -237,7 +237,7 @@
           confirm: async () => {
             try {
               loading.value = true;
-              await deleteYearPlanApi(record.id);
+              await delProductionPlanApi(record.id);
               createMessage.success('删除成功');
               await getTableData(formData);
             } catch (error) {
