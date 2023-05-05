@@ -44,6 +44,7 @@
   } from '/@/api/power/model/hvOperationModel';
   import { HvOperationTemplateTypeEnum } from '/@/enums/powerCutEnum';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const route = useRoute();
   const { createMessage } = useMessage();
@@ -75,8 +76,8 @@
 
       cutTickets.value = cut_tickets || [];
       supplyTickets.value = supply_tickets || [];
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -108,8 +109,8 @@
       cutTickets.value = cut_tickets || [];
 
       createMessage.success('保存成功');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       cutLoading.value = false;
     }
@@ -140,8 +141,8 @@
       supplyTickets.value = supply_tickets || [];
 
       createMessage.success('保存成功');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       supplyLoading.value = false;
     }

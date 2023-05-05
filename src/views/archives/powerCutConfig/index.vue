@@ -12,15 +12,10 @@
   </PageWrapper>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'PowerCutConfig',
-  };
-</script>
-
-<script lang="ts" setup>
+<script lang="ts" setup name="PowerCutConfig">
   import { ref } from 'vue';
   import { Tabs } from 'ant-design-vue';
+  import { error } from '/@/utils/log';
   import { PageWrapper } from '/@/components/Page';
   import { tabsList } from './components';
   import { useDesign } from '/@/hooks/web/useDesign';
@@ -34,8 +29,8 @@
     .then((formData) => {
       form.value = formData;
     })
-    .catch((error) => {
-      throw new Error(error);
+    .catch((err: any) => {
+      error(err);
     });
 </script>
 <style lang="less">

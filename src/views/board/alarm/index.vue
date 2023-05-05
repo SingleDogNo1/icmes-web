@@ -69,6 +69,7 @@
   } from '/@/components/Table';
   import { PageWrapper } from '/@/components/Page';
   import { onMounted, nextTick, ref } from 'vue';
+  import { error } from '/@/utils/log';
   import { getAlarmsListApi } from '/@/api/info/alarms';
   import type { GetAlarmsListParam, AlarmObjectModel } from '/@/api/info/model/alarmModel';
   import { schemas, columns } from './data';
@@ -193,8 +194,8 @@
       const { items, totalCount } = await getAlarmsListApi(params);
       setTableData(items || []);
       setPagination({ total: totalCount });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

@@ -24,6 +24,7 @@
   import { PowerCutConfigModel } from '/@/api/power/model/configModel';
   import { updatePowerCutConfigApi } from '/@/api/power/config';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const props = defineProps({
     form: {
@@ -85,8 +86,8 @@
       });
 
       createMessage.success('保存成功');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

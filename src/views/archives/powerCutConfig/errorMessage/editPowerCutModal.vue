@@ -23,6 +23,7 @@
   } from '/@/api/power/config';
   import { ConfigReminderModel, ConfigReminderParams } from '/@/api/power/model/configModel';
   import { useUserStore } from '/@/store/modules/user';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
   const { getAllAccount: employeesList } = useUserStore();
@@ -95,8 +96,8 @@
       createMessage.success('保存成功');
       emit('done');
       closeModal();
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       changeOkLoading(false);
     }

@@ -25,6 +25,7 @@
   import { PLCPointFullModel } from '/@/api/info/model/plcPointsModel';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useGo } from '/@/hooks/web/usePage';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
   const go = useGo();
@@ -71,7 +72,7 @@
         popConfirm: {
           title: '数据删除后将无法恢复，确认删除数据？',
           confirm: () => {
-            deletePlcPoints([record.id]);
+            deletePlcPoints([record.id!]);
           },
         },
       },
@@ -95,8 +96,8 @@
       });
 
       setTableData(items || []);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -109,8 +110,8 @@
       await deletePlcPointsApi(ids);
       createMessage.success('删除成功');
       await getPlcPointsList(props.selectRow);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -123,7 +124,7 @@
 
   function batchDelete() {
     const ids = (getSelectRows() as PLCPointFullModel[]).reduce((res, pre) => {
-      res.push(pre.id);
+      res.push(pre.id!);
       return res;
     }, [] as number[]);
 

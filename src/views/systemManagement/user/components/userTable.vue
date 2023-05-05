@@ -45,6 +45,7 @@
   import { LockTwoTone, UnlockTwoTone } from '@ant-design/icons-vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import EditUserModal from './editUserModal.vue';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
 
@@ -121,8 +122,8 @@
                 await unlockAccountByIdApi(record.employeeId);
                 createMessage.success('解除锁定成功！');
                 await getAccountList(props.searchData);
-              } catch (error: any) {
-                throw new Error(error);
+              } catch (err: any) {
+                error(err);
               } finally {
                 loading.value = false;
               }
@@ -149,8 +150,8 @@
                 await deleteAccountByIdApi(record.employeeId);
                 createMessage.success('删除成功！');
                 await getAccountList(props.searchData);
-              } catch (error: any) {
-                throw new Error(error);
+              } catch (err: any) {
+                error(err);
               } finally {
                 loading.value = false;
               }
@@ -167,8 +168,8 @@
                 await lockAccountByIdApi(record.employeeId);
                 createMessage.success('锁定成功！');
                 await getAccountList(props.searchData);
-              } catch (error: any) {
-                throw new Error(error);
+              } catch (err: any) {
+                error(err);
               } finally {
                 loading.value = false;
               }
@@ -192,8 +193,8 @@
               try {
                 await resetPasswordByIdApi(record.employeeId);
                 createMessage.success('密码初始化成功');
-              } catch (error: any) {
-                throw new Error(error);
+              } catch (err: any) {
+                error(err);
               } finally {
                 loading.value = false;
               }
@@ -209,8 +210,8 @@
               try {
                 await resetFaceByIdApi(record.employeeId);
                 createMessage.success('初始化人脸成功');
-              } catch (error: any) {
-                throw new Error(error);
+              } catch (err: any) {
+                error(err);
               } finally {
                 loading.value = false;
               }
@@ -233,8 +234,8 @@
         const tableData = getDataSource();
         handleClickRow(tableData[0], 0);
       }
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

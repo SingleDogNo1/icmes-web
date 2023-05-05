@@ -6,6 +6,7 @@
   import scaleSvg from '/@/assets/svg/preview/scale.svg';
   import unScaleSvg from '/@/assets/svg/preview/unscale.svg';
   import unRotateSvg from '/@/assets/svg/preview/unrotate.svg';
+  import { error } from '/@/utils/log';
 
   enum StatueEnum {
     LOADING,
@@ -86,7 +87,7 @@
         const { index, imageList } = props;
 
         if (!imageList || !imageList.length) {
-          throw new Error('imageList is undefined');
+          error('imageList is undefined');
         }
         imgState.currentIndex = index;
         handleIChangeImage(imageList[index]);

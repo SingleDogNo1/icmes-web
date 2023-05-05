@@ -35,6 +35,7 @@
   import { modalTableColumns as columns, detailDesc as schema } from '../data';
   import { AlarmObjectModel } from '/@/api/info/model/alarmModel';
   import { getAlarmsDetailApi } from '/@/api/info/alarms';
+  import { error } from '/@/utils/log';
 
   const loading = ref(false);
   const descData = ref({});
@@ -53,8 +54,8 @@
     try {
       const data = await getAlarmsDetailApi(alarmData.id);
       descData.value = data;
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

@@ -17,6 +17,7 @@
   import { dateUtil } from '/@/utils/dateUtil';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { importCommercialCoalInspectionApi } from '/@/api/quality/commercialCoalInspection';
+  import { error } from '/@/utils/log';
 
   const { createSuccessModal } = useMessage();
 
@@ -58,8 +59,8 @@
           closeModal();
         },
       });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

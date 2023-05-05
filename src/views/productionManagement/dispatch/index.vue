@@ -49,6 +49,7 @@
   import { formatToDate } from '/@/utils/dateUtil';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useGo } from '/@/hooks/web/usePage';
+  import { error } from '/@/utils/log';
 
   const { prefixCls } = useDesign('prod-manage-dispatch');
   const { createMessage } = useMessage();
@@ -179,8 +180,8 @@
               await nextTick();
               const data = getFieldsValue() as GetDispatchListParams;
               getTableData(data);
-            } catch (error) {
-              throw new Error(JSON.stringify(error));
+            } catch (err: any) {
+              error(err);
             } finally {
               loading.value = false;
             }
@@ -204,8 +205,8 @@
 
       setTableData(items || []);
       setPagination({ total: totalCount });
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

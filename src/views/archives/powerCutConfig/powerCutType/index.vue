@@ -46,6 +46,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import EditModal from './editModal.vue';
   import { useModal } from '/@/components/Modal';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
   const loading = ref(false);
@@ -108,8 +109,8 @@
               await deletePowerCutConfigApi(record.configId);
               createMessage.success('删除成功');
               await getPowerCutConfigList(getPowerCutConfigParams.value);
-            } catch (error: any) {
-              throw new Error(error);
+            } catch (err: any) {
+              error(err);
             } finally {
               loading.value = false;
             }
@@ -125,8 +126,8 @@
       const { items, totalCount } = await getPowerCutConfigListApi(params);
       setTableData(items || []);
       setPagination({ total: totalCount });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -137,8 +138,8 @@
     try {
       await changePowerCutConfigUsefulApi(record.configId);
       createMessage.success(record.useful ? '启用成功' : '禁用成功');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -146,9 +147,3 @@
 
   getPowerCutConfigList(getPowerCutConfigParams.value);
 </script>
-
-<style lang="less" scoped>
-  .power-cut-type {
-    color: red;
-  }
-</style>

@@ -3,7 +3,7 @@
     <BasicTree
       title="配点树"
       ref="treeRef"
-      :treeData="treeData"
+      :treeData="(treeData as any)"
       :loading="loading"
       search
       toolbar

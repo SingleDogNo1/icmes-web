@@ -41,6 +41,7 @@
   } from '/@/api/info/model/configurableObjectModel';
   import { useGo } from '/@/hooks/web/usePage';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const go = useGo();
   const { createMessage } = useMessage();
@@ -99,8 +100,8 @@
               await deleteConfigurableObjectApi(record.id!);
               createMessage.success('删除成功');
               await getTableData();
-            } catch (error: any) {
-              throw new Error(error);
+            } catch (err: any) {
+              error(err);
             } finally {
               loading.value = false;
             }
@@ -128,8 +129,8 @@
       setPagination({
         total: totalCount,
       });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

@@ -25,6 +25,7 @@
   import { editRangeSchemas as schemas } from '../data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { UpdateHvOperationDevicesApi } from '/@/api/power/hvOperation';
+  import { error } from '/@/utils/log';
   import {
     HvOperateTemplateAdvanceModel,
     UpdateHvOperationDevicesParams,
@@ -79,8 +80,8 @@
       createMessage.success(JSON.stringify(params));
       emit('done');
       closeModal();
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

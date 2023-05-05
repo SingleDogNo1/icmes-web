@@ -98,6 +98,7 @@
   import { StrategyModel, StrategyRuleModel } from '/@/api/info/model/strategyModel';
   import { getStrategyRuleByIdApi, updateStrategyRulesApi } from '/@/api/info/strategy';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
 
@@ -173,7 +174,7 @@
     }, true);
 
     if (!valid) {
-      throw new Error('validate error!');
+      error('validate error!');
     }
 
     const params = {
@@ -186,8 +187,8 @@
       await updateStrategyRulesApi(params);
       createMessage.success('策略保存成功');
       getStrategyRuleById(selectedRow.value);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -207,8 +208,8 @@
       const data = await getStrategyRuleByIdApi(record.id);
 
       setTableData(data);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

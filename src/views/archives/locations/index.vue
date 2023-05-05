@@ -15,19 +15,14 @@
   </div>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'LocationInfo',
-  };
-</script>
-
-<script lang="ts" setup>
+<script lang="ts" setup name="LocationInfo">
   import { Row, Col } from 'ant-design-vue';
   import { nextTick, reactive, ref } from 'vue';
   import { useDesign } from '/@/hooks/web/useDesign';
   import LocationTree from './components/locationTree.vue';
   import LocationTable from './components/locationTable.vue';
   import { getLocationTableApi } from '/@/api/info/location';
+  import { error } from '/@/utils/log';
 
   const { prefixCls } = useDesign('location');
 
@@ -55,9 +50,8 @@
       tableData.totalCount = totalCount;
       tableData.totalPages = totalPages;
       loading.value = false;
-    } catch (error: any) {
-      loading.value = false;
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

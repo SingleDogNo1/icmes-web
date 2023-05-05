@@ -46,6 +46,7 @@
   import { ref, reactive, nextTick } from 'vue';
   import { Steps } from 'ant-design-vue';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { getYearPlanMonthDetailApi } from '/@/api/production/yearPlan';
   import { getProductionListApi } from '/@/api/production/basic';
@@ -88,8 +89,8 @@
         memo,
         monthProductions: month_productions || [],
       };
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       setDrawerProps({ loading: false });
     }

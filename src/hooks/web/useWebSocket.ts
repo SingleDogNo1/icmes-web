@@ -11,6 +11,7 @@ import { useMessage } from './useMessage';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { REDIRECT_NAME } from '/@/router/constant';
 import { notification } from 'ant-design-vue';
+import { error } from '/@/utils/log';
 
 const { socketUrl } = useGlobSetting();
 const userStore = useUserStoreWithOut();
@@ -88,8 +89,8 @@ export function useWebSocket(callback: WSTaskCallbackModel) {
                       }
                       push({ name: REDIRECT_NAME, params, query }).then(() => resolve(true));
                     });
-                  } catch (error: any) {
-                    throw new Error(error);
+                  } catch (err: any) {
+                    error(err);
                   }
                 },
               });

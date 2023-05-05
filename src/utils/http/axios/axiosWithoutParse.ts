@@ -17,6 +17,7 @@ import { setObjToUrlParams, deepMerge } from '/@/utils';
 import { useErrorLogStoreWithOut } from '/@/store/modules/errorLog';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { joinTimestamp, formatRequestDate } from './helper';
+import { error } from '/@/utils/log';
 
 const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
@@ -42,7 +43,7 @@ const transform: AxiosTransform = {
 
     const data = res.data;
     if (!data) {
-      throw new Error(t('sys.api.apiRequestFailed'));
+      error(t('sys.api.apiRequestFailed'));
     } else {
       return data;
     }
@@ -147,8 +148,8 @@ const transform: AxiosTransform = {
         }
         return Promise.reject(error);
       }
-    } catch (error) {
-      throw new Error(error as string);
+    } catch (err: any) {
+      error(err);
     }
 
     checkStatus(error?.response?.status, msg, errorMessageMode);

@@ -4,6 +4,7 @@ import { getProcessListApi } from '/@/api/info/process';
 import { getLocationListApi } from '/@/api/info/location';
 import { listToTreeAsParentId } from '/@/utils/helper/treeHelper';
 import { useUserStoreWithOut } from '/@/store/modules/user';
+import { error } from '/@/utils/log';
 
 const { getOrganizationTree: organizationTree } = useUserStoreWithOut();
 
@@ -14,8 +15,8 @@ async function getProcessTree(params) {
     return new Promise((resolve) => {
       resolve(tree);
     });
-  } catch (error: any) {
-    throw new Error(error);
+  } catch (err: any) {
+    error(err);
   }
 }
 
@@ -26,8 +27,8 @@ async function getLocationTree() {
     return new Promise((resolve) => {
       resolve(tree);
     });
-  } catch (error: any) {
-    throw new Error(error);
+  } catch (err: any) {
+    error(err);
   }
 }
 

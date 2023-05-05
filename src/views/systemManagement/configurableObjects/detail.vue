@@ -1,5 +1,9 @@
 <template>
-  <PageWrapper contentBackground contentFullHeight :title="`${typeTxtMap[routeType]}配点对象`">
+  <PageWrapper
+    contentBackground
+    contentFullHeight
+    :title="`${typeTxtMap[(routeType as 'edit'|'create'|'view')]}配点对象`"
+  >
     <Spin :spinning="spinning">
       <BasicForm @register="register" @submit="handleSubmit" />
     </Spin>
@@ -28,6 +32,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { ConfigurableObjectModel } from '/@/api/info/model/configurableObjectModel';
   import { detailFormSchemas as schemas } from './data';
+  import { error } from '/@/utils/log';
   import {
     getConfigurableObjectsDetailApi,
     createConfigurableObjectApi,
@@ -83,8 +88,8 @@
           updateUserId: data.updateUserId,
           versionTag: data.versionTag,
         });
-      } catch (error: any) {
-        throw new Error(error);
+      } catch (err: any) {
+        error(err);
       } finally {
         spinning.value = false;
       }
@@ -104,8 +109,8 @@
       }
       createMessage.success('保存成功');
       go({ name: 'systemManagementConfigurableObjects' });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

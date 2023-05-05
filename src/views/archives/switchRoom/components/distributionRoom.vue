@@ -38,6 +38,7 @@
   } from '/@/api/info/model/distributionroomModel';
   import { getDistributionRoomListApi, delDistributionRoomApi } from '/@/api/info/distributionroom';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const loading = ref(false);
   const selectedRowIndex = ref<number>(-1);
@@ -99,8 +100,8 @@
               await delDistributionRoomApi(record.id);
               createMessage.success('删除成功');
               getDistributionRoomList(searchData);
-            } catch (error: any) {
-              throw new Error(error);
+            } catch (err: any) {
+              error(err);
             }
           },
         },
@@ -121,9 +122,8 @@
         const tableData = getDataSource();
         handleRowClick(tableData[0], 0);
       }
-    } catch (error: any) {
-      loading.value = false;
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

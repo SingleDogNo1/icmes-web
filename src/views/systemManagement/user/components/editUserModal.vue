@@ -16,6 +16,7 @@
   import { AccountModel, EditAccountParams } from '/@/api/account/model/basicModel';
   import { getAccountByCodeApi, addAccountApi, editAccountApi } from '/@/api/account/basic';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
 
@@ -125,8 +126,8 @@
       }
       closeModal();
       emit('update:user');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

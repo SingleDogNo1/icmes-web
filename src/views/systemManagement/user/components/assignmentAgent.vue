@@ -37,6 +37,7 @@
   import EditAssignmentAgentModal from './editAssignmentAgentModal.vue';
   import { delProxyByIdApi } from '/@/api/account/proxies';
   import { formatToDate, parseProxyType, parseProxyCycle } from '../helper';
+  import { error } from '/@/utils/log';
 
   const props = defineProps({
     user: {
@@ -105,8 +106,8 @@
               await delProxyByIdApi(record.id);
               createMessage.success('删除成功');
               await refreshData();
-            } catch (error: any) {
-              throw new Error(error);
+            } catch (err: any) {
+              error(err);
             } finally {
               loading.value = false;
             }
@@ -123,8 +124,8 @@
       const { items, totalCount } = await getAssignmentAgentListApi(id, options);
       setTableData(items || []);
       setPagination({ total: totalCount });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

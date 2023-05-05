@@ -96,6 +96,7 @@
     parseReminderTypeText,
     parseWorkflowObjectTypeText,
   } from '../helper';
+  import { error } from '/@/utils/log';
 
   const { getDictName } = useUserState();
 
@@ -201,8 +202,8 @@
         // 渲染上报表格数据
         const { items: reportData } = await getReportingListApi({ workflowNodeId: params.nodeId });
         setReportTableData(reportData || []);
-      } catch (error: any) {
-        throw new Error(error);
+      } catch (err: any) {
+        error(err);
       } finally {
         setDrawerProps({ loading: false });
       }

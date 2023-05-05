@@ -28,6 +28,7 @@
     getPowerCutConfigApi,
   } from '/@/api/info/powerCutConfig';
   import { map } from 'lodash-es';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
 
@@ -86,8 +87,8 @@
           remark: data.remark,
         });
       }
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -108,8 +109,8 @@
       createMessage.success('保存成功');
       closeModal();
       emit('done');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

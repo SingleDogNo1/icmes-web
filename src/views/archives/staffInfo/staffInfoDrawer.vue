@@ -73,6 +73,7 @@
     createEmployeeApi,
     editEmployeeInfoByIdApi,
   } from '/@/api/info/employee';
+  import { error } from '/@/utils/log';
 
   const emit = defineEmits(['done']);
 
@@ -113,8 +114,8 @@
             : data.graduationDate;
 
           setFieldsValue(parseData);
-        } catch (error: any) {
-          throw new Error(error);
+        } catch (err: any) {
+          error(err);
         } finally {
           setDrawerProps({ loading: false });
         }
@@ -141,8 +142,8 @@
       }
       emit('done');
       closeDrawer();
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     }
   }
 

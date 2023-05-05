@@ -55,8 +55,8 @@
   import { workflowListTableColumns } from '../data';
   import { useUserState } from '/@/hooks/web/useUserState';
   import EditWorkflowModal from './editWorkflowModal.vue';
-
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
   const { getDictMap } = useUserState();
@@ -132,8 +132,8 @@
                 await publishWorkflowApi(record.id);
                 createMessage.success('发布成功');
                 await getWorkflowsList(props.searchData);
-              } catch (error: any) {
-                throw new Error(error);
+              } catch (err: any) {
+                error(err);
               } finally {
                 loading.value = false;
               }
@@ -181,8 +181,8 @@
         const tableData = getDataSource();
         handleClickRow(tableData[0], 0);
       }
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -200,8 +200,8 @@
       await delWorkflowApi(record.id);
       createMessage.success('删除成功');
       await getWorkflowsList(props.searchData);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

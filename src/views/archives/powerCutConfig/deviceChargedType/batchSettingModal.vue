@@ -10,13 +10,7 @@
   </BasicModal>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'BatchSettingModal',
-  };
-</script>
-
-<script lang="ts" setup>
+<script lang="ts" setup name="BatchSettingModal">
   import { ref } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
@@ -24,6 +18,7 @@
   import { batchUpdatePowerConfigApi } from '/@/api/info/devices';
   import { batchSettingSchemas as schemas } from './data';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
 
@@ -59,8 +54,8 @@
       createMessage.success('批量配置成功');
       closeModal();
       emit('update:config');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

@@ -57,6 +57,7 @@
   import { useModal } from '/@/components/Modal';
   import EditModal from './editModal.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const { prefixCls } = useDesign('power-system-list');
   const { createMessage } = useMessage();
@@ -126,8 +127,8 @@
                 createMessage.success('删除成功');
                 searchTableData();
               })
-              .catch((error) => {
-                throw new Error(error);
+              .catch((err) => {
+                error(err);
               });
           },
         },
@@ -142,8 +143,8 @@
       setTableData(items || []);
       setPagination({ total: totalCount });
       deviceIds.value = ids || [];
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

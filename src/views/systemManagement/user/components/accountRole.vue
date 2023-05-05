@@ -27,6 +27,7 @@
   import { AccountModel } from '/@/api/account/model/basicModel';
   import DistributionRoleModal from './distributionRoleModal.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
 
@@ -92,8 +93,8 @@
               await delRoleByIdApi(props.user.employeeId, record.organizationId, record.roleId);
               createMessage.success('删除成功');
               await refreshData();
-            } catch (error: any) {
-              throw new Error(error);
+            } catch (err: any) {
+              error(err);
             } finally {
               loading.value = false;
             }
@@ -109,8 +110,8 @@
       const { items, totalCount } = await getRolesListByIdApi(id, options);
       setTableData(items || []);
       setPagination({ total: totalCount });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -130,8 +131,8 @@
       await distributionRoleByIdApi(employeeId, { orgId, roleId });
       createMessage.success('保存成功');
       await refreshData();
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

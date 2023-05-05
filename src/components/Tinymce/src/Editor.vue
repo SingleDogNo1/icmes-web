@@ -329,8 +329,6 @@
   });
 </script>
 
-<style lang="less" scoped></style>
-
 <style lang="less">
   @prefix-cls: ~'@{namespace}-tinymce-container';
 

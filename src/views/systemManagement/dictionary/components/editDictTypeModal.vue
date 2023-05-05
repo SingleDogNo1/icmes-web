@@ -17,6 +17,7 @@
   import { AddDictTypeParam, DictTypeModel, EditDictTypeParam } from '/@/api/info/model/dictModel';
   import { useUserStore } from '/@/store/modules/user';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const { getDicts: dicts } = useUserStore();
   const { createMessage } = useMessage();
@@ -127,8 +128,8 @@
       createMessage.success('保存成功！');
       closeModal();
       emit('update:dict');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

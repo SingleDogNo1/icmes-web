@@ -53,6 +53,7 @@
   import EditModal from './editModal.vue';
   import { useModal } from '/@/components/Modal';
   import { useDesign } from '/@/hooks/web/useDesign';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
   const { prefixCls } = useDesign('plc-judgment-rule');
@@ -117,8 +118,8 @@
       const { items, totalCount } = await getPLCJudgmentListApi(params);
       setTableData(items || []);
       setPagination({ total: totalCount });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -135,8 +136,8 @@
     try {
       await togglePLCJudgmentTipsApi(record.id);
       createMessage.success(`${record.isTips ? '' : '取消'}监测 PLC 提示成功`);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -147,8 +148,8 @@
     try {
       await togglePLCJudgmentUseApi(record.id);
       createMessage.success(`${record.inuse ? '启' : '停'}用成功`);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

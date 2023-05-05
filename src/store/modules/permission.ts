@@ -18,6 +18,7 @@ import { ABOUT_PAGE_ROUTE } from '/@/router/routes/basic';
 import { filter } from '/@/utils/helper/treeHelper';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
+import { error } from '/@/utils/log';
 
 interface PermissionState {
   // Permission code list
@@ -121,7 +122,7 @@ export const usePermissionStore = defineStore({
                 homePath = route.redirect! as string;
               } else {
                 route.meta = Object.assign({}, route.meta, { affix: true });
-                throw new Error('end');
+                error('end');
               }
             }
             children && children.length > 0 && patcher(children, currentPath);
@@ -217,8 +218,8 @@ export const usePermissionStore = defineStore({
         }
 
         routeList = orderBy(filter_routes, 'meta.order');
-      } catch (error: any) {
-        throw new Error(error);
+      } catch (err: any) {
+        error(err);
       }
 
       // Dynamically introduce components

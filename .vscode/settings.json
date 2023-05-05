@@ -155,6 +155,7 @@
     "MAINT",
     "maxlength",
     "mockjs",
+    "nocheck",
     "nprogress",
     "outstock",
     "pinia",

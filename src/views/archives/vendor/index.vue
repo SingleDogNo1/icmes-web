@@ -123,6 +123,7 @@
   import { Row, Col, Input } from 'ant-design-vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { BasicModal, useModal } from '/@/components/Modal';
+  import { error } from '/@/utils/log';
 
   const InputGroup = Input.Group;
 
@@ -226,8 +227,8 @@
               type: record.type,
               versionTag: record.versionTag,
             });
-          } catch (error: any) {
-            throw new Error(error);
+          } catch (err: any) {
+            error(err);
           } finally {
             modalLoading.value = false;
           }
@@ -246,8 +247,8 @@
               await nextTick();
               const values = getSearchFieldsValue() as GetVendorsListParams;
               await getVendersList(values);
-            } catch (error: any) {
-              throw new Error(error);
+            } catch (err: any) {
+              error(err);
             } finally {
               loading.value = false;
             }
@@ -265,8 +266,8 @@
 
       setTableData(items || []);
       setPagination({ total: totalCount });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -294,8 +295,8 @@
         { field: 'interfaceCustomer', componentProps: { options } },
         { field: 'code', componentProps: { disabled: false } },
       ]);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       modalLoading.value = false;
     }
@@ -319,8 +320,8 @@
       await nextTick();
       const searchForm = getSearchFieldsValue() as GetVendorsListParams;
       getVendersList(searchForm);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       modalLoading.value = false;
     }

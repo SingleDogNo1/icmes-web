@@ -15,21 +15,16 @@
   </PageWrapper>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'ArchivesCalendarOverview',
-  };
-</script>
-
-<script lang="ts" setup>
+<script lang="ts" setup name="ArchivesCalendarOverview">
   import { ref, PropType, watch, toRefs } from 'vue';
   import { PageWrapper } from '/@/components/Page';
   import { BasicTable, useTable } from '/@/components/Table';
   import { Select } from 'ant-design-vue';
   import { getCalendarsStatisticsApi } from '/@/api/info/calendar';
   import { cloneDeep } from 'lodash-es';
-  import dayjs from 'dayjs';
   import type { Date } from './types';
+  import { dateUtil } from '/@/utils/dateUtil';
+  import { error } from '/@/utils/log';
 
   const props = defineProps({
     date: {
@@ -43,12 +38,12 @@
   const loading = ref<boolean>(false);
   const selectedRowIndex = ref<number>(-1);
   const selectedRow = ref({});
-  const currentYear = ref(dayjs().year());
+  const currentYear = ref(dateUtil().year());
   const yearOptions = genYearsOptions();
 
   // 生成年份下拉选项(最近15年, 保持与日历相同)
   function genYearsOptions() {
-    const cur_year = dayjs().year();
+    const cur_year = dateUtil().year();
     const options: any[] = [];
     for (let index = cur_year - 7; index <= cur_year + 7; index++) {
       options.push({ value: index, label: index });
@@ -97,8 +92,8 @@
       setTableData(list);
       handleClickRow(list[date.value.month - 1], date.value.month - 1);
       emit('initTable', list, year);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

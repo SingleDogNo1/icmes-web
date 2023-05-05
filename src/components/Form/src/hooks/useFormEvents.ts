@@ -242,9 +242,8 @@ export function useFormEvents({
       const values = await validate();
       const res = handleFormValues(values);
       emit('submit', res);
-    } catch (error: any) {
-      console.log('表单校验失败 :>>', error);
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     }
   }
 

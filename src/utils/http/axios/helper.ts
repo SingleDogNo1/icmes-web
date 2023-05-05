@@ -1,4 +1,5 @@
 import { isObject, isString } from '/@/utils/is';
+import { error } from '/@/utils/log';
 
 const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
@@ -36,8 +37,8 @@ export function formatRequestDate(params: Recordable) {
       if (value) {
         try {
           params[key] = isString(value) ? value.trim() : value;
-        } catch (error: any) {
-          throw new Error(error);
+        } catch (err: any) {
+          error(err);
         }
       }
     }

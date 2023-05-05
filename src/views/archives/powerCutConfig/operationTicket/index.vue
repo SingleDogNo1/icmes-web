@@ -72,6 +72,7 @@
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useDrawer } from '/@/components/Drawer';
   import TicketInfoDrawer from './components/ticketInfoDrawer.vue';
+  import { error } from '/@/utils/log';
 
   const { prefixCls } = useDesign('operation-ticket');
   const { createMessage, createConfirm } = useMessage();
@@ -169,8 +170,8 @@
       const { items, totalCount } = await getHvOperationTicketConfigListApi(params);
       setTableData(items || []);
       setPagination({ total: totalCount });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -187,9 +188,9 @@
       .then(() => {
         createMessage.success(`${row.flag ? '启' : '禁'}用成功`);
       })
-      .catch((error) => {
+      .catch((err: any) => {
         row.flag = !row.flag;
-        throw new Error(error);
+        error(err);
       });
   }
 

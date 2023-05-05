@@ -108,6 +108,7 @@
   import { getPowerCutDevicesListApi } from '/@/api/info/devices';
   import { PowerCutDeviceModel } from '/@/api/info/model/devicesModel';
   import { DevicePowerTypesEnum, DevicePowerTypeCodesEnum } from '/@/enums/powerCutEnum';
+  import { error } from '/@/utils/log';
   import {
     lowVoltageDeviceTypes,
     highVoltageDeviceTypes,
@@ -174,8 +175,8 @@
       const options = items || [];
 
       powerCutTypeOptions.value = options;
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loadingPowerCutType.value = false;
     }
@@ -198,8 +199,8 @@
         return res;
       }, [] as { userId: number; name: string; fullOrgName: string }[]);
       contactUserOptions.value = contact_user_options;
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loadingContactUser.value = false;
     }
@@ -238,8 +239,8 @@
       console.log('devices :>> ', devices);
       mainDevicesOptions.value = devices;
       assDevicesOptions.value = devices;
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loadingMainDevices.value = false;
     }
@@ -264,8 +265,8 @@
 
       console.log('devices :>> ', devices);
       irrDevicesOptions.value = devices;
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loadingIrrDevices.value = false;
     }
@@ -403,8 +404,8 @@
         const value = getFieldsValue();
         console.log('value :>> ', value);
       }, 2000);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

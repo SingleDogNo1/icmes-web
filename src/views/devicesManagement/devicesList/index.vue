@@ -85,6 +85,7 @@
   import { useDrawer } from '/@/components/Drawer';
   import { schemas, columns } from './data';
   import { deviceListToTree } from './utils';
+  import { error } from '/@/utils/log';
 
   const router = useRouter();
   const { getDictName } = useUserState();
@@ -146,8 +147,8 @@
       const { items, totalCount } = await getDevicesListApi(formData as GetDevicesListParam);
       setTableData(deviceListToTree(items || []));
       setPagination({ total: totalCount });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       deviceTableLoading.value = false;
     }
@@ -242,8 +243,8 @@
           try {
             const data = await exportDeviceQRCodeApi({ deviceIds: [record.id] });
             downloadByData(data, record.name + '.zip');
-          } catch (error: any) {
-            throw new Error(error);
+          } catch (err: any) {
+            error(err);
           }
         },
       },
@@ -258,8 +259,8 @@
               await delDeviceApi(record.id);
               createMessage.success('删除成功');
               await search();
-            } catch (error: any) {
-              throw new Error(error);
+            } catch (err: any) {
+              error(err);
             }
           },
         },

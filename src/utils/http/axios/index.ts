@@ -16,6 +16,7 @@ import { useErrorLogStoreWithOut } from '/@/store/modules/errorLog';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { joinTimestamp, formatRequestDate } from './helper';
 import { useUserStoreWithOut } from '/@/store/modules/user';
+import { error } from '/@/utils/log';
 
 const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
@@ -45,7 +46,7 @@ const transform: AxiosTransform = {
     const DATA = res.data;
     if (!DATA) {
       // return '[HTTP] Request has no return value';
-      throw new Error(t('sys.api.apiRequestFailed'));
+      error(t('sys.api.apiRequestFailed'));
     }
     //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
     const { status, data, message } = DATA;
@@ -80,7 +81,7 @@ const transform: AxiosTransform = {
       createMessage.error(timeoutMsg);
     }
 
-    throw new Error(timeoutMsg || t('sys.api.apiRequestFailed'));
+    error(timeoutMsg || t('sys.api.apiRequestFailed'));
   },
 
   // 请求之前处理config
@@ -182,8 +183,8 @@ const transform: AxiosTransform = {
         }
         return Promise.reject(error);
       }
-    } catch (error) {
-      throw new Error(error as string);
+    } catch (err: any) {
+      error(err);
     }
 
     checkStatus(error?.response?.status, msg, errorMessageMode);

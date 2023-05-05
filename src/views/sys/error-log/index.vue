@@ -39,6 +39,7 @@
   import { fireErrorApi } from '/@/api/demo/error';
   import { getColumns } from './data';
   import { cloneDeep } from 'lodash-es';
+  import { error } from '/@/utils/log';
 
   const rowInfo = ref<ErrorLogInfo>();
   const imgList = ref<string[]>([]);
@@ -79,7 +80,7 @@
   }
 
   function fireVueError() {
-    throw new Error('fire vue error!');
+    error('fire vue error!');
   }
 
   function fireResourceError() {

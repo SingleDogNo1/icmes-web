@@ -12,6 +12,7 @@ import { useI18n } from '/@/hooks/web/useI18n';
 import { useGlobSetting } from '/@/hooks/setting';
 import { listToTreeAsParentId } from '/@/utils/helper/treeHelper';
 import { Image } from '/@/components/Image';
+import { error } from '/@/utils/log';
 
 const { getFeature } = useUserStoreWithOut();
 
@@ -28,8 +29,8 @@ async function getProcessTree(params) {
     return new Promise((resolve) => {
       resolve(tree);
     });
-  } catch (error: any) {
-    throw new Error(error);
+  } catch (err: any) {
+    error(err);
   }
 }
 

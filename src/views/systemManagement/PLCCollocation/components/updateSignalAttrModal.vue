@@ -26,6 +26,7 @@
   import { getPlcPointInfoApi, updatePlcPointsApi } from '/@/api/info/plcPoints';
   import { PLCPointFullModel, PLCPointBaseModel } from '/@/api/info/model/plcPointsModel';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
 
@@ -62,8 +63,8 @@
             ratedValue: data.ratedValue,
           });
         })
-        .catch((error) => {
-          throw new Error(error);
+        .catch((err) => {
+          error(err);
         })
         .finally(() => {
           loading.value = false;
@@ -82,8 +83,8 @@
       createMessage.success('配置属性成功');
       closeModal();
       emit('done');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       setModalProps({ confirmLoading: false });
     }

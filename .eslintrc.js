@@ -75,5 +75,6 @@ module.exports = defineConfig({
       },
     ],
     'vue/multi-word-component-names': 'off',
+    'vue/v-on-event-hyphenation': 'off',
   },
 });

@@ -13,6 +13,7 @@
 
 <script lang="ts" setup>
   import { ref } from 'vue';
+  import { error } from '/@/utils/log';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
   import {
@@ -103,8 +104,8 @@
             });
             break;
         }
-      } catch (error: any) {
-        throw new Error(error);
+      } catch (err: any) {
+        error(err);
       } finally {
         loading.value = false;
       }
@@ -126,8 +127,8 @@
       createMessage.success('保存成功');
       closeModal();
       emit('done');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

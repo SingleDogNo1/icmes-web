@@ -22,6 +22,7 @@
   import { exportExcelColumns } from '../data';
   import { useUserState } from '/@/hooks/web/useUserState';
   import { useGlobSetting } from '/@/hooks/setting';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
   const { getDictMap } = useUserState();
@@ -98,8 +99,8 @@
       exportExcel(data, exportExcelColumns, filename);
       createMessage.success('保存成功！');
       closeModal();
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

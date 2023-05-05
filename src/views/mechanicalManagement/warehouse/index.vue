@@ -64,6 +64,7 @@
   import EditStockModal from './EditStockModal.vue';
   import LockConfigModal from './LockConfigModal.vue';
   import { usePermission } from '/@/hooks/web/usePermission';
+  import { error } from '/@/utils/log';
 
   const { getPermissionList } = usePermission();
 
@@ -118,15 +119,6 @@
             confirm: async () => {
               loading.value = true;
               console.log('record :>> ', record);
-              // try {
-              //   await deleteRoleApi(record.id);
-              //   createMessage.success('删除成功');
-              //   await getRolesList(props.searchData);
-              // } catch (error: any) {
-              //   throw new Error(error);
-              // } finally {
-              //   loading.value = false;
-              // }
             },
           },
         },
@@ -162,8 +154,8 @@
       setPagination({
         total: totalCount,
       });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

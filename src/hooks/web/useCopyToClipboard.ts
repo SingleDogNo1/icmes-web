@@ -1,6 +1,7 @@
 import { ref, watch } from 'vue';
-
 import { isDef } from '/@/utils/is';
+import { error } from '/@/utils/log';
+
 interface Options {
   target?: HTMLElement;
 }
@@ -51,8 +52,8 @@ export function copyTextToClipboard(input: string, { target = document.body }: O
   let isSuccess = false;
   try {
     isSuccess = document.execCommand('copy');
-  } catch (e) {
-    throw new Error(JSON.stringify(e));
+  } catch (err: any) {
+    error(err);
   }
 
   element.remove();

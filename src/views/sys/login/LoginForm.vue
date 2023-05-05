@@ -56,6 +56,7 @@
   import { useUserStore } from '/@/store/modules/user';
   import { LoginStateEnum, useLoginState } from './useLogin';
   import { LoginParams } from '/@/api/sys/model/userModel';
+  import { error } from '/@/utils/log';
 
   const ACol = Col;
   const ARow = Row;
@@ -111,8 +112,8 @@
       );
 
       if (!userInfo) return;
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

@@ -49,6 +49,7 @@
   import { LocationFullNameModel } from '/@/api/info/model/locationModel';
   import { listToTreeAsParentId } from '/@/utils/helper/treeHelper';
   import { cloneDeep } from 'lodash-es';
+  import { error } from '/@/utils/log';
 
   const emit = defineEmits(['select']);
 
@@ -70,7 +71,7 @@
 
   function getTree() {
     const tree = unref(treeRef);
-    if (!tree) throw new Error('treeRef is null');
+    if (!tree) error('treeRef is null');
     return tree;
   }
 
@@ -97,9 +98,8 @@
       selectedId.value = treeData.value[0].id;
       selectedFullName.value = treeData.value[0].fullName;
       emit('select', treeData.value[0]);
-    } catch (error: any) {
-      loading.value = false;
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

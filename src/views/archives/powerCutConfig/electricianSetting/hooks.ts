@@ -2,6 +2,7 @@ import { ref } from 'vue';
 import { updatePowerCutConfigApi } from '/@/api/power/config';
 import { PowerCutConfigModel } from '/@/api/power/model/configModel';
 import { useMessage } from '/@/hooks/web/useMessage';
+import { error } from '/@/utils/log';
 
 export function useOperatingConfig() {
   const { createMessage } = useMessage();
@@ -13,8 +14,8 @@ export function useOperatingConfig() {
       return new Promise<void>((resolve) => {
         resolve();
       });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     }
   }
 

@@ -65,6 +65,7 @@
   import { getProductionListApi } from '/@/api/production/basic';
   import { ProductionBaseModel } from '/@/api/production/model/basicModel';
   import { getProductionPlanApi, calcProductionPlanProductivityApi } from '/@/api/production/plan';
+  import { error } from '/@/utils/log';
 
   interface RecordData {
     type: 'create' | 'edit' | 'view';
@@ -324,8 +325,8 @@
 
         reloadTable(data.productionList);
       }
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       setDrawerProps({ loading: false });
     }
@@ -338,8 +339,8 @@
       const options = (data || []).filter((v) => v.useful);
 
       rateAccordingOptions.value = [{ id: -1, name: '全部产量报表' }, ...options];
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loadingRateAccordingOptions.value = false;
     }

@@ -33,6 +33,7 @@
   import { schemas, columns } from './data';
   import { getPlcPointsListApi } from '/@/api/info/plcPoints';
   import { GetPlcPointsListParams, PLCPointFullModel } from '/@/api/info/model/plcPointsModel';
+  import { error } from '/@/utils/log';
 
   const { getDictMap } = useUserState();
 
@@ -101,8 +102,8 @@
       setPagination({
         total: totalCount,
       });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

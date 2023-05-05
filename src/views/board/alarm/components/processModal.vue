@@ -39,6 +39,7 @@
   } from '/@/api/info/model/alarmModel';
   import { updateAlarmsOperationsApi } from '/@/api/info/alarms';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const loading = ref(false);
   const { createMessage } = useMessage();
@@ -81,12 +82,12 @@
       }
       emit('done');
       closeModal();
-    } catch (error: any) {
+    } catch (err: any) {
       // TODO 这段异常会不会自动捕捉？待运行的时候确认
       // if (error.errorCode === 2042) {
       //   createMessage.error('报警已被其他人处理，保存失败!');
       // }
-      throw new Error(error);
+      error(err);
     } finally {
       loading.value = false;
     }

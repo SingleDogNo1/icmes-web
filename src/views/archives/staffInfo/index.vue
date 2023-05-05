@@ -40,6 +40,7 @@
   import { GetEmployeesListParams, EmployeeFullNameModel } from '/@/api/info/model/employeeModel';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const { getPermissionList } = usePermission();
   const { createMessage } = useMessage();
@@ -105,8 +106,8 @@
               await deleteEmployeeInfoByIdApi(record.id);
               createMessage.success('删除成功');
               await getInitData();
-            } catch (error: any) {
-              throw new Error(error);
+            } catch (err: any) {
+              error(err);
             }
           },
         },
@@ -120,8 +121,8 @@
       const { items, totalCount } = await getEmployeeListApi(params);
       setTableData(items || []);
       setPagination({ total: totalCount });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

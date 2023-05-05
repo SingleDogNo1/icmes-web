@@ -47,6 +47,7 @@
   import { GetConfigurableObjectsListParam } from '/@/api/info/model/configurableObjectModel';
   import { formatDeviceTypeTree } from '/@/utils/helper/treeHelper';
   import { BasicForm, useForm } from '/@/components/Form';
+  import { error } from '/@/utils/log';
 
   enum TabKeysEnum {
     device = 'device',
@@ -176,8 +177,8 @@
       getTree()?.setExpandedKeys([firstTreeNode.id]);
       getTree()?.setSelectedKeys([firstTreeNode.id]);
       emit('select', { ...firstTreeNode, ...{ type: 2 } });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -195,8 +196,8 @@
         const tableData = getDataSource();
         handleClickRow(tableData[0], 0);
       }
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -210,7 +211,7 @@
   function getTree() {
     const tree = unref(treeRef);
     if (!tree) {
-      throw new Error('tree is null!');
+      error('tree is null!');
     }
     return tree;
   }

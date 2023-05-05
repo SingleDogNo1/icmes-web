@@ -1,4 +1,10 @@
+import { AxiosRequestConfig, AxiosResponseHeaders } from 'axios';
 import { BasicFetchListResult } from '/@/api/model/baseModel';
+
+export enum ExportTypeEnum {
+  PDF = 1,
+  ZIP = 2,
+}
 
 export interface GetMaintenanceOrdersParams {
   /** 是否正序 */
@@ -143,4 +149,13 @@ export interface SaveMaintenanceCommonMeasureModel {
   title: string;
   /** 版本 */
   versionTag: string;
+}
+
+export interface ExportMaintenanceOrderResultModel {
+  config: AxiosRequestConfig<any>;
+  data: BlobPart;
+  headers: AxiosResponseHeaders;
+  request: XMLHttpRequest;
+  status: number;
+  statusText: string;
 }

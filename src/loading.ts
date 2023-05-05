@@ -1,3 +1,5 @@
+// @ts-nocheck
+// @ts-ignore
 const defineCustomElm = (F, n) =>
   customElements && (customElements.get(n) ? false : customElements.define(n, F));
 

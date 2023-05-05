@@ -25,6 +25,7 @@
   } from '/@/api/power/model/hvOperationModel';
   import { HvOperationTemplateTypeEnum } from '/@/enums/powerCutEnum';
   import { hvTicketStepColumns, hvTicketRangeColumns } from '../data';
+  import { error } from '/@/utils/log';
 
   const activeKey = ref<'cut' | 'supply' | 'range'>('cut');
   const title = ref('');
@@ -57,8 +58,8 @@
         setCutTableData(cut_tickets || []);
         setSupplyTableData(supply_tickets || []);
         setRangeTableData(devices || []);
-      } catch (error: any) {
-        throw new Error(error);
+      } catch (err: any) {
+        error(err);
       } finally {
         setDrawerProps({ loading: false });
       }

@@ -76,6 +76,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import ViewWorkflowNodeDrawer from './viewWorkflowNodeDrawer.vue';
   import EditNodeModal from './editNodeModal.vue';
+  import { error } from '/@/utils/log';
 
   const props = defineProps({
     selectedRow: {
@@ -174,8 +175,8 @@
                 await deleteWorkflowNodeApi(props.selectedRow.id, record.id);
                 createMessage.success('删除成功');
                 await getWorkflowNodesListById(props.selectedRow.id, unref(searchNodeForm));
-              } catch (error: any) {
-                throw new Error(error);
+              } catch (err: any) {
+                error(err);
               }
             },
           },
@@ -209,8 +210,8 @@
       });
       // 生成与表格数据等量的集合用来表示每一行数据的 loading 状态
       switchLoading.value = Array(items?.length || 0).fill(false);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -233,9 +234,9 @@
 
       createMessage.success(`${row.isDisabled ? '停用' : '启用'}成功`);
       await getWorkflowNodesListById(props.selectedRow.id, unref(searchNodeForm));
-    } catch (error: any) {
+    } catch (err: any) {
       row.isDisabled = !row.isDisabled;
-      throw new Error(error);
+      error(err);
     } finally {
       switchLoading.value[i] = false;
     }

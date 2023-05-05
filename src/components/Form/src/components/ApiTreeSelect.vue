@@ -13,6 +13,7 @@
   import { computed, defineComponent, watch, ref, onMounted, unref } from 'vue';
   import { TreeSelect } from 'ant-design-vue';
   import { isArray, isFunction } from '/@/utils/is';
+  import { error } from '/@/utils/log';
   import { get } from 'lodash-es';
   import { propTypes } from '/@/utils/propTypes';
   import { LoadingOutlined } from '@ant-design/icons-vue';
@@ -70,8 +71,8 @@
         let result;
         try {
           result = await api(props.params);
-        } catch (e) {
-          throw new Error(JSON.stringify(e));
+        } catch (err: any) {
+          error(err);
         }
         loading.value = false;
         if (!result) return;

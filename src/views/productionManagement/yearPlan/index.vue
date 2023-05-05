@@ -43,6 +43,7 @@
   import ViewYearPlanDrawer from './ViewYearPlanDrawer.vue';
   import EditYearPlanDrawer from './EditYearPlanDrawer.vue';
   import { parseFloatNumber } from '/@/utils';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
   const { getPermissionList } = usePermission();
@@ -128,8 +129,8 @@
               await deleteYearPlanApi(record.id);
               createMessage.success('删除成功');
               await getTableData(formData);
-            } catch (error) {
-              throw new Error(JSON.stringify(error));
+            } catch (err: any) {
+              error(err);
             } finally {
               loading.value = false;
             }
@@ -150,8 +151,8 @@
 
       setTableData(items || []);
       setPagination({ total: totalCount });
-    } catch (error) {
-      throw new Error(JSON.stringify(error));
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

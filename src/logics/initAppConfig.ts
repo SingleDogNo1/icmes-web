@@ -21,6 +21,7 @@ import { primaryColor } from '../../build/config/themeConfig';
 import { Persistent } from '/@/utils/cache/persistent';
 import { deepMerge } from '/@/utils';
 import { ThemeEnum } from '/@/enums/appEnum';
+import { error } from '/@/utils/log';
 
 // Initial project configuration
 export function initAppConfigStore() {
@@ -44,8 +45,8 @@ export function initAppConfigStore() {
 
     grayMode && updateGrayMode(grayMode);
     colorWeak && updateColorWeak(colorWeak);
-  } catch (error: any) {
-    throw new Error(error);
+  } catch (err: any) {
+    error(err);
   }
   appStore.setProjectConfig(projCfg);
 

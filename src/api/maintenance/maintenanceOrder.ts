@@ -6,6 +6,8 @@ import {
   GetMaintenanceCommonMeasureParams,
   MaintenanceCommonMeasureModel,
   SaveMaintenanceCommonMeasureModel,
+  ExportTypeEnum,
+  ExportMaintenanceOrderResultModel,
 } from './model/maintenanceOrderModel';
 
 enum Api {
@@ -56,4 +58,20 @@ export function deleteMaintenanceOrderCommonMeasureApi(id: number) {
   return defHttp.delete<{ code: string }>({
     url: Api.baseUrl + 'CommonMeasure/' + id,
   });
+}
+
+/** 导出检修单--作者：罗致 */
+export function exportMaintenanceOrdersApi(exportType: ExportTypeEnum, ids: string) {
+  return defHttp.post<ExportMaintenanceOrderResultModel>(
+    {
+      url: `${Api.baseUrl}export/${exportType}/${ids}`,
+      responseType: 'arraybuffer',
+    },
+    {
+      isReturnNativeResponse: true,
+      isTransformResponse: false,
+      formatDate: false,
+      joinTime: false,
+    },
+  );
 }

@@ -30,7 +30,7 @@ const visibleData = reactive<{ [key: number]: boolean }>({});
  */
 export function useDrawer(): UseDrawerReturnType {
   if (!getCurrentInstance()) {
-    throw new Error('useDrawer() can only be used inside setup() or functional components!');
+    error('useDrawer() can only be used inside setup() or functional components!');
   }
   const drawer = ref<DrawerInstance | null>(null);
   const loaded = ref<Nullable<boolean>>(false);
@@ -103,7 +103,7 @@ export const useDrawerInner = (callbackFn?: Fn): UseDrawerInnerReturnType => {
   const uidRef = ref<string>('');
 
   if (!getCurrentInstance()) {
-    throw new Error('useDrawerInner() can only be used inside setup() or functional components!');
+    error('useDrawerInner() can only be used inside setup() or functional components!');
   }
 
   const getInstance = () => {

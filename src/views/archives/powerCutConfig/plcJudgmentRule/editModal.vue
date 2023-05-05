@@ -17,6 +17,7 @@
   import { editPLCJudgmentRulesSchema as schemas } from './data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { createPLCJudgmentApi, editPLCJudgmentApi } from '/@/api/power/PLCJudgmentRule';
+  import { error } from '/@/utils/log';
   import {
     PlcJudgmentRuleModel,
     ReqPLCJudgmentRuleParams,
@@ -66,8 +67,8 @@
       createMessage.success('保存成功');
       closeModal();
       emit('done');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

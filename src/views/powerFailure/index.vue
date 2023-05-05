@@ -218,6 +218,7 @@
   import { downloadByData } from '/@/utils/file/download';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useGo } from '/@/hooks/web/usePage';
+  import { error } from '/@/utils/log';
 
   const { projectName } = useGlobSetting();
   const { getDictMap } = useUserState();
@@ -310,8 +311,8 @@
 
       setTableData(list);
       setPagination({ total: totalCount });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -337,8 +338,8 @@
       todayPowerCutCount.value = data;
 
       await getTableData();
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     }
   });
 
@@ -372,8 +373,8 @@
               await withdrawPowerCutFormApi(record.code);
 
               await getTableData();
-            } catch (error: any) {
-              throw new Error(error);
+            } catch (err: any) {
+              error(err);
             }
           },
         },
@@ -622,14 +623,10 @@
           : '高压工作票';
 
       downloadByData(data, filename, downloadType);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
-    }
-
-    if (exportFormCodes.value.length === 1) {
-    } else {
     }
   }
 

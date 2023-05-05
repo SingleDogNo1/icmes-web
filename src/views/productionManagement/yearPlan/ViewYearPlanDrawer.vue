@@ -40,6 +40,7 @@
   import { CalendarStatisticsItemModel } from '/@/api/info/model/calendarModel';
   import { parseFloatNumber } from '/@/utils';
   import { parseYearPlanTableData, basicTableCellStyle, parseMonthPlanTableData } from './helper';
+  import { error } from '/@/utils/log';
 
   const descData = ref({});
   const monthDetailList = ref<CalendarStatisticsItemModel[]>([]);
@@ -78,8 +79,8 @@
       const monthPlanList = parseMonthPlanTableData(monthProductions, monthWorkDays);
       monthPlanTableData.value = monthPlanList; // 备份表格数据，用做单元格合并时判断的条件
       setMonthPlanTableData(monthPlanList); // 拼接原始数据，生成每月明细表格展示的格式
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       setDrawerProps({ loading: false });
     }

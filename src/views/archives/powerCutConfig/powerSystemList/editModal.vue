@@ -26,6 +26,7 @@
     DevicePowerSupplyPhotoExtendModel,
     DevicePowerSupplyPhotoBaseModel,
   } from '/@/api/info/model/devicePowerSupplyPhotoModel';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
   const { getDevicesList } = useUserStore();
@@ -94,8 +95,8 @@
       createMessage.success('保存成功');
       emit('done');
       closeModal();
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       changeOkLoading(false);
     }

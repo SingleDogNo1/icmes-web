@@ -33,13 +33,13 @@
   import { Row, Col } from 'ant-design-vue';
   import OverviewTable from './components/overview.vue';
   import Calendar from './components/calendar.vue';
-  import dayjs from 'dayjs';
+  import { dateUtil } from '/@/utils/dateUtil';
 
   const tableData = ref();
   const date = ref({
-    year: dayjs().year(),
-    month: dayjs().month() + 1,
-    day: dayjs().date(),
+    year: dateUtil().year(),
+    month: dateUtil().month() + 1,
+    day: dateUtil().date(),
   });
   const overviewTableRef = ref();
 

@@ -8,6 +8,7 @@ import { getVendorsListApi } from '/@/api/info/vendor';
 import type { SparePartStockHistoryFullModel } from '/@/api/info/model/sparePartStocksModel';
 import { dateUtil } from '/@/utils/dateUtil';
 import { getSparePartDetailApi } from '/@/api/info/sparePart';
+import { error } from '/@/utils/log';
 
 const { getAllAccount } = useUserStoreWithOut();
 const { getDictOptions, getDictMap } = useUserState();
@@ -217,8 +218,8 @@ export const editStockSchemas = (occurrenceType: 'out' | 'in'): FormSchema[] => 
                   componentProps: { options: vendorModels || [] },
                 },
               ]);
-            } catch (error: any) {
-              throw new Error(error);
+            } catch (err: any) {
+              error(err);
             }
           },
         };

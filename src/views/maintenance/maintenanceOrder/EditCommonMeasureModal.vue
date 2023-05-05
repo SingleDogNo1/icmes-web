@@ -20,6 +20,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { saveMaintenanceOrderCommonMeasureApi } from '/@/api/maintenance/maintenanceOrder';
   import { MaintenanceCommonMeasureModel } from '/@/api/maintenance/model/maintenanceOrderModel';
+  import { error } from '/@/utils/log';
 
   interface DataModel extends MaintenanceCommonMeasureModel {
     edit?: boolean;
@@ -136,8 +137,8 @@
         createMessage.success('保存成功');
         closeModal();
         emit('update');
-      } catch (error: any) {
-        throw new Error(error);
+      } catch (err: any) {
+        error(err);
       } finally {
         loading.value = false;
       }

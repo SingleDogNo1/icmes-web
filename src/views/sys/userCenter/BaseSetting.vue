@@ -79,6 +79,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useUserState } from '/@/hooks/web/useUserState';
   import { cloneDeep } from 'lodash-es';
+  import { error } from '/@/utils/log';
 
   const InputGroup = Input.Group;
 
@@ -119,8 +120,8 @@
       // 更新数据源，主要是更新 versionTag，上次的操作记录已经失效
       const data = await getEmployeeInfoByIdApi(employeeId);
       setFieldsValue(data);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

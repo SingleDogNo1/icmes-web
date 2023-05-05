@@ -10,6 +10,7 @@ import {
   ProductionAdvanceModel,
   ProductionRelatedQualityQuotaModel,
 } from '/@/api/production/model/basicModel';
+import { error } from '/@/utils/log';
 
 const { getDictOptions, getDictMap } = useUserState();
 const directionOptions = getDictOptions('DT_PROD_CHECK_ DIREC');
@@ -309,8 +310,8 @@ export const editCommercialCoalInspectionSchemas = (formData): FormSchema[] => {
                 id: formData?.id as number,
               });
               schema.suffix = data ? '' : '未使用过的批号';
-            } catch (error: any) {
-              throw new Error(error);
+            } catch (err: any) {
+              error(err);
             }
           },
         };

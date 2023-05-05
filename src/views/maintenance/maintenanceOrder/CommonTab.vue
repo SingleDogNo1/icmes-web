@@ -35,6 +35,7 @@
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import EditCommonMeasureModal from './EditCommonMeasureModal.vue';
+  import { error } from '/@/utils/log';
   import {
     getMaintenanceOrderCommonMeasureListApi,
     deleteMaintenanceOrderCommonMeasureApi,
@@ -139,8 +140,8 @@
                 await deleteMaintenanceOrderCommonMeasureApi(record.id);
                 createMessage.success('删除成功');
                 await handleSearch();
-              } catch (error: any) {
-                throw new Error(error);
+              } catch (err: any) {
+                error(err);
               } finally {
                 loading.value = false;
               }
@@ -161,8 +162,8 @@
       const { items, totalCount } = await getMaintenanceOrderCommonMeasureListApi(form);
       setTableData(items || []);
       setPagination({ total: totalCount });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

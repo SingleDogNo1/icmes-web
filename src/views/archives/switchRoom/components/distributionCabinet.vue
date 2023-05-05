@@ -73,6 +73,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { GetDistributionRoomListParam } from '/@/api/info/model/distributionroomModel';
   import { map } from 'lodash-es';
+  import { error } from '/@/utils/log';
 
   const loading = ref(false);
   const activeIndex = ref<string>('0');
@@ -168,8 +169,8 @@
                 await delDistributionCabinetsApi(record.id);
                 createMessage.success('删除成功');
                 getList(props.selectedRowId, searchData.value);
-              } catch (error: any) {
-                throw new Error(error);
+              } catch (err: any) {
+                error(err);
               }
             },
           },
@@ -201,8 +202,8 @@
                 await delDistributionEntranceGuardsApi(record.distributionRoomId, record.id);
                 createMessage.success('删除成功');
                 getList(props.selectedRowId, searchData.value);
-              } catch (error: any) {
-                throw new Error(error);
+              } catch (err: any) {
+                error(err);
               }
             },
           },
@@ -231,8 +232,8 @@
           total: totalCount,
         });
       }
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

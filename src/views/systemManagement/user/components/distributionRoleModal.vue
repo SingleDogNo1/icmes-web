@@ -35,6 +35,7 @@
   import { getRolesListApi } from '/@/api/account/roles';
   import { listToTreeAsParentId } from '/@/utils/helper/treeHelper';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
 
@@ -53,7 +54,7 @@
   function getTree() {
     const tree = unref(treeRef);
     if (!tree) {
-      throw new Error('tree is null!');
+      error('tree is null!');
     }
     return tree;
   }
@@ -81,8 +82,8 @@
           const { items, totalCount } = await getRolesListApi(params);
           setTableData(items || []);
           setPagination({ total: totalCount });
-        } catch (error: any) {
-          throw new Error(error);
+        } catch (err: any) {
+          error(err);
         } finally {
           loading.value = false;
         }
@@ -100,26 +101,26 @@
 
       treeData.value = listToTreeAsParentId(list || []);
       await nextTick();
-      getTree().expandAll(true);
+      getTree()?.expandAll(true);
       // 默认选中根目录，根目录 id 固定为 0
-      getTree().setSelectedKeys([0]);
+      getTree()?.setSelectedKeys([0]);
 
       const { items: roles, totalCount } = await getRolesListApi(getRolesListParams.value);
       setTableData(roles || []);
       setPagination({
         total: totalCount,
       });
-    } catch (error) {
-      console.log(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
   });
 
   function handleSubmit() {
-    const orgIdArr = getTree().getSelectedKeys();
+    const orgIdArr = getTree()?.getSelectedKeys();
     const roleIdArr = getSelectRows();
-    if (!orgIdArr.length) {
+    if (!orgIdArr?.length) {
       createMessage.error('请选择机构名称');
       return;
     }

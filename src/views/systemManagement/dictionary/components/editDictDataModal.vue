@@ -22,6 +22,7 @@
     DictTypeModel,
   } from '/@/api/info/model/dictModel';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
 
@@ -185,8 +186,8 @@
       createMessage.success('保存成功！');
       closeModal();
       emit('update:data');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

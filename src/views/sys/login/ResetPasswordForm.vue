@@ -38,6 +38,7 @@
   import { useLoginState, LoginStateEnum } from './useLogin';
   import { useUserStore } from '/@/store/modules/user';
   import { validPassword } from '/@/utils/validPassword';
+  import { error } from '/@/utils/log';
 
   const FormItem = Form.Item;
   const InputPassword = Input.Password;
@@ -94,8 +95,8 @@
         }),
       );
       console.log('userInfo :>> ', userInfo);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

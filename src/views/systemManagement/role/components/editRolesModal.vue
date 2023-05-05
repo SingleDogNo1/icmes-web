@@ -32,6 +32,7 @@
   import { Tabs } from 'ant-design-vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { addRoleApi, editRoleApi } from '/@/api/account/roles';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
 
@@ -124,8 +125,8 @@
       createMessage.success('保存成功');
       closeModal();
       emit('update:role');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

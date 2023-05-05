@@ -28,6 +28,7 @@
   import { createWorkflowNodeApi, editWorkflowNodeApi } from '/@/api/flow/workflow';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useFormInPopup } from '/@/hooks/component/useFormInPopup';
+  import { error } from '/@/utils/log';
 
   const { saveInitData, validCloseable } = useFormInPopup();
   const { createMessage } = useMessage();
@@ -99,8 +100,8 @@
       createMessage.success('保存成功');
       closeModal();
       emit('done');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

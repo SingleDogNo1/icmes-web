@@ -8,6 +8,6 @@ export function warn(message: string) {
   );
 }
 
-export function error(message: string) {
-  throw new Error(`[${projectName} error]:${message}`);
+export function error(message: string | Object) {
+  throw new Error(`[${projectName} error]:${JSON.stringify(message)}`);
 }

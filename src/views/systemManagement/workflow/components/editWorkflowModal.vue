@@ -27,6 +27,7 @@
   } from '/@/api/flow/model/workflowModel';
   import { createWorkflowApi, editWorkflowApi } from '/@/api/flow/workflow';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   // const { createMessage } = useMessage();
 
@@ -74,8 +75,8 @@
       createMessage.success('保存成功');
       closeModal();
       emit('done');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

@@ -37,6 +37,7 @@
   import { useDesign } from '/@/hooks/web/useDesign';
   import { BasicForm, useForm } from '/@/components/Form';
   import { schemas } from './data';
+  import { error } from '/@/utils/log';
   import OrganizationTree from './components/organizationTree.vue';
   import OrganizationTable from './components/organizationTable.vue';
   import { getOrganizationsListApi } from '/@/api/info/organizations';
@@ -72,8 +73,8 @@
       tableData.list = items || [];
       tableData.totalPages = totalPages;
       tableData.totalCount = totalCount;
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

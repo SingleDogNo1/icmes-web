@@ -43,6 +43,7 @@
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useDrawer } from '/@/components/Drawer';
   import { schemas, columns } from './data';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
   const { getPermissionList } = usePermission();
@@ -90,8 +91,8 @@
       );
       setTableData(items || []);
       setPagination({ total: totalCount });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       tableLoading.value = false;
     }
@@ -129,8 +130,8 @@
               await delDevicesCategoryApi(record.id);
               createMessage.success('删除成功');
               await search();
-            } catch (error: any) {
-              throw new Error(error);
+            } catch (err: any) {
+              error(err);
             }
           },
         },

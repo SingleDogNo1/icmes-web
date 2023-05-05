@@ -30,6 +30,7 @@
   import { Icon } from '/@/components/Icon';
   import { getNoticeListApi, readNoticeByIdApi } from '/@/api/notice/message';
   import { MessageModel } from '/@/api/notice/model/messageModel';
+  import { error } from '/@/utils/log';
 
   defineProps({
     count: {
@@ -58,8 +59,8 @@
       });
       listData.value = items ?? [];
       total.value = totalCount;
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -77,8 +78,8 @@
       const res = await readNoticeByIdApi(id);
       console.log('res :>> ', res);
       await getNoticeList();
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

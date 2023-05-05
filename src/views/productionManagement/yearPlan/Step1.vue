@@ -28,6 +28,7 @@
   import { ProductionBaseModel } from '/@/api/production/model/basicModel';
   import { ProductionYearPlanMonthFullModel } from '/@/api/production/model/yearPlanModel';
   import { getyearPlansListApi } from '/@/api/production/yearPlan';
+  import { error } from '/@/utils/log';
 
   interface MonthDetailData {
     year: string;
@@ -388,8 +389,8 @@
         ...formData,
         ...{ productions: tableData },
       };
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     }
   }
 

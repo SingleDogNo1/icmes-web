@@ -33,6 +33,7 @@
   import EditOrganizationModal from './editOrganizationModal.vue';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
 
@@ -106,8 +107,8 @@
               await delOrganizationApi(record.id);
               createMessage.success('删除成功');
               emit('delRow', record);
-            } catch (error: any) {
-              throw new Error(error);
+            } catch (err: any) {
+              error(err);
             }
           },
         },

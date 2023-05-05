@@ -28,6 +28,7 @@
   import { EditDistributionCabinetsDevicesParam } from '/@/api/info/model/distributionroomModel';
   import { editDistributionCabinetsDevicesApi } from '/@/api/info/distributionroom';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const loading = ref(false);
   const deviceCode = ref<string>('');
@@ -62,8 +63,8 @@
       createMessage.success('保存成功');
       closeModal();
       emit('done');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

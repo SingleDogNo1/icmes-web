@@ -43,6 +43,7 @@
   import { useModal } from '/@/components/Modal';
   import { formatDate } from '/@/utils/dateUtil';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
 
@@ -137,8 +138,8 @@
                 });
                 createMessage.success('禁用成功');
                 await getDictTypesList(props.selectRow);
-              } catch (error: any) {
-                throw new Error(error);
+              } catch (err: any) {
+                error(err);
               } finally {
                 loading.value = false;
               }
@@ -156,8 +157,8 @@
                 await deleteDictDataApi(record.typeCode, record.code);
                 createMessage.success('删除成功');
                 await getDictTypesList(props.selectRow);
-              } catch (error: any) {
-                throw new Error(error);
+              } catch (err: any) {
+                error(err);
               } finally {
                 loading.value = false;
               }
@@ -180,8 +181,8 @@
                 });
                 createMessage.success('启用成功');
                 await getDictTypesList(props.selectRow);
-              } catch (error: any) {
-                throw new Error(error);
+              } catch (err: any) {
+                error(err);
               } finally {
                 loading.value = false;
               }
@@ -204,8 +205,8 @@
         const tableData = getDataSource();
         handleClickRow(tableData[0], 0);
       }
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

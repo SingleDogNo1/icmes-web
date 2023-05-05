@@ -1,5 +1,6 @@
 import type { FunctionArgs } from '@vueuse/core';
 import { upperFirst } from 'lodash-es';
+import { error } from './log';
 
 export interface ViewportOffsetResult {
   left: number;
@@ -24,7 +25,7 @@ function trim(string: string) {
 /* istanbul ignore next */
 export function hasClass(el: Element, cls: string) {
   if (!el || !cls) return false;
-  if (cls.includes(' ')) throw new Error('className should not contain space.');
+  if (cls.includes(' ')) error('className should not contain space.');
   if (el.classList) {
     return el.classList.contains(cls);
   } else {

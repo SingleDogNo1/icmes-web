@@ -45,6 +45,7 @@
   import { getFeaturesListByIdApi, getAssignmentProxiesListApi } from '/@/api/account/basic';
   import { BasicTable, useTable, PaginationProps } from '/@/components/Table';
   import { formatToDate, parseProxyType, parseProxyCycle } from '../helper';
+  import { error } from '/@/utils/log';
 
   const TabPane = Tabs.TabPane;
 
@@ -94,8 +95,8 @@
           pageSize: page.pageSize,
           total: totalCount,
         });
-      } catch (error: any) {
-        throw new Error(error);
+      } catch (err: any) {
+        error(err);
       } finally {
         loading.value = false;
       }
@@ -120,8 +121,8 @@
 
         setTableData(proxiesList || []);
         setPagination({ total: totalCount });
-      } catch (error: any) {
-        throw new Error(error);
+      } catch (err: any) {
+        error(err);
       } finally {
         loading.value = false;
       }

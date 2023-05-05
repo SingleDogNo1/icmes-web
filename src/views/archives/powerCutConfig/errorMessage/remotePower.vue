@@ -33,6 +33,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useModal } from '/@/components/Modal';
   import EditModal from './editPowerCutModal.vue';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
   const title = '远程停送电中，当全自动流程出现异常时进行推送提醒';
@@ -68,8 +69,8 @@
               await deletePowerCutReminderConfigApi(record.id);
               createMessage.success('删除成功');
               await getData();
-            } catch (error: any) {
-              throw new Error(error);
+            } catch (err: any) {
+              error(err);
             }
           },
         },
@@ -86,8 +87,8 @@
       loading.value = true;
       const data = await getRemotePowerCutConfigReminderApi();
       setTableData(data || []);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -102,8 +103,8 @@
         workingShift: checked,
       });
       createMessage.success('按班次修改成功');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

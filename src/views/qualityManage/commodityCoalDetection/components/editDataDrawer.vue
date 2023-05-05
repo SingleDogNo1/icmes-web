@@ -36,6 +36,7 @@
   } from '/@/api/quality/model/commercialCoalInspectionModel';
   import { editCommercialCoalInspectionSchemas } from '../data';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const emit = defineEmits(['submit']);
 
@@ -105,8 +106,8 @@
             versionTag: data.versionTag,
           });
         }
-      } catch (error: any) {
-        throw new Error(error);
+      } catch (err: any) {
+        error(err);
       } finally {
         setDrawerProps({ loading: false });
       }
@@ -127,8 +128,8 @@
       return new Promise<void>((resolve) => {
         resolve();
       });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     }
   }
 

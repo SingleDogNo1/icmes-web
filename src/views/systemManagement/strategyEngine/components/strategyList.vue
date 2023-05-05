@@ -40,8 +40,8 @@
   import { strategyEngineListTableColumns } from '../data';
   import { useUserState } from '/@/hooks/web/useUserState';
   import EditStrategyModal from './editStrategyModal.vue';
-
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
   const { getDictMap } = useUserState();
@@ -119,8 +119,8 @@
         const tableData = getDataSource();
         handleClickRow(tableData[0], 0);
       }
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -138,8 +138,8 @@
       loading.value = true;
       await updateStrategyRuleUseableApi(row.id);
       checked ? createMessage.success('启用成功') : createMessage.success('停用成功');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

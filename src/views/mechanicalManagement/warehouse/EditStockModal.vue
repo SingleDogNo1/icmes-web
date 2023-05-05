@@ -36,6 +36,7 @@
     createOutStockSparePartsApi,
     updateOutStockSparePartsApi,
   } from '/@/api/info/sparePartStocks';
+  import { error } from '/@/utils/log';
 
   interface Data {
     occurrenceType: SparePartStockHistoryFullModel['type'];
@@ -95,8 +96,8 @@
       createMessage.success('保存成功');
       closeModal();
       emit('success');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

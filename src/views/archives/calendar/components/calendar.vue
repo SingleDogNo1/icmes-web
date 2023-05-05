@@ -28,13 +28,7 @@
   </PageWrapper>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'WorkCalendar',
-  };
-</script>
-
-<script lang="ts" setup>
+<script lang="ts" setup name="WorkCalendar">
   import { ref, PropType, watch, toRefs, unref, nextTick } from 'vue';
   import { PageWrapper } from '/@/components/Page';
   import { Calendar } from '/@/components/Calendar';
@@ -43,6 +37,7 @@
   import type { Date } from './types';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { updateCalendarsStatisticsApi } from '/@/api/info/calendar';
+  import { error } from '/@/utils/log';
 
   enum DayTypeEnum {
     /** 生产日 */
@@ -121,8 +116,8 @@
 
       emit('data-updated');
       createMessage.success('修改成功');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     }
   }
 

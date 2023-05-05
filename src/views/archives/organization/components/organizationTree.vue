@@ -28,13 +28,7 @@
   </PageWrapper>
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'OrganizationTree',
-  };
-</script>
-
-<script lang="ts" setup>
+<script lang="ts" setup name="OrganizationTree">
   import { nextTick, ref, unref, reactive } from 'vue';
   import { Spin } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
@@ -45,6 +39,7 @@
   import { cloneDeep } from 'lodash-es';
   import EditOrganizationModal from './editOrganizationModal.vue';
   import { useModal } from '/@/components/Modal';
+  import { error } from '/@/utils/log';
 
   const [registerModal, { openModal }] = useModal();
 
@@ -63,7 +58,7 @@
 
   function getTree() {
     const tree = unref(treeRef);
-    if (!tree) throw new Error('tree is null!');
+    if (!tree) error('tree is null!');
     return tree;
   }
 
@@ -86,8 +81,8 @@
       getTree()?.filterByLevel(1);
       getTree()?.setSelectedKeys([9]);
       emit('select', 0);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

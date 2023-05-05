@@ -27,6 +27,7 @@
   import { ChangePWDParams } from '/@/api/account/model/basicModel';
   import { changePasswordApi } from '/@/api/account/basic';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const go = useGo();
   const { createMessage } = useMessage();
@@ -61,8 +62,8 @@
       createMessage.success('密码修改成功', 2, () => {
         go(PageEnum.BASE_LOGIN);
       });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     }
   }
 </script>

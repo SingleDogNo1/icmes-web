@@ -29,6 +29,7 @@
   import { listToTreeAsParentId } from '/@/utils/helper/treeHelper';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { editLocationApi } from '/@/api/info/location';
+  import { error } from '/@/utils/log';
 
   const loading = ref(false);
   const editType = ref<'create' | 'edit' | ''>('');
@@ -100,7 +101,8 @@
             });
             break;
         }
-      } catch (error) {
+      } catch (err: any) {
+        error(err);
       } finally {
         loading.value = false;
       }
@@ -120,13 +122,10 @@
       createMessage.success('保存成功');
       closeModal();
       emit('done');
-    } catch (error: any) {
-      loading.value = false;
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
   }
 </script>
-
-<style lang="less" scoped></style>

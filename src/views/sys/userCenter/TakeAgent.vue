@@ -21,6 +21,7 @@
   } from '/@/views/systemManagement/user/helper';
   import { useUserStore } from '/@/store/modules/user';
   import { agentTableColumns } from './data';
+  import { error } from '/@/utils/log';
 
   const { getUserInfo: userInfo } = useUserStore();
 
@@ -55,8 +56,8 @@
       const { items, totalCount } = await getAssignmentProxiesListApi(employeeId, params);
       setTableData(items || []);
       setPagination({ total: totalCount });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

@@ -40,6 +40,7 @@
   } from '/@/views/systemManagement/user/helper';
   import { useUserStore } from '/@/store/modules/user';
   import { agentTableColumns } from './data';
+  import { error } from '/@/utils/log';
 
   const { getUserInfo } = useUserStore();
 
@@ -97,8 +98,8 @@
               await delProxyByIdApi(record.id);
               createMessage.success('删除成功');
               await refreshData();
-            } catch (error: any) {
-              throw new Error(error);
+            } catch (err: any) {
+              error(err);
             } finally {
               loading.value = false;
             }
@@ -115,8 +116,8 @@
       const { items, totalCount } = await getAssignmentAgentListApi(id, options);
       setTableData(items || []);
       setPagination({ total: totalCount });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

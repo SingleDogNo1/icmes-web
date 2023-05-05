@@ -10,13 +10,7 @@
   <EditLocationModal @register="register" @done="handleEditLocationSuccess" />
 </template>
 
-<script lang="ts">
-  export default {
-    name: 'LocationTable',
-  };
-</script>
-
-<script lang="ts" setup>
+<script lang="ts" setup name="LocationTable">
   import { ref, watch } from 'vue';
   import {
     ActionItem,
@@ -30,6 +24,7 @@
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { delLocationApi } from '/@/api/info/location';
+  import { error } from '/@/utils/log';
 
   const emit = defineEmits(['changePage', 'delRow']);
 
@@ -100,8 +95,8 @@
               await delLocationApi(record.id);
               createMessage.success('删除成功');
               emit('delRow');
-            } catch (error: any) {
-              throw new Error(error);
+            } catch (err: any) {
+              error(err);
             }
           },
         },

@@ -22,6 +22,7 @@
   import { getLogListApi } from '/@/api/info/log';
   import { GetLogListParam } from '/@/api/info/model/logModel';
   import { schemas, columns } from './data';
+  import { error } from '/@/utils/log';
 
   const { getDictMap } = useUserState();
 
@@ -79,8 +80,8 @@
       setPagination({
         total: totalCount,
       });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }

@@ -77,6 +77,7 @@
   import ExportReportModal from './components/exportReportModal.vue';
   import ImportDataModal from './components/importDataModal.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
 
@@ -131,8 +132,8 @@
       synchroDataTime.value = synchro_data_time;
 
       setTableData(items || []);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -172,8 +173,8 @@
               await delCommercialCoalInspectionApi(record.id);
               createMessage.success('删除成功');
               await getData();
-            } catch (error: any) {
-              throw new Error(error);
+            } catch (err: any) {
+              error(err);
             }
           },
         },

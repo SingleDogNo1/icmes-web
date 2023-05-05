@@ -48,6 +48,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useFormInPopup } from '/@/hooks/component/useFormInPopup';
   import { maintenanceSettingSchemas as schemas } from './data';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
   const { saveInitData, validCloseable } = useFormInPopup();
@@ -106,8 +107,8 @@
       });
       SettingTableRef.value.genMaintenanceOptions(maintenanceOrdersConfig.items);
       SettingTableRef.value.genPowerTypeOptions(maintenanceOrdersConfig.items);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       setDrawerProps({ loading: false });
     }
@@ -138,8 +139,8 @@
       await setMaintenanceOrdersConfigApi(data);
       createMessage.success('保存成功');
       await getMaintenanceOrdersConfig();
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       setDrawerProps({ loading: false });
     }

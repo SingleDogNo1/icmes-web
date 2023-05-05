@@ -40,6 +40,7 @@
   import { getDevicesListApi, exportDeviceQRCodeApi } from '/@/api/info/devices';
   import { formatDeviceTypeTree } from '/@/utils/helper/treeHelper';
   import { downloadByData } from '/@/utils/file/download';
+  import { error } from '/@/utils/log';
 
   // 除关键字、设备位置之外的，请求必须的参数
   const fixedParams: Omit<GetDevicesListParam, 'globalName' | 'locationId'> = {
@@ -119,8 +120,8 @@
       treeData.value = formatDeviceTypeTree(items || []);
       await nextTick();
       treeRef.value?.filterByLevel(2);
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       setDrawerProps({ loading: false });
     }

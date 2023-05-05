@@ -24,6 +24,7 @@
   import { getDevicesPowerListApi } from '/@/api/info/devices';
   import { GetDevicesPowerListParam, DevicePowerModel } from '/@/api/info/model/devicesModel';
   import { cloneDeep } from 'lodash-es';
+  import { error } from '/@/utils/log';
 
   const props = defineProps({
     tableDataLoaded: {
@@ -72,7 +73,7 @@
 
   function getTree() {
     const tree = unref(treeRef);
-    if (!tree) throw new Error('tree is null');
+    if (!tree) error('tree is null');
     return tree;
   }
 
@@ -91,8 +92,8 @@
         parentId: 'categoryTreeParentId',
         id: 'categoryTreeId',
       });
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     }
   }
 

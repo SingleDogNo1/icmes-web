@@ -5,6 +5,7 @@ import { unref } from 'vue';
 
 import { useMultipleTabStore } from '/@/store/modules/multipleTab';
 import { useAppStore } from '/@/store/modules/app';
+import { error } from '/@/utils/log';
 
 enum TableActionEnum {
   REFRESH,
@@ -22,7 +23,7 @@ export function useTabs(_router?: Router) {
   function canIUseTabs(): boolean {
     const { show } = appStore.getMultiTabsSetting;
     if (!show) {
-      throw new Error('The multi-tab page is currently not open, please open it in the settings！');
+      error('The multi-tab page is currently not open, please open it in the settings！');
     }
     return !!show;
   }

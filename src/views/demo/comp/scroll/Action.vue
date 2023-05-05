@@ -23,6 +23,7 @@
   import { defineComponent, ref, unref } from 'vue';
   import { ScrollContainer, ScrollActionType } from '/@/components/Container';
   import { PageWrapper } from '/@/components/Page';
+  import { error } from '/@/utils/log';
 
   export default defineComponent({
     components: { ScrollContainer, PageWrapper },
@@ -31,16 +32,16 @@
       const getScroll = () => {
         const scroll = unref(scrollRef);
         if (!scroll) {
-          throw new Error('scroll is Null');
+          error('scroll is Null');
         }
         return scroll;
       };
 
       function scrollTo(top: number) {
-        getScroll().scrollTo(top);
+        getScroll()?.scrollTo(top);
       }
       function scrollBottom() {
-        getScroll().scrollBottom();
+        getScroll()?.scrollBottom();
       }
       return {
         scrollTo,

@@ -28,6 +28,7 @@
   import { getSparePartPushSettingsApi } from '/@/api/info/sparePart';
   import { updateStockSparePartsSettingApi } from '/@/api/info/sparePartStocks';
   import { UpdateSettingParams } from '/@/api/info/model/sparePartStocksModel';
+  import { error } from '/@/utils/log';
 
   const { createMessage } = useMessage();
 
@@ -77,8 +78,8 @@
       const { lockDays, id } = await getSparePartPushSettingsApi();
       setFieldsValue({ lockDays: lockDays });
       stockId.value = id;
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
@@ -93,8 +94,8 @@
       createMessage.success('保存成功');
       closeModal();
       emit('success');
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (err: any) {
+      error(err);
     } finally {
       loading.value = false;
     }
