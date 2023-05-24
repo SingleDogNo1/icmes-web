@@ -1,4 +1,6 @@
-export default {
+import { defineConfig } from 'vitepress';
+
+export default defineConfig({
   title: 'ICMES',
   description: 'ICMES DOCS',
   head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
@@ -22,6 +24,9 @@ export default {
       pattern: 'https://github.com/lost-dream/icmes-web/edit/main/docs/src/:path', // github
       // pattern: 'http://192.168.88.79:8081/ZHAOCHENMIN/icmes-web-new/edit/main/docs/src/:path', // gitlab
     },
+    search: {
+      provider: 'local',
+    },
     nav: [
       {
         text: '指南',
@@ -39,7 +44,7 @@ export default {
       '/components/': genComponentsSidebar(),
     },
   },
-};
+});
 
 function genGuideSidebar() {
   return [
