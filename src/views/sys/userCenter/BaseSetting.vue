@@ -9,35 +9,35 @@
                 <Col :span="16">
                   <Row :gutter="6" align="middle">
                     <Col :span="6">
-                      <Form.ItemRest>
+                      <FormItemRest>
                         <Input
                           v-model:value="model['officePhoneArea']"
                           :maxlength="4"
                           @change="typeIsNumber($event, model, 'officePhoneArea')"
                         />
-                      </Form.ItemRest>
+                      </FormItemRest>
                     </Col>
                     <Col :span="3" class="text-center"> - </Col>
                     <Col :span="15">
-                      <Form.ItemRest>
+                      <FormItemRest>
                         <Input
                           v-model:value="model['officePhone']"
                           :maxlength="11"
                           @change="typeIsNumber($event, model, 'officePhone')"
                         />
-                      </Form.ItemRest>
+                      </FormItemRest>
                     </Col>
                   </Row>
                 </Col>
                 <Col :span="8">
-                  <Form.ItemRest>
+                  <FormItemRest>
                     <Input
                       addon-before="分机号"
                       v-model:value="model['officePhoneExt']"
                       :maxlength="4"
                       @change="typeIsNumber($event, model, 'officePhoneExt')"
                     />
-                  </Form.ItemRest>
+                  </FormItemRest>
                 </Col>
               </Row>
             </InputGroup>
@@ -82,6 +82,7 @@
   import { error } from '/@/utils/log';
 
   const InputGroup = Input.Group;
+  const FormItemRest = Form.ItemRest;
 
   const { createMessage } = useMessage();
   const { getDictMap } = useUserState();

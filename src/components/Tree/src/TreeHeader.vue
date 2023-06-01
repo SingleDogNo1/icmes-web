@@ -19,7 +19,7 @@
       <Dropdown @click.prevent v-if="toolbar">
         <Icon icon="ion:ellipsis-vertical" />
         <template #overlay>
-          <Menu @click="handleMenuClick as any">
+          <Menu @click="(handleMenuClick as any)">
             <template v-for="item in toolbarList" :key="item.value">
               <MenuItem v-bind="{ key: item.value }">
                 {{ item.label }}
@@ -32,15 +32,19 @@
     </div>
   </div>
 </template>
+
 <script lang="ts" setup>
   import { computed, ref, watch, useSlots } from 'vue';
-  import { Dropdown, Menu, MenuItem, MenuDivider, InputSearch } from 'ant-design-vue';
+  import { Dropdown, Menu, InputSearch } from 'ant-design-vue';
   import { Icon } from '/@/components/Icon';
   import { BasicTitle } from '/@/components/Basic';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useDebounceFn } from '@vueuse/core';
   import { createBEM } from '/@/utils/bem';
   import { ToolbarEnum } from './types';
+
+  const MenuItem = Menu.Item;
+  const MenuDivider = Menu.Divider;
   const searchValue = ref('');
   const [bem] = createBEM('tree-header');
   const props = defineProps({

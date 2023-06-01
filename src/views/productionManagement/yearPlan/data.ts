@@ -1,6 +1,7 @@
 import { FormSchema } from '/@/components/Form';
 import type { BasicColumn } from '/@/components/Table';
-import { parseFloatNumber, basicTableCellStyle } from './helper';
+import { basicTableCellStyle } from './helper';
+import { parseFloatNumber } from '/@/utils';
 
 export const yearPlanTableColumn = (yearPlanTableData): BasicColumn[] => {
   return [

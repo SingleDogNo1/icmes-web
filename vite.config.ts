@@ -78,6 +78,9 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       //   },
       // },
       chunkSizeWarningLimit: 2000,
+      rollupOptions: {
+        external: ['ant-design-vue/lib/textarea/style/css'],
+      },
     },
     define: {
       // setting vue-i18-next

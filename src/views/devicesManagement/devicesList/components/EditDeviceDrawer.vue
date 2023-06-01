@@ -37,10 +37,13 @@
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { DeviceModel } from '/@/api/info/model/devicesModel';
   import { getDeviceDetailApi } from '/@/api/info/devices';
-  import { FormItem, FormItemRest, Textarea } from 'ant-design-vue';
+  import { FormItem, Input, Form } from 'ant-design-vue';
   import { editDeviceSchemas } from './data';
   import { useRoute } from 'vue-router';
   import { usePermission } from '/@/hooks/web/usePermission';
+
+  const Textarea = Input.TextArea;
+  const FormItemRest = Form.ItemRest;
 
   interface Data {
     // 主设备 | 附属设备

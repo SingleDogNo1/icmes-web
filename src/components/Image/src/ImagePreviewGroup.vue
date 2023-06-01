@@ -5,8 +5,10 @@
 </template>
 
 <script lang="ts" setup name="ImagePreviewGroup">
-  import { ImagePreviewGroup } from 'ant-design-vue';
+  import { Image } from 'ant-design-vue';
   import BasicImage from './Image.vue';
+
+  const ImagePreviewGroup = Image.PreviewGroup;
 
   interface Props {
     images: string[];

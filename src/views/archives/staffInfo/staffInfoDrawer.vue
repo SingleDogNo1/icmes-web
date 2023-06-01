@@ -15,35 +15,35 @@
             <Col :span="16">
               <Row :gutter="6" align="middle">
                 <Col :span="6">
-                  <Form.ItemRest>
+                  <FormItemRest>
                     <Input
                       v-model:value="model['officePhoneArea']"
                       :maxlength="4"
                       @change="typeIsNumber($event, model, 'officePhoneArea')"
                     />
-                  </Form.ItemRest>
+                  </FormItemRest>
                 </Col>
                 <Col :span="3" class="text-center"> - </Col>
                 <Col :span="15">
-                  <Form.ItemRest>
+                  <FormItemRest>
                     <Input
                       v-model:value="model['officePhone']"
                       :maxlength="11"
                       @change="typeIsNumber($event, model, 'officePhone')"
                     />
-                  </Form.ItemRest>
+                  </FormItemRest>
                 </Col>
               </Row>
             </Col>
             <Col :span="8">
-              <Form.ItemRest>
+              <FormItemRest>
                 <Input
                   addon-before="分机号"
                   v-model:value="model['officePhoneExt']"
                   :maxlength="4"
                   @change="typeIsNumber($event, model, 'officePhoneExt')"
                 />
-              </Form.ItemRest>
+              </FormItemRest>
             </Col>
           </Row>
         </Input.Group>
@@ -57,7 +57,7 @@
 </template>
 <script lang="ts" setup>
   import { ref, nextTick } from 'vue';
-  import { Form, Row, Col, Input } from 'ant-design-vue';
+  import { Row, Col, Input, Form } from 'ant-design-vue';
   import { cloneDeep } from 'lodash-es';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import {
@@ -74,6 +74,7 @@
     editEmployeeInfoByIdApi,
   } from '/@/api/info/employee';
   import { error } from '/@/utils/log';
+  const FormItemRest = Form.ItemRest;
 
   const emit = defineEmits(['done']);
 
